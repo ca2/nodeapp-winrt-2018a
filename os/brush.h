@@ -7,7 +7,7 @@
 namespace win
 {
 
-   class CLASS_DECL_VMSWIN brush : 
+   class CLASS_DECL_win brush : 
       virtual public ::ca::brush
    {
    public:
@@ -22,19 +22,17 @@ namespace win
 
       virtual ~brush();
 
-      virtual void * get_os_data() const;
+      virtual int_ptr get_os_data() const;
 
-      //BOOL CreateSolidBrush(COLORREF crColor);
-      //BOOL CreateHatchBrush(int nIndex, COLORREF crColor);
-      //BOOL CreatePatternBrush(::ca::bitmap* pBitmap);
-      //BOOL CreateDIBPatternBrush(HGLOBAL hPackedDIB, UINT nUsage);
-      //BOOL CreateDIBPatternBrush(const void * lpPackedDIB, UINT nUsage);
-      //BOOL CreateSysColorBrush(int nIndex);
+      //bool CreateSolidBrush(COLORREF crColor);
+      //bool CreateHatchBrush(int nIndex, COLORREF crColor);
+      //bool CreatePatternBrush(::ca::bitmap* pBitmap);
+      //bool CreateDIBPatternBrush(HGLOBAL hPackedDIB, UINT nUsage);
+      //bool CreateDIBPatternBrush(const void * lpPackedDIB, UINT nUsage);
+      //bool CreateSysColorBrush(int nIndex);
 
 
-#ifdef _DEBUG
       virtual void dump(dump_context & dumpcontext) const;
-#endif
    };
 
 

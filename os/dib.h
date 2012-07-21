@@ -9,17 +9,17 @@ namespace win
    //   Date : 09-04-98
    //////////////////////////////////////////////////////////////////////
 
-   class CLASS_DECL_VMSWIN dib :
+   class CLASS_DECL_win dib :
       virtual public ::ca::dib
    {
    public:
 
       static float Cosines[360];
       static float Sines[360];
-      static __int64 CosN[360]; // * 1 << 31
-      static __int64 SinN[360]; 
-      static __int64 Cos10N[10]; // until 10 degress
-      static __int64 Sin10N[10]; // more precision * 1 << 34
+      static int64_t CosN[360]; // * 1 << 31
+      static int64_t SinN[360]; 
+      static int64_t Cos10N[10]; // until 10 degress
+      static int64_t Sin10N[10]; // more precision * 1 << 34
       static double dPi;
 
       COLORREF *           m_pcolorref;
@@ -83,10 +83,10 @@ namespace win
       void transparent_color(color color);
       
 
-      BOOL create(class size size);
-      BOOL create(int iWidth, int iHeight);
-      BOOL create(::ca::graphics * pdc);
-      BOOL Destroy();
+      bool create(class size size);
+      bool create(int iWidth, int iHeight);
+      bool create(::ca::graphics * pdc);
+      bool Destroy();
 
 
       void DivideRGB(int iDivide);

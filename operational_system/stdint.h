@@ -57,7 +57,7 @@
 
 // Define _W64 macros to mark types changing their size, like intptr_t.
 #ifndef _W64
-#  if !defined(__midl) && (defined(_X86_) || defined(_M_IX86)) && _MSC_VER >= 1300
+#  if !defined(__midl) && (defined(X86) || defined(_M_IX86)) && _MSC_VER >= 1300
 #     define _W64 __w64
 #  else
 #     define _W64
@@ -99,8 +99,8 @@ typedef uint64_t  uint_fast64_t;
 
 // 7.18.1.4 Integer types capable of holding object pointers
 #ifdef _WIN64 // [
-   typedef __int64           intptr_t;
-   typedef unsigned __int64  uintptr_t;
+   typedef int64_t           intptr_t;
+   typedef uint64_t  uintptr_t;
 #else // _WIN64 ][
    typedef _W64 int               intptr_t;
    typedef _W64 unsigned int      uintptr_t;
@@ -232,3 +232,5 @@ typedef uint64_t  uintmax_t;
 
 #endif _STDINT
 #endif // _MSC_STDINT_H_ ]
+
+

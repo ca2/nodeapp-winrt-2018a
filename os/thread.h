@@ -1,6 +1,6 @@
 #pragma once
 
-BOOL AfxInternalPreTranslateMessage(MSG* pMsg);
+bool __internal_pre_translate_message(MSG* pMsg);
 
 namespace ca
 {
@@ -19,7 +19,7 @@ namespace ca
 namespace win
 {
 
-   class CLASS_DECL_VMSWIN thread :
+   class CLASS_DECL_win thread :
       virtual public ::radix::thread,
       virtual public ::ca::message_window_simple_callback
    {
@@ -36,8 +36,12 @@ namespace win
    #endif
 
 
+      static comparable_array < HANDLE > s_haThread;
+      static comparable_array < ::ca::thread * > s_threadptra;
+
+
       // list of frame_window objects for thread
-      typed_simple_list<frame_window*> m_frameList;
+      simple_list < frame_window * >   m_frameList;
 
       // temporary/permanent ::collection::map state
       DWORD m_nTempMapLock;           // if not 0, temp maps locked
@@ -45,7 +49,7 @@ namespace win
 
 
       LPVOID                              m_pThreadParams; // generic parameters passed to starting function
-      AFX_THREADPROC                      m_pfnThreadProc;
+      __THREADPROC                      m_pfnThreadProc;
 
       event                              m_evFinish;
       UINT                                m_nDisablePumpCount;
@@ -55,22 +59,22 @@ namespace win
 
       UINT                                m_dwFinishTimeout;
 
-      virtual void * get_os_data() const;
-      virtual INT_PTR get_os_int() const;
+      virtual int_ptr get_os_data() const;
+      virtual int_ptr get_os_int() const;
 
       void set_os_data(void * pvoidOsData);
-      void set_os_int(INT_PTR iData);
+      void set_os_int(int_ptr iData);
 
       virtual void set_p(::radix::thread * p);
 
       thread(::ca::application * papp);
 
-      virtual void construct(AFX_THREADPROC pfnThreadProc, LPVOID pParam);
+      virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
       virtual bool Begin(int nPriority = THREAD_PRIORITY_NORMAL, UINT nStackSize = 0,
          DWORD dwCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
 
-      BOOL CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,
+      bool CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,
          LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
 
 
@@ -83,10 +87,10 @@ namespace win
 
       virtual void add(::user::interaction * pui);
       virtual void remove(::user::interaction * pui);
-      virtual int get_ui_count();
-      virtual ::user::interaction * get_ui(int iIndex);
-      virtual void set_timer(::user::interaction * pui, UINT_PTR nIDEvent, UINT nEllapse);
-      virtual void unset_timer(::user::interaction * pui, UINT_PTR nIDEvent);
+      virtual ::count get_ui_count();
+      virtual ::user::interaction * get_ui(::index iIndex);
+      virtual void set_timer(::user::interaction * pui, uint_ptr nIDEvent, UINT nEllapse);
+      virtual void unset_timer(::user::interaction * pui, uint_ptr nIDEvent);
       virtual void set_auto_delete(bool bAutoDelete = true);
       virtual void set_run(bool bRun = true);
       virtual event & get_finish_event();
@@ -109,17 +113,17 @@ namespace win
       virtual void start();
 
       int GetThreadPriority();
-      BOOL SetThreadPriority(int nPriority);
+      bool SetThreadPriority(int nPriority);
 
    // Operations
       DWORD SuspendThread();
       DWORD ResumeThread();
-      BOOL PostThreadMessage(UINT message, WPARAM wParam, LPARAM lParam);
+      bool PostThreadMessage(UINT message, WPARAM wParam, LPARAM lParam);
       bool post_message(::user::interaction * pguie, UINT message, WPARAM wParam, LPARAM lParam);
 
       virtual bool PreInitInstance();
 
-      // called when occurs an se_exception exception in run
+      // called when occurs an standard_exception exception in run
       // return true to call run again
       virtual bool on_run_exception(::ca::exception & e);
 
@@ -132,10 +136,10 @@ namespace win
       // running and idle processing
       virtual int run();
       virtual void pre_translate_message(gen::signal_object * pobj);
-      virtual BOOL pump_message();     // low level message pump
-      virtual BOOL on_idle(LONG lCount); // return TRUE if more idle processing
-      virtual BOOL is_idle_message(gen::signal_object * pobj);  // checks for special messages
-      virtual BOOL is_idle_message(LPMSG lpmsg);  // checks for special messages
+      virtual bool pump_message();     // low level message pump
+      virtual bool on_idle(LONG lCount); // return TRUE if more idle processing
+      virtual bool is_idle_message(gen::signal_object * pobj);  // checks for special messages
+      virtual bool is_idle_message(LPMSG lpmsg);  // checks for special messages
       virtual void message_handler(gen::signal_object * pobj);
 
       // thread termination
@@ -153,10 +157,8 @@ namespace win
    // Implementation
    public:
       virtual ~thread();
-   #ifdef _DEBUG
       virtual void assert_valid() const;
       virtual void dump(dump_context & dumpcontext) const;
-   #endif
       void CommonConstruct();
       virtual void Delete();
          // 'delete this' only if m_bAutoDelete == TRUE
@@ -170,7 +172,7 @@ namespace win
 
 
       virtual void LockTempMaps();
-      virtual BOOL UnlockTempMaps(BOOL bDeleteTemp);
+      virtual bool UnlockTempMaps(bool bDeleteTemp);
 
 
 		///  \brief		waits for signaling the thread forever
@@ -190,10 +192,16 @@ namespace win
 		int priority();
 
 
+      virtual bool has_message();
+
+
+      virtual HANDLE item() const;
+
+
    };
 
-   CLASS_DECL_VMSWIN ::ca::thread * get_thread();
-   CLASS_DECL_VMSWIN ::ca::thread_state * get_thread_state();
+   CLASS_DECL_win ::ca::thread * get_thread();
+   CLASS_DECL_win ::ca::thread_state * get_thread_state();
 
 } // namespace win
 

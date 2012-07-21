@@ -15,7 +15,7 @@ namespace win
 {
 
 
-   class CLASS_DECL_VMSWIN main_init_data :
+   class CLASS_DECL_win main_init_data :
       public ::ca::main_init_data
    {
    public:
@@ -29,10 +29,11 @@ namespace win
    };
 
 
-   class CLASS_DECL_VMSWIN application :
+   class CLASS_DECL_win application :
       virtual public ::ex2::application
    {
    public:
+
 
 
       USHORT               m_atomApp;
@@ -45,9 +46,9 @@ namespace win
       virtual ~application();
       
       virtual HINSTANCE GetHinstance();
-      BOOL _001OnDDECommand(const char * lpcsz);
+      bool _001OnDDECommand(const char * lpcsz);
       virtual void _001EnableShellOpen();
-      virtual ::document * _001OpenDocumentFile(var varFile);
+      virtual ::user::document_interface * _001OpenDocumentFile(var varFile);
       virtual void _001OnFileNew();
 
       // Loads a cursor resource.
@@ -75,9 +76,9 @@ namespace win
       virtual bool Ex2OnAppInstall();
       virtual bool Ex2OnAppUninstall();
 
-      virtual BOOL DeferRegisterClass(LONG fToRegister, const char ** ppszClass);
+      virtual bool DeferRegisterClass(LONG fToRegister, const char ** ppszClass);
       virtual void LockTempMaps();
-      virtual BOOL UnlockTempMaps(BOOL bDeleteTemps = TRUE);
+      virtual bool UnlockTempMaps(bool bDeleteTemps = TRUE);
       virtual void TermThread(HINSTANCE hInstTerm);
       virtual const char * RegisterWndClass(UINT nClassStyle, HCURSOR hCursor = 0, HBRUSH hbrBackground = 0, HICON hIcon = 0);
 
@@ -127,30 +128,30 @@ namespace win
 
 
 
-      /*virtual void construct(AFX_THREADPROC pfnThreadProc, LPVOID pParam);
+      /*virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
       virtual bool Begin(int nPriority = THREAD_PRIORITY_NORMAL, UINT nStackSize = 0,
          DWORD dwCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
 
-      BOOL CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,
+      bool CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,
          LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
 
-      virtual void * get_os_data();
-      virtual INT_PTR get_os_int();
+      virtual int_ptr get_os_data();
+      virtual int_ptr get_os_int();
 
 
       int GetThreadPriority();
-      BOOL SetThreadPriority(int nPriority);
+      bool SetThreadPriority(int nPriority);
 
    // Operations
       DWORD SuspendThread();
       DWORD ResumeThread();
-      BOOL PostThreadMessage(UINT message, WPARAM wParam, LPARAM lParam);
+      bool PostThreadMessage(UINT message, WPARAM wParam, LPARAM lParam);
       bool post_message(::user::interaction * pguie, UINT message, WPARAM wParam, LPARAM lParam);
 
       virtual bool PreInitInstance();
 
-      // called when occurs an se_exception exception in run
+      // called when occurs an standard_exception exception in run
       // return true to call run again
       virtual bool on_run_exception(::ca::exception & e);
 
@@ -163,9 +164,9 @@ namespace win
       // running and idle processing
       virtual int run();
       virtual void pre_translate_message(gen::signal_object * pobj);
-      virtual BOOL pump_message();     // low level message pump
-      virtual BOOL on_idle(LONG lCount); // return TRUE if more idle processing
-      virtual BOOL is_idle_message(MSG* pMsg);  // checks for special messages
+      virtual bool pump_message();     // low level message pump
+      virtual bool on_idle(LONG lCount); // return TRUE if more idle processing
+      virtual bool is_idle_message(MSG* pMsg);  // checks for special messages
 
       // thread termination
       virtual int exit_instance(); // default will 'delete this'
@@ -174,22 +175,20 @@ namespace win
       virtual LRESULT ProcessWndProcException(base_exception* e, const MSG* pMsg);
 
       // Advanced: handling messages sent to message filter hook
-      virtual BOOL ProcessMessageFilter(int code, LPMSG lpMsg);
+      virtual bool ProcessMessageFilter(int code, LPMSG lpMsg);
 
       // Advanced: virtual access to GetMainWnd()
       virtual ::user::interaction* GetMainWnd();
 
-   #ifdef _DEBUG
       virtual void assert_valid() const;
       virtual void dump(dump_context & dumpcontext) const;
-   #endif
       virtual void CommonConstruct();
       virtual void Delete();
          // 'delete this' only if m_bAutoDelete == TRUE
 
 
 
-      BOOL DispatchThreadMessageEx(MSG* msg);  // helper*/
+      bool DispatchThreadMessageEx(MSG* msg);  // helper*/
 
       //::ca::graphics * graphics_from_os_data(void * pdata);
 
@@ -206,8 +205,8 @@ namespace win
       virtual void set_env_var(const string & var,const string & value);
       virtual unsigned long application::get_thread_id();
 
-      virtual ::user::printer * get_printer(const char * pszDeviceName);
-
    };
 
+
 } // namespace win
+

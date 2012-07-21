@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+#include "framework.h"
 
 class keep_event_reset
 {
@@ -44,7 +44,7 @@ namespace win
 
    bool window_draw::start()
    {
-      AfxBeginThread(get_app(), &window_draw::ThreadProcRedraw, (LPVOID) this);
+      __begin_thread(get_app(), &window_draw::ThreadProcRedraw, (LPVOID) this);
       return true;
    }
 
@@ -93,7 +93,7 @@ namespace win
    {
       if(!m_bProDevianMode && ::IsWindow((HWND) m_spwindowMessage->get_os_data()))
       {
-         m_spwindowMessage->SendMessage(WM_USER + 1984 + 1977);
+         m_spwindowMessage->send_message(WM_USER + 1984 + 1977);
       }
    }
 
@@ -117,6 +117,7 @@ namespace win
       }
       m_dwLastUpdate = ::GetTickCount();
       UpdateBuffer();
+      return;
       if(m_pbuffer->GetBuffer()->get_os_data() != NULL)
       {
          //m_pbuffer->m_spdib->fill_channel(255, visual::rgba::channel_alpha);
@@ -201,7 +202,7 @@ namespace win
 
       rect rectNewUpdate;
       
-      for(INT_PTR i = hwndtreea.get_size() - 1; i >= 0; i--)
+      for(int_ptr i = hwndtreea.get_size() - 1; i >= 0; i--)
       {
          user::HwndTree & hwndtreeChild = hwndtreea[i];
          HWND hwndChild = hwndtreeChild.m_hwnd;
@@ -257,7 +258,7 @@ namespace win
       }
       else
       {
-         ::user::window_interface * ptwi = System.window_map().get((INT_PTR) hwndParam);
+         ::user::window_interface * ptwi = System.window_map().get((int_ptr) hwndParam);
          ::user::interaction * pguie = dynamic_cast < ::user::interaction * > (ptwi);
          rect rectWindow;
          ::GetWindowRect(hwndParam, rectWindow);
@@ -282,8 +283,8 @@ namespace win
          }
          else
          {
-            BOOL bWin4 = FALSE;
-         //_AfxFillPSOnStack();
+            bool bWin4 = FALSE;
+         //_gen::FillPSOnStack();
             ::DefWindowProc(
                hwndParam,
                (bWin4 ? WM_PRINT : WM_PAINT),
@@ -337,7 +338,7 @@ namespace win
          }
          while(::PeekMessageA(&msg, NULL, NULL, NULL, PM_NOREMOVE))
          {
-            AfxGetThread()->pump_message();
+            __get_thread()->pump_message();
          }
          int iUiDataWriteWindowTimeForTheApplicationInThisMachine = 8;
          if(m_iFramesPerSecond == 0)
@@ -346,7 +347,7 @@ namespace win
          }
          else if((1000 / m_iFramesPerSecond) > m_dwLastDelay)
          {
-            Sleep(max(iUiDataWriteWindowTimeForTheApplicationInThisMachine, (1000 / m_iFramesPerSecond) - m_dwLastDelay));
+            Sleep(max((DWORD) max(0, iUiDataWriteWindowTimeForTheApplicationInThisMachine), (1000 / m_iFramesPerSecond) - m_dwLastDelay));
          }
          else
          {
@@ -358,7 +359,7 @@ namespace win
       return 0;
    }
 
-   UINT AFX_CDECL window_draw::ThreadProcRedraw(LPVOID lpv)
+   UINT c_cdecl window_draw::ThreadProcRedraw(LPVOID lpv)
    {
       window_draw * pdraw = (window_draw *) lpv;
       return pdraw->RedrawProc();
@@ -457,9 +458,9 @@ namespace win
       {
          if(hwndOrder == NULL)
             break;
-         //BOOL bVisible = ::IsWindowVisible(hwndOrder);
-         BOOL bVisible = ::IsWindowVisible(hwndOrder);
-         BOOL bIconic = ::IsIconic(hwndOrder);
+         //bool bVisible = ::IsWindowVisible(hwndOrder);
+         bool bVisible = ::IsWindowVisible(hwndOrder);
+         bool bIconic = ::IsIconic(hwndOrder);
          if(!bVisible
          || bIconic
          || wndaApp.contains(hwndOrder))
@@ -499,24 +500,36 @@ namespace win
       }
          */
       
-      for(int l = 0; l < wndpa.get_count(); l++)
+      for(int l = 0; l < wndpa.get_count();)
       {
          try
          {
             dynamic_cast < ::ca::window * > (wndpa[l]->m_pimpl)->_001UpdateWindow();
+            l++;
+         }
+         catch(simple_exception & se)
+         {
+            if(strcmp_dup(se.m_szMessage, "no more a window") == 0)
+            {
+               System.frames().remove(wndpa[l]);
+               wndpa.remove_at(l);
+               
+            }
          }
          catch(...)
          {
+            System.frames().remove(wndpa[l]);
+            wndpa.remove_at(l);
          }
       }
       return true;
       
-      for(int j = wndaApp.get_upper_bound(); j >= 0; j--)
+      for(index j = wndaApp.get_upper_bound(); j >= 0; j--)
       {
          HWND hwndTopic = wndaApp[j];
 
          ::ca::window * pwnd = NULL;
-         //::ca::window * pwnd = dynamic_cast < ::ca::window * > (System.window_map().get((INT_PTR) hwndTopic));
+         //::ca::window * pwnd = dynamic_cast < ::ca::window * > (System.window_map().get((int_ptr) hwndTopic));
          //if(pwnd == NULL)
          //{
          for(int l = 0; l < wndpa.get_count(); l++)
@@ -749,7 +762,7 @@ namespace win
 
       HWND hwnd = hwndtree.m_hwnd;
 
-      ::user::window_interface * ptwi = System.window_map().get((INT_PTR) hwnd);
+      ::user::window_interface * ptwi = System.window_map().get((int_ptr) hwnd);
 
       if(!::IsWindowVisible(hwnd))
       {
@@ -898,7 +911,7 @@ namespace win
 
       
 
-      ::user::window_interface * pwndi = System.window_map().get((INT_PTR) hwnd);
+      ::user::window_interface * pwndi = System.window_map().get((int_ptr) hwnd);
 
       if(pwndi == NULL)
       {
@@ -1156,7 +1169,7 @@ namespace win
    //   ::SelectClipRgn(hdcScreen, rgnClip);
       
       // Debug
-   #ifdef _DEBUG
+   #ifdef DEBUG
       //rect rectClip;
       //rgnClip->GetRgnBox(rectClip);
    #endif
@@ -1238,11 +1251,11 @@ namespace win
             {
                HWND hwndZOrder = (HWND) pwnd->m_pguie->oprop("pending_zorder").get_integer();
                ::SetWindowPos(hwndParam, HWND_TOPMOST, 
-                  rectWindow.left, rectWindow.top, rectWindow.width(), rectWindow.height(), SWP_SHOWWINDOW);
+                  (int) rectWindow.left, (int) rectWindow.top, (int) rectWindow.width(), (int) rectWindow.height(), SWP_SHOWWINDOW);
                ::SetWindowPos(hwndParam, HWND_NOTOPMOST, 
-                  rectWindow.left, rectWindow.top, rectWindow.width(), rectWindow.height(), SWP_SHOWWINDOW);
+                  (int) rectWindow.left, (int) rectWindow.top, (int) rectWindow.width(), (int) rectWindow.height(), SWP_SHOWWINDOW);
                ::SetWindowPos(hwndParam, hwndZOrder, 
-                  rectWindow.left, rectWindow.top, rectWindow.width(), rectWindow.height(), SWP_SHOWWINDOW | SWP_FRAMECHANGED);
+                  (int) rectWindow.left, (int) rectWindow.top, (int) rectWindow.width(), (int) rectWindow.height(), SWP_SHOWWINDOW | SWP_FRAMECHANGED);
                /*simple_frame_window * pframe = dynamic_cast < simple_frame_window * > (pwnd->m_pguie);
                if(pframe != NULL)
                {
@@ -1252,7 +1265,7 @@ namespace win
             }
             else
             {
-               ::SetWindowPos(hwndParam, NULL, rectWindow.left, rectWindow.top, rectWindow.width(), rectWindow.height(), SWP_SHOWWINDOW);
+               ::SetWindowPos(hwndParam, NULL, (int) rectWindow.left, (int) rectWindow.top, (int) rectWindow.width(), (int) rectWindow.height(), SWP_SHOWWINDOW);
             }
          }
 

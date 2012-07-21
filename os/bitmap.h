@@ -5,7 +5,7 @@ namespace win
 {
 
 
-   class CLASS_DECL_VMSWIN bitmap : 
+   class CLASS_DECL_win bitmap : 
       virtual public ::ca::bitmap
    {
    public:
@@ -18,23 +18,23 @@ namespace win
       bitmap(::ca::application * papp);
       virtual ~bitmap();
 
-      void * get_os_data() const;
+      int_ptr get_os_data() const;
 
 
-      BOOL LoadBitmap(const char * lpszResourceName);
-      BOOL LoadBitmap(UINT nIDResource);
-      BOOL LoadOEMBitmap(UINT nIDBitmap); // for OBM_/OCR_/OIC_
-   #ifndef _AFX_NO_AFXCMN_SUPPORT
-      BOOL LoadMappedBitmap(UINT nIDBitmap, UINT nFlags = 0,
+      bool LoadBitmap(const char * lpszResourceName);
+      bool LoadBitmap(UINT nIDResource);
+      bool LoadOEMBitmap(UINT nIDBitmap); // for OBM_/OCR_/OIC_
+   #ifndef ___NO_AFXCMN_SUPPORT
+      bool LoadMappedBitmap(UINT nIDBitmap, UINT nFlags = 0,
          LPCOLORMAP lpColorMap = NULL, int nMapSize = 0);
    #endif
-      BOOL CreateBitmap(int nWidth, int nHeight, UINT nPlanes, UINT nBitcount,
+      bool CreateBitmap(int nWidth, int nHeight, UINT nPlanes, UINT nBitcount,
             const void * lpBits);
-      BOOL CreateBitmapIndirect(LPBITMAP lpBitmap);
-      BOOL CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      BOOL CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      BOOL CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset);
-      BOOL CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
+      bool CreateBitmapIndirect(LPBITMAP lpBitmap);
+      bool CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
+      bool CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
+      bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset);
+      bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
 
       int GetBitmap(BITMAP* pBitMap);
 
@@ -43,9 +43,12 @@ namespace win
       class size SetBitmapDimension(int nWidth, int nHeight);
       class size GetBitmapDimension() const;
 
-   #ifdef _DEBUG
       virtual void dump(dump_context & dumpcontext) const;
-   #endif
+
+
+      virtual bool Attach(HBITMAP hbitmap);
+
+
    };
 
 

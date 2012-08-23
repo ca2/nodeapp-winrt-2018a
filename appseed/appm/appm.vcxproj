@@ -126,6 +126,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">
+    <OutDir>$(SolutionDir)..\..\..\stage\x86\</OutDir>
+    <IntDir>$(SolutionDir)..\..\..\time\intermediate\x86\$(ProjectName)\</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Link>
       <AdditionalDependencies>d2d1.lib; d3d11.lib; dxgi.lib; dwrite.lib; dxguid.lib; xaudio2.lib; xinput.lib; mfcore.lib; mfplat.lib; mfreadwrite.lib; mfuuid.lib; %(AdditionalDependencies)</AdditionalDependencies>
@@ -149,7 +153,7 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <AdditionalIncludeDirectories>$(ProjectDir);$(IntermediateOutputPath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
@@ -245,13 +249,13 @@
     <ClInclude Include="appm.h" />
     <ClInclude Include="appm_base.h" />
     <ClInclude Include="appm_renderer.h" />
-    <ClInclude Include="pch.h" />
+    <ClInclude Include=".\framework.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="appm.cpp" />
     <ClCompile Include="appm_base.cpp" />
     <ClCompile Include="appm_renderer.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include=".\framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -264,26 +268,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="intro.xaml.h">
+    <ClInclude Include=".\intro.xaml.h">
       <DependentUpon>intro.xaml</DependentUpon>
     </ClInclude>
-    <ClInclude Include="main.xaml.h">
+    <ClInclude Include=".\main.xaml.h">
       <DependentUpon>main.xaml</DependentUpon>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="intro.xaml">
+    <ApplicationDefinition Include=".\intro.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="main.xaml">
+    <Page Include=".\main.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="intro.xaml.cpp">
+    <ClCompile Include=".\intro.xaml.cpp">
       <DependentUpon>intro.xaml</DependentUpon>
     </ClCompile>
-    <ClCompile Include="main.xaml.cpp">
+    <ClCompile Include=".\main.xaml.cpp">
       <DependentUpon>main.xaml</DependentUpon>
     </ClCompile>
   </ItemGroup>

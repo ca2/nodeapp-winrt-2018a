@@ -10,9 +10,9 @@
     <ClCompile Include="appm_renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.xaml.cpp" />
-    <ClCompile Include="intro.xaml.cpp" />
-    <ClCompile Include="pch.cpp">
+    <ClCompile Include=".\intro.xaml.cpp" />
+    <ClCompile Include=".\main.xaml.cpp" />
+    <ClCompile Include=".\framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -26,9 +26,9 @@
     <ClInclude Include="appm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="main.xaml.h" />
-    <ClInclude Include="intro.xaml.h" />
-    <ClInclude Include="pch.h">
+    <ClInclude Include=".\intro.xaml.h" />
+    <ClInclude Include=".\main.xaml.h" />
+    <ClInclude Include=".\framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +41,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="main.xaml">
-      <Filter>Source Files</Filter>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ApplicationDefinition Include="intro.xaml">
+    <ApplicationDefinition Include=".\intro.xaml">
       <Filter>Source Files</Filter>
     </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include=".\main.xaml">
+      <Filter>Source Files</Filter>
+    </Page>
   </ItemGroup>
 </Project>

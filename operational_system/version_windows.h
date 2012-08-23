@@ -163,7 +163,10 @@
 #endif
 #endif
 
-#include <windows.h>
+
+
+#include <winapifamily.h>
+
    #include <shlwapi.h>
 
 
@@ -178,7 +181,9 @@
 #define __WM_MOUSELAST 0x0209
 #endif
 
-#include <zmouse.h>
+//#include <zmouse.h>
+
+#include <Combaseapi.h>
 
 struct HKEY__;
 typedef struct HKEY__ *HKEY;

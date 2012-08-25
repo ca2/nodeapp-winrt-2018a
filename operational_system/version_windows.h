@@ -112,9 +112,9 @@
 #define WIN32
 #endif
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
+//#ifndef WIN32_LEAN_AND_MEAN
+//#define WIN32_LEAN_AND_MEAN
+//#endif
 
 #ifdef _UNICODE
 #ifndef UNICODE
@@ -164,10 +164,9 @@
 #endif
 
 
-
 #include <winapifamily.h>
-
-   #include <shlwapi.h>
+#include <windows.h>
+#include <shlwapi.h>
 
 
 #if core_level > 1

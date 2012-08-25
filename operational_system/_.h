@@ -32,13 +32,23 @@ namespace ca
 	///  \param		new priority
 	inline bool set_thread_priority(int priority)
 	{
+#ifdef M_WINDOWS
+      return true;
+#else
 		return ( ::SetThreadPriority(::GetCurrentThread(), priority) != 0 );
+#endif
 	}
 
 	///  \brief		global function to get thread priority for current thread
 	///  \return	priority of current thread
 	inline int thread_priority()
-	{ return ::GetThreadPriority(::GetCurrentThread()); }
+	{ 
+#ifdef M_WINDOWS
+      return 0;
+#else
+      return ::GetThreadPriority(::GetCurrentThread());
+#endif
+   }
 
 } // namespace ca
 

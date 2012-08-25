@@ -337,3 +337,10 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 
 
+#include <stdio.h>
+
+
+
+
+CLASS_DECL_c Platform::String ^ m_str(const char * psz);
+CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszTitle, int iFlags);

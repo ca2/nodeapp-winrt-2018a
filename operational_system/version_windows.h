@@ -155,23 +155,11 @@
 #pragma warning(disable: 4311 4312)
 #pragma warning(disable: 4201)  // winnt.h uses nameless structs
 
-// Don't include winsock.h
-#if core_level > 1
-#pragma push_macro("_WINSOCKAPI_")
-#ifndef _WINSOCKAPI_
-#define _WINSOCKAPI_
-#endif
-#endif
-
 
 #include <winapifamily.h>
 #include <windows.h>
 #include <shlwapi.h>
 
-
-#if core_level > 1
-#pragma pop_macro("_WINSOCKAPI_")
-#endif
 
 #pragma warning(pop)
 
@@ -248,7 +236,6 @@ __INLINE HWND GetNextWindow(HWND hWnd, UINT nDirection)
 #endif
 #endif
 
-#include <winsock2.h>
 #include <ws2tcpip.h>
 //#include <tpipv6.h>  // For IPv6 Tech Preview.
 
@@ -260,8 +247,7 @@ __INLINE HWND GetNextWindow(HWND hWnd, UINT nDirection)
 
 #pragma comment(lib,"Psapi.lib")
 #define WIN32_LEAN_AND_MEAN
-#include <winsock2.h>
-#include <ws2tcpip.h>
+//#include <ws2tcpip.h>
 #if _MSC_VER < 1200
 #ifndef __CYGWIN__
 #ifdef ENABLE_IPV6

@@ -5,7 +5,7 @@
 #define DEBUG
 #endif
 
-#define M_WINDOWS  // Merde Windows : Metro Style Application
+#define MERDE_WINDOWS  // Merde Windows : Metro Style Application
 #define WINDOWS
 #define WIN32
 #define DECL_C __cdecl

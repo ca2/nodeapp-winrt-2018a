@@ -27,6 +27,9 @@
     <Filter Include="Header Files\operational_system\cross\linux">
       <UniqueIdentifier>{474232c1-9519-4032-b9c4-25c8d63fddbc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\operational_system\cross\windows">
+      <UniqueIdentifier>{68043565-21ed-4c12-85ca-008da47ac173}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win1.cpp">
@@ -410,6 +413,12 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\cross\general\general_windows.h">
       <Filter>Header Files\operational_system\cross\general</Filter>
+    </ClInclude>
+    <ClInclude Include="..\operational_system\cross\windows\win.h">
+      <Filter>Header Files\operational_system\cross\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\operational_system\cross\windows\win_thread.h">
+      <Filter>Header Files\operational_system\cross\windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

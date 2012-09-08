@@ -283,6 +283,8 @@
     <ClInclude Include="..\operational_system\cross\linux\linux.h" />
     <ClInclude Include="..\operational_system\cross\linux\linux_datetime.h" />
     <ClInclude Include="..\operational_system\cross\linux\linux_file.h" />
+    <ClInclude Include="..\operational_system\cross\windows\win.h" />
+    <ClInclude Include="..\operational_system\cross\windows\win_thread.h" />
     <ClInclude Include="..\operational_system\get_platform.h" />
     <ClInclude Include="..\operational_system\inttypes.h" />
     <ClInclude Include="..\operational_system\operational_system.h" />

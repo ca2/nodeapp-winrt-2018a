@@ -4,9 +4,6 @@
     <Filter Include="Header Files">
       <UniqueIdentifier>{e7eb1a13-f7b0-40da-a7a2-f6a9e83353ba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\template">
-      <UniqueIdentifier>{c8acb731-a5af-499d-8d46-47c6d2ca0cbf}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\operational_system">
       <UniqueIdentifier>{447592ee-992c-44eb-9ac7-bf07597490ba}</UniqueIdentifier>
     </Filter>
@@ -24,6 +21,9 @@
     </Filter>
     <Filter Include="Header Files\operational_system\cross\windows">
       <UniqueIdentifier>{ce0c97b9-ff16-41ad-a3e9-38d07b61d26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\operational_system\template">
+      <UniqueIdentifier>{c8acb731-a5af-499d-8d46-47c6d2ca0cbf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -342,7 +342,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="template\core.h">
-      <Filter>Header Files\template</Filter>
+      <Filter>Header Files\operational_system\template</Filter>
     </ClInclude>
     <ClInclude Include="..\operational_system\bare_operational_system.h">
       <Filter>Header Files\operational_system</Filter>

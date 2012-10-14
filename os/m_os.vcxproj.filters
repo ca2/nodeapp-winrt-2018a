@@ -371,9 +371,6 @@
     <ClInclude Include="..\operational_system\version_dll.h">
       <Filter>Header Files\operational_system</Filter>
     </ClInclude>
-    <ClInclude Include="..\operational_system\version_windows.h">
-      <Filter>Header Files\operational_system</Filter>
-    </ClInclude>
     <ClInclude Include="..\operational_system\_.h">
       <Filter>Header Files\operational_system</Filter>
     </ClInclude>
@@ -400,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\cross\windows\win.h">
       <Filter>Header Files\operational_system\cross\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\operational_system\version_windows.h">
+      <Filter>Header Files\operational_system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

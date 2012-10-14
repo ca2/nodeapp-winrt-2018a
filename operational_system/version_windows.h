@@ -21,47 +21,13 @@
 #define STRICT 1
 #endif
 
-#ifndef WINVER
-#ifdef _WIN32_WINNT
-#define WINVER _WIN32_WINNT
-#else
-#pragma message(" WINVER not defined. Defaulting to 0x0502 (Windows Server 2003)")
-#define WINVER 0x0502
-#endif
-#else
-#if WINVER < 0x0400
-#error MFC requires WINVER to be #defined to 0x0400 or greater
-#endif
-#endif
 
-#ifndef _WIN32_IE
-#define _WIN32_IE 0x0560
-#else
-#if _WIN32_IE < 0x0400
-#error MFC requires _WIN32_IE to be #defined to 0x0400 or greater
-#endif
-#endif
+#define  NTDDI_VERSION     0x06020000        //  NTDDI_WIN8
+#define  WINVER            0x0602            // _WIN32_WINNT_WIN8
+#define _WIN32_WINNT 	   0x0602            // _WIN32_WINNT_WIN8
+#define _WIN32_IE          0x0A00            // _WIN32_IE_IE100
 
-#ifndef _WIN32_WINDOWS
-#define _WIN32_WINDOWS 0x0410
-#else
-#if _WIN32_WINDOWS < 0x0400
-#error MFC requires _WIN32_WINDOWS to be #defined to 0x0400 or greater
-#endif
-#endif
 
-#ifndef _WIN32_WINNT
-#ifdef WINVER
-#define _WIN32_WINNT WINVER
-#else
-#pragma message("_WIN32_WINNT not defined. Defaulting to 0x0502 (Windows Server 2003)")
-#define _WIN32_WINNT 0x0502
-#endif
-#else
-#if _WIN32_WINNT < 0x0400
-#error MFC requires _WIN32_WINNT to be #defined to 0x0400 or greater
-#endif
-#endif
 
 // certain parts of WINDOWS.H are necessary
 #undef NOKERNEL

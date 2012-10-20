@@ -344,3 +344,22 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 CLASS_DECL_c Platform::String ^ m_str(const char * psz);
 CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszTitle, int iFlags);
+
+
+
+/*template < class T > Windows::Foundation::IAsyncOperation < T > ^ m_wait(Windows::Foundation::IAsyncOperation < T> ^ op)
+{
+   simple_event ev;
+   Windows::Foundation::IAsyncOperation < T > op;
+   op->Completed = [](Windows::Foundation::IAsyncOperation<TResult> asyncInfo, Windows::Foundation::AsyncStatus asyncStatus)
+   {
+      if(asyncStatus == Windows::Foundation::AsyncStatusOk)
+      {
+         op = asyncInfo;
+      }
+      ev.set_event();
+   };
+   ev.wait();
+   return op;
+}
+*/

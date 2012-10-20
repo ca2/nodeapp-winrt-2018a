@@ -1,7 +1,7 @@
 #pragma once
 
 #include "framework.h"
-#include <wrl/client.h>
+
 #include "CubeRenderer.h"
 
 ref class appm sealed : public Windows::ApplicationModel::Core::IFrameworkView

@@ -160,7 +160,7 @@
     <Image Include="Assets\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Direct3DApp2.h" />
+    <ClInclude Include="appm.h" />
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="DirectXHelper.h" />
     <ClInclude Include="Direct3DBase.h" />

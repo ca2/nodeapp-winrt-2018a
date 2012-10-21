@@ -342,7 +342,7 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 
 
-CLASS_DECL_c Platform::String ^ m_str(const char * psz);
+CLASS_DECL_c Platform::String ^ rtstr(const char * psz);
 CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszTitle, int iFlags);
 
 
@@ -363,3 +363,14 @@ CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszT
    return op;
 }
 */
+
+
+
+#ifdef AMD64
+#define rtptr unsigned __int64;
+#else
+#define rtptr unsigned __int32;
+#endif
+
+
+

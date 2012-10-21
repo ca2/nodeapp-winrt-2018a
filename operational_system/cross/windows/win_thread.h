@@ -49,7 +49,7 @@ CLASS_DECL_c BOOL WINAPI TlsSetValue(_In_ DWORD dwTlsIndex, _In_opt_ LPVOID lpTl
 void WINAPI TlsShutdown();
 
 
-#ifdef MEROWINWS
+#ifdef METROWIN
 
 
 interface IDWriteFactory;

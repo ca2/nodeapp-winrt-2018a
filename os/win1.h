@@ -61,20 +61,20 @@ void CLASS_DECL_win __abort();
 
 
 // helpers for registering your own WNDCLASSes
+#ifndef METROWIN
 CLASS_DECL_win const char * __register_window_class(UINT nClassStyle, HCURSOR hCursor = 0, HBRUSH hbrBackground = 0, HICON hIcon = 0);
-
 CLASS_DECL_win bool __register_class(WNDCLASS* lpWndClass);
-
 
 CLASS_DECL_win LRESULT CALLBACK __window_procedure(HWND hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 CLASS_DECL_win WNDPROC __get_window_procedure();
 #define __window_procedure (*__get_window_procedure())
 
-typedef void (__MSG_CALL ::ca::window::*__PMSGW)();
+/*typedef void (__MSG_CALL ::ca::window::*__PMSGW)();
    // like '__PMSG' but for ::ca::window derived classes only
 
 typedef void (__MSG_CALL ::radix::thread::*__PMSGT)();
-   // like '__PMSG' but for thread-derived classes only
+   // like '__PMSG' but for thread-derived classes only*/
+#endif
 
 
 

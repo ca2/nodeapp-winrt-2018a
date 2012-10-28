@@ -12,7 +12,7 @@ namespace gen
    NOINLINE DECLSPEC_NO_RETURN inline void WINAPI gen_ThrowLastWin32()
    {
       DWORD dwError = ::GetLastError();
-      throw hresult_exception( HRESULT_FROM_WIN32( dwError ) );
+      throw hresult_exception(::ca::get_thread_app(), HRESULT_FROM_WIN32( dwError ) );
    }
 
    #else  // no exception handling
@@ -21,7 +21,7 @@ namespace gen
    NOINLINE inline void WINAPI gen_ThrowLastWin32()
    {
       DWORD dwError = ::GetLastError();
-      throw hresult_exception( HRESULT_FROM_WIN32( dwError ) );
+      throw hresult_exception(::ca::get_thread_app(), HRESULT_FROM_WIN32( dwError ) );
    }
 
    #endif  // no exception handling

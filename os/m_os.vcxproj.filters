@@ -78,9 +78,6 @@
     <ClCompile Include="win_ip_enum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="os.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win_port_forward.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -112,9 +109,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="os_os.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="win_palette.cpp">
@@ -180,102 +174,18 @@
     <ClCompile Include="win_folder_watch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="win.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win_os.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="brush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="copydesk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crypt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="draw_dib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="factory_exchange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="folder_watch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="gen_1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="graphics_object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="handle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="implementation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ip_enum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="os.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="os_os.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="palette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="port_forward.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="region.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="registry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="state.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="framework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="thread_slots.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UACTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="win_printer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WFileFind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win1.h">
@@ -284,61 +194,10 @@
     <ClInclude Include="win_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WinBitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinBrush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinClientDC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinDC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="window_draw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowsShell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinFileSet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinFileSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinFont.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinGdiObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinPaintDC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinPalette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinPen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinResource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinRgn.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinStdioFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="WinWindowDC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="template\core.h">
@@ -400,6 +259,114 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\version_windows.h">
       <Filter>Header Files\operational_system</Filter>
+    </ClInclude>
+    <ClInclude Include="win_application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_brush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_copydesk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_dib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_dir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_draw_dib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_factory_exchange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_folder_watch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_graphics_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_implementation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_ip_enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_palette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_pen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_port_forward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_region.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_thread_slots.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_UACTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_WFileFind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_shell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_file_set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_file_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_stdio_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="aaa_gen_1_want_to_remove.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_os.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

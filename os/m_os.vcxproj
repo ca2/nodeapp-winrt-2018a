@@ -329,9 +329,9 @@
     <ClInclude Include="win_UACTools.h" />
     <ClInclude Include="win_WFileFind.h" />
     <ClInclude Include="win1.h" />
-    <ClInclude Include="window.h" />
+    <ClInclude Include="win_window.h" />
     <ClInclude Include="win_shell.h" />
-    <ClInclude Include="window_draw.h" />
+    <ClInclude Include="win_window_draw.h" />
     <ClInclude Include="win_file.h" />
     <ClInclude Include="win_file_set.h" />
     <ClInclude Include="win_file_system.h" />
@@ -349,8 +349,8 @@
     <ClCompile Include="win_os.cpp" />
     <ClCompile Include="win1.cpp" />
     <ClCompile Include="win2.cpp" />
-    <ClCompile Include="window.cpp" />
-    <ClCompile Include="window_draw.cpp" />
+    <ClCompile Include="win_window.cpp" />
+    <ClCompile Include="win_window_draw.cpp" />
     <ClCompile Include="win_afxabort.cpp" />
     <ClCompile Include="win_afxmem.cpp" />
     <ClCompile Include="win_afxstate.cpp" />

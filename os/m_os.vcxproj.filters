@@ -147,12 +147,6 @@
     <ClCompile Include="win2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="window.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="window_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="win_shell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,6 +174,12 @@
     <ClCompile Include="win_os.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="win_window_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="win_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -192,12 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="window.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="window_draw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="template\core.h">
@@ -366,6 +360,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="win_os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_window_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="win_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

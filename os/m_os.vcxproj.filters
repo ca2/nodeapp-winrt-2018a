@@ -368,6 +368,9 @@
     <ClInclude Include="win_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\operational_system\oswindow.h">
+      <Filter>Header Files\operational_system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="win32.def">

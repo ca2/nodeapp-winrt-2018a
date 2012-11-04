@@ -127,6 +127,10 @@
 #include <shlwapi.h>
 #include <wrl/client.h>
 
+
+#include "oswindow.h"
+
+
 //#include <wrl/client.h>
 //#include <ppl.h>
 //#include <ppltasks.h>

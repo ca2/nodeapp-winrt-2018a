@@ -52,25 +52,16 @@ public:
 
 
 
-   void * ptr()
+   operator void *()
    {
       return m_pdata;
    }
 
-   void * ptr() const
+   operator void *() const
    {
       return m_pdata;
    }
 
-   operator DWORD_PTR ()
-   {
-      return (DWORD_PTR) m_pdata;
-   }
-
-   operator DWORD_PTR () const
-   {
-      return (DWORD_PTR) m_pdata;
-   }
 
    static bool remove(Windows::UI::Core::CoreWindow ^ window);
 

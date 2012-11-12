@@ -4,7 +4,7 @@
 #define IMPLEMENT_VISTA_TOOLS
 #endif
 
-#include "os.h"
+#include "win.h"
 #include "win_internal.h"
 
 CLASS_DECL_win void vfxThrowFileException(::ca::application * papp, int cause, LONG lOsError, const char * lpszFileName = NULL);

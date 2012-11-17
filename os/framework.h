@@ -4,7 +4,7 @@
 #define IMPLEMENT_VISTA_TOOLS
 #endif
 
-#include "win.h"
-#include "win_internal.h"
+#include "metrowin.h"
+#include "metrowin_internal.h"
 
-CLASS_DECL_win void vfxThrowFileException(::ca::application * papp, int cause, LONG lOsError, const char * lpszFileName = NULL);
+CLASS_DECL_metrowin void vfxThrowFileException(::ca::application * papp, int cause, LONG lOsError, const char * lpszFileName = NULL);

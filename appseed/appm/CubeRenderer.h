@@ -23,7 +23,7 @@ ref class CubeRenderer sealed : public Direct3DBase
 {
 public:
 	CubeRenderer();
-	~CubeRenderer();
+	virtual ~CubeRenderer();
 	virtual void CreateDeviceResources() override;
 	virtual void CreateWindowSizeDependentResources() override;
 	virtual void Render() override;

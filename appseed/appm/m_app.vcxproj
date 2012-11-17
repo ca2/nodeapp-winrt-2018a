@@ -162,21 +162,22 @@
     <Image Include="Assets\SplashScreen.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="appm.h" />
+    <ClInclude Include="app.h" />
     <ClInclude Include="CubeRenderer.h" />
     <ClInclude Include="DirectXHelper.h" />
     <ClInclude Include="Direct3DBase.h" />
     <ClInclude Include="BasicTimer.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="SampleOverlay.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Direct3DApp2.cpp" />
-    <ClCompile Include="CubeRenderer.cpp" />
+    <ClCompile Include="app.cpp" />
     <ClCompile Include="Direct3DBase.cpp" />
     <ClCompile Include="framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SampleOverlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

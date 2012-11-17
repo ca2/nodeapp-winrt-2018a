@@ -27,171 +27,159 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win_afxabort.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_afxmem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_afxstate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_appcore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_appinit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_appmodul.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_appterm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_brush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_copydesk.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_crypt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_dib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_dir.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_draw_dib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_dumpinit.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_ip_enum.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_port_forward.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_registry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_trace.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_except.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_factory_exchange.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_graphics_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_handle.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_palette.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_pen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_preview_dc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="win_region.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_thread.cpp">
+    <ClCompile Include="metrowin_afxabort.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_thread_local_storage.cpp">
+    <ClCompile Include="metrowin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_uac_tools.cpp">
+    <ClCompile Include="metrowin1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_util.cpp">
+    <ClCompile Include="metrowin2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_WFileFind.cpp">
+    <ClCompile Include="metrowin_afxmem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win1.cpp">
+    <ClCompile Include="metrowin_afxstate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win2.cpp">
+    <ClCompile Include="metrowin_appcore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_shell.cpp">
+    <ClCompile Include="metrowin_appinit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_file.cpp">
+    <ClCompile Include="metrowin_application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_file_set.cpp">
+    <ClCompile Include="metrowin_appmodul.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_file_system.cpp">
+    <ClCompile Include="metrowin_appterm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_resource.cpp">
+    <ClCompile Include="metrowin_bitmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_stdio_file.cpp">
+    <ClCompile Include="metrowin_brush.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_folder_watch.cpp">
+    <ClCompile Include="metrowin_copydesk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win.cpp">
+    <ClCompile Include="metrowin_crypt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_os.cpp">
+    <ClCompile Include="metrowin_dib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_window_draw.cpp">
+    <ClCompile Include="metrowin_dir.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="win_window.cpp">
+    <ClCompile Include="metrowin_dumpinit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_except.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_factory_exchange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_file_set.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_file_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_folder_watch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_font.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_graphics_object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_ip_enum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_os.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_palette.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_pen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_port_forward.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_preview_dc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_region.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_resource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_shell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_stdio_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_thread_local_storage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_trace.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_uac_tools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_WFileFind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_window_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_printer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win1.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="template\core.h">
@@ -254,129 +242,135 @@
     <ClInclude Include="..\operational_system\version_windows.h">
       <Filter>Header Files\operational_system</Filter>
     </ClInclude>
-    <ClInclude Include="win_application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_brush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_copydesk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_crypt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_dib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_dir.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_draw_dib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_factory_exchange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_folder_watch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_graphics_object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_handle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_implementation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_ip_enum.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_palette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_pen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_port_forward.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_region.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_registry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_state.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_thread_slots.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_UACTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_WFileFind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_shell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_file_set.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_file_system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_stdio_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="aaa_gen_1_want_to_remove.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_os.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_window_draw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="win_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\operational_system\oswindow.h">
       <Filter>Header Files\operational_system</Filter>
     </ClInclude>
+    <ClInclude Include="metrowin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_bitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_brush.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_copydesk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_crypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_dib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_dir.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_exception.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_factory_exchange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_file_set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_file_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_folder_watch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_graphics_object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_implementation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_ip_enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_os.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_palette.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_pen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_port_forward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_printer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_region.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_registry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_shell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_state.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_stdio_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_thread_slots.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_UACTools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_WFileFind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_window_draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="win32.def">
+    <None Include="metrowin32.def">
       <Filter>Source Files</Filter>
     </None>
-    <None Include="win64.def">
+    <None Include="metrowin64.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

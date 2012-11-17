@@ -11,20 +11,25 @@ Direct3DBase::Direct3DBase()
 }
 
 // Initialize the Direct3D resources required to run.
-void Direct3DBase::Initialize(CoreWindow^ window)
+void Direct3DBase::Initialize(CoreWindow^ window, float dpi)
 {
+
     m_window = window;
     
+    CreateDeviceIndependentResources();
     CreateDeviceResources();
     CreateWindowSizeDependentResources();
+    SetDpi(dpi);
+
 }
 
 // These are the resources that depend on the device.
 void Direct3DBase::CreateDeviceResources()
 {
-    // This flag adds support for surfaces with a different color channel ordering than the API default.
-    // It is recommended usage, and is required for compatibility with Direct2D.
+    // This flag adds support for surfaces with a different color channel ordering
+    // than the API default. It is required for compatibility with Direct2D.
     UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+    ComPtr<IDXGIDevice> dxgiDevice;
 
 #if defined(_DEBUG)
     // If the project is in a debug build, enable debugging via SDK Layers with this flag.
@@ -35,7 +40,7 @@ void Direct3DBase::CreateDeviceResources()
     // Note the ordering should be preserved.
     // Don't forget to declare your application's minimum required feature level in its
     // description.  All applications are assumed to support 9.1 unless otherwise stated.
-    D3D_FEATURE_LEVEL featureLevels[] = 
+    D3D_FEATURE_LEVEL featureLevels[] =
     {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0,
@@ -46,33 +51,50 @@ void Direct3DBase::CreateDeviceResources()
         D3D_FEATURE_LEVEL_9_1
     };
 
-    // Create the DX11 API device object, and get a corresponding context.
+    // Create the Direct3D 11 API device object and a corresponding context.
     ComPtr<ID3D11Device> device;
     ComPtr<ID3D11DeviceContext> context;
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         D3D11CreateDevice(
-            nullptr,                    // specify null to use the default adapter
+            nullptr,                    // Specify nullptr to use the default adapter.
             D3D_DRIVER_TYPE_HARDWARE,
-            nullptr,                    // leave as nullptr unless software device
-            creationFlags,              // optionally set debug and Direct2D compatibility flags
-            featureLevels,              // list of feature levels this app can support
-            ARRAYSIZE(featureLevels),   // number of entries in above list
-            D3D11_SDK_VERSION,          // always set this to D3D11_SDK_VERSION
-            &device,                    // returns the Direct3D device created
-            &m_featureLevel,            // returns feature level of device created
-            &context                    // returns the device immediate context
+            0,
+            creationFlags,              // Set debug and Direct2D compatibility flags.
+            featureLevels,              // List of feature levels this app can support.
+            ARRAYSIZE(featureLevels),
+            D3D11_SDK_VERSION,          // Always set this to D3D11_SDK_VERSION for Metro style apps.
+            &device,                    // Returns the Direct3D device created.
+            &m_featureLevel,            // Returns feature level of device created.
+            &context                    // Returns the device immediate context.
             )
         );
 
-    // Get the DirectX11.1 device by QI off the DirectX11 one.
-    DX::ThrowIfFailed(
+    // Get the Direct3D 11.1 API device and context interfaces.
+    ::win::throw_if_failed(
         device.As(&m_d3dDevice)
         );
 
-    // And get the corresponding device context in the same way.
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         context.As(&m_d3dContext)
         );
+
+    // Get the underlying DXGI device of the Direct3D device.
+    ::win::throw_if_failed(
+        m_d3dDevice.As(&dxgiDevice)
+        );
+
+    // Create the Direct2D device object and a corresponding context.
+    ::win::throw_if_failed(
+        m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)
+        );
+
+    ::win::throw_if_failed(
+        m_d2dDevice->CreateDeviceContext(
+            D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
+            &m_d2dContext
+            )
+        );
+
 }
 
 // Allocate all memory resources that change on a window SizeChanged event.
@@ -85,7 +107,7 @@ void Direct3DBase::CreateWindowSizeDependentResources()
     // If the swap chain already exists, resize it.
     if(m_swapChain != nullptr)
     {
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             m_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_B8G8R8A8_UNORM, 0)
             );
     }
@@ -110,19 +132,19 @@ void Direct3DBase::CreateWindowSizeDependentResources()
 
         // First, retrieve the underlying DXGI Device from the D3D Device
         ComPtr<IDXGIDevice1>  dxgiDevice;
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             m_d3dDevice.As(&dxgiDevice)
             );
 
         // Identify the physical adapter (GPU or card) this device is running on.
         ComPtr<IDXGIAdapter> dxgiAdapter;
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             dxgiDevice->GetAdapter(&dxgiAdapter)
             );
 
         // And obtain the factory object that created it.
         ComPtr<IDXGIFactory2> dxgiFactory;
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             dxgiAdapter->GetParent(
                 __uuidof(IDXGIFactory2), 
                 &dxgiFactory
@@ -132,7 +154,7 @@ void Direct3DBase::CreateWindowSizeDependentResources()
 		Windows::UI::Core::CoreWindow^ p = m_window.Get();
 
         // Create a swap chain for this window from the DXGI factory.
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             dxgiFactory->CreateSwapChainForCoreWindow(
                 m_d3dDevice.Get(),
                 reinterpret_cast<IUnknown*>(p),
@@ -145,14 +167,14 @@ void Direct3DBase::CreateWindowSizeDependentResources()
         // Ensure that DXGI does not queue more than one frame at a time. This both reduces 
         // latency and ensures that the application will only render after each VSync, minimizing 
         // power consumption.
-        DX::ThrowIfFailed(
+        ::win::throw_if_failed(
             dxgiDevice->SetMaximumFrameLatency(1)
             );
     }
     
     // Obtain the backbuffer for this window which will be the final 3D rendertarget.
     ComPtr<ID3D11Texture2D> backBuffer;
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         m_swapChain->GetBuffer(
             0,
             __uuidof(ID3D11Texture2D),
@@ -161,11 +183,11 @@ void Direct3DBase::CreateWindowSizeDependentResources()
         );
 
     // Create a view interface on the rendertarget to use on bind.
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         m_d3dDevice->CreateRenderTargetView(
             backBuffer.Get(),
             nullptr,
-            &m_renderTargetView
+            &m_d3dRenderTargetView
             )
         );
 
@@ -186,7 +208,7 @@ void Direct3DBase::CreateWindowSizeDependentResources()
 
     // Allocate a 2-D surface as the depth/stencil buffer.
     ComPtr<ID3D11Texture2D> depthStencil;
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         m_d3dDevice->CreateTexture2D(
             &depthStencilDesc,
             nullptr,
@@ -195,11 +217,11 @@ void Direct3DBase::CreateWindowSizeDependentResources()
         );
 
     // Create a DepthStencil view on this surface to use on bind.
-    DX::ThrowIfFailed(
+    ::win::throw_if_failed(
         m_d3dDevice->CreateDepthStencilView(
             depthStencil.Get(),
             &CD3D11_DEPTH_STENCIL_VIEW_DESC(D3D11_DSV_DIMENSION_TEXTURE2D),
-            &m_depthStencilView
+            &m_d3dDepthStencilView
             )
         );
 
@@ -220,27 +242,170 @@ void Direct3DBase::UpdateForWindowSizeChange()
     if (m_window->Bounds.Width  != m_windowBounds.Width ||
         m_window->Bounds.Height != m_windowBounds.Height)
     {
-        m_renderTargetView = nullptr;
-        m_depthStencilView = nullptr;
+        m_d3dRenderTargetView = nullptr;
+        m_d3dDepthStencilView = nullptr;
         CreateWindowSizeDependentResources();
     }
 }
 
 void Direct3DBase::Present()
 {
+   
+   // The application may optionally specify "dirty" or "scroll" rects to improve efficiency
+    // in certain scenarios.  In this sample, however, we do not utilize those features.
+    DXGI_PRESENT_PARAMETERS parameters = {0};
+    parameters.DirtyRectsCount = 0;
+    parameters.pDirtyRects = nullptr;
+    parameters.pScrollRect = nullptr;
+    parameters.pScrollOffset = nullptr;
+
     // The first argument instructs DXGI to block until VSync, putting the application
     // to sleep until the next VSync. This ensures we don't waste any cycles rendering
     // frames that will never be displayed to the screen.
-    HRESULT hr = m_swapChain->Present(1, 0);
+    HRESULT hr = m_swapChain->Present1(1, 0, &parameters);
 
-    // If the device was removed either by a disconnect or a driver upgrade, we 
-    // must completely reinitialize the renderer.
-    if (hr == DXGI_ERROR_DEVICE_REMOVED || hr == DXGI_ERROR_DEVICE_RESET)
+    // Discard the contents of the render target.
+    // This is a valid operation only when the existing contents will be entirely
+    // overwritten. If dirty or scroll rects are used, this call should be removed.
+    m_d3dContext->DiscardView(m_d3dRenderTargetView.Get());
+
+    // Discard the contents of the depth stencil.
+    m_d3dContext->DiscardView(m_d3dDepthStencilView.Get());
+
+    // If the device was removed either by a disconnect or a driver upgrade, we
+    // must recreate all device resources.
+    if (hr == DXGI_ERROR_DEVICE_REMOVED)
     {
-        Initialize(m_window.Get());
+        HandleDeviceLost();
     }
     else
     {
-        DX::ThrowIfFailed(hr);
+        ::win::throw_if_failed(hr);
     }
+
+    if (m_windowSizeChangeInProgress)
+    {
+        // A window size change has been initiated and the app has just completed presenting
+        // the first frame with the new size. Notify the resize manager so we can short
+        // circuit any resize animation and prevent unnecessary delays.
+        CoreWindowResizeManager::GetForCurrentView()->NotifyLayoutCompleted();
+        m_windowSizeChangeInProgress = false;
+    }
+}
+
+
+
+// These are the resources required independent of the device.
+void Direct3DBase::CreateDeviceIndependentResources()
+{
+    D2D1_FACTORY_OPTIONS options;
+    ZeroMemory(&options, sizeof(D2D1_FACTORY_OPTIONS));
+
+#if defined(_DEBUG)
+    // If the project is in a debug build, enable Direct2D debugging via SDK Layers.
+    options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
+#endif
+
+    ::win::throw_if_failed(
+        D2D1CreateFactory(
+            D2D1_FACTORY_TYPE_SINGLE_THREADED,
+            __uuidof(ID2D1Factory1),
+            &options,
+            &m_d2dFactory
+            )
+        );
+
+    ::win::throw_if_failed(
+        DWriteCreateFactory(
+            DWRITE_FACTORY_TYPE_SHARED,
+            __uuidof(IDWriteFactory),
+            &m_dwriteFactory
+            )
+        );
+
+    ::win::throw_if_failed(
+        CoCreateInstance(
+            CLSID_WICImagingFactory,
+            nullptr,
+            CLSCTX_INPROC_SERVER,
+            IID_PPV_ARGS(&m_wicFactory)
+            )
+        );
+}
+
+
+
+// Helps track the DPI in the helper class.
+// This is called in the dpiChanged event handler in the view class.
+void Direct3DBase::SetDpi(float dpi)
+{
+    if (dpi != m_dpi)
+    {
+        // Save the DPI of this display in our class.
+        m_dpi = dpi;
+
+        // Update Direct2D's stored DPI.
+        m_d2dContext->SetDpi(m_dpi, m_dpi);
+
+        // Often a DPI change implies a window size change. In some cases Windows will issue
+        // both a size changed event and a DPI changed event. In this case, the resulting bounds
+        // will not change, and the window resize code will only be executed once.
+        UpdateForWindowSizeChange();
+    }
+}
+
+
+void Direct3DBase::ValidateDevice()
+{
+    // The D3D Device is no longer valid if the default adapter changes or if
+    // the device has been removed.
+
+    // First, get the information for the adapter related to the current device.
+
+    ComPtr<IDXGIDevice1> dxgiDevice;
+    ComPtr<IDXGIAdapter> deviceAdapter;
+    DXGI_ADAPTER_DESC deviceDesc;
+    ::win::throw_if_failed(m_d3dDevice.As(&dxgiDevice));
+    ::win::throw_if_failed(dxgiDevice->GetAdapter(&deviceAdapter));
+    ::win::throw_if_failed(deviceAdapter->GetDesc(&deviceDesc));
+
+    // Next, get the information for the default adapter.
+
+    ComPtr<IDXGIFactory2> dxgiFactory;
+    ComPtr<IDXGIAdapter1> currentAdapter;
+    DXGI_ADAPTER_DESC currentDesc;
+    ::win::throw_if_failed(CreateDXGIFactory1(IID_PPV_ARGS(&dxgiFactory)));
+    ::win::throw_if_failed(dxgiFactory->EnumAdapters1(0, &currentAdapter));
+    ::win::throw_if_failed(currentAdapter->GetDesc(&currentDesc));
+
+    // If the adapter LUIDs don't match, or if the device reports that it has been removed,
+    // a new D3D device must be created.
+
+    if ((deviceDesc.AdapterLuid.LowPart != currentDesc.AdapterLuid.LowPart) ||
+        (deviceDesc.AdapterLuid.HighPart != currentDesc.AdapterLuid.HighPart) ||
+        FAILED(m_d3dDevice->GetDeviceRemovedReason()))
+    {
+        // Release references to resources related to the old device.
+        dxgiDevice = nullptr;
+        deviceAdapter = nullptr;
+
+        // Create a new device and swap chain.
+        HandleDeviceLost();
+    }
+}
+
+
+
+// Recreate all device resources and set them back to the current state.
+void Direct3DBase::HandleDeviceLost()
+{
+    // Reset these member variables to ensure that SetDpi recreates all resources.
+    float dpi = m_dpi;
+    m_dpi = -1.0f;
+    m_windowBounds.Width = 0;
+    m_windowBounds.Height = 0;
+    m_swapChain = nullptr;
+
+    CreateDeviceResources();
+    SetDpi(dpi);
 }

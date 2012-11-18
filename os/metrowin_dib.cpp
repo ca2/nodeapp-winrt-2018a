@@ -210,19 +210,21 @@ namespace metrowin
 
    bool dib::from(::ca::graphics * pdc)
    {
+      bool bOk = false;
       ::ca::bitmap_sp bitmap(get_app());
       bitmap->CreateCompatibleBitmap(pdc, 1, 1);
-      ::ca::bitmap * pbitmap = WIN_DC(pdc)->SelectObject(bitmap);
+      ::ca::bitmap * pbitmap = METROWIN_DC(pdc)->SelectObject(bitmap);
       if(pbitmap == NULL)
          return false;
       class size size = pbitmap->get_size();
       if(!create(size))
       {
-         WIN_DC(pdc)->SelectObject(pbitmap);
+         METROWIN_DC(pdc)->SelectObject(pbitmap);
          return false;
       }
-      bool bOk = GetDIBits(WIN_HDC(pdc), (HBITMAP) pbitmap->get_os_data(), 0, m_size.cy, m_pcolorref, &(m_info), DIB_RGB_COLORS) != FALSE; 
-      WIN_DC(pdc)->SelectObject(pbitmap);
+      throw todo(get_app());
+      //bool bOk = GetDIBits(WIN_HDC(pdc), (HBITMAP) pbitmap->get_os_data(), 0, m_size.cy, m_pcolorref, &(m_info), DIB_RGB_COLORS) != FALSE; 
+      METROWIN_DC(pdc)->SelectObject(pbitmap);
       return bOk;
    }
 
@@ -1696,6 +1698,8 @@ namespace metrowin
       dib1.create(cx, cy);
       dib1.Fill(255, 255, 255);
 
+#ifdef WINDOWSEX
+
       dib1.m_spgraphics->DrawIcon(
          0, 0,
          picon,
@@ -1703,12 +1707,19 @@ namespace metrowin
          0,
          NULL,
          DI_IMAGE | DI_MASK);
+
+#else
+
+      throw todo(get_app());
+
+#endif
     
       // Black blend dib
       ::ca::dib_sp spdib2(get_app());
       spdib2->create(cx, cy);
       spdib2->Fill(0, 0, 0);
 
+#ifdef WINDOWSEX
       spdib2->get_graphics()->DrawIcon(
          0, 0,
          picon,
@@ -1716,6 +1727,15 @@ namespace metrowin
          0,
          NULL,
          DI_IMAGE | DI_MASK);
+#else
+      spdib2->get_graphics()->DrawIcon(
+         0, 0,
+         picon,
+         cx, cy,
+         0,
+         NULL,
+         0);
+#endif
 
       // Mask dib
       dib dibM(get_app());
@@ -1727,7 +1747,8 @@ namespace metrowin
          cx, cy,
          0,
          NULL,
-         DI_MASK);
+         0);
+//         DI_MASK);
     
       BYTE * r1=(BYTE*)dib1.m_pcolorref;
       BYTE * r2=(BYTE*)spdib2->get_data();
@@ -2353,11 +2374,11 @@ namespace metrowin
    void dib::stretch_dib(::ca::dib * pdib)
    {
 
-      Gdiplus::RectF rectDest(0, 0, (Gdiplus::REAL) width(), (Gdiplus::REAL) height());
+      D2D1_RECT_F rectDest = D2D1::RectF(0, 0, (FLOAT) width(), (FLOAT) height());
 
-      Gdiplus::RectF rectSource(0, 0, (Gdiplus::REAL) pdib->width(), (Gdiplus::REAL) pdib->height());
+      D2D1_RECT_F rectSource = D2D1::RectF(0, 0, (FLOAT) pdib->width(), (FLOAT) pdib->height());
 
-      ((Gdiplus::Graphics * ) m_spgraphics->get_os_data())->DrawImage(((Gdiplus::Bitmap *)pdib->get_bitmap()->get_os_data()), rectDest, rectSource, Gdiplus::UnitPixel);
+      ((ID2D1RenderTarget * ) m_spgraphics->get_os_data())->DrawBitmap(((ID2D1Bitmap1 *)pdib->get_bitmap()->get_os_data()), rectDest, 1.0, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, rectSource);
 
       /*
       ::StretchDIBits(
@@ -2471,6 +2492,8 @@ namespace metrowin
    bool dib::from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI)
    {
 
+#ifdef WINDOWS
+
       if(pfibitmap == NULL)
            return false;
 
@@ -2534,6 +2557,9 @@ namespace metrowin
 
 
       return true;
+#else
+      throw todo(get_app());
+#endif
    }
 
 

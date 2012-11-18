@@ -19,6 +19,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Standard cleanup called by WinMain and __abort
 
+/*
 void CLASS_DECL_metrowin __gen_unregister_window_classes()
 {
    
@@ -41,9 +42,11 @@ void CLASS_DECL_metrowin __gen_unregister_window_classes()
    }
 
 }
+*/
+
 void CLASS_DECL_metrowin __win_term()
 {   
-   __gen_unregister_window_classes();
+   //__gen_unregister_window_classes();
    // cleanup OLE if required
 //   thread* pThread = &System;
 

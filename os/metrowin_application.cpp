@@ -64,9 +64,9 @@ namespace metrowin
    void application::_001EnableShellOpen()
    {
       ASSERT(m_atomApp == NULL && m_atomSystemTopic == NULL); // do once
-
+/*
       m_atomApp            = ::GlobalAddAtomW(gen::international::utf8_to_unicode(m_strAppName));
-      m_atomSystemTopic    = ::GlobalAddAtomW(L"system");
+      m_atomSystemTopic    = ::GlobalAddAtomW(L"system");*/
    }
 
    bool application::_001OnDDECommand(const char * lpcsz)
@@ -82,7 +82,7 @@ namespace metrowin
 
    string application::get_version()
    {
-
+#ifdef WINDOWSEX
       char lpszModuleFilePath[MAX_PATH + 1];
       GetModuleFileName(NULL, lpszModuleFilePath, MAX_PATH + 1);
 
@@ -152,6 +152,9 @@ namespace metrowin
 
 
       return "";
+#else
+      throw todo(get_app());
+#endif
 
    }
 
@@ -247,12 +250,12 @@ namespace metrowin
       }
    }
 
-
+   /*
    const char * application::RegisterWndClass(UINT nClassStyle, HCURSOR hCursor, HBRUSH hbrBackground, HICON hIcon)
    {
       return __register_window_class(nClassStyle, hCursor, hbrBackground, hIcon);
    }
-
+   */
 
 
 
@@ -269,14 +272,20 @@ namespace metrowin
 
    HCURSOR application::LoadStandardCursor(const char * lpszCursorName) const
    { 
+#ifdef WINDOWSEX
       return ::LoadCursor(NULL, lpszCursorName);
+#else
+      throw todo(get_app());
+#endif
    }
 
    HCURSOR application::LoadOEMCursor(UINT nIDCursor) const
    { 
-   
+#ifdef WINDOWSEX
       return ::LoadCursor(NULL, MAKEINTRESOURCE(nIDCursor));
-   
+#else
+      throw todo(get_app());
+#endif
    }
 
    HICON application::LoadIcon(const char * lpszResourceName) const
@@ -291,12 +300,20 @@ namespace metrowin
 
    HICON application::LoadStandardIcon(const char * lpszIconName) const
    { 
+#ifdef WINDOWSEX
       return ::LoadIcon(NULL, lpszIconName);
+#else
+      throw todo(get_app());
+#endif
    }
    
    HICON application::LoadOEMIcon(UINT nIDIcon) const
    { 
+#ifdef WINDOWSEX
       return ::LoadIcon(NULL, MAKEINTRESOURCE(nIDIcon));
+#else
+      throw todo(get_app());
+#endif
    }
 
 
@@ -413,7 +430,7 @@ namespace metrowin
          if(__get_module_state()->m_pmapHWND == NULL)
          {
             __get_module_state()->m_pmapHWND = new hwnd_map;
-            __get_module_state()->m_pmutexHwnd = new mutex();
+            __get_module_state()->m_pmutexHwnd = new mutex(this);
          }
 /*         if(__get_module_state()->m_pmapHDC == NULL)
          {
@@ -435,7 +452,7 @@ namespace metrowin
 
    bool application::initialize1()
    {
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_ptimera = new ::user::interaction::timer_array;
+      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_ptimera = new ::user::interaction::timer_array(this);
       WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_puiptra = new user::interaction_ptr_array;
 
       WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_ptimera->m_papp = dynamic_cast < ::plane::application * >  (::ca::smart_pointer < ::ex2::application >::m_p);
@@ -603,7 +620,7 @@ namespace metrowin
       // get the exe title from the full path name [no extension]
       strExeName = System.get_module_title();
 
-      __get_module_state()->m_lpszCurrentAppName = _tcsdup(m_strAppName);
+      __get_module_state()->m_lpszCurrentAppName = strdup(m_strAppName);
 
       // initialize thread state
       __MODULE_STATE* pModuleState = __get_module_state();
@@ -644,7 +661,7 @@ namespace metrowin
 
    void application::get_time(struct timeval *p)
    {
-   #ifdef _WIN32
+   #ifdef WINDOWS
       FILETIME ft; // Contains a 64-bit value representing the number of 100-nanosecond intervals since January 1, 1601 (UTC).
       GetSystemTimeAsFileTime(&ft);
       uint64_t tt;
@@ -670,11 +687,14 @@ namespace metrowin
          sprintf(vmap[var], "%s=%s", var, value);
          putenv( vmap[var] );
       }
-   #elif defined _WIN32
+   #elif defined WINDOWSEX
       {
          string slask = var + "=" + value;
          _putenv( (const char *)slask);
       }
+   #elif defined METROWIN
+
+
    #else
       setenv(var, value, 1);
    #endif
@@ -712,7 +732,7 @@ namespace metrowin
          UINT nCmdShow              = pdata->m_nCmdShow;
 
          // handle critical errors and avoid Windows message boxes
-         SetErrorMode(SetErrorMode(0) | SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
+//         SetErrorMode(SetErrorMode(0) | SEM_FAILCRITICALERRORS | SEM_NOOPENFILEERRORBOX);
 
          // set resource handles
          __MODULE_STATE* pModuleState = __get_module_state();

@@ -106,8 +106,9 @@ THREAD_LOCAL(___THREAD_STATE, gen_ThreadState, slot___THREAD_STATE)
 /////////////////////////////////////////////////////////////////////////////
 // __MODULE_STATE implementation
 
-__MODULE_STATE::__MODULE_STATE(bool bDLL, WNDPROC pfn_window_procedure,
-   DWORD dwVersion, bool bSystem)
+
+//__MODULE_STATE::__MODULE_STATE(bool bDLL, WNDPROC pfn_window_procedure,
+__MODULE_STATE::__MODULE_STATE(bool bDLL, DWORD dwVersion, bool bSystem)
 {
    m_pmapHWND              = NULL;
 //   m_pmapHDC               = NULL;
@@ -119,7 +120,7 @@ __MODULE_STATE::__MODULE_STATE(bool bDLL, WNDPROC pfn_window_procedure,
 
    m_fRegisteredClasses = 0;
    m_bDLL = (BYTE)bDLL;
-   m_pfn_window_procedure = pfn_window_procedure;
+   //m_pfn_window_procedure = pfn_window_procedure;
    m_dwVersion = dwVersion;
    m_bSystem = (BYTE)bSystem;
 //   bool bEnable = TRUE;
@@ -163,7 +164,8 @@ __MODULE_STATE::__MODULE_STATE(bool bDLL, WNDPROC pfn_window_procedure,
    typedef type (WINAPI* PFN_##name)params; \
    PFN_##name pfn##name = NULL;
 
-__ACTCTX_API_PTR_DEFINE(CreateActCtxW, HANDLE, (PCACTCTXW));
+
+//__ACTCTX_API_PTR_DEFINE(CreateActCtxW, HANDLE, (PCACTCTXW));
 __ACTCTX_API_PTR_DEFINE(ReleaseActCtx, void, (HANDLE));
 __ACTCTX_API_PTR_DEFINE(ActivateActCtx, bool, (HANDLE, ulong_ptr*));
 __ACTCTX_API_PTR_DEFINE(DeactivateActCtx, bool, (DWORD, ulong_ptr));
@@ -173,21 +175,21 @@ __STATIC void CLASS_DECL_metrowin __init_context_api()
    static HMODULE hKernel = NULL;
    if (hKernel == NULL)
    {
-      hKernel = GetModuleHandle("KERNEL32");
+/*      hKernel = GetModuleHandle("KERNEL32");
       ENSURE(hKernel != NULL);
       __ACTCTX_API_INIT_PROCPTR(hKernel,CreateActCtxW);
       __ACTCTX_API_INIT_PROCPTR(hKernel,ReleaseActCtx);
       __ACTCTX_API_INIT_PROCPTR(hKernel,ActivateActCtx);
-      __ACTCTX_API_INIT_PROCPTR(hKernel,DeactivateActCtx);   
+      __ACTCTX_API_INIT_PROCPTR(hKernel,DeactivateActCtx);   */
    }
 }
 
 #if (_WIN32_WINNT >= 0x0500) || (_WIN32_FUSION >= 0x0100)
-HANDLE CLASS_DECL_metrowin __create_act_ctx_w(PCACTCTXW pActCtx)
-{   
+//HANDLE CLASS_DECL_metrowin __create_act_ctx_w(PCACTCTXW pActCtx)
+/*{   
    HANDLE hCtx = pfnCreateActCtxW != 0 ? pfnCreateActCtxW(pActCtx) : INVALID_HANDLE_VALUE;
    return hCtx;
-}
+}*/
 #else
 HANDLE CLASS_DECL_metrowin __create_act_ctx_w(void *pActCtx)
 {   
@@ -219,6 +221,7 @@ CLASS_DECL_metrowin bool __deactivate_act_ctx(DWORD dwFlags, ulong_ptr ulCookie)
 
 void __MODULE_STATE::CreateActivationContext()
 {
+#ifdef WINDOWSEX
    __init_context_api();
    HMODULE hModule = m_hCurrentInstanceHandle;
 
@@ -258,6 +261,9 @@ void __MODULE_STATE::CreateActivationContext()
    {
       m_hActCtx = NULL;
    }      
+#else
+   //throw todo(get_app());
+#endif
 }
 
 __MODULE_STATE::~__MODULE_STATE()
@@ -275,7 +281,7 @@ __MODULE_THREAD_STATE::__MODULE_THREAD_STATE()
 {
    m_nLastHit = static_cast<int_ptr>(-1);
    m_nLastStatus = static_cast<int_ptr>(-1);
-   m_pLastInfo = NULL;
+//   m_pLastInfo = NULL;
 
    // Note: it is only necessary to initialize non-zero data
    //m_pfnNewHandler = &__new_handler;
@@ -284,7 +290,7 @@ __MODULE_THREAD_STATE::__MODULE_THREAD_STATE()
 __MODULE_THREAD_STATE::~__MODULE_THREAD_STATE()
 {
 
-   delete m_pLastInfo;
+   //delete m_pLastInfo;
 
 
 }
@@ -292,23 +298,24 @@ __MODULE_THREAD_STATE::~__MODULE_THREAD_STATE()
 /////////////////////////////////////////////////////////////////////////////
 // __MODULE_STATE for base application
 
-LRESULT CALLBACK __window_procedure_base(oswindow, UINT, WPARAM, LPARAM);
+//LRESULT CALLBACK __window_procedure_base(oswindow, UINT, WPARAM, LPARAM);
 
 class ___BASE_MODULE_STATE : public __MODULE_STATE
 {
 public:
-   ___BASE_MODULE_STATE() : __MODULE_STATE(TRUE, __window_procedure_base, _MFC_VER)
+//   ___BASE_MODULE_STATE() : __MODULE_STATE(TRUE, __window_procedure_base, _MFC_VER)
+      ___BASE_MODULE_STATE() : __MODULE_STATE(TRUE, _MFC_VER)
       { }
 };
 
 PROCESS_LOCAL(___BASE_MODULE_STATE, gen_BaseModuleState)
 
-#undef __window_procedure
+/*#undef __window_procedure
 LRESULT CALLBACK
 __window_procedure_base(oswindow hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam)
 {
    return __window_procedure(hWnd, nMsg, wParam, lParam);
-}
+}*/
 
 /////////////////////////////////////////////////////////////////////////////
 // helper functions for module state

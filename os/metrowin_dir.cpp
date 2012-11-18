@@ -187,6 +187,7 @@ namespace metrowin
 
    void dir::root_ones(stringa & stra, ::ca::application * papp)
    {
+#ifdef WINDOWSEX
       DWORD dwSize = ::GetLogicalDriveStrings(0, NULL);
       LPTSTR lpszAlloc = (LPTSTR) malloc(dwSize + 1);
       LPTSTR lpsz = lpszAlloc;
@@ -206,10 +207,14 @@ namespace metrowin
       }
 
       free(lpszAlloc);
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::ls_pattern(::ca::application * papp, const char * lpcsz, const char * pszPattern, stringa * pstraPath, stringa * pstraTitle, base_array < bool, bool > * pbaIsDir, base_array < int64_t, int64_t > * piaSize)
    {
+#ifdef WINDOWSEX
       if(::ca::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
       {
          return ::ca::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
@@ -240,6 +245,9 @@ namespace metrowin
             }
          }
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::rls(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative, e_extract eextract)
@@ -249,6 +257,9 @@ namespace metrowin
 
    void dir::rls_pattern(::ca::application * papp, const char * lpcsz, const char * lpszPattern, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative, base_array < bool, bool > * pbaIsDir, base_array < int64_t, int64_t > * piaSize, e_extract eextract)
    {
+
+#ifdef WINDOWSEX
+
       stringa straDir;
       ls_dir(papp, lpcsz, &straDir);
       for(int i = 0; i < straDir.get_count(); i++)
@@ -323,10 +334,16 @@ namespace metrowin
       {
          ::ca::dir::system::rls(papp, lpcsz, pstraPath, pstraTitle, pstraRelative, eextract == extract_all ? extract_all : extract_none);
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::rls_dir(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative)
    {
+
+#ifdef WINDOWSEX
+
       FileFind filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
@@ -365,11 +382,14 @@ namespace metrowin
             }
          }
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::ls_dir(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle)
    {
-      
+#ifdef WINDOWSEX      
       FileFind filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
@@ -393,10 +413,14 @@ namespace metrowin
             }
          }
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::ls_file(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle)
    {
+#ifdef WINDOWSEX
       FileFind filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
@@ -415,6 +439,9 @@ namespace metrowin
             }
          }
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void dir::ls(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, base_array < bool, bool > * pbaIsDir, base_array < int64_t, int64_t > * piaSize)
@@ -446,6 +473,7 @@ namespace metrowin
             strPath = "\\\\?\\" + strPath;
          }
       }
+      /*
       DWORD dwAttrib;
       dwAttrib = GetFileAttributesW(gen::international::utf8_to_unicode(strPath));
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
@@ -453,7 +481,9 @@ namespace metrowin
          dwAttrib = GetFileAttributes(lpcszPath);
       }*/
       
-      bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+      //bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+
+      bIsDir = ::dir::is(strPath);
       
       m_isdirmap.set(lpcszPath, bIsDir);
 
@@ -488,13 +518,14 @@ namespace metrowin
          }
       }
       DWORD dwAttrib;
-      dwAttrib = GetFileAttributesW(wstrPath);
+/*      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
          dwAttrib = GetFileAttributes(strPath);
       }*/
       
-      bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+  //    bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+      bIsDir = ::dir::is(strPath);
       
       m_isdirmap.set(strPath, bIsDir);
 
@@ -583,13 +614,15 @@ namespace metrowin
          }
       }
       DWORD dwAttrib;
-      dwAttrib = GetFileAttributesW(wstrPath);
+///      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
          dwAttrib = GetFileAttributes(strPath);
       }*/
       
-      bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+   //   bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
+
+      bIsDir = ::dir::is(gen::international::unicode_to_utf8(wstrPath));
       
       m_isdirmap.set(str.Left(iLast + 1), bIsDir);
 
@@ -600,27 +633,27 @@ namespace metrowin
    {
       string strVotagusFolder = System.get_ca2_module_folder();
       System.file().path().eat_end_level(strVotagusFolder, 2, "\\");
-      return dir::path(strVotagusFolder, lpcsz, lpcsz2);
+      return path(strVotagusFolder, lpcsz, lpcsz2);
    }
 
    string dir::time(const char * lpcsz, const char * lpcsz2)
    {
-      return dir::path(m_strTimeFolder, lpcsz, lpcsz2);
+      return path(m_strTimeFolder, lpcsz, lpcsz2);
    }
 
    string dir::stage(const char * lpcsz, const char * lpcsz2)
    {
-      return dir::path(ca2("stage"), lpcsz, lpcsz2);
+      return path(ca2("stage"), lpcsz, lpcsz2);
    }
 
    string dir::stageapp(const char * lpcsz, const char * lpcsz2)
    {
-      return dir::path(stage("basis", lpcsz), lpcsz2);
+      return path(stage("basis", lpcsz), lpcsz2);
    }
 
    string dir::netseed(const char * lpcsz, const char * lpcsz2)
    {
-      return dir::path(m_strNetSeedFolder, lpcsz, lpcsz2);
+      return path(m_strNetSeedFolder, lpcsz, lpcsz2);
    }
 
    // stage in ccvotagus spalib
@@ -629,7 +662,7 @@ namespace metrowin
       
       single_lock sl(&m_mutex, true);
 
-      return dir::path(m_strCa2, lpcsz, lpcsz2);
+      return path(m_strCa2, lpcsz, lpcsz2);
 
    }
 
@@ -638,7 +671,7 @@ namespace metrowin
       
       single_lock sl(&m_mutex, true);
 
-      return dir::path(m_strCa2, str, lpcsz2);
+      return path(m_strCa2, str, lpcsz2);
 
    }
 
@@ -647,7 +680,7 @@ namespace metrowin
       
       single_lock sl(&m_mutex, true);
 
-      return dir::path(m_strCa2, lpcsz, str2);
+      return path(m_strCa2, lpcsz, str2);
 
    }
 
@@ -656,7 +689,7 @@ namespace metrowin
       
       single_lock sl(&m_mutex, true);
 
-      return dir::path(m_strCa2, str, str2);
+      return path(m_strCa2, str, str2);
 
    }
 
@@ -665,7 +698,7 @@ namespace metrowin
       
       single_lock sl(&m_mutex, true);
 
-      return dir::path(m_strCa2, str);
+      return path(m_strCa2, str);
 
    }
 
@@ -682,13 +715,13 @@ namespace metrowin
    string dir::module(const char * lpcsz, const char * lpcsz2)
    {
       string str = System.get_module_folder();
-      return dir::path(str, lpcsz, lpcsz2);
+      return path(str, lpcsz, lpcsz2);
    }
 
    string dir::ca2module(const char * lpcsz, const char * lpcsz2)
    {
       string str = System.get_ca2_module_folder();
-      return dir::path(str, lpcsz, lpcsz2);
+      return path(str, lpcsz, lpcsz2);
    }
 
 
@@ -786,11 +819,11 @@ namespace metrowin
             }
             else
             {
-               ::DeleteFile(straPath[i]);
+               ::DeleteFileW(gen::international::utf8_to_unicode(straPath[i]));
             }
          }
       }
-      return RemoveDirectory(psz) != FALSE;
+      return RemoveDirectoryW(gen::international::utf8_to_unicode(psz)) != FALSE;
    }
 
 
@@ -930,6 +963,7 @@ namespace metrowin
 
    string dir::appdata(const char * lpcsz, const char * lpcsz2)
    {
+#ifdef WINDOWSEX
       string str;
       SHGetSpecialFolderPath(
          NULL,
@@ -947,6 +981,9 @@ namespace metrowin
          strRelative = strRelative.Left(iFind - 1) + "_" + strRelative.Mid(iStart, iFind - iStart) + strRelative.Mid(iFind + 1);
       }
       return path(path(str, "ca2", strRelative), lpcsz, lpcsz2);
+#else
+      throw todo(get_app());
+#endif
    }
 
    string dir::usersystemappdata(::ca::application * papp, const char * lpcszPrefix, const char * lpcsz, const char * lpcsz2)
@@ -967,7 +1004,7 @@ namespace metrowin
 
    string dir::userfolder(::ca::application * papp, const char * lpcsz, const char * lpcsz2)
    {
-
+#ifdef WINDOWSEX
       string str;
       SHGetSpecialFolderPath(
          NULL,
@@ -1015,6 +1052,13 @@ namespace metrowin
       {
          return path(AppUser(papp).m_strPath, lpcsz, lpcsz2);
       }*/
+#else
+
+      throw todo(get_app());
+
+
+#endif
+
    }
 
    string dir::default_os_user_path_prefix(::ca::application * papp)
@@ -1022,6 +1066,7 @@ namespace metrowin
       UNREFERENCED_PARAMETER(papp);
       wchar_t buf[MAX_PATH];
       ULONG ulSize = sizeof(buf) / sizeof(wchar_t);
+#ifdef WINDOWSEX
       if(!::GetUserNameExW(NameCanonical, buf, &ulSize))
       {
          if(!::GetUserNameW(buf, &ulSize))
@@ -1029,6 +1074,9 @@ namespace metrowin
             memset(buf, 0, sizeof(buf));
          }
       }
+#else
+      throw todo(get_app());
+#endif
       return gen::international::unicode_to_utf8(buf);
    }
 

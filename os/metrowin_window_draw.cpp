@@ -28,7 +28,10 @@ namespace metrowin
       ca(papp),
       ::ca::window_draw(papp),
       message_window_simple_callback(papp),
-      m_mutex(papp)
+      m_mutexRender(papp),
+      m_mutexRendering(papp),
+      m_mutexRgnUpdate(papp),
+      m_semaphoreBuffer(papp)
    {
       m_dwLastRedrawRequest = ::get_tick_count();
       m_bRender = false;
@@ -40,7 +43,9 @@ namespace metrowin
    extern void _001DeferPaintLayeredWindowBackground(oswindow hwnd, ::ca::graphics * pdc);
    window_draw::~window_draw()
    {
+#ifndef METROWIN
       ::DestroyWindow(m_spwindowMessage->Detach());
+#endif
    }
 
 
@@ -93,10 +98,14 @@ namespace metrowin
 
    void window_draw::synch_redraw()
    {
+#ifdef WINDOWSEX
       if(!m_bProDevianMode && ::IsWindow((oswindow) m_spwindowMessage->get_os_data()))
       {
          m_spwindowMessage->send_message(WM_USER + 1984 + 1977);
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    void window_draw::_synch_redraw()
@@ -203,17 +212,22 @@ namespace metrowin
       rect rectChild;
 
       rect rectNewUpdate;
+
+#ifdef WINDOWSEX
       
       for(int_ptr i = hwndtreea.get_size() - 1; i >= 0; i--)
       {
          user::oswindow_tree & hwndtreeChild = hwndtreea[i];
-         oswindow hwndChild = hwndtreeChild.m_hwnd;
+         oswindow hwndChild = hwndtreeChild.m_oswindow;
          ::GetWindowRect(hwndChild, rectChild);
          if(rectNewUpdate.intersect(rectChild, rectUpdate))
          {
             to(pdc, rectNewUpdate, hwndtreeChild, true, false);
          }
        }
+#else
+      throw todo(get_app());
+#endif
        return true;
    }
 
@@ -230,18 +244,18 @@ namespace metrowin
 
 //      DWORD dwTimeIn = get_tick_count();
 
-      oswindow hwndParam = hwndtree.m_hwnd;
+      oswindow hwndParam = hwndtree.m_oswindow;
 
       if(hwndParam == NULL)
       {
          return false;
       }
 
+#ifdef WINDOWSEX
       if(!::IsWindow(hwndParam))
       {
          return false;
       }
-
       
             
 
@@ -250,8 +264,6 @@ namespace metrowin
       {
          return true;
       }
-
-
 
 
       if(hwndtree.m_dwUser & 1)
@@ -297,6 +309,9 @@ namespace metrowin
       }
 
 
+#endif
+
+
       
 
 //      DWORD dwTimeOut = get_tick_count();
@@ -309,7 +324,7 @@ namespace metrowin
       return to(
          pdc,
          rectUpdate,
-         hwndtree.m_hwndtreea,
+         hwndtree.m_oswindowtreea,
          true,
          false);
 
@@ -323,6 +338,7 @@ namespace metrowin
          TRACE("Could not initialize ca2::twf - ca2 Transparent Window Framework!");
          return 0;
       }
+#ifdef WINDOWSEX
       ::AttachThreadInput(::GetCurrentThreadId(), WIN_THREAD(System.::ca::thread_sp::m_p)->m_nThreadID, TRUE);
       MSG msg;
       s_bRunning = true;
@@ -358,6 +374,9 @@ namespace metrowin
       }
       //delete this;
       s_bRunning = false;
+#else
+      throw todo(get_app());
+#endif
       return 0;
    }
 
@@ -422,7 +441,7 @@ namespace metrowin
       get_wnda(wndpa);
 
 
-      user::WndUtil::SortByZOrder(hwnda);
+      user::window_util::SortByZOrder(hwnda);
 
       user::oswindow_tree::Array hwndtreea;
       //hwndtreea = hwnda;
@@ -449,8 +468,8 @@ namespace metrowin
       ::ca::region_sp rgnWindow(get_app());
       ::ca::region_sp rgnIntersect(get_app());
 
-      rgnWindow->CreateRectRgn(0, 0, 0, 0);
-      rgnIntersect->CreateRectRgn(0, 0, 0, 0);
+      rgnWindow->create_rect(0, 0, 0, 0);
+      rgnIntersect->create_rect(0, 0, 0, 0);
 
       /*rect rectIntersect;
       ::ca::region_sp rgnUpdate(get_app());
@@ -511,7 +530,7 @@ namespace metrowin
          }
          catch(simple_exception & se)
          {
-            if(strcmp_dup(se.m_szMessage, "no more a window") == 0)
+            if(se.m_strMessage ==  "no more a window")
             {
                System.frames().remove(wndpa[l]);
                wndpa.remove_at(l);
@@ -542,10 +561,13 @@ namespace metrowin
                break;
             }
          }
+#ifdef WINDOWSEX
          if(!::IsWindowVisible(wndaApp[j]) ||
          ::IsIconic(wndaApp[j]) || pwnd == NULL)
             continue;
-
+#else
+         throw todo(get_app());
+#endif
 
 
          /*pwnd->GetWindowRect(rectWindow);
@@ -725,13 +747,13 @@ namespace metrowin
       LPCRECT lpcrect)
    {
 
-      
+#ifdef WINDOWSEX
       const rect rectOptimize(*lpcrect);
       rect rectClient;
       for(int i = iIndex; i < hwndtreea.get_size();)
       {
          user::oswindow_tree & hwndtree = hwndtreea[i];
-         oswindow hwnd = hwndtree.m_hwnd;
+         oswindow hwnd = hwndtree.m_oswindow;
          rect rect;
          ::GetClientRect(hwnd, rect);
          ::ClientToScreen(hwnd, &rect.top_left());
@@ -752,24 +774,31 @@ namespace metrowin
       }
       return OptimizeNone;
 
+#else
+      return OptimizeNone;
+#endif
+
    }
 
 
-   window_draw::EOptimize window_draw::TwfOptimizeRender(
-      user::oswindow_tree & hwndtree,
-      LPCRECT lpcrect)
+   window_draw::EOptimize window_draw::TwfOptimizeRender(user::oswindow_tree & hwndtree, LPCRECT lpcrect)
    {
 
       hwndtree.m_dwUser = 0;
 
-      oswindow hwnd = hwndtree.m_hwnd;
+      oswindow hwnd = hwndtree.m_oswindow;
 
-      ::user::window_interface * ptwi = System.window_map().get((int_ptr) hwnd);
+      ::user::window_interface * ptwi = System.window_map().get((int_ptr) (void *) hwnd);
 
+#ifdef WINDOWSEX
       if(!::IsWindowVisible(hwnd))
       {
          return OptimizeThis;
       }
+#else
+      throw todo(get_app());
+#endif
+
       const rect rectUpdate(*lpcrect);
 
       rect rectClient;
@@ -819,7 +848,7 @@ namespace metrowin
       }
 
       EOptimize eoptimizeChildren = TwfOptimizeRender(
-            hwndtree.m_hwndtreea,
+            hwndtree.m_oswindowtreea,
             lpcrect);
 
       if(eoptimizeChildren == OptimizeAllNext)
@@ -871,14 +900,13 @@ namespace metrowin
       user::oswindow_tree & hwndtree,
       HRGN hrgn)
    {
-      oswindow hwnd = hwndtree.m_hwnd;
-
+      oswindow hwnd = hwndtree.m_oswindow;
+#ifdef WINDOWSEX
 
       if(!::IsWindowVisible(hwnd))
       {
          return true;
       }
-
 
 
 
@@ -893,7 +921,7 @@ namespace metrowin
             hwndParam,
             hwnda,
             hrgna,
-            hwndtree.m_hwndtreea,
+            hwndtree.m_oswindowtreea,
             hrgn))
       {
          return false;
@@ -911,9 +939,7 @@ namespace metrowin
          return true;
       }
 
-      
-
-      ::user::window_interface * pwndi = System.window_map().get((int_ptr) hwnd);
+      ::user::window_interface * pwndi = System.window_map().get((int_ptr)(void *) hwnd);
 
       if(pwndi == NULL)
       {
@@ -963,6 +989,13 @@ namespace metrowin
       {
          return true;
       }
+
+#else
+
+      throw todo(get_app());
+
+#endif
+      
    }
 
    // lpcrect must be in screen coordinates
@@ -973,6 +1006,7 @@ namespace metrowin
       user::oswindow_tree::Array & hwndtreea,
       LPCRECT lpcrect)
    {
+#ifdef WINDOWSEX
       HRGN hrgn = ::CreateRectRgnIndirect(lpcrect);
       TwfGetTopWindow(
          hwnd,
@@ -981,6 +1015,9 @@ namespace metrowin
          hwndtreea, 
          hrgn);
       ::DeleteObject(hrgn);
+#else
+      throw todo(get_app());
+#endif
    }
 
    void window_draw::TwfGetTopWindowOptimizeOpaque(
@@ -988,6 +1025,7 @@ namespace metrowin
       user::oswindow_array & hwnda,
       base_array < HRGN, HRGN > & hrgna)
    {
+#ifdef WINDOWSEX
       rect rectWindow;
 
    //   ::ca::window * pwndOpaque = window::FromHandlePermanent(hwndOpaque);
@@ -1019,7 +1057,9 @@ namespace metrowin
       }
 
       ::DeleteObject(hrgnOpaque);
-
+#else
+      throw todo(get_app());
+#endif
    }
 
 
@@ -1052,7 +1092,7 @@ namespace metrowin
       
       get_wnda(hwnda);
 
-      user::WndUtil::SortByZOrder(hwnda);
+      user::window_util::SortByZOrder(hwnda);
 
       ASSERT(FALSE);
       /*for(int i = 0; i  < hwnda.get_size(); i++)
@@ -1106,7 +1146,8 @@ namespace metrowin
          }
       }
 
-      oswindow hwndParam = (oswindow) pwnd->_get_handle();
+      oswindow hwndParam = (oswindow) pwnd->get_handle();
+#ifdef WINDOWSEX
 
       HDC hdcScreen = ::GetDCEx(hwndParam, NULL,  DCX_CLIPSIBLINGS | DCX_WINDOW);
 
@@ -1302,6 +1343,10 @@ namespace metrowin
    //   TRACE("//\n");
 
       return true;
+#else
+
+throw todo(get_app());
+#endif
    }
 
 

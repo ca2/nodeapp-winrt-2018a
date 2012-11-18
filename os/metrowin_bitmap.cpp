@@ -28,7 +28,7 @@ namespace metrowin
 
    }
 
-   bool bitmap::CreateBitmap(int nWidth, int nHeight, UINT nPlanes, UINT nBitcount, const void * lpBits)
+   bool bitmap::CreateBitmap(::ca::graphics * pgraphics, int cx, int cy, UINT nPlanes, UINT nBitcount, const void * lpBits)
    { 
 
       if(m_pbitmap != NULL)
@@ -51,65 +51,70 @@ namespace metrowin
       props.dpiY = 72.0;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
 
-      if(ppdata != NULL)
+      //if(ppdata != NULL)
       {
-         g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
+        // g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
       }
-      else
+      //else
       {
-         g.m_pdc->CreateBitmap(size, NULL, cx * sizeof(COLORREF), props, &m_pbitmap);
+          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, lpBits, cx * sizeof(COLORREF), props, &m_pbitmap);
       }
 
       m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
 
-      if(ppdata != NULL)
-         *ppdata = (COLORREF *) m_map.bits;
+      //if(ppdata != NULL)
+        // *ppdata = (COLORREF *) m_map.bits;
 
 
       return true;
 
    }
 
-   bool bitmap::CreateBitmapIndirect(LPBITMAP lpBitmap)
+   bool bitmap::CreateBitmapIndirect(::ca::graphics * pgraphics, LPBITMAP lpBitmap)
    { 
       return FALSE;
    }
 
 
-   bool bitmap::CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset)
+   bool bitmap::CreateDIBSection(::ca::graphics * pgraphics, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset)
    { 
 
       if(m_pbitmap != NULL)
       {
-         delete m_pbitmap;
+
+         destroy();
+
       }
 
-      if(m_pdata != NULL)
-      {
-         ca2_free(m_pdata);
-         m_pdata = NULL;
-      }
+      D2D1_SIZE_U size;
 
-      m_pdata = ca2_alloc(abs(4 * lpbmi->bmiHeader.biWidth * lpbmi->bmiHeader.biHeight));
+      size.width = lpbmi->bmiHeader.biWidth;
+      size.height = lpbmi->bmiHeader.biHeight;
 
-      if(m_pdata == NULL)
-         return FALSE;
+      D2D1_BITMAP_PROPERTIES1 props;
 
-      m_pbitmap = new Gdiplus::Bitmap(abs(lpbmi->bmiHeader.biWidth), abs(lpbmi->bmiHeader.biHeight), abs(lpbmi->bmiHeader.biWidth) * 4, PixelFormat32bppARGB, (BYTE *) m_pdata);
-
-      if(m_pbitmap == NULL)
-      {
-         ca2_free(m_pdata);
-         m_pdata = NULL;
-         return FALSE;
-      }
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
+      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+      props.dpiX = 72.0;
+      props.dpiY = 72.0;
+      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
 
       if(ppvBits != NULL)
       {
-         *ppvBits = m_pdata; 
+         METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, *ppvBits, size.width * sizeof(COLORREF), props, &m_pbitmap);
+      }
+      else
+      {
+         METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
       }
 
-      return TRUE;
+      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+
+      if(ppvBits != NULL)
+         *ppvBits = m_map.bits;
+
+
+      return true;
 
    }
 
@@ -144,7 +149,7 @@ namespace metrowin
    {
 
 
-      throw not_implemented_exception();
+      throw not_implemented(get_app());
 
       //SIZE size;
       //VERIFY(::SetBitmapDimensionEx((HBITMAP)get_handle(), nWidth, nHeight, &size));
@@ -159,7 +164,9 @@ namespace metrowin
       if(m_pbitmap == NULL)
          return class size(0, 0);
 
-      return class size(m_pbitmap->GetWidth(), m_pbitmap->GetHeight());
+      D2D1_SIZE_U size = m_pbitmap->GetPixelSize();
+
+      return ::size(size.width, size.height);
 
    }
 
@@ -176,6 +183,45 @@ namespace metrowin
    bool bitmap::CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight)
    {
 
+
+      if(m_pbitmap != NULL)
+      {
+
+         destroy();
+
+      }
+
+      D2D1_SIZE_U size;
+
+      size.width = nWidth;
+      size.height = nHeight;
+
+      D2D1_BITMAP_PROPERTIES1 props;
+
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
+      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+      props.dpiX = 72.0;
+      props.dpiY = 72.0;
+      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
+
+      //if(ppdata != NULL)
+      {
+        // g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
+      }
+      //else
+      {
+          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
+      }
+
+      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+
+      //if(ppdata != NULL)
+        // *ppdata = (COLORREF *) m_map.bits;
+
+
+      return true;
+
+/*
       if(m_pdata != NULL)
       {
          ca2_free(m_pdata);
@@ -190,37 +236,60 @@ namespace metrowin
 
       m_pbitmap = new ::Gdiplus::Bitmap(nWidth, nHeight, Gdiplus::PixelOffsetModeHighQuality);
 
-      return TRUE;
+      return TRUE;*/
 
    }
    bool bitmap::CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight)
    { 
 
-      if(m_pdata != NULL)
-      {
-         ca2_free(m_pdata);
-         m_pdata = NULL;
-      }
 
       if(m_pbitmap != NULL)
       {
-         delete m_pbitmap;
-         m_pbitmap = NULL;
+
+         destroy();
+
       }
 
-      m_pbitmap = new ::Gdiplus::Bitmap(nWidth, nHeight, Gdiplus::PixelOffsetModeHighQuality);
+      D2D1_SIZE_U size;
 
-      return TRUE;
+      size.width = nWidth;
+      size.height = nHeight;
+
+      D2D1_BITMAP_PROPERTIES1 props;
+
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
+      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+      props.dpiX = 72.0;
+      props.dpiY = 72.0;
+      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
+
+      //if(ppdata != NULL)
+      {
+        // g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
+      }
+      //else
+      {
+          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
+      }
+
+      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+
+      //if(ppdata != NULL)
+        // *ppdata = (COLORREF *) m_map.bits;
+
+
+      return true;
+
    }
 
-
+/*
    int bitmap::GetBitmap(BITMAP* pBitMap)
    { 
       //   ASSERT(get_handle() != NULL);
       // return ::GetObject(get_handle(), sizeof(BITMAP), pBitMap); 
       return 0;
    }
-
+   */
 
    /////////////////////////////////////////////////////////////////////////////
 
@@ -254,25 +323,41 @@ namespace metrowin
 
 
 
-   int_ptr bitmap::get_os_data() const
+   void * bitmap::get_os_data() const
    {
 
-      return (int_ptr) (Gdiplus::Bitmap *) m_pbitmap;
+      return (void *) m_pbitmap;
 
    }
 
-   bool bitmap::Attach(HBITMAP hbitmap)
+   bool bitmap::attach(void * hbitmap)
    {
+
       if(m_pbitmap != NULL)
       {
-         delete m_pbitmap;
-         m_pbitmap = NULL;
+
+         destroy();
+
       }
 
-      m_pbitmap = new Gdiplus::Bitmap(hbitmap, NULL);
+      m_pbitmap = (ID2D1Bitmap1 *) hbitmap;
 
+      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
 
       return true;
+
+   }
+
+   void * bitmap::detach()
+   {
+
+      m_pbitmap->Unmap();
+
+      ID2D1Bitmap * pbitmap = m_pbitmap;
+
+      m_pbitmap = NULL;
+
+      return pbitmap;
 
    }
 

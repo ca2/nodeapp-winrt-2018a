@@ -2,7 +2,7 @@
 
 
 
-extern "C" int APIENTRY
+/*extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
    UNREFERENCED_PARAMETER(lpReserved);
@@ -46,10 +46,11 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
       {
       } */
 
-      ::OutputDebugStringW(L"::ca2:: metrowin.dll :: terminating!\n");
+/*      ::OutputDebugStringW(L"::ca2:: metrowin.dll :: terminating!\n");
 
    }
 
    return 1;   // ok
 
 }
+*/

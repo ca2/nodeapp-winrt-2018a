@@ -1,17 +1,18 @@
 #include "framework.h"
 
+
 #undef new
+
 
 namespace metrowin
 {
 
 
    font::font(::ca::application * papp) :
-   ca(papp)
+      ca(papp)
    {
 
-      m_pfont     = NULL;
-      m_bUpdated  = false;
+      m_pformat     = NULL;
 
    }
 
@@ -19,21 +20,22 @@ namespace metrowin
    font::~font()
    { 
 
-      if(m_pfont != NULL)
+      if(m_pformat != NULL)
       {
-         delete m_pfont;
-         m_pfont = NULL;
+
+         destroy();
+
       }
-   
+
    }
 
-//   font::operator HFONT() const
-  // {
-    //  return (HFONT)(this == NULL ? NULL : get_handle()); 
+   //   font::operator HFONT() const
+   // {
+   //  return (HFONT)(this == NULL ? NULL : get_handle()); 
    //}
    //font* PASCAL font::from_handle(::ca::application * papp, HFONT hFont)
    //{
-     // return dynamic_cast < font * > (::metrowin::graphics_object::from_handle(papp, hFont)); 
+   // return dynamic_cast < font * > (::metrowin::graphics_object::from_handle(papp, hFont)); 
    //}
    bool font::CreateFontIndirect(const LOGFONT* lpLogFont)
    { 
@@ -59,82 +61,82 @@ namespace metrowin
    { 
       return FALSE;
       //return Attach(::CreateFont(nHeight, nWidth, nEscapement,
-   //nOrientation, nWeight, bItalic, bUnderline, cStrikeOut,
-   //nCharSet, nOutPrecision, nClipPrecision, nQuality,
-   //nPitchAndFamily, lpszFacename)); 
+      //nOrientation, nWeight, bItalic, bUnderline, cStrikeOut,
+      //nCharSet, nOutPrecision, nClipPrecision, nQuality,
+      //nPitchAndFamily, lpszFacename)); 
    }
-   
+
    int font::GetLogFont(LOGFONT* pLogFont)
    { 
 
       return 0;
-   //   return ::GetObject(get_handle(), sizeof(LOGFONT), pLogFont);
+      //   return ::GetObject(get_handle(), sizeof(LOGFONT), pLogFont);
 
    }
 
 
-      /////////////////////////////////////////////////////////////////////////////
+   /////////////////////////////////////////////////////////////////////////////
 
    void font::construct(const ::ca::font & fontParam)
+   {
+      class font & font = const_cast < ::metrowin::font & > (dynamic_cast < const ::metrowin::font & > (fontParam));
+      if(font.m_pfont == NULL)
       {
-         class font & font = const_cast < ::metrowin::font & > (dynamic_cast < const ::metrowin::font & > (fontParam));
-         if(font.m_pfont == NULL)
+         if(m_pfont != NULL)
          {
-            if(m_pfont != NULL)
-            {
-               delete m_pfont;
-               m_pfont = NULL;
-            }
+            delete m_pfont;
+            m_pfont = NULL;
          }
-         else
-         {
-            m_pfont = font.m_pfont->Clone();
-         }
-//         if(get_handle() != NULL)
-  //          delete_object();
-    //     if(font.get_handle() != NULL)
+      }
+      else
+      {
+         m_pfont = font.m_pfont->Clone();
+      }
+      //         if(get_handle() != NULL)
+      //          delete_object();
+      //     if(font.get_handle() != NULL)
       /*   {
-            LOGFONT lf;
-            memset(&lf, 0, sizeof(lf));
-            font.GetLogFont(&lf);
-            CreateFontIndirect(&lf);
-         }*/
-      }
+      LOGFONT lf;
+      memset(&lf, 0, sizeof(lf));
+      font.GetLogFont(&lf);
+      CreateFontIndirect(&lf);
+      }*/
+   }
 
 
-      void font::dump(dump_context & dumpcontext) const
+   void font::dump(dump_context & dumpcontext) const
+   {
+      ::ca::graphics_object::dump(dumpcontext);
+
+      /*         if (get_handle() == NULL)
+      return;
+
+      if (!afxData.bWin95 && ::GetObjectType(get_handle()) != OBJ_FONT)
       {
-         ::ca::graphics_object::dump(dumpcontext);
-
-/*         if (get_handle() == NULL)
-            return;
-
-         if (!afxData.bWin95 && ::GetObjectType(get_handle()) != OBJ_FONT)
-         {
-            // not a valid GDI object
-            dumpcontext << "has ILLEGAL HFONT!";
-            return;
-         }
-
-         LOGFONT lf;
-         VERIFY(GetObject(sizeof(lf), &lf));
-         dumpcontext << "lf.lfHeight = " << lf.lfHeight;
-         dumpcontext << "\nlf.lfWidth = " << lf.lfWidth;
-         dumpcontext << "\nlf.lfEscapement = " << lf.lfEscapement;
-         dumpcontext << "\nlf.lfOrientation = " << lf.lfOrientation;
-         dumpcontext << "\nlf.lfWeight = " << lf.lfWeight;
-         dumpcontext << "\nlf.lfItalic = " << (int)lf.lfItalic;
-         dumpcontext << "\nlf.lfUnderline = " << (int)lf.lfUnderline;
-         dumpcontext << "\nlf.lfStrikeOut = " << (int)lf.lfStrikeOut;
-         dumpcontext << "\nlf.lfCharSet = " << (int)lf.lfCharSet;
-         dumpcontext << "\nlf.lfOutPrecision = " << (int)lf.lfOutPrecision;
-         dumpcontext << "\nlf.lfClipPrecision = " << (int)lf.lfClipPrecision;
-         dumpcontext << "\nlf.lfQuality = " << (int)lf.lfQuality;
-         dumpcontext << "\nlf.lfPitchAndFamily = " << (int)lf.lfPitchAndFamily;
-         dumpcontext << "\nlf.lfFaceName = " << (const char *)lf.lfFaceName;
-
-         dumpcontext << "\n";*/
+      // not a valid GDI object
+      dumpcontext << "has ILLEGAL HFONT!";
+      return;
       }
+
+      LOGFONT lf;
+      VERIFY(GetObject(sizeof(lf), &lf));
+      dumpcontext << "lf.lfHeight = " << lf.lfHeight;
+      dumpcontext << "\nlf.lfWidth = " << lf.lfWidth;
+      dumpcontext << "\nlf.lfEscapement = " << lf.lfEscapement;
+      dumpcontext << "\nlf.lfOrientation = " << lf.lfOrientation;
+      dumpcontext << "\nlf.lfWeight = " << lf.lfWeight;
+      dumpcontext << "\nlf.lfItalic = " << (int)lf.lfItalic;
+      dumpcontext << "\nlf.lfUnderline = " << (int)lf.lfUnderline;
+      dumpcontext << "\nlf.lfStrikeOut = " << (int)lf.lfStrikeOut;
+      dumpcontext << "\nlf.lfCharSet = " << (int)lf.lfCharSet;
+      dumpcontext << "\nlf.lfOutPrecision = " << (int)lf.lfOutPrecision;
+      dumpcontext << "\nlf.lfClipPrecision = " << (int)lf.lfClipPrecision;
+      dumpcontext << "\nlf.lfQuality = " << (int)lf.lfQuality;
+      dumpcontext << "\nlf.lfPitchAndFamily = " << (int)lf.lfPitchAndFamily;
+      dumpcontext << "\nlf.lfFaceName = " << (const char *)lf.lfFaceName;
+
+      dumpcontext << "\n";*/
+   }
 
 
    /////////////////////////////////////////////////////////////////////////////
@@ -158,16 +160,16 @@ namespace metrowin
    bool font::CreatePointFontIndirect(const LOGFONT* lpLogFont, ::ca::graphics * pgraphics)
    {
       return ::ca::font::CreatePointFontIndirect(lpLogFont, pgraphics);
-     /* ASSERT(__is_valid_address(lpLogFont, sizeof(LOGFONT), FALSE));
+      /* ASSERT(__is_valid_address(lpLogFont, sizeof(LOGFONT), FALSE));
       HDC hDC;
       if (pgraphics != NULL)
       {
-         ASSERT_VALID(pgraphics);
-         ASSERT((dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle2() != NULL);
-         hDC = (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle2();
+      ASSERT_VALID(pgraphics);
+      ASSERT((dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle2() != NULL);
+      hDC = (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle2();
       }
       else
-         hDC = ::GetDC(NULL);
+      hDC = ::GetDC(NULL);
 
       // convert nPointSize to logical units based on pgraphics
       LOGFONT logFont = *lpLogFont;
@@ -181,7 +183,7 @@ namespace metrowin
       logFont.lfHeight = -abs(pt.y - ptOrg.y);
 
       if (pgraphics == NULL)
-         ReleaseDC(NULL, hDC);
+      ReleaseDC(NULL, hDC);
 
       return CreateFontIndirect(&logFont);*/
    }
@@ -189,66 +191,44 @@ namespace metrowin
 
    int_ptr font::get_os_data() const
    {
-      
-      if(m_pfont == NULL || !m_bUpdated)
+
+      if(m_pformat == NULL || !m_bUpdated)
       {
          if(m_pfont != NULL)
          {
-            try
-            {
-               delete ((font *) this)->m_pfont;
-            }
-            catch(...)
-            {
-            }
-            ((font *) this)->m_pfont = NULL;
+            destroy();
          }
 
 
-         int iStyle = 0;
+      IDWriteFactory * pfactory = TlsGetWriteFactory();
 
-         if(m_bBold)
-         {
-            iStyle |= (int) Gdiplus::FontStyleBold;
-         }
 
-         if(m_bItalic)
-         {
-            iStyle |= (int) Gdiplus::FontStyleItalic;
-         }
+         DWRITE_FONT_STYLE style;
 
-         if(m_bUnderline)
-         {
-            iStyle |= (int) Gdiplus::FontStyleUnderline;
-         }
+         //if(lplf->lfItalic)
+           // style = DWRITE_FONT_STYLE_ITALIC;
+         //else
+            style = DWRITE_FONT_STYLE_NORMAL;
 
-         if(m_bStrikeout)
-         {
-            iStyle |= (int) Gdiplus::FontStyleStrikeout;
-         }
+         DWRITE_FONT_STRETCH stretch;
 
-         Gdiplus::Unit unit;
+         stretch = DWRITE_FONT_STRETCH_NORMAL;
 
-         switch(m_eunitFontSize)
-         {
-         case ::ca::unit_pixel:
-            unit = Gdiplus::UnitPixel;
-            break;
-         case ::ca::unit_point:
-            unit = Gdiplus::UnitPoint;
-            break;
-         default:
-            unit = Gdiplus::UnitPoint;
-            break;
-         };
-         
-         retry_single_lock slGdiplus(&System.m_mutexGdiplus, millis(84), millis(84));
+         HRESULT hr = pfactory->CreateTextFormat(
+            //wstring(lplf->lfFaceName),
+            wstring(lpszFaceName),
+            NULL,
+            //(DWRITE_FONT_WEIGHT) lplf->lfWeight,
+            (DWRITE_FONT_WEIGHT) bBold ? DWRITE_FONT_WEIGHT_BOLD : DWRITE_FONT_WEIGHT_NORMAL,
+            style,
+            stretch,
+            m_eunit == ::ca::unit_point ? point_dpi(m_dFontSize) : y_dpi(m_dFontSize),
+            L"",
+            &m_pformat);
 
-         ((font *) this)->m_pfont = new Gdiplus::Font(
-               gen::international::utf8_to_unicode(m_strFontFamilyName),
-               (Gdiplus::REAL) m_dFontSize,
-               iStyle,
-               unit);
+
+         if(FAILED(hr) || m_pformat == NULL)
+            return false;
 
       }
 
@@ -261,5 +241,25 @@ namespace metrowin
       return (int_ptr) (Gdiplus::Font *) m_pfont;
 
    }
+
+
+   bool font::destroy()
+   {
+
+      if(m_pformat == NULL)
+         return true;
+
+
+      bool bOk = m_pformat->Release() == 0;
+
+      m_pformat = NULL;
+
+      if(!bOk)
+         return false;
+
+      return true;
+
+   }
+
 
 } // namespace metrowin

@@ -82,11 +82,11 @@ int __cdecl __crt_report_hook(int nRptType, __in char *szMsg, int* pResult)
 
    ASSERT( pResult != NULL );
    if( pResult == NULL )
-      throw invalid_argument_exception();
+      throw invalid_argument_exception(::ca::get_thread_app());
 
    ASSERT( szMsg != NULL );
    if( szMsg == NULL )
-      throw invalid_argument_exception();
+      throw invalid_argument_exception(::ca::get_thread_app());
 
    // non-NULL m_pFile, so go through g_dumpcontext for the message
    *pResult = FALSE;
@@ -123,13 +123,13 @@ ___DEBUG_STATE::~___DEBUG_STATE()
       }
       catch(std::__non_rtti_object & e)
       {
-         ::OutputDebugString("~___DEBUG_STATE _CrtdumpMemoryLeaks std::__non_rtti_object\n");
-         ::OutputDebugString(e.what());
-         ::OutputDebugString("\n");
+         ::OutputDebugStringW(L"~___DEBUG_STATE _CrtdumpMemoryLeaks std::__non_rtti_object\n");
+         ::OutputDebugStringW(gen::international::utf8_to_unicode(e.what()));
+         ::OutputDebugStringW(L"\n");
       }
       catch(...)
       {
-         ::OutputDebugString("~___DEBUG_STATE _CrtdumpMemoryLeaks exception\n");
+         ::OutputDebugStringW(L"~___DEBUG_STATE _CrtdumpMemoryLeaks exception\n");
       }
    }
    int nOldState = _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG);

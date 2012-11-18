@@ -109,6 +109,7 @@ namespace metrowin
 
    void os::terminate_processes_by_title(const char * pszName)
    {
+#ifdef WINDOWSEX
       DWORD dwPid;
       while(get_pid_by_title(pszName, dwPid))
       {
@@ -133,6 +134,9 @@ namespace metrowin
          return bResult == TRUE;*/
 
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    bool os::get_pid_by_path(const char * pszName, DWORD & dwPid)
@@ -169,6 +173,8 @@ namespace metrowin
    string os::get_process_path(DWORD dwPid)
    {
       string strName = ":<unknown>";
+
+#ifdef WINDOWSEX
       // get a handle to the process.
       HANDLE hProcess = OpenProcess( PROCESS_QUERY_INFORMATION |
          PROCESS_VM_READ,
@@ -189,11 +195,15 @@ namespace metrowin
       }
 
       CloseHandle( hProcess );
+#else
+      throw todo(get_app());
+#endif
       return strName;
    }
 
    void os::get_all_processes(dword_array & dwa )
    {
+#ifdef WINDOWSEX
       dwa.set_size(0);
       DWORD cbNeeded = 0;
       while(cbNeeded == natural(dwa.get_count()))
@@ -208,11 +218,15 @@ namespace metrowin
          }
          dwa.set_size(cbNeeded / sizeof(DWORD));
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    string os::get_module_path(HMODULE hmodule)
    {
       string strPath;
+#ifdef WINDOWSEX
       DWORD dwSize = 1;
       while(natural(strPath.get_length() + 1) == dwSize)
       {
@@ -222,12 +236,19 @@ namespace metrowin
             (dwSize + 1024));
          strPath.ReleaseBuffer();
       }
+#else
+      throw todo(get_app());
+#endif
       return strPath;
    }
 
 
    bool os::connection_settings_get_auto_detect()
    {
+
+      bool bAutoDetect = false;
+
+#ifdef WINDOWSEX
 
       registry::Key key1;
 
@@ -237,7 +258,13 @@ namespace metrowin
 
       key1.QueryValue("DefaultConnectionSettings", mem);
 
-      bool bAutoDetect = (((LPBYTE) mem.get_data())[8] & 0x08) != 0;
+      bAutoDetect = (((LPBYTE) mem.get_data())[8] & 0x08) != 0;
+
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return bAutoDetect;
 
@@ -247,13 +274,20 @@ namespace metrowin
    string os::connection_settings_get_auto_config_url()
    {
 
+      string strUrl;
+
+#ifdef WINDOWSEX
+
       registry::Key key;
 
       key.OpenKey(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", false);
-
-      string strUrl;
-
       key.QueryValue("AutoConfigURL", strUrl);
+
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return strUrl;
 
@@ -262,12 +296,18 @@ namespace metrowin
    bool os::local_machine_set_run(const char * pszKey, const char * pszCommand)
    {
 
+#ifdef WINDOWSEX
 
       registry::Key keyKar(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
 
       keyKar.SetValue(pszKey, pszCommand);
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return true;
 
@@ -277,12 +317,17 @@ namespace metrowin
    bool os::local_machine_set_run_once(const char * pszKey, const char * pszCommand)
    {
 
+#ifdef WINDOWSEX
 
       registry::Key keyKar(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce", true);
 
-
       keyKar.SetValue(pszKey, pszCommand);
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return false;
 
@@ -291,12 +336,17 @@ namespace metrowin
    bool os::current_user_set_run(const char * pszKey, const char * pszCommand)
    {
 
+#ifdef WINDOWSEX
 
       registry::Key keyKar(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
 
-
       keyKar.SetValue(pszKey, pszCommand);
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return false;
 
@@ -305,12 +355,17 @@ namespace metrowin
    bool os::current_user_set_run_once(const char * pszKey, const char * pszCommand)
    {
 
+#ifdef WINDOWSEX
 
       registry::Key keyKar(HKEY_CURRENT_USER, "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\RunOnce", true);
 
-
       keyKar.SetValue(pszKey, pszCommand);
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return false;
 
@@ -319,6 +374,8 @@ namespace metrowin
 
    bool os::defer_register_ca2_plugin_for_mozilla()
    {
+
+#ifdef WINDOWSEX
 
       registry::Key keyPlugins;
 
@@ -349,12 +406,20 @@ namespace metrowin
 
       }
 
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return true;
 
    }
 
    bool os::file_extension_get_open_with_list_keys(stringa & straKey, const char * pszExtension)
    {
+
+#ifdef WINDOWSEX
 
       string strExt;
 
@@ -369,6 +434,12 @@ namespace metrowin
       key.OpenKey(HKEY_CLASSES_ROOT, strOpenWithKey, false);
 
       key.EnumKey(straKey);
+
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return true;
 
@@ -391,12 +462,19 @@ namespace metrowin
    bool os::file_association_set_default_icon(const char * pszExtension, const char * pszExtensionNamingClass, const char * pszIconPath)
    {
 
+#ifdef WINDOWSEX
 
       string strExtensionNamingClass(pszExtensionNamingClass);
 
       registry::Key keyLink3(HKEY_CLASSES_ROOT, strExtensionNamingClass, true);
+
       keyLink3.SetValue("DefaultIcon", pszIconPath);
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return false;
 
@@ -405,6 +483,8 @@ namespace metrowin
 
    bool os::file_association_set_shell_open_command(const char * pszExtension, const char * pszExtensionNamingClass,  const char * pszCommand, const char * pszParam)
    {
+
+#ifdef WINDOWSEX
 
       string strExt;
 
@@ -428,12 +508,20 @@ namespace metrowin
       strFormat.Format("\"%s\" \"%%L\" %s", pszCommand, pszParam);
       keyLink1.SetValue(NULL, strFormat);
 
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return true;
 
    }
 
    bool os::file_association_get_shell_open_command(const char * pszExtension, string & strExtensionNamingClass, string & strCommand, string & strParam)
    {
+
+#ifdef WINDOWSEX
 
       string strExt;
 
@@ -468,12 +556,20 @@ namespace metrowin
 
       }
 
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return true;
 
    }
 
    bool os::open_in_ie(const char * lpcsz)
    {
+
+#ifdef WINDOWSEX
 
       registry reg;
       string str;
@@ -513,13 +609,21 @@ namespace metrowin
          }
       }
 
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return true;
 
    }
 
    bool os::create_service(::planebase::application * papp)
    {
-      
+
+#ifdef WINDOWSEX
+
       if(papp->m_strAppName.is_empty()
       || papp->m_strAppName.CompareNoCase("bergedge") == 0
       || !papp->is_serviceable())
@@ -559,7 +663,13 @@ namespace metrowin
        
       CloseServiceHandle(hdlServ);
       CloseServiceHandle(hdlSCM);
-      
+
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return true;
       
    }
@@ -567,6 +677,8 @@ namespace metrowin
 
    bool os::remove_service(::planebase::application * papp)
    {
+
+#ifdef WINDOWSEX
 
       if(papp->m_strAppName.is_empty()
       || papp->m_strAppName.CompareNoCase("bergedge") == 0
@@ -599,12 +711,22 @@ namespace metrowin
 
       CloseServiceHandle(hdlSCM);
 
+#else
+
+      throw todo(get_app());
+
+#endif
+
       return false;
 
    }
 
    bool os::start_service(::planebase::application * papp)
    {
+
+      bool bOk = false;
+
+#ifdef WINDOWSEX
 
       if(papp->m_strAppName.is_empty()
       || papp->m_strAppName.CompareNoCase("bergedge") == 0
@@ -632,16 +754,26 @@ namespace metrowin
          return FALSE;
       }
        
-      bool bOk = StartService(hdlServ, 0, NULL) != FALSE;
+      bOk = StartService(hdlServ, 0, NULL) != FALSE;
 
       CloseServiceHandle(hdlServ);
       CloseServiceHandle(hdlSCM);
+
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return bOk != FALSE;
    }
 
    bool os::stop_service(::planebase::application * papp)
    {
+
+      bool bOk = false;
+
+#ifdef WINDOWSEX
 
       if(papp->m_strAppName.is_empty()
       || papp->m_strAppName.CompareNoCase("bergedge") == 0
@@ -672,13 +804,19 @@ namespace metrowin
 
       memset(&ss, 0, sizeof(ss));
 
-      bool bOk = ::ControlService(hdlServ, SERVICE_CONTROL_STOP, &ss) != FALSE;
+      bOk = ::ControlService(hdlServ, SERVICE_CONTROL_STOP, &ss) != FALSE;
 
       ::DeleteService(hdlServ);
 
       CloseServiceHandle(hdlServ);
 
       CloseServiceHandle(hdlSCM);
+
+#else
+
+      throw todo(get_app());
+
+#endif
 
       return bOk != FALSE;
    }
@@ -698,13 +836,22 @@ namespace metrowin
    bool os::is_remote_session()
    {
 
+#ifdef WINDOWSEX
+
       return GetSystemMetrics(SM_REMOTESESSION) != FALSE;
+#else
+
+      return false;
+
+#endif
 
    }
 
 
    void os::post_to_all_threads(UINT message, WPARAM wparam, LPARAM lparam)
    {
+
+#ifdef WINDOWSEX
 
       ::count c;
 
@@ -817,6 +964,11 @@ namespace metrowin
 
       }
 
+#else
+
+      throw todo(get_app());
+
+#endif
 
    }
 

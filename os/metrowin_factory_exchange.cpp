@@ -8,10 +8,10 @@ namespace metrowin
    factory_exchange::factory_exchange(::ca::application * papp) :
       ca(papp)
    {
-      System.factory().cloneable_large < WinStdioFile          >  (System.template type_info < ::ex1::text_file         > ());
-      System.factory().cloneable_large < WinFile               >  (System.template type_info < ::ex1::file              > ());
-      System.factory().cloneable_large < WinFileSet            >  (System.template type_info < ::ex2::file_set          > ());
-      System.factory().cloneable < WinFileSystem               >  (System.template type_info < ::ex1::file_system       > (), 1);
+      System.factory().cloneable_large < stdio_file          >  (System.template type_info < ::ex1::text_file         > ());
+      System.factory().cloneable_large < file               >  (System.template type_info < ::ex1::file              > ());
+      System.factory().cloneable_large < file_set            >  (System.template type_info < ::ex2::file_set          > ());
+      System.factory().cloneable < file_system               >  (System.template type_info < ::ex1::file_system       > (), 1);
       System.factory().cloneable < WinResource                 >  (System.template type_info < ::ex1::resource          > (), 1);
       System.factory().cloneable < application                 >  (System.template type_info < ::ex2::application       > (), 1);
       System.factory().cloneable < dir                         >  (System.template type_info < ::ca::dir::system        > (), 1);
@@ -27,7 +27,7 @@ namespace metrowin
       System.factory().creatable < window_draw                 >  (System.template type_info < ::ca::window_draw        > (), 1);
       System.factory().creatable_large < thread                >  (System.template type_info < ::ca::thread             > ());
       System.factory().creatable_large < window                >  (System.template type_info < ::ca::window             > ());
-      System.factory().cloneable_small < draw_dib              >  (System.template type_info < ::ca::draw_dib           > ());
+//      System.factory().cloneable_small < draw_dib              >  (System.template type_info < ::ca::draw_dib           > ());
       System.factory().creatable < os                          >  (System.template type_info < ::ca::os                 > (), 1);
       System.factory().creatable < port_forward                >  (System.template type_info < ::ca4::port_forward      > (), 1);
       System.factory().creatable_small < copydesk              >  (System.template type_info < ::ca4::copydesk          > (), 1);

@@ -33,14 +33,15 @@ namespace metrowin
       //       LPCOLORMAP lpColorMap = NULL, int nMapSize = 0);
 #endif
 
-      bool CreateBitmap(int nWidth, int nHeight, UINT nPlanes, UINT nBitcount, const void * lpBits);
-      bool CreateBitmapIndirect(LPBITMAP lpBitmap);
-      bool CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      bool CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset);
-      bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
+      virtual bool CreateBitmap(::ca::graphics * pdc, int nWidth, int nHeight, UINT nPlanes, UINT nBitcount, const void * lpBits);
+      virtual bool CreateBitmapIndirect(::ca::graphics * pdc, LPBITMAP lpBitmap);
+      virtual bool CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
+      virtual bool CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
+      virtual bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset);
+      virtual bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
 
-      int GetBitmap(BITMAP* pBitMap);
+      virtual bool attach(void * posdata);
+      virtual void * detach();
 
       DWORD SetBitmapBits(DWORD dwCount, const void * lpBits);
       DWORD GetBitmapBits(DWORD dwCount, LPVOID lpBits) const;
@@ -50,7 +51,7 @@ namespace metrowin
       virtual void dump(dump_context & dumpcontext) const;
 
 
-      virtual bool Attach(HBITMAP hbitmap);
+//      virtual bool Attach(HBITMAP hbitmap);
 
 
       virtual bool destroy();

@@ -1,8 +1,10 @@
 #include "framework.h"
-#include "win1.h"
+
 
 namespace metrowin
 {
+
+
    int metrowin::function()
    {
       return 0;
@@ -103,4 +105,8 @@ namespace metrowin
    }
 
    */
+
 } // namespace metrowin
+
+
+

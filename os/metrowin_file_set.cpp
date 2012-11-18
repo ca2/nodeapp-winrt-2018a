@@ -1,90 +1,97 @@
 #include "framework.h"
-#include "WinFileSet.h"
-#include "WFileFind.h"
 
 
-WinFileSet::WinFileSet(::ca::application * papp) :
-   ca(papp)
-{
-}
-
-WinFileSet::~WinFileSet()
+namespace metrowin
 {
 
-}
 
-void WinFileSet::add_search(stringa & stra, bool_array & baRecursive)
-{
-   m_straSearch.add(stra);
-   m_baRecursive.add(baRecursive);
-   refresh();
-}
-
-void WinFileSet::add_filter(stringa & stra)
-{
-   m_straFilter.add(stra);
-   refresh();
-}
-
-::count WinFileSet::get_file_count()
-{
-   return m_straFile.get_size();
-}
-
-void WinFileSet::file_at(::index i, string & str)
-{
-   str = m_straFile[i];
-}
-
-::index WinFileSet::find_first_file(const char * lpcsz, ::index iStart)
-{
-   return m_straFile.find_first_ci(lpcsz, iStart);
-}
-
-void WinFileSet::clear_search()
-{
-  m_straSearch.remove_all();
-}
-
-void WinFileSet::clear_filter()
-{
-  m_straFilter.remove_all();
-}
-
-void WinFileSet::clear_file()
-{
-   m_straFile.remove_all();
-}
-
-void WinFileSet::refresh()
-{
-   clear_file();
-   string strFilter;
-   int i, j;
-   FileFind filefind;
-   string strFile;
-   string str;
-   
-   for(i = 0; i < m_straSearch.get_size(); i++)
+   file_set::file_set(::ca::application * papp) :
+      ca(papp)
    {
-      bool bRecursive = true;
-      if(i < m_baRecursive.get_size())
-         bRecursive = m_baRecursive[i];
-      for(j = 0; j < m_straFilter.get_size(); j++)
+   }
+
+   file_set::~file_set()
+   {
+
+   }
+
+   void file_set::add_search(stringa & stra, bool_array & baRecursive)
+   {
+      m_straSearch.add(stra);
+      m_baRecursive.add(baRecursive);
+      refresh();
+   }
+
+   void file_set::add_filter(stringa & stra)
+   {
+      m_straFilter.add(stra);
+      refresh();
+   }
+
+   ::count file_set::get_file_count()
+   {
+      return m_straFile.get_size();
+   }
+
+   void file_set::file_at(::index i, string & str)
+   {
+      str = m_straFile[i];
+   }
+
+   ::index file_set::find_first_file(const char * lpcsz, ::index iStart)
+   {
+      return m_straFile.find_first_ci(lpcsz, iStart);
+   }
+
+   void file_set::clear_search()
+   {
+      m_straSearch.remove_all();
+   }
+
+   void file_set::clear_filter()
+   {
+      m_straFilter.remove_all();
+   }
+
+   void file_set::clear_file()
+   {
+      m_straFile.remove_all();
+   }
+
+   void file_set::refresh()
+   {
+      clear_file();
+      string strFilter;
+      int i, j;
+      FileFind filefind;
+      string strFile;
+      string str;
+
+      for(i = 0; i < m_straSearch.get_size(); i++)
       {
-         string strFilter = m_straFilter.element_at(j);
-         strFilter.trim("\\/");
-         if(bRecursive)
+         bool bRecursive = true;
+         if(i < m_baRecursive.get_size())
+            bRecursive = m_baRecursive[i];
+         for(j = 0; j < m_straFilter.get_size(); j++)
          {
-            Application.dir().rls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
-         }
-         else
-         {
-            Application.dir().ls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
+            string strFilter = m_straFilter.element_at(j);
+            strFilter.trim("\\/");
+            if(bRecursive)
+            {
+               Application.dir().rls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
+            }
+            else
+            {
+               Application.dir().ls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
+            }
          }
       }
    }
-}
+
+
+
+
+} // namespace metrowin
 
 
 

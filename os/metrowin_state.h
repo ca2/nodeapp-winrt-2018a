@@ -138,7 +138,7 @@ public:
 
    DWORD m_fRegisteredClasses; // flags for registered ::ca::window classes
 
-   mutex       m_mutexRegClassList;
+   //mutex       m_mutexRegClassList;
 
    hwnd_map       * m_pmapHWND;
    mutex             * m_pmutexHwnd;

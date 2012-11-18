@@ -28,7 +28,7 @@ struct __CTLCOLOR
    UINT nCtlType;
 };
 
-const char gen_Wnd[] = __WND;
+//const char gen_Wnd[] = __WND;
 
 namespace metrowin
 {
@@ -47,10 +47,10 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-      set_handle(NULL);
+      set_handle(::ca::null());
       m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
-      m_pfnSuper = NULL;
+//      m_pfnSuper = NULL;
       m_nModalResult = 0;
       m_bMouseHover = false;
       m_pfont = NULL;
@@ -63,7 +63,7 @@ namespace metrowin
       m_pguie = this;
       set_handle(hWnd);
       m_pguie->m_nFlags = 0;
-      m_pfnSuper = NULL;
+//      m_pfnSuper = NULL;
       m_nModalResult = 0;
       m_bMouseHover = false;
       m_pfont = NULL;
@@ -76,10 +76,10 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-      set_handle(NULL);
+      set_handle(::ca::null());
       m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
-      m_pfnSuper = NULL;
+//      m_pfnSuper = NULL;
       m_nModalResult = 0;
       m_bMouseHover = false;
       m_pfont = NULL;
@@ -91,9 +91,9 @@ namespace metrowin
       return dynamic_cast <::ca::window *>(from_handle((oswindow) pdata));   
    }
 
-   int_ptr window::get_os_data() const
+   void * window::get_os_data() const
    {
-      return (int_ptr) get_handle();
+      return hwnd_handle::get_handle();
    }
 
 
@@ -103,6 +103,7 @@ namespace metrowin
    __STATIC bool CLASS_DECL_metrowin __modify_style(oswindow hWnd, int nStyleOffset,
       DWORD dwRemove, DWORD dwAdd, UINT nFlags)
    {
+#ifdef WINDOWSEX
       ASSERT(hWnd != NULL);
       DWORD dwStyle = ::GetWindowLong(hWnd, nStyleOffset);
       DWORD dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
@@ -115,6 +116,9 @@ namespace metrowin
          ::SetWindowPos(hWnd, NULL, 0, 0, 0, 0,
             SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
       }
+#else
+      throw todo(::ca::get_thread_app());
+#endif
       return TRUE;
    }
 
@@ -136,8 +140,12 @@ namespace metrowin
    {
       // fill in time and position when asked for
       ___THREAD_STATE* pThreadState = gen_ThreadState.get_data();
+#ifdef WINDOWSEX
       pThreadState->m_lastSentMsg.time = ::GetMessageTime();
       pThreadState->m_lastSentMsg.pt = point(::GetMessagePos());
+#else
+      throw todo(::ca::get_thread_app());
+#endif
       return &pThreadState->m_lastSentMsg;
    }
 
@@ -166,6 +174,12 @@ namespace metrowin
       {
          return NULL;
       }
+   }
+
+
+   oswindow window::get_handle() const
+   {
+      return hwnd_handle::get_handle();
    }
 
    window * PASCAL window::FromHandlePermanent(oswindow hWnd)
@@ -213,7 +227,7 @@ namespace metrowin
          hwnd_map * pMap = afxMapHWND(); // don't create if not exist
          if (pMap != NULL)
             pMap->remove_handle(get_handle());
-         set_handle(NULL);
+         set_handle(::ca::null());
       }
 
       return hWnd;
@@ -244,21 +258,29 @@ namespace metrowin
       oswindow hWndParent, id id, LPVOID lpParam)
    {
       UNREFERENCED_PARAMETER(id);
-      ASSERT(lpszClassName == NULL || __is_valid_string(lpszClassName) || 
-         __is_valid_atom(lpszClassName));
+      //ASSERT(lpszClassName == NULL || __is_valid_string(lpszClassName) || __is_valid_atom(lpszClassName));
+      ASSERT(lpszClassName == NULL || __is_valid_string(lpszClassName));
       ENSURE_ARG(lpszWindowName == NULL || __is_valid_string(lpszWindowName));
 
       // allow modification of several common create parameters
       CREATESTRUCT cs;
       cs.dwExStyle = dwExStyle;
+#ifdef WINDOWSEX
       cs.lpszClass = lpszClassName;
       cs.lpszName = lpszWindowName;
+#else
+      throw todo(get_app());
+#endif
       cs.style = dwStyle;
       cs.x = x;
       cs.y = y;
       cs.cx = nWidth;
       cs.cy = nHeight;
+#ifdef WINDOWSEX
       cs.hwndParent = hWndParent;
+#else
+      throw todo(get_app());
+#endif
       //   cs.hMenu = hWndParent == NULL ? NULL : nIDorHMenu;
       cs.hMenu = NULL;
       cs.hInstance = System.m_hInstance;
@@ -281,6 +303,7 @@ namespace metrowin
          }
       }
 
+#ifdef WINDOWSEX
       if(cs.hwndParent == NULL)
       {
          cs.style &= ~WS_CHILD;
@@ -336,12 +359,17 @@ namespace metrowin
       {
          ASSERT(FALSE); // should have been set in send msg hook
       }
+#else
+      throw todo(get_app());
+#endif
+
       return TRUE;
    }
 
    // for child windows
    bool window::pre_create_window(CREATESTRUCT& cs)
    {
+#ifdef WINDOWSEX
       if (cs.lpszClass == NULL)
       {
          // make sure the default window class is registered
@@ -350,6 +378,9 @@ namespace metrowin
          // no WNDCLASS provided - use child window default
          ASSERT(cs.style & WS_CHILD);
       }
+#else
+      throw todo(get_app());
+#endif
       return TRUE;
    }
 
@@ -367,7 +398,7 @@ namespace metrowin
          dwStyle | WS_CHILD,
          rect.left, rect.top,
          rect.right - rect.left, rect.bottom - rect.top,
-         pParentWnd->_get_handle(), id, (LPVOID)pContext);
+         pParentWnd->get_handle(), id, (LPVOID)pContext);
    }
 
    bool window::create_message_window(const char * pszName, ::ca::window_callback * pcallback)
@@ -394,7 +425,7 @@ namespace metrowin
 
       if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).m_pwindowmap != NULL)
       {
-         Sys(m_papp).m_pwindowmap->m_map.remove_key((int_ptr) get_handle());
+         Sys(m_papp).m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
       single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
@@ -435,45 +466,49 @@ namespace metrowin
 
    void window::_001OnMove(gen::signal_object * pobj)
    {
-      UNREFERENCED_PARAMETER(pobj);
-      if(!m_bRectOk && !(GetExStyle() & WS_EX_LAYERED))
-      {
-         class rect rectWindow;
-         ::GetWindowRect(get_handle(), rectWindow);
-         m_pguie->m_rectParentClient = rectWindow;
-         m_rectParentClient = rectWindow;
-      }
+      throw todo(get_app());
+      //UNREFERENCED_PARAMETER(pobj);
+      //if(!m_bRectOk && !(GetExStyle() & WS_EX_LAYERED))
+      //{
+      //   class rect rectWindow;
+      //   ::GetWindowRect(get_handle(), rectWindow);
+      //   m_pguie->m_rectParentClient = rectWindow;
+      //   m_rectParentClient = rectWindow;
+      //}
    }
 
    void window::_001OnSize(gen::signal_object * pobj)
    {
-      UNREFERENCED_PARAMETER(pobj);
+      
+      throw todo(get_app());
+
+      //UNREFERENCED_PARAMETER(pobj);
 
 
-      if(!m_bRectOk && !(GetExStyle() & WS_EX_LAYERED))
-      {
-         class rect rectWindow;
-         ::GetWindowRect(get_handle(), rectWindow);
-         m_pguie->m_rectParentClient = rectWindow;
-         m_rectParentClient = rectWindow;
-      }
+      //if(!m_bRectOk && !(GetExStyle() & WS_EX_LAYERED))
+      //{
+      //   class rect rectWindow;
+      //   ::GetWindowRect(get_handle(), rectWindow);
+      //   m_pguie->m_rectParentClient = rectWindow;
+      //   m_rectParentClient = rectWindow;
+      //}
 
-      /*      if(m_spdibMultAlphaWork.is_null())
-      {
-      m_spdibMultAlphaWork.create(get_app());
-      }
+      ///*      if(m_spdibMultAlphaWork.is_null())
+      //{
+      //m_spdibMultAlphaWork.create(get_app());
+      //}
 
-      if(m_spdib.is_null())
-      {
-      m_spdib.create(get_app());
-      }
+      //if(m_spdib.is_null())
+      //{
+      //m_spdib.create(get_app());
+      //}
 
-      if(m_spdib.is_set() && m_rectParentClient.area() > 0)
-      {
-      m_spdib->create(m_rectParentClient.size());
-      }*/
+      //if(m_spdib.is_set() && m_rectParentClient.area() > 0)
+      //{
+      //m_spdib->create(m_rectParentClient.size());
+      //}*/
 
-      m_pguie->layout();
+      //m_pguie->layout();
 
 
 
@@ -537,6 +572,7 @@ namespace metrowin
          }
       }
 
+#ifdef WINDOWSEX
       // call default, unsubclass, and detach from the ::collection::map
       WNDPROC pfnWndProc = WNDPROC(GetWindowLongPtr(get_handle(), GWLP_WNDPROC));
       Default();
@@ -546,6 +582,9 @@ namespace metrowin
          if (pfnSuper != NULL)
             SetWindowLongPtr(get_handle(), GWLP_WNDPROC, reinterpret_cast<int_ptr>(pfnSuper));
       }
+#else
+      throw todo(get_app());
+#endif
       Detach();
       ASSERT(get_handle() == NULL);
       m_pfnDispatchWindowProc = &window::_start_user_message_handler;
@@ -559,7 +598,7 @@ namespace metrowin
 
    void window::PostNcDestroy()
    {
-      set_handle(NULL);
+      set_handle(::ca::null());
       // default to nothing
    }
 
@@ -578,6 +617,7 @@ namespace metrowin
 
       // check for special wnd??? values
       ASSERT(HWND_TOP == NULL);       // same as desktop
+#ifdef WINDOWSEX
       if (get_handle() == HWND_BOTTOM)
       {
       }
@@ -588,9 +628,14 @@ namespace metrowin
       {
       }
       else
+#endif
       {
          // should be a normal window
+#ifdef WINDOWSEX
          ASSERT(::IsWindow(get_handle()));
+#else
+         throw todo(get_app());
+#endif
 
          // should also be in the permanent or temporary handle ::collection::map
          single_lock sl(afxMutexHwnd(), TRUE);
@@ -631,12 +676,14 @@ namespace metrowin
 
       dumpcontext << "\nm_hWnd = " << (void *)get_handle();
 
-      if (get_handle() == NULL || get_handle() == HWND_BOTTOM ||
-         get_handle() == HWND_TOPMOST || get_handle() == HWND_NOTOPMOST)
+#ifdef WINDOWSEX
+
+      if(get_handle() == NULL || get_handle() == HWND_BOTTOM || get_handle() == HWND_TOPMOST || get_handle() == HWND_NOTOPMOST)
       {
          // not a normal window - nothing more to dump
          return;
       }
+
 
       if (!::IsWindow(get_handle()))
       {
@@ -644,6 +691,7 @@ namespace metrowin
          dumpcontext << " (illegal oswindow)";
          return; // don't do anything more
       }
+#endif
 
       ::ca::window * pWnd = ::metrowin::window::FromHandlePermanent(get_handle());
       if (pWnd != this)
@@ -655,22 +703,25 @@ namespace metrowin
       char szBuf [64];
       if (!const_cast < window * > (this)->send_message(WM_QUERYAFXWNDPROC, 0, 0) && pWnd == this)
          ((::ca::window *) this)->GetWindowText(szBuf, _countof(szBuf));
+#ifdef WINDOWSEX
       else
          ::DefWindowProc(get_handle(), WM_GETTEXT, _countof(szBuf), (LPARAM)&szBuf[0]);
       dumpcontext << "\ncaption = \"" << szBuf << "\"";
 
       ::GetClassName(get_handle(), szBuf, _countof(szBuf));
       dumpcontext << "\nclass name = \"" << szBuf << "\"";
+#endif
 
       rect rect;
       ((::ca::window *) this)->GetWindowRect(&rect);
       dumpcontext << "\nrect = " << rect;
-      dumpcontext << "\nparent ::ca::window * = " << (void *)((::ca::window *) this)->GetParent();
+      dumpcontext << "\nparent ::ca::window * = " << (void *)((::ca::window *) this)->get_parent();
 
+#ifdef WINDOWSEX
       dumpcontext << "\nstyle = " << (void *)(dword_ptr)::GetWindowLong(get_handle(), GWL_STYLE);
       if (::GetWindowLong(get_handle(), GWL_STYLE) & WS_CHILD)
          dumpcontext << "\nid = " << __get_dialog_control_id(get_handle());
-
+#endif
       dumpcontext << "\n";
    }
 
@@ -688,7 +739,7 @@ namespace metrowin
       bResult = FALSE;
       pMap = NULL;
       pWnd = NULL;
-      hWndOrig = NULL;
+      hWndOrig = ::ca::null();
       if (get_handle() != NULL)
       {
          single_lock sl(afxMutexHwnd(), TRUE);
@@ -702,8 +753,12 @@ namespace metrowin
          }
       }
       sl.unlock();
+#ifdef WINDOWSEX
       if (get_handle() != NULL)
          bResult = ::DestroyWindow(get_handle()) != FALSE;
+#else
+      throw todo(get_app());
+#endif
       sl.lock();
       if (hWndOrig != NULL)
       {
@@ -739,6 +794,7 @@ namespace metrowin
 
    LRESULT window::DefWindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam)
    {
+#ifdef WINDOWSEX
       if (m_pfnSuper != NULL)
          return ::CallWindowProc(m_pfnSuper, get_handle(), nMsg, wParam, lParam);
 
@@ -747,8 +803,12 @@ namespace metrowin
          return ::DefWindowProc(get_handle(), nMsg, wParam, lParam);
       else
          return ::CallWindowProc(pfnWndProc, get_handle(), nMsg, wParam, lParam);
+#else
+      throw todo(get_app());
+#endif
    }
 
+#ifdef WINDOWSEX
    WNDPROC* window::GetSuperWndProcAddr()
    {
       // Note: it is no longer necessary to override GetSuperWndProcAddr
@@ -758,6 +818,8 @@ namespace metrowin
 
       return &m_pfnSuper;
    }
+#endif
+
 
    void window::pre_translate_message(gen::signal_object * pobj)
    {
@@ -779,6 +841,7 @@ namespace metrowin
 
    int window::GetDlgItemText(int nID, string & rString) const
    {
+#ifdef WINDOWSEX
       ASSERT(::IsWindow(get_handle()));
       rString = "";    // is_empty without deallocating
 
@@ -791,8 +854,13 @@ namespace metrowin
       }
 
       return (int)rString.get_length();
+
+#else
+      throw todo(get_app());
+#endif
    }
 
+#ifdef WINDOWSEX
    bool window::GetWindowPlacement(WINDOWPLACEMENT* lpwndpl) 
    {
       ASSERT(::IsWindow(get_handle()));
@@ -806,7 +874,6 @@ namespace metrowin
       ((WINDOWPLACEMENT*)lpwndpl)->length = sizeof(WINDOWPLACEMENT);
       return ::SetWindowPlacement(get_handle(), lpwndpl) != FALSE;
    }
-
    /////////////////////////////////////////////////////////////////////////////
    // window will delegate owner draw messages to self drawing controls
 
@@ -842,6 +909,9 @@ namespace metrowin
       // not handled - do default
       Default();
    }
+
+#endif
+
 
    bool window::_EnableToolTips(bool bEnable, UINT nFlag)
    {
@@ -1303,7 +1373,7 @@ restart_mouse_hover_check:
          user::interaction_ptr_array wnda;
          wnda = System.frames();
          wnda.get_wnda(hwnda);
-         user::WndUtil::SortByZOrder(hwnda);
+         user::window_util::SortByZOrder(hwnda);
          for(int i = 0; i < hwnda.get_size(); i++)
          {
             ::user::interaction * pguie = wnda.find_first(hwnda[i]);
@@ -3165,7 +3235,7 @@ restart_mouse_hover_check:
          return;
 
       ::ca::graphics_sp graphics(get_app());
-      WIN_DC(graphics.m_p)->Attach((HDC) pbase->m_wparam);
+      METROWIN_DC(graphics.m_p)->Attach((HDC) pbase->m_wparam);
       rect rectx;
       ::ca::bitmap * pbitmap = &graphics->GetCurrentBitmap();
       ::GetCurrentObject((HDC) pbase->m_wparam, OBJ_BITMAP);
@@ -3223,7 +3293,7 @@ restart_mouse_hover_check:
       {
       }
       graphics->FillSolidRect(rectx, RGB(255, 255, 255));
-      WIN_DC(graphics.m_p)->Detach();
+      METROWIN_DC(graphics.m_p)->Detach();
       pobj->m_bRet = true;
       pbase->set_lresult(0);
    }

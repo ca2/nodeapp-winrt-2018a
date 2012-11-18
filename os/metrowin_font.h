@@ -1,12 +1,15 @@
 #pragma once
 
+
 #undef new
+
 
 #include <GdiPlus.h>
 
 
 namespace metrowin
 {
+
 
    class CLASS_DECL_metrowin font : 
       virtual public ::ca::font
@@ -38,11 +41,18 @@ namespace metrowin
 
       virtual int GetLogFont(LOGFONT* pLogFont);
 
-         virtual void dump(dump_context & dumpcontext) const;
+      virtual void dump(dump_context & dumpcontext) const;
+
+      virtual bool destroy();
 
 
    };
 
+
 } // namespace metrowin
 
+
 #define new DEBUG_NEW
+
+
+

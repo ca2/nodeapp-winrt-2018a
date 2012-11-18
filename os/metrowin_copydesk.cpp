@@ -19,16 +19,52 @@ namespace metrowin
 
    int copydesk::get_file_count()
    {
-      if(!m_p->OpenClipboard())
+
+      ::Windows::ApplicationModel::DataTransfer::DataPackageView ^ view = ::Windows::ApplicationModel::DataTransfer::Clipboard::GetContent();
+
+      if(view == nullptr)
          return 0;
-      HDROP hdrop = (HDROP) ::GetClipboardData(CF_HDROP);
-      int iCount = 0;
-      if(hdrop != NULL)
+
+      if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::Uri))
       {
-         iCount = ::DragQueryFile(hdrop , 0xFFFFFFFF, NULL, 0);
+         return 1;
       }
-      ::CloseClipboard();
-      return iCount;
+      else if(view->Contains(rtstr("FileDrop")))
+      {
+         
+         HGLOBAL hglobal;
+
+         ::Windows::Storage::Streams::IInputStream ^ stream = (::Windows::Storage::Streams::IInputStream ^):: wait(view->GetDataAsync(rtstr("FileDrop")));
+
+         ::Windows::Storage::Streams::IBuffer ^ buffer = ref new ::Windows::Storage::Streams::Buffer(sizeof(HGLOBAL));
+
+         stream->ReadAsync(buffer, sizeof(HGLOBAL), ::Windows::Storage::Streams::InputStreamOptions::None);
+
+         primitive::memory memory(get_app());
+
+         memory.set_os_buffer(buffer);
+
+         memcpy(&hglobal, memory.get_data(), sizeof(HGLOBAL));
+
+         //iCount = ::DragQueryFile(hglobal , 0xFFFFFFFF, NULL, 0);
+
+      }
+      else if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::StorageItems))
+      {
+         
+         ::Windows::Foundation::Collections::IVectorView < ::Windows::Storage::IStorageItem ^ > ^ items = ::wait(view->GetStorageItemsAsync());
+
+         return items->Size;
+
+      }
+      else
+      {
+
+         return 0;
+
+      }
+
+
    }
 
 
@@ -39,6 +75,8 @@ namespace metrowin
          return;
       if(!m_p->OpenClipboard())
          return;
+#ifdef WINDOWSEX
+
       HDROP hdrop = (HDROP) ::GetClipboardData(CF_HDROP);
       string str;
       for(int i = 0; i < iCount; i++)
@@ -50,11 +88,17 @@ namespace metrowin
          free(lpwsz);
       }
       ::CloseClipboard();
+#else
+
+      throw todo(get_app());
+
+#endif
+
    }
 
    void copydesk::set_filea(stringa & stra)
    {
-
+#ifdef WINDOWSEX
       ASSERT(m_p->IsWindow());
 
       strsize iLen = 0;
@@ -96,7 +140,9 @@ namespace metrowin
       EmptyClipboard();
       SetClipboardData(CF_HDROP, hglbCopy);
       VERIFY(::CloseClipboard());
-
+#else
+      throw todo(get_app());
+#endif
    }
 
 
@@ -137,6 +183,7 @@ namespace metrowin
 
    void copydesk::set_plain_text(const char * psz)
    {
+#ifdef WINDOWSEX
       ASSERT(m_p->IsWindow());
    //   int iLen = 0;
 
@@ -168,12 +215,16 @@ namespace metrowin
       SetClipboardData(CF_UNICODETEXT, hglbCopy);
       SetClipboardData(CF_TEXT, hglbCopy2);
       VERIFY(::CloseClipboard());
+#else
+      throw todo(get_app());
+#endif
 
    }
 
 
    string copydesk::get_plain_text()
    {
+#ifdef WINDOWSEX
       if (IsClipboardFormatAvailable(CF_UNICODETEXT))
       {
          if(!m_p->OpenClipboard())
@@ -198,10 +249,14 @@ namespace metrowin
       {
          return "";
       }
+#else
+      throw todo(get_app());
+#endif
    }
 
    bool copydesk::desk_to_dib(::ca::dib * pdib)
    {
+#ifdef WINDOWSEX
       if(!m_p->OpenClipboard())
          return false;
       bool bOk = false;
@@ -234,6 +289,9 @@ namespace metrowin
       //::DeleteDC(hdc);
       ::CloseClipboard();
       return bOk;
+#else
+      throw todo(get_app());
+#endif
    }
 
 

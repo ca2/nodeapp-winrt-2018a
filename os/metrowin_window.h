@@ -31,6 +31,8 @@ namespace metrowin
 
       virtual void on_delete(::ca::ca * poc);
 
+      virtual oswindow get_handle() const;
+
       virtual void mouse_hover_add(::user::interaction* pinterface);
       virtual void mouse_hover_remove(::user::interaction* pinterface);
 

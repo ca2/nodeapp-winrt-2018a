@@ -1,18 +1,18 @@
 #include "framework.h"
-#include "WinStdioFile.h"
+#include "stdio_file.h"
 
 #include <errno.h>
 #include <io.h>
 #include <fcntl.h>
 
-WinStdioFile::WinStdioFile(::ca::application * papp) :
+stdio_file::stdio_file(::ca::application * papp) :
    ca(papp),
    WinFile(papp)
 {
    m_pStream = NULL;
 }
 
-WinStdioFile::~WinStdioFile()
+stdio_file::~stdio_file()
 {
 //   ASSERT_VALID(this);
 
@@ -22,7 +22,7 @@ WinStdioFile::~WinStdioFile()
       close();
 }
 
-bool WinStdioFile::open(const char * lpszFileName, UINT nOpenFlags)
+bool stdio_file::open(const char * lpszFileName, UINT nOpenFlags)
 {
 
    ASSERT(lpszFileName != NULL);
@@ -99,7 +99,7 @@ bool WinStdioFile::open(const char * lpszFileName, UINT nOpenFlags)
    return TRUE;
 }
 
-::primitive::memory_size WinStdioFile::read(void * lpBuf, ::primitive::memory_size nCount)
+::primitive::memory_size stdio_file::read(void * lpBuf, ::primitive::memory_size nCount)
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -121,7 +121,7 @@ bool WinStdioFile::open(const char * lpszFileName, UINT nOpenFlags)
    return nRead;
 }
 
-void WinStdioFile::write(const void * lpBuf, ::primitive::memory_size nCount)
+void stdio_file::write(const void * lpBuf, ::primitive::memory_size nCount)
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -131,7 +131,7 @@ void WinStdioFile::write(const void * lpBuf, ::primitive::memory_size nCount)
       vfxThrowFileException(get_app(), ::ex1::file_exception::generic, _doserrno, m_strFileName);
 }
 
-void WinStdioFile::write_string(const char * lpsz)
+void stdio_file::write_string(const char * lpsz)
 {
    ASSERT(lpsz != NULL);
    ASSERT(m_pStream != NULL);
@@ -140,7 +140,7 @@ void WinStdioFile::write_string(const char * lpsz)
       vfxThrowFileException(get_app(), ::ex1::file_exception::diskFull, _doserrno, m_strFileName);
 }
 
-LPTSTR WinStdioFile::read_string(LPTSTR lpsz, UINT nMax)
+LPTSTR stdio_file::read_string(LPTSTR lpsz, UINT nMax)
 {
    ASSERT(lpsz != NULL);
    ASSERT(__is_valid_address(lpsz, nMax));
@@ -155,7 +155,7 @@ LPTSTR WinStdioFile::read_string(LPTSTR lpsz, UINT nMax)
    return lpszResult;
 }
 
-UINT WinStdioFile::read_string(string & rString)
+UINT stdio_file::read_string(string & rString)
 {
    ASSERT_VALID(this);
 
@@ -197,7 +197,7 @@ UINT WinStdioFile::read_string(string & rString)
    return lpszResult != NULL;
 }
 
-/*void WinStdioFile::write_string(const char * lpsz)
+/*void stdio_file::write_string(const char * lpsz)
 {
    ASSERT(lpsz != NULL);
    ASSERT(m_pStream != NULL);
@@ -206,7 +206,7 @@ UINT WinStdioFile::read_string(string & rString)
       vfxThrowFileException(get_app(), ::ex1::file_exception::diskFull, _doserrno, m_strFileName);
 }*/
 
-/*wchar_t * WinStdioFile::read_string(wchar_t * lpsz, UINT nMax)
+/*wchar_t * stdio_file::read_string(wchar_t * lpsz, UINT nMax)
 {
    ASSERT(lpsz != NULL);
    ASSERT(__is_valid_address(lpsz, nMax));
@@ -221,7 +221,7 @@ UINT WinStdioFile::read_string(string & rString)
    return lpszResult;
 }*/
 
-file_position WinStdioFile::seek(file_offset lOff, ::ex1::e_seek nFrom)
+file_position stdio_file::seek(file_offset lOff, ::ex1::e_seek nFrom)
 {
    ASSERT_VALID(this);
    ASSERT(nFrom == ::ex1::seek_begin || nFrom == ::ex1::seek_end || nFrom == ::ex1::seek_current);
@@ -235,7 +235,7 @@ file_position WinStdioFile::seek(file_offset lOff, ::ex1::e_seek nFrom)
    return pos;
 }
 
-file_position WinStdioFile::get_position() const
+file_position stdio_file::get_position() const
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -247,7 +247,7 @@ file_position WinStdioFile::get_position() const
    return pos;
 }
 
-void WinStdioFile::Flush()
+void stdio_file::Flush()
 {
    ASSERT_VALID(this);
 
@@ -256,7 +256,7 @@ void WinStdioFile::Flush()
          m_strFileName);
 }
 
-void WinStdioFile::close()
+void stdio_file::close()
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -275,7 +275,7 @@ void WinStdioFile::close()
          m_strFileName);
 }
 
-void WinStdioFile::Abort()
+void stdio_file::Abort()
 {
    ASSERT_VALID(this);
 
@@ -286,7 +286,7 @@ void WinStdioFile::Abort()
    m_bCloseOnDelete = FALSE;
 }
 
-ex1::file * WinStdioFile::Duplicate() const
+ex1::file * stdio_file::Duplicate() const
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -295,7 +295,7 @@ ex1::file * WinStdioFile::Duplicate() const
    return NULL;
 }
 
-void WinStdioFile::LockRange(file_position /* dwPos */, file_size /* dwCount */)
+void stdio_file::LockRange(file_position /* dwPos */, file_size /* dwCount */)
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -303,7 +303,7 @@ void WinStdioFile::LockRange(file_position /* dwPos */, file_size /* dwCount */)
    throw not_supported_exception();
 }
 
-void WinStdioFile::UnlockRange(file_position /* dwPos */, file_size /* dwCount */)
+void stdio_file::UnlockRange(file_position /* dwPos */, file_size /* dwCount */)
 {
    ASSERT_VALID(this);
    ASSERT(m_pStream != NULL);
@@ -312,7 +312,7 @@ void WinStdioFile::UnlockRange(file_position /* dwPos */, file_size /* dwCount *
 }
 
 
-void WinStdioFile::dump(dump_context & dumpcontext) const
+void stdio_file::dump(dump_context & dumpcontext) const
 {
    WinFile::dump(dumpcontext);
 
@@ -323,7 +323,7 @@ void WinStdioFile::dump(dump_context & dumpcontext) const
 
 
 
-file_size WinStdioFile::get_length() const
+file_size stdio_file::get_length() const
 {
    ASSERT_VALID(this);
 

@@ -92,7 +92,7 @@ CLASS_DECL_metrowin void reset_message_cache();
 
 #define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::ca::thread * >(pthread)))
 #define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca::window * >(pwnd)))
-#define WIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (dynamic_cast < ::ca::graphics * > (pgraphics)))
+#define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (dynamic_cast < ::ca::graphics * > (pgraphics)))
 #define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::ca::graphics * )(pgraphics)))
 #define WIN_HDC(pgraphics) ((dynamic_cast < ::metrowin::graphics * > (dynamic_cast < ::ca::graphics * > (pgraphics)))->get_handle())
 #define SP_HDC(pgraphics) ((dynamic_cast < ::metrowin::graphics * > ((::ca::graphics *)(pgraphics)))->get_handle())

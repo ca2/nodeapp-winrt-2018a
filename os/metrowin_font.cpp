@@ -37,7 +37,7 @@ namespace metrowin
    //{
    // return dynamic_cast < font * > (::metrowin::graphics_object::from_handle(papp, hFont)); 
    //}
-   bool font::CreateFontIndirect(const LOGFONT* lpLogFont)
+/*   bool font::CreateFontIndirect(const LOGFONT* lpLogFont)
    { 
 
       m_strFontFamilyName = lpLogFont->lfFaceName;
@@ -74,10 +74,10 @@ namespace metrowin
 
    }
 
-
+   */
    /////////////////////////////////////////////////////////////////////////////
 
-   void font::construct(const ::ca::font & fontParam)
+   /*void font::construct(const ::ca::font & fontParam)
    {
       class font & font = const_cast < ::metrowin::font & > (dynamic_cast < const ::metrowin::font & > (fontParam));
       if(font.m_pfont == NULL)
@@ -101,7 +101,7 @@ namespace metrowin
       font.GetLogFont(&lf);
       CreateFontIndirect(&lf);
       }*/
-   }
+   //}
 
 
    void font::dump(dump_context & dumpcontext) const
@@ -143,7 +143,7 @@ namespace metrowin
    // out-of-line ::ca::brush, font, etc. helpers
 
    // nPointSize is actually scaled 10x
-   bool font::CreatePointFont(int nPointSize, const char * lpszFaceName, ::ca::graphics * pgraphics)
+/*   bool font::CreatePointFont(int nPointSize, const char * lpszFaceName, ::ca::graphics * pgraphics)
    {
       ASSERT(__is_valid_string(lpszFaceName));
 
@@ -186,28 +186,29 @@ namespace metrowin
       ReleaseDC(NULL, hDC);
 
       return CreateFontIndirect(&logFont);*/
-   }
+  // }
 
 
-   int_ptr font::get_os_data() const
+   IDWriteTextFormat * font::get_os_font(::metrowin::graphics * pdc) const
    {
 
       if(m_pformat == NULL || !m_bUpdated)
       {
-         if(m_pfont != NULL)
+
+         if(m_pformat != NULL)
          {
-            destroy();
+            ((font *)  this)->destroy();
          }
 
 
-      IDWriteFactory * pfactory = TlsGetWriteFactory();
+         IDWriteFactory * pfactory = TlsGetWriteFactory();
 
 
          DWRITE_FONT_STYLE style;
 
-         //if(lplf->lfItalic)
-           // style = DWRITE_FONT_STYLE_ITALIC;
-         //else
+         if(m_bItalic)
+            style = DWRITE_FONT_STYLE_ITALIC;
+         else
             style = DWRITE_FONT_STYLE_NORMAL;
 
          DWRITE_FONT_STRETCH stretch;
@@ -216,15 +217,15 @@ namespace metrowin
 
          HRESULT hr = pfactory->CreateTextFormat(
             //wstring(lplf->lfFaceName),
-            wstring(lpszFaceName),
+            wstring(m_strFontFamilyName),
             NULL,
             //(DWRITE_FONT_WEIGHT) lplf->lfWeight,
-            (DWRITE_FONT_WEIGHT) bBold ? DWRITE_FONT_WEIGHT_BOLD : DWRITE_FONT_WEIGHT_NORMAL,
+            (DWRITE_FONT_WEIGHT) m_iFontWeight,
             style,
             stretch,
-            m_eunit == ::ca::unit_point ? point_dpi(m_dFontSize) : y_dpi(m_dFontSize),
+            m_eunitFontSize == ::ca::unit_point ? point_dpi(m_dFontSize) : y_dpi(m_dFontSize),
             L"",
-            &m_pformat);
+            &((font *)  this)->m_pformat);
 
 
          if(FAILED(hr) || m_pformat == NULL)
@@ -233,12 +234,12 @@ namespace metrowin
       }
 
 
-      if(m_pfont != NULL)
+      if(m_pformat != NULL)
       {
          ((font *) this)->m_bUpdated = true;
       }
 
-      return (int_ptr) (Gdiplus::Font *) m_pfont;
+      return (IDWriteTextFormat *) m_pformat;
 
    }
 

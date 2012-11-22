@@ -2,6 +2,8 @@
 
 #ifdef IMPLEMENT_VISTA_TOOLS
 
+
+
 namespace VistaTools 
 {
 

@@ -61,31 +61,33 @@ namespace metrowin
    void file_set::refresh()
    {
       clear_file();
-      string strFilter;
-      int i, j;
-      FileFind filefind;
-      string strFile;
-      string str;
 
-      for(i = 0; i < m_straSearch.get_size(); i++)
-      {
-         bool bRecursive = true;
-         if(i < m_baRecursive.get_size())
-            bRecursive = m_baRecursive[i];
-         for(j = 0; j < m_straFilter.get_size(); j++)
-         {
-            string strFilter = m_straFilter.element_at(j);
-            strFilter.trim("\\/");
-            if(bRecursive)
-            {
-               Application.dir().rls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
-            }
-            else
-            {
-               Application.dir().ls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
-            }
-         }
-      }
+      throw todo(get_app());
+      //string strFilter;
+      //int i, j;
+      //file_find filefind;
+      //string strFile;
+      //string str;
+
+      //for(i = 0; i < m_straSearch.get_size(); i++)
+      //{
+      //   bool bRecursive = true;
+      //   if(i < m_baRecursive.get_size())
+      //      bRecursive = m_baRecursive[i];
+      //   for(j = 0; j < m_straFilter.get_size(); j++)
+      //   {
+      //      string strFilter = m_straFilter.element_at(j);
+      //      strFilter.trim("\\/");
+      //      if(bRecursive)
+      //      {
+      //         Application.dir().rls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
+      //      }
+      //      else
+      //      {
+      //         Application.dir().ls_pattern(m_straSearch.element_at(i), strFilter, &m_straFile);
+      //      }
+      //   }
+      //}
    }
 
 

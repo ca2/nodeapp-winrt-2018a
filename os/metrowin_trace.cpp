@@ -202,6 +202,7 @@ static const __MAP_MESSAGE allMessages[] =
 /////////////////////////////////////////////////////////////////////////////
 // DDE special case
 
+#ifdef WINDOWSEX
 static void TraceDDE(const char * lpszPrefix, const MSG* pMsg)
 {
    ENSURE_ARG(pMsg != NULL);
@@ -267,9 +268,10 @@ static void TraceDDE(const char * lpszPrefix, const MSG* pMsg)
       ::GlobalUnlock(hAdvise);
    }
 }
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
-
+#ifdef WINDOWSEX
 void __trace_message(const char * lpszPrefix, gen::signal_object * pobj)
 {
    ENSURE_ARG(__is_valid_string(lpszPrefix));
@@ -433,3 +435,5 @@ void __trace_message(const char * lpszPrefix, LPMSG lpmsg)
    /*if (lpmsg->message >= WM_DDE_FIRST && lpmsg->message <= WM_DDE_LAST)
       TraceDDE(lpszPrefix, pMsg);*/
 }
+
+#endif

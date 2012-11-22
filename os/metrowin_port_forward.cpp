@@ -18,17 +18,22 @@ namespace metrowin
    port_forward::port_forward(::ca::application * papp) :
       ca(papp)
    {
+      /*
 	   InitializeMembersToNull();
-	   ::InitializeCriticalSection( &m_cs );
+	   ::InitializeCriticalSection( &m_cs );*/
+
    }
 
    port_forward::~port_forward()
    {
+      /*
 	   StopListeningForUpnpChanges( );
 	
 	   ::DeleteCriticalSection( &m_cs );
+      */
    }
 
+   /*
    void port_forward::InitializeMembersToNull()
    {
 	   m_piNAT			= NULL;				
@@ -85,7 +90,7 @@ namespace metrowin
 	   CoUninitialize();  // balancing call for CoInitialize
    }
 
-   HRESULT port_forward::ListenForUpnpChanges(::ca4::port_forward_change_callbacks *pCallbacks /* =NULL */ )
+   HRESULT port_forward::ListenForUpnpChanges(::ca4::port_forward_change_callbacks *pCallbacks /* =NULL */ /* )
    {
 	   // check if we are already listening
 	
@@ -531,7 +536,7 @@ namespace metrowin
 
 
    /*   static   */
-   UINT port_forward::ThreadForPortRetrieval(LPVOID pVoid)
+/*   UINT port_forward::ThreadForPortRetrieval(LPVOID pVoid)
    {	
 	   SetThreadName(::GetCurrentThreadId(), "PortRtrv" );  // helps in debugging to see a thread's name
 
@@ -668,7 +673,7 @@ namespace metrowin
 
 
    /*   static   */
-   UINT port_forward::ThreadForDeviceInformationRetrieval( LPVOID pVoid )
+  /* UINT port_forward::ThreadForDeviceInformationRetrieval( LPVOID pVoid )
    {
 	   SetThreadName(::GetCurrentThreadId(), "DevInfo" );  // helps in debugging to see a thread's name
 	
@@ -802,7 +807,7 @@ namespace metrowin
 
 
    /*   static   */
-   UINT port_forward::ThreadToEditMapping( LPVOID pVoid )
+/*   UINT port_forward::ThreadToEditMapping( LPVOID pVoid )
    {	
 	   SetThreadName(::GetCurrentThreadId(), "EditMap" );  // helps in debugging to see a thread's name
 	
@@ -924,7 +929,7 @@ namespace metrowin
    }
 
    /*   static   */
-   UINT port_forward::ThreadToDeleteMapping( LPVOID pVoid )
+/*   UINT port_forward::ThreadToDeleteMapping( LPVOID pVoid )
    {	
 	   SetThreadName(::GetCurrentThreadId(), "DelMap" );  // helps in debugging to see a thread's name
 
@@ -1010,7 +1015,7 @@ namespace metrowin
 
 
    /*   static   */
-   UINT port_forward::ThreadToAddMapping( LPVOID pVoid )
+/*   UINT port_forward::ThreadToAddMapping( LPVOID pVoid )
    {
 	   SetThreadName(::GetCurrentThreadId(), "AddMap" );  // helps in debugging to see a thread's name
 	
@@ -1274,7 +1279,7 @@ namespace metrowin
 
 
    HRESULT port_forward::PopulateDeviceInfoContainer( IUPnPDevice* piDevice, 
-				   port_forward::device & deviceInfo, oswindow hWnd /* =NULL */ )
+				   port_forward::device & deviceInfo, oswindow hWnd /* =NULL */ /*)
    {
 	
 	   HRESULT result=S_OK, hrReturn=S_OK;
@@ -1737,6 +1742,7 @@ namespace metrowin
 	   {
 	   }
    }
+   */
 
 
 } // namespace metrowin

@@ -15,7 +15,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
    {
 
 
-      ::OutputDebugString("::ca2:: win2.dll :: initializing!\n");
+      ::OutputDebugStringW(L"::ca2:: win2.dll :: initializing!\n");
       
 
    }
@@ -23,7 +23,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
    {
    
 
-      ::OutputDebugString("::ca2:: win2.dll :: terminating!\n");
+      ::OutputDebugStringW(L"::ca2:: win2.dll :: terminating!\n");
 
 
    }

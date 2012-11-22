@@ -38,6 +38,7 @@ namespace metrowin
       m_pbuffer = new user::buffer(papp);
       m_pbuffer->m_spdib.create(papp);
       m_dwLastUpdate = false;
+      m_directx = ref new directx_base(papp);
    }
 
    extern void _001DeferPaintLayeredWindowBackground(oswindow hwnd, ::ca::graphics * pdc);
@@ -111,6 +112,7 @@ namespace metrowin
    void window_draw::_synch_redraw()
    {
       
+
       keep_event_reset keepeventreset(&m_eventFree);
 
       static DWORD s_dwLastAnalysisFrame = 0;
@@ -338,8 +340,7 @@ namespace metrowin
          TRACE("Could not initialize ca2::twf - ca2 Transparent Window Framework!");
          return 0;
       }
-#ifdef WINDOWSEX
-      ::AttachThreadInput(::GetCurrentThreadId(), WIN_THREAD(System.::ca::thread_sp::m_p)->m_nThreadID, TRUE);
+//      ::AttachThreadInput(::GetCurrentThreadId(), WIN_THREAD(System.::ca::thread_sp::m_p)->m_nThreadID, TRUE);
       MSG msg;
       s_bRunning = true;
       while(m_bRun)
@@ -354,10 +355,10 @@ namespace metrowin
          catch(...)
          {
          }
-         while(::PeekMessageA(&msg, NULL, NULL, NULL, PM_NOREMOVE))
+  /*       while(::PeekMessageA(&msg, NULL, NULL, NULL, PM_NOREMOVE))
          {
             __get_thread()->pump_message();
-         }
+         }*/
          int iUiDataWriteWindowTimeForTheApplicationInThisMachine = 8;
          if(m_iFramesPerSecond == 0)
          {
@@ -374,9 +375,6 @@ namespace metrowin
       }
       //delete this;
       s_bRunning = false;
-#else
-      throw todo(get_app());
-#endif
       return 0;
    }
 
@@ -416,7 +414,7 @@ namespace metrowin
 
 
 
-      rect rectScreen;
+      /*rect rectScreen;
       System.get_screen_rect(&rectScreen);
       m_pbuffer->UpdateBuffer(rectScreen.bottom_right());
       if(m_pbuffer->GetBuffer()->get_os_data() == NULL)
@@ -427,7 +425,7 @@ namespace metrowin
       if(pdc == NULL)
       {
          return false;
-      }
+      }*/
 
 
       user::oswindow_array hwnda;
@@ -448,9 +446,14 @@ namespace metrowin
       //hwndtreea.EnumDescendants();
 
 
+      m_directx->Render(wndpa);
+      m_directx->Present();
+
+
+      return true;
       
 
-      rect rectUpdate;
+/*      rect rectUpdate;
 
       rectUpdate = rectScreen;
 
@@ -521,7 +524,7 @@ namespace metrowin
       }
          */
       
-      for(int l = 0; l < wndpa.get_count();)
+  /*    for(int l = 0; l < wndpa.get_count();)
       {
          try
          {
@@ -622,7 +625,7 @@ namespace metrowin
             pwnd->_001Print(m_pbuffer->GetBuffer());
             m_wndpaOut.add(pwnd);
          }*/
-      }
+      //}
 
       //HDC hdc = (HDC) m_pbuffer->GetBuffer()->get_os_data();
       //::SetViewportOrgEx(hdc, 0, 0, NULL);
@@ -646,7 +649,7 @@ namespace metrowin
    //   TRACE("// TickCount: %d \n", dwTimeOut - dwTimeIn);
    //   TRACE("////////////////////////////////////////////////////\n");
 
-      return true;
+    //  return true;
    }
 
    bool window_draw::ScreenOutput()

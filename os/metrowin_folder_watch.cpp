@@ -22,6 +22,8 @@ namespace metrowin
 
    int folder_watch::run() // thread procedure
    {
+
+#ifdef WINDOWSEX
       HANDLE hDirectory = ::CreateFileW(gen::international::utf8_to_unicode(m_strPath), 
                       FILE_LIST_DIRECTORY,
                       FILE_SHARE_READ|FILE_SHARE_WRITE|FILE_SHARE_DELETE,
@@ -64,6 +66,11 @@ namespace metrowin
       } 
       ::CloseHandle(hDirectory);
       return 0;
+#else
+
+      throw todo(get_app());
+
+#endif
    }
 
    folder_watch::e_action folder_watch::translate_os_action(int iAction)

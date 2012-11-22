@@ -32,9 +32,9 @@
 
 
 #include "inttypes.h"
-
-
-#define IMPLEMENT_VISTA_TOOLS
+//
+//#ifde
+//#define IMPLEMENT_VISTA_TOOLS
 #define DRAWDIB_INCLUDE_STRETCHDIB
 
 

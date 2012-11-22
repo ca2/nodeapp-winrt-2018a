@@ -1,7 +1,7 @@
 #pragma once
 
 
-class winmerde { public: winmerde() {}  ~winmerde() {} };
+class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 
 #include "get_platform.h"
 

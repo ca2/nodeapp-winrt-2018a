@@ -1,8 +1,6 @@
 #include "framework.h"
 #include <math.h>
-#ifndef METROWIN
 #include "include/FreeImage.h"
-#endif
 
 namespace metrowin
 {
@@ -116,19 +114,32 @@ namespace metrowin
       m_info.bmiHeader.biSizeImage     = width * height * 4;
 
       m_spbitmap.create(get_app());
+      m_spbitmapMap.create(get_app());
       m_spgraphics.create(get_app());
 
-      if(m_spbitmap.m_p == NULL)
+      if(m_spbitmap.m_p == NULL || m_spbitmapMap.is_null())
       {
          m_size = class size(0, 0);
          return FALSE;
       }
-      
-      if(!m_spbitmap->CreateDIBSection(NULL, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, NULL, NULL))
+
+      m_spgraphics->CreateCompatibleDC(NULL);
+
+
+      //m_pcolorref = (COLORREF *) ca2_alloc(width * height * sizeof(COLORREF));
+
+      if(!m_spbitmapMap->CreateDIBSection(m_spgraphics, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, NULL, NULL))
       {
          m_size = class size(0, 0);
          return FALSE;
       }
+
+      if(!m_spbitmap->CreateBitmap(m_spgraphics, m_size.cx, m_size.cy, 1, 32, m_pcolorref))
+      {
+         m_size = class size(0, 0);
+         return FALSE;
+      }
+
 
       if(m_spbitmap->get_os_data() != NULL)
       {
@@ -142,6 +153,7 @@ namespace metrowin
          }
          ((Gdiplus::Bitmap *)pbitmap->get_os_data())->GetHBITMAP(Gdiplus::Color(0, 0, 0, 0), &m_hbitmapOriginal);*/
          m_size = class size(width, height);
+         m_scan = width * sizeof(COLORREF);
          return TRUE;
       }
       else
@@ -2477,6 +2489,73 @@ namespace metrowin
       return (int) (((_int64) i * Sin10N[iAngle]) >> 34);
    }
 
+   void dib::map()
+   {
+
+      if(m_spbitmapMap.is_null() || m_spbitmap.is_null())
+         return;
+
+      D2D1_POINT_2U p;
+
+      p.x = 0;
+      p.y = 0;
+
+      D2D1_RECT_U srcRect;
+
+      srcRect.left = 0;
+      srcRect.right = m_size.cx;
+      srcRect.top = 0;
+      srcRect.bottom = m_size.cy;
+
+      METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->CopyFromBitmap(&p, (ID2D1Bitmap *) m_spbitmap->get_os_data(), &srcRect);
+
+      zero(&METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map, sizeof(METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map));
+
+      HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->Map(D2D1_MAP_OPTIONS_READ, &METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map);
+
+      if(FAILED(hr) || METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.bits == NULL)
+         throw "";
+
+      m_pcolorref = (COLORREF *) METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.bits;
+      m_scan = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.pitch;
+
+   }
+
+   void dib::unmap()
+   {
+
+      if(m_spbitmapMap.is_null() || m_spbitmap.is_null())
+         return;
+
+      ::metrowin::bitmap b(get_app());
+
+      if(!b.CreateBitmap(m_spgraphics, m_size.cx, m_size.cy, 1, 32, m_pcolorref))
+         throw "";
+
+      //zero(&METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map, sizeof(METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map));
+
+      HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->Unmap();
+
+      if(FAILED(hr))
+        throw "";
+
+      D2D1_POINT_2U p;
+
+      p.x = 0;
+      p.y = 0;
+
+      D2D1_RECT_U srcRect;
+
+      srcRect.left = 0;
+      srcRect.right = m_size.cx;
+      srcRect.top = 0;
+      srcRect.bottom = m_size.cy;
+
+      hr = METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap->CopyFromBitmap(&p, (ID2D1Bitmap *) b.get_os_data(), &srcRect);
+
+
+   }
+
    int dib::width()
    {
       return m_size.cx;
@@ -2492,21 +2571,21 @@ namespace metrowin
    bool dib::from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI)
    {
 
-#ifdef WINDOWS
-
       if(pfibitmap == NULL)
            return false;
 
-      BITMAPINFO * pbi = FreeImage_GetInfo(pfibitmap);
-      void * pdata = FreeImage_GetBits(pfibitmap);
 
+
+
+      FIBITMAP * pfiNew = FreeImage_ConvertTo32Bits(pfibitmap);
+      BITMAPINFO * pbi = FreeImage_GetInfo(pfiNew);
       if(!create(pbi->bmiHeader.biWidth, pbi->bmiHeader.biHeight))
          return false;
-
+      void * pdata = FreeImage_GetBits(pfiNew);
 
       COLORREF * pcolorref = NULL;
 
-      HBITMAP hbitmap = ::CreateDIBSection(NULL, &m_info, DIB_RGB_COLORS, (void **) &pcolorref, NULL, NULL);
+      /*HBITMAP hbitmap = ::CreateDIBSection(NULL, &m_info, DIB_RGB_COLORS, (void **) &pcolorref, NULL, NULL);
 
       if(hbitmap == NULL)
       {
@@ -2531,14 +2610,17 @@ namespace metrowin
             FreeImage_Unload(pfibitmap);
          }
          return false;
-      }
+      }*/
 
-      memcpy(m_pcolorref, pcolorref, (size_t) (area() * sizeof(COLORREF)));
+      map();
 
+      memcpy(m_pcolorref, pdata, (size_t) (area() * sizeof(COLORREF)));
+
+      unmap();
 
       RGBQUAD bkcolor;
 
-      if(pbi->bmiHeader.biBitCount == 32)
+      /*if(pbi->bmiHeader.biBitCount == 32)
       {
       }
       else if(pbi->bmiHeader.biBitCount <= 24 && FreeImage_GetTransparencyCount(pfibitmap) <= 0)
@@ -2548,7 +2630,9 @@ namespace metrowin
       else if(FreeImage_GetBackgroundColor(pfibitmap, &bkcolor))
       {
          transparent_color(bkcolor);
-      }
+      }*/
+
+      FreeImage_Unload(pfiNew);
 
       if(bUnloadFI)
       {
@@ -2557,9 +2641,6 @@ namespace metrowin
 
 
       return true;
-#else
-      throw todo(get_app());
-#endif
    }
 
 

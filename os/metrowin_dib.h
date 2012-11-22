@@ -21,10 +21,12 @@ namespace metrowin
       static int64_t Cos10N[10]; // until 10 degress
       static int64_t Sin10N[10]; // more precision * 1 << 34
       static double dPi;
+      DWORD m_scan;
 
       COLORREF *           m_pcolorref;
       BITMAPINFO           m_info;
       ::ca::bitmap_sp      m_spbitmap;
+      ::ca::bitmap_sp      m_spbitmapMap;
       ::ca::graphics_sp    m_spgraphics;
       class size           m_size;
       //HBITMAP              m_hbitmapOriginal;
@@ -53,6 +55,10 @@ namespace metrowin
       int sin(int i, int iAngle);
       int cos10(int i, int iAngle);
       int sin10(int i, int iAngle);
+
+
+      virtual void map(); // some implementations may requrire to map to m_pcolorref before manipulate it
+      virtual void unmap(); // some implementations may require to unmap from m_pcolorref to update *os* bitmap
 
       bool is_rgb_black();
       void xor(::ca::dib * pdib);

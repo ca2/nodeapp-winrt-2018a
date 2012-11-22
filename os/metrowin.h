@@ -58,9 +58,9 @@ CLASS_DECL_metrowin void __try_cleanup();
 // Global implementation helpers
 
 // window creation hooking
-CLASS_DECL_metrowin void hook_window_create(::user::interaction * pWnd);
-CLASS_DECL_metrowin bool unhook_window_create();
-CLASS_DECL_metrowin void reset_message_cache();
+//CLASS_DECL_metrowin void hook_window_create(::user::interaction * pWnd);
+//CLASS_DECL_metrowin bool unhook_window_create();
+//CLASS_DECL_metrowin void reset_message_cache();
 
 
 #include "metrowin1.h"
@@ -70,10 +70,11 @@ CLASS_DECL_metrowin void reset_message_cache();
 #include "metrowin_dir.h"
 #include "metrowin_folder_watch.h"
 #include "metrowin_factory_exchange.h"
-#include "metrowin_UACTools.h"
+#include "metrowin_uac_tools.h"
 #include "metrowin_window_draw.h"
 #include "metrowin_graphics.h"
 #include "metrowin_graphics_object.h"
+#include "metrowin_graphics_path.h"
 #include "metrowin_bitmap.h"
 #include "metrowin_dib.h"
 #include "metrowin_palette.h"
@@ -92,10 +93,13 @@ CLASS_DECL_metrowin void reset_message_cache();
 
 #define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::ca::thread * >(pthread)))
 #define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca::window * >(pwnd)))
-#define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (dynamic_cast < ::ca::graphics * > (pgraphics)))
+#define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (pgraphics))
+#define METROWIN_BITMAP(pbitmap) (dynamic_cast < ::metrowin::bitmap * > (pbitmap))
+#define METROWIN_PEN(ppen) (dynamic_cast < ::metrowin::pen * > (ppen))
+#define METROWIN_BRUSH(pbrush) (dynamic_cast < ::metrowin::brush * > (pbrush))
+#define METROWIN_PATH(ppath) (dynamic_cast < ::metrowin::graphics_path * > (ppath))
+#define METROWIN_FONT(pfont) (dynamic_cast < ::metrowin::font * > (pfont))
 #define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::ca::graphics * )(pgraphics)))
-#define WIN_HDC(pgraphics) ((dynamic_cast < ::metrowin::graphics * > (dynamic_cast < ::ca::graphics * > (pgraphics)))->get_handle())
-#define SP_HDC(pgraphics) ((dynamic_cast < ::metrowin::graphics * > ((::ca::graphics *)(pgraphics)))->get_handle())
 #define WIN_DIB(pdib) (dynamic_cast < ::metrowin::dib * > (dynamic_cast < ::ca::dib * >(pdib)))
 
 
@@ -114,8 +118,8 @@ CLASS_DECL_metrowin void reset_message_cache();
 #pragma comment(lib, "Msimg32.lib") 
 #pragma comment(lib, "Psapi.lib") 
 
-CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, gen::signal_object * pobj);
-CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, LPMSG lpmsg);
+//CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, gen::signal_object * pobj);
+//CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, LPMSG lpmsg);
 
 CLASS_DECL_metrowin bool __cdecl __is_idle_message(gen::signal_object * pobj);
 CLASS_DECL_metrowin bool __cdecl __is_idle_message(MSG* pMsg);
@@ -127,3 +131,7 @@ CLASS_DECL_metrowin void __cdecl __pre_translate_message(gen::signal_object * po
 //#include "win_printer.h"
 
 #include "metrowin_application.h"
+
+
+#include "metrowin_directx.h"
+#include "metrowin_directx_application.h"

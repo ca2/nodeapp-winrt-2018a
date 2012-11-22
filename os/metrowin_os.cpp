@@ -46,6 +46,8 @@ namespace metrowin
       AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES) NULL, 0);
       return retval;
 */
+      return false;
+
    }
 
    bool os::reboot()
@@ -105,6 +107,9 @@ namespace metrowin
       /*tkp.Privileges[0].Attributes = 0;
       AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES) NULL, 0);
       return true;*/
+
+      return false;
+
    }
 
    void os::terminate_processes_by_title(const char * pszName)
@@ -262,7 +267,7 @@ namespace metrowin
 
 #else
 
-      throw todo(get_app());
+      return false;
 
 #endif
 
@@ -285,7 +290,7 @@ namespace metrowin
 
 #else
 
-      throw todo(get_app());
+      return "";
 
 #endif
 
@@ -851,8 +856,6 @@ namespace metrowin
    void os::post_to_all_threads(UINT message, WPARAM wparam, LPARAM lparam)
    {
 
-#ifdef WINDOWSEX
-
       ::count c;
 
       ::radix::thread * pthread;
@@ -925,7 +928,7 @@ namespace metrowin
             {
                if(message == WM_QUIT)
                {
-                  DWORD dwRet = ::WaitForSingleObject(::metrowin::thread::s_haThread[i], 1984);
+                  DWORD dwRet = ::WaitForSingleObjectEx(::metrowin::thread::s_haThread[i], 1984, FALSE);
                   if((dwRet != WAIT_OBJECT_0) && (dwRet != WAIT_FAILED))
                      goto repeat;
                }
@@ -963,12 +966,6 @@ namespace metrowin
          }
 
       }
-
-#else
-
-      throw todo(get_app());
-
-#endif
 
    }
 

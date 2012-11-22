@@ -4,7 +4,7 @@
 namespace metrowin
 {
 
-
+/*
    file_system::file_system(::ca::application * papp) :
       ca(papp)
    {
@@ -79,7 +79,7 @@ namespace metrowin
    {
       vfxGetModuleShortFileName(hInst, strShortName);
    }
-
+   */
 
 
 } // namespace metrowin

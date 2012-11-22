@@ -1,5 +1,6 @@
 #pragma once
 
+#if FALSE
 
 class CLASS_DECL_metrowin WinResource :
    virtual public ex1::resource
@@ -15,3 +16,5 @@ public:
 
 
 };
+
+#endif

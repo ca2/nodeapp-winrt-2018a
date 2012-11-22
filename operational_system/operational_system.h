@@ -36,7 +36,10 @@
 
 #pragma once
 
-#define IMPLEMENT_VISTA_TOOLS
+//#ifdef WINDOWSEX
+//#define IMPLEMENT_VISTA_TOOLS
+//#endif
+
 #define WIN32
 #define DRAWDIB_INCLUDE_STRETCHDIB
 

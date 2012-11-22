@@ -3,7 +3,7 @@
 #define SECURITY_WIN32
 
 #include "ca2/ca2.h"
-#include "nodeapp/os/os.h"
+#include "nodeapp/os/metrowin.h"
 
 
 #ifdef _VMSWIN2_DLL

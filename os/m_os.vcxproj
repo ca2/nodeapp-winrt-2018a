@@ -141,6 +141,7 @@
     <LibraryPath>$(VCInstallDir)lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
     <SourcePath>$(VCInstallDir)crt\src;</SourcePath>
     <ExcludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(MSBuildToolsPath32);$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\include</ExcludePath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
@@ -191,11 +192,16 @@
       <AdditionalOptions>-Zm384 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Async</ExceptionHandling>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAsManaged>false</CompileAsManaged>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+      <AdditionalDependencies>d2d1.lib;d3d11.lib;dxgi.lib;kernel32.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>$(TargetName).def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)../../../time/library/x86/$(ConfigurationName);$(SolutionDir)../../../nodeapp/thirdparty/library;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -306,6 +312,8 @@
     <ClInclude Include="metrowin_crypt.h" />
     <ClInclude Include="metrowin_dib.h" />
     <ClInclude Include="metrowin_dir.h" />
+    <ClInclude Include="metrowin_directx.h" />
+    <ClInclude Include="metrowin_directx_application.h" />
     <ClInclude Include="metrowin_exception.h" />
     <ClInclude Include="metrowin_factory_exchange.h" />
     <ClInclude Include="metrowin_folder_watch.h" />
@@ -314,6 +322,7 @@
     <ClInclude Include="aaa_gen_1_want_to_remove.h" />
     <ClInclude Include="metrowin_graphics.h" />
     <ClInclude Include="metrowin_graphics_object.h" />
+    <ClInclude Include="metrowin_graphics_path.h" />
     <ClInclude Include="metrowin_handle.h" />
     <ClInclude Include="metrowin_implementation.h" />
     <ClInclude Include="metrowin_ip_enum.h" />
@@ -328,8 +337,8 @@
     <ClInclude Include="template\core.h" />
     <ClInclude Include="metrowin_thread.h" />
     <ClInclude Include="metrowin_thread_slots.h" />
-    <ClInclude Include="metrowin_UACTools.h" />
-    <ClInclude Include="metrowin_WFileFind.h" />
+    <ClInclude Include="metrowin_uac_tools.h" />
+    <ClInclude Include="metrowin_file_find.h" />
     <ClInclude Include="metrowin1.h" />
     <ClInclude Include="metrowin_window.h" />
     <ClInclude Include="metrowin_shell.h" />
@@ -348,6 +357,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="metrowin.cpp" />
+    <ClCompile Include="metrowin_directx.cpp" />
+    <ClCompile Include="metrowin_directx_application.cpp" />
+    <ClCompile Include="metrowin_graphics_path.cpp" />
     <ClCompile Include="metrowin_os.cpp" />
     <ClCompile Include="metrowin1.cpp" />
     <ClCompile Include="metrowin2.cpp" />
@@ -395,11 +407,10 @@
     <ClCompile Include="metrowin_trace.cpp" />
     <ClCompile Include="metrowin_uac_tools.cpp" />
     <ClCompile Include="metrowin_util.cpp" />
-    <ClCompile Include="metrowin_WFileFind.cpp" />
+    <ClCompile Include="metrowin_file_find.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="metrowin32.def" />
-    <None Include="metrowin64.def" />
+    <None Include="m_os.def" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca\m_ca.vcxproj">

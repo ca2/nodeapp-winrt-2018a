@@ -76,7 +76,7 @@ namespace metrowin
       virtual bool Ex2OnAppInstall();
       virtual bool Ex2OnAppUninstall();
 
-      virtual bool DeferRegisterClass(LONG fToRegister, const char ** ppszClass);
+//      virtual bool DeferRegisterClass(LONG fToRegister, const char ** ppszClass);
       virtual void LockTempMaps();
       virtual bool UnlockTempMaps(bool bDeleteTemps = TRUE);
       virtual void TermThread(HINSTANCE hInstTerm);
@@ -192,8 +192,14 @@ namespace metrowin
 
       //::ca::graphics * graphics_from_os_data(void * pdata);
 
+      
+#ifdef METROWIN
+      ::user::interaction * window_from_os_data(void * pdata);
+      ::user::interaction * window_from_os_data_permanent(void * pdata);
+#else
       ::ca::window * window_from_os_data(void * pdata);
       ::ca::window * window_from_os_data_permanent(void * pdata);
+#endif
 
       virtual ::radix::thread * GetThread();
       virtual void set_thread(::radix::thread * pthread);

@@ -9,7 +9,7 @@ CLASS_DECL_ca int ca2_main();
 
 void CLASS_DECL_metrowin __cdecl _ca2_purecall()
 {
-    throw simple_exception();
+    throw simple_exception(::ca::get_thread_app());
 }
 
 
@@ -32,7 +32,7 @@ int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
 
 
 
-   ::CoInitialize(NULL);
+//   ::CoInitialize(NULL);
 
 
    if(!main_initialize())
@@ -43,7 +43,7 @@ int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
 
    ::plane::system * psystem = new ::plane::system();
 
-   ASSERT(hPrevInstance == NULL);
+//   ASSERT(hPrevInstance == NULL);
 
    int nReturnCode = 0;
 
@@ -51,10 +51,10 @@ int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
    ::metrowin::main_init_data * pinitmaindata  = new ::metrowin::main_init_data;
 
 
-   pinitmaindata->m_hInstance             = hInstance;
-   pinitmaindata->m_hPrevInstance         = hPrevInstance;
-   pinitmaindata->m_vssCommandLine        = gen::international::unicode_to_utf8(::GetCommandLineW());
-   pinitmaindata->m_nCmdShow              = nCmdShow;
+   //pinitmaindata->m_hInstance             = hInstance;
+   //pinitmaindata->m_hPrevInstance         = hPrevInstance;
+   //pinitmaindata->m_vssCommandLine        = gen::international::unicode_to_utf8(::GetCommandLineW());
+   //pinitmaindata->m_nCmdShow              = nCmdShow;
 
    
    psystem->init_main_data(pinitmaindata);

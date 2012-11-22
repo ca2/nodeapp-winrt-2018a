@@ -31,36 +31,12 @@
     <ClCompile Include="framework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Direct3DBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="app.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleOverlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CubeRenderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Direct3DBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BasicTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="app.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleOverlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,5 +45,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".\m_app.pfx" />
+    <None Include="..\..\thirdparty\binary\m_freetype.dll" />
+    <None Include="..\..\stage\matter\msvc++\msvcp110d.dll" />
+    <None Include="..\..\stage\matter\msvc++\msvcr110d.dll" />
+    <None Include="..\..\stage\matter\msvc++\vccorlib110d.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\Logo150.png" />
+    <Image Include="assets\Splash-Screen-620-300.png" />
+    <Image Include="assets\SmallLogo30.png" />
+    <Image Include="assets\Wide-310-150.png" />
+    <Image Include="assets\Notification24.png" />
+    <Image Include="ca2-5c-49.png" />
   </ItemGroup>
 </Project>

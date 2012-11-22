@@ -1,12 +1,6 @@
 #pragma once
 
 
-
-#undef new
-
-#include <GdiPlus.h>
-
-
 namespace metrowin
 {
 
@@ -18,19 +12,7 @@ namespace metrowin
    public:
 
 
-//      ::Gdiplus::Pen *  m_ppen;
-   enum e_style
-   {
-      style_stock,
-      style_solid,
-   };
-   
-   
-   int                     m_iStock;
-   e_style                 m_estyle;
-   int                     m_iWidth;
-   COLORREF                m_cr;
-   ID2D1SolidColorBrush *  m_psolidbrush;
+      ID2D1SolidColorBrush *  m_psolidbrush;
 
       pen(::ca::application * papp);
       /*virtual void construct(int nPenStyle, double nWidth, COLORREF crColor);
@@ -38,8 +20,9 @@ namespace metrowin
       bool CreatePen(int nPenStyle, double nWidth, COLORREF crColor);
       bool CreatePen(int nPenStyle, double nWidth, const LOGBRUSH* pLogBrush, int nStyleCount = 0, const DWORD* lpStyle = NULL);*/
 
+      virtual bool create_solid(::ca::graphics * pgraphics, double dWidth, COLORREF crColor);
 
-      virtual void * get_os_data() const;
+      virtual ID2D1Brush * get_os_pen_brush(::metrowin::graphics * pdc) const;
 
 
       virtual ~pen();

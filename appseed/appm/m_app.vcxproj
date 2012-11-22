@@ -139,11 +139,13 @@
     <LibraryPath>$(VCInstallDir)lib;$(WindowsSDK_LibraryPath_x86);</LibraryPath>
     <SourcePath>$(VCInstallDir)crt\src;</SourcePath>
     <ExcludePath>$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSDK_IncludePath);$(MSBuildToolsPath32);$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib;$(VCInstallDir)atlmfc\include</ExcludePath>
+    <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
-      <AdditionalDependencies>d2d1.lib; d3d11.lib; dxgi.lib; ole32.lib; windowscodecs.lib; dwrite.lib; %(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d2d1.lib;d3d11.lib;dxgi.lib;ole32.lib; windowscodecs.lib;dwrite.lib; %(AdditionalDependencies)</AdditionalDependencies>
       <GenerateWindowsMetadata>false</GenerateWindowsMetadata>
+      <SubSystem Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Windows</SubSystem>
     </Link>
     <ClCompile>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
@@ -154,31 +156,30 @@
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">-Zm384 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Async</ExceptionHandling>
       <DebugInformationFormat Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">ProgramDatabase</DebugInformationFormat>
+      <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">false</CompileAsManaged>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Image Include="Assets\Logo.png" />
+    <Image Include="assets\Logo150.png" />
+    <Image Include="assets\Notification24.png" />
     <Image Include="Assets\SmallLogo.png" />
+    <Image Include="assets\SmallLogo30.png" />
+    <Image Include="assets\Splash-Screen-620-300.png" />
     <Image Include="Assets\StoreLogo.png" />
     <Image Include="Assets\SplashScreen.png" />
+    <Image Include="assets\Wide-310-150.png" />
+    <Image Include="ca2-5c-49.png" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="app.h" />
-    <ClInclude Include="CubeRenderer.h" />
-    <ClInclude Include="DirectXHelper.h" />
-    <ClInclude Include="Direct3DBase.h" />
-    <ClInclude Include="BasicTimer.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="SampleOverlay.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="app.cpp" />
-    <ClCompile Include="Direct3DBase.cpp" />
     <ClCompile Include="framework.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="SampleOverlay.cpp" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -194,14 +195,30 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\stage\matter\msvc++\msvcp110d.dll" />
+    <None Include="..\..\stage\matter\msvc++\msvcr110d.dll" />
+    <None Include="..\..\stage\matter\msvc++\vccorlib110d.dll" />
+    <None Include="..\..\thirdparty\binary\m_freetype.dll" />
     <None Include=".\m_app.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\app\appseed\ca2\m_ca2.vcxproj">
+      <Project>{99892e42-0f2f-4b0f-ac18-5abbc3968407}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\app\appseed\ca\m_ca.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\app\appseed\c\m_c.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900ebb72}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\app\appseed\optca\m_optca.vcxproj">
+      <Project>{73472f5d-e2e2-4ed4-a2e0-65fae45f0353}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\os2\m_os2.vcxproj">
+      <Project>{5c2ae0fe-a604-4666-b24f-a96473e2b59e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\os\m_os.vcxproj">
+      <Project>{fccdd981-5c10-4487-becf-eb3a7d4a1380}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

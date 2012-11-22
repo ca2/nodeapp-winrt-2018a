@@ -1,8 +1,8 @@
 #pragma once
 
-#define __defer_register_class(fClass) __end_defer_register_class(fClass)
+//#define __defer_register_class(fClass) __end_defer_register_class(fClass)
 
-CLASS_DECL_metrowin bool __end_defer_register_class(LONG fToRegister, const char ** ppszClass);
+//CLASS_DECL_metrowin bool __end_defer_register_class(LONG fToRegister, const char ** ppszClass);
 
 
 // Temporary ::collection::map management (locks temp ::collection::map on current thread)

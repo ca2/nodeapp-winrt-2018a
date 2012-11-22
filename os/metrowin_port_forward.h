@@ -78,11 +78,11 @@ namespace metrowin
 	   };
 	
 	   // public functions -- there are only a few
-	
+	*/
 	   port_forward(::ca::application * papp);
 	   virtual ~port_forward();
 	
-	   virtual HRESULT ListenForUpnpChanges(::ca4::port_forward_change_callbacks *pCallbacks = NULL);  // NULL==default object; if you provide your own pointer to a port_forward_change_callbacks-derived object it is deleted for you automatically
+	  /* virtual HRESULT ListenForUpnpChanges(::ca4::port_forward_change_callbacks *pCallbacks = NULL);  // NULL==default object; if you provide your own pointer to a port_forward_change_callbacks-derived object it is deleted for you automatically
 	   virtual HRESULT StopListeningForUpnpChanges( );  // Stops listenting for UPnP change events on the router and deletes any port_forward_change_callbacks-derived objects
 	
 	   virtual bool GetDeviceInformationUsingThread( oswindow hWnd );  // starts a thread that will get IGD (router) device information; the thread posts a UWM_PORT_FORWARD_ENGINE_THREAD_NOTIFICATION message to hWnd when it's done

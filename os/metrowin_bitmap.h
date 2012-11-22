@@ -13,7 +13,7 @@ namespace metrowin
 
       ID2D1Bitmap1 *          m_pbitmap;
       D2D1_MAPPED_RECT        m_map;
-
+      primitive::memory       m_memory;
       //      ::Gdiplus::Bitmap *  m_pbitmap;
       //    void *               m_pdata;
 

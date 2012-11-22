@@ -4,7 +4,7 @@
 namespace metrowin
 {
 
-
+#if FALSE
    class CLASS_DECL_metrowin registry :
       virtual public ::radix::object
    {
@@ -63,6 +63,7 @@ namespace metrowin
       
    };
 
+#endif
 
 } // namespace metrowin
 

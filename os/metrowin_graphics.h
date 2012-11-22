@@ -3,11 +3,13 @@
 
 #undef new
 
+
 #include <GdiPlus.h>
 
 
 namespace metrowin
 {
+
 
    class CLASS_DECL_metrowin graphics : 
       virtual public ::ca::graphics
@@ -19,6 +21,12 @@ namespace metrowin
       ID2D1DeviceContext *    m_pdc;
       IDXGIAdapter *          m_pad;
       IDXGIFactory2 *         m_pfax;
+      ID2D1Layer *            m_player;
+      ID2D1PathGeometry *     m_pclip;
+
+      int                     m_iType;
+
+      D2D1_INTERPOLATION_MODE    m_interpolationmode;
 
 /*      ::Gdiplus::Graphics *         m_pgraphics;
       ::Gdiplus::GraphicsPath *     m_ppath;
@@ -44,13 +52,13 @@ namespace metrowin
 
       //static ::ca::graphics * PASCAL from_handle(HDC hDC);
       //static void PASCAL DeleteTempMap();
-      bool Attach(HDC hdc);   // Attach/Detach affects only the Output DC
-      HDC Detach();
+      //bool Attach(HDC hdc);   // Attach/Detach affects only the Output DC
+      //HDC Detach();
 
-      virtual void SetAttribDC(HDC hDC);  // Set the Attribute DC
+      /*virtual void SetAttribDC(HDC hDC);  // Set the Attribute DC
       virtual void SetOutputDC(HDC hDC);  // Set the Output DC
       virtual void ReleaseAttribDC();     // Release the Attribute DC
-      virtual void ReleaseOutputDC();     // Release the Output DC
+      virtual void ReleaseOutputDC();     // Release the Output DC*/
 
       bool IsPrinting() const;            // TRUE if being used for printing
 
@@ -147,6 +155,11 @@ namespace metrowin
       // Graphics mode
       int SetGraphicsMode(int iMode);
       int GetGraphicsMode() const;
+
+
+      virtual bool draw_path(::ca::graphics_path * ppath);
+      virtual bool fill_path(::ca::graphics_path * ppath);
+
 
       // World transform
       bool SetWorldTransform(const XFORM* pXform);
@@ -465,7 +478,7 @@ namespace metrowin
       virtual void assert_valid() const;
       virtual void dump(dump_context & dumpcontext) const;
 
-      HGDIOBJ SelectObject(HGDIOBJ);      // do not use for regions
+      //HGDIOBJ SelectObject(HGDIOBJ);      // do not use for regions
 
       virtual void set_alpha_mode(::ca::e_alpha_mode ealphamode);
 
@@ -477,11 +490,19 @@ namespace metrowin
       virtual HDC get_handle2() const;
 
       virtual void attach(void * pdata);
+      virtual void * detach();
 
 
 //      virtual Gdiplus::FillMode gdiplus_get_fill_mode();
 
       bool blur(bool bExpand, double dRadius, LPCRECT lpcrect);
+
+
+      virtual bool destroy();
+
+      IDWriteTextFormat * get_os_font() const;
+      ID2D1Brush * get_os_brush() const;
+      ID2D1Brush * get_os_pen_brush() const;
 
    //protected:
       // used for implementation of non-virtual SelectObject calls

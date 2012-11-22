@@ -71,11 +71,9 @@ namespace metrowin
 
       virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
-      virtual bool Begin(int nPriority = THREAD_PRIORITY_NORMAL, UINT nStackSize = 0,
-         DWORD dwCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
+      virtual bool Begin(::ca::e_thread_priority epriority = ::get_thread_priority_normal(), UINT nStackSize = 0, DWORD dwCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
-      bool CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,
-         LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
+      virtual bool create_thread(::ca::e_thread_priority epriority = ::get_thread_priority_normal(), DWORD dwCreateFlags = 0, UINT nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
 
       virtual ::user::interaction * SetMainWnd(::user::interaction * pui);
@@ -118,7 +116,7 @@ namespace metrowin
    // Operations
       DWORD SuspendThread();
       DWORD ResumeThread();
-      bool PostThreadMessage(UINT message, WPARAM wParam, LPARAM lParam);
+      bool post_thread_message(UINT message, WPARAM wParam, LPARAM lParam) override;
       bool post_message(::user::interaction * pguie, UINT message, WPARAM wParam, LPARAM lParam);
 
       virtual bool PreInitInstance();

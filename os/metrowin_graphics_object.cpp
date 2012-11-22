@@ -146,7 +146,7 @@ namespace metrowin
    return get_os_data();
    }*/
 
-   int_ptr graphics_object::get_os_data() const
+   void * graphics_object::get_os_data() const
    {
       return NULL;
    }

@@ -24,7 +24,7 @@
    ::gen::tcsncpy_s(pLogFont->lfFaceName, _countof(pLogFont->lfFaceName), szFontInfo, _TRUNCATE);
    return TRUE;
 }*/
-
+#ifdef WINDOWSEX
 bool CLASS_DECL_metrowin __is_combo_box_control(oswindow hWnd, UINT nStyle)
 {
    if (hWnd == NULL)
@@ -46,6 +46,7 @@ bool CLASS_DECL_metrowin __compare_class_name(oswindow hWnd, const char * lpszCl
    ::GetClassName(hWnd, szTemp, _countof(szTemp));
    return ::__invariant_stricmp(szTemp, lpszClassName) == 0;
 }
+
 
 oswindow CLASS_DECL_metrowin __child_window_from_point(oswindow hWnd, POINT pt)
 {
@@ -146,6 +147,10 @@ void CLASS_DECL_metrowin __global_free(HGLOBAL hGlobal)
    GlobalFree(hGlobal);
 }
 
+
+#endif
+
+
 /////////////////////////////////////////////////////////////////////////////
 // Special new handler for safety pool on temp maps
 
@@ -183,7 +188,7 @@ int c_cdecl __critical_new_handler(size_t nSize)
    }
 
 //   TRACE(::radix::trace::category_Memory, 0, "ERROR: Critical primitive::memory allocation from safety pool failed!\n");
-   throw memory_exception();      // oops
+   throw memory_exception(NULL);      // oops
 }
 #endif // !___PORTABLE
 

@@ -25,6 +25,9 @@
     <Filter Include="Header Files\operational_system\template">
       <UniqueIdentifier>{c8acb731-a5af-499d-8d46-47c6d2ca0cbf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\NewFilter1">
+      <UniqueIdentifier>{b83be8ea-ac72-44a5-bde7-fd27e1ee559b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework.cpp">
@@ -168,13 +171,22 @@
     <ClCompile Include="metrowin_util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="metrowin_WFileFind.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="metrowin_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_window_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_file_find.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_graphics_path.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_directx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metrowin_directx_application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -353,24 +365,30 @@
     <ClInclude Include="metrowin_thread_slots.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="metrowin_UACTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_WFileFind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="metrowin_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_window_draw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="metrowin_file_find.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_uac_tools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_graphics_path.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_directx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_directx_application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="metrowin32.def">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="metrowin64.def">
+    <None Include="m_os.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

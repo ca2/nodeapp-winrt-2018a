@@ -13,17 +13,6 @@ namespace metrowin
 
       //      Gdiplus::Brush * m_pbrush;
 
-      enum e_type
-      {
-         type_none,
-         type_brush,
-         type_solid,
-         type_linear_gradient,
-         type_null,
-      };
-
-
-      e_type                        m_etype;
 
       union
       {
@@ -44,7 +33,7 @@ namespace metrowin
 
       virtual ~brush();
 
-      virtual void * get_os_data() const;
+      virtual ID2D1Brush * get_os_brush(::metrowin::graphics * pdc) const;
 
       //bool CreateSolidBrush(COLORREF crColor);
       //bool CreateHatchBrush(int nIndex, COLORREF crColor);
@@ -53,6 +42,8 @@ namespace metrowin
       //bool CreateDIBPatternBrush(const void * lpPackedDIB, UINT nUsage);
       //bool CreateSysColorBrush(int nIndex);
 
+
+      virtual bool destroy();
 
       virtual void dump(dump_context & dumpcontext) const;
    };

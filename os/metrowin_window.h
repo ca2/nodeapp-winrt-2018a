@@ -164,7 +164,7 @@ namespace metrowin
 
    // Window Text Functions
       void SetWindowText(const char * lpszString);
-      strsize GetWindowText(LPTSTR lpszStringBuf, strsize nMaxCount);
+      strsize GetWindowText(char * lpszStringBuf, strsize nMaxCount);
       void GetWindowText(string & rString);
       strsize GetWindowTextLength();
       void SetFont(::ca::font* pFont, bool bRedraw = TRUE);
@@ -174,8 +174,7 @@ namespace metrowin
    // Window size and position Functions
       virtual bool IsIconic();
       virtual bool IsZoomed();
-      void MoveWindow(int x, int y, int nWidth, int nHeight,
-               bool bRepaint = TRUE);
+      void MoveWindow(int x, int y, int nWidth, int nHeight, bool bRepaint = TRUE);
       void MoveWindow(LPCRECT lpRect, bool bRepaint = TRUE);
       int SetWindowRgn(HRGN hRgn, bool bRedraw);
       int GetWindowRgn(HRGN hRgn);
@@ -313,16 +312,16 @@ namespace metrowin
       virtual void CheckRadioButton(int nIDFirstButton, int nIDLastButton,
                   int nIDCheckButton);
       virtual int GetCheckedRadioButton(int nIDFirstButton, int nIDLastButton);
-      virtual int DlgDirList(__inout_z LPTSTR lpPathSpec, __in int nIDListBox,
+      /*virtual int DlgDirList(__inout_z char * lpPathSpec, __in int nIDListBox,
                   __in int nIDStaticPath, __in UINT nFileType);
-      virtual int DlgDirListComboBox(__inout_z LPTSTR lpPathSpec, __in int nIDComboBox,
+      virtual int DlgDirListComboBox(__inout_z char * lpPathSpec, __in int nIDComboBox,
                   __in int nIDStaticPath, __in UINT nFileType);
-      virtual bool DlgDirSelect(__out_ecount_z(nSize) LPTSTR lpString, __in int nSize, __in int nIDListBox);
-      virtual bool DlgDirSelectComboBox(__out_ecount_z(nSize) LPTSTR lpString, __in int nSize, __in int nIDComboBox);
+      virtual bool DlgDirSelect(__out_ecount_z(nSize) char * lpString, __in int nSize, __in int nIDListBox);
+      virtual bool DlgDirSelectComboBox(__out_ecount_z(nSize) char * lpString, __in int nSize, __in int nIDComboBox);*/
 
       virtual UINT GetDlgItemInt(int nID, BOOL * lpTrans = NULL, bool bSigned = TRUE) const;
-      virtual int GetDlgItemText(__in int nID, __out_ecount_part_z(nMaxCount, return + 1) LPTSTR lpStr, __in int nMaxCount) const;
-      virtual int GetDlgItemText(int nID, string & rString) const;
+//      virtual int GetDlgItemText(__in int nID, __out_ecount_part_z(nMaxCount, return + 1) char * lpStr, __in int nMaxCount) const;
+  //    virtual int GetDlgItemText(int nID, string & rString) const;
       virtual ::ca::window * GetNextDlgGroupItem(::ca::window * pWndCtl, bool bPrevious = FALSE) const;
       virtual ::ca::window * GetNextDlgTabItem(::ca::window * pWndCtl, bool bPrevious = FALSE) const;
       virtual UINT IsDlgButtonChecked(int nIDButton) const;
@@ -523,7 +522,7 @@ namespace metrowin
       void OnSysKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
       void OnSysKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
       void OnCompacting(UINT nCpuTime);
-      void OnDevModeChange(__in_z LPTSTR lpDeviceName);
+      void OnDevModeChange(char * lpDeviceName);
       void OnFontChange();
       void OnPaletteChanged(::ca::window * pFocusWnd);
       void OnSpoolerStatus(UINT nStatus, UINT nJobs);
@@ -560,7 +559,7 @@ namespace metrowin
       void OnInitMenuPopup(::userbase::menu* pPopupMenu, UINT nIndex, bool bSysMenu);
 
    // Clipboard message handler member functions
-      void OnAskCbFormatName(__in UINT nMaxCount, __out_ecount_z(nMaxCount) LPTSTR lpszString);
+      void OnAskCbFormatName(__in UINT nMaxCount, __out_ecount_z(nMaxCount) char * lpszString);
       void OnChangeCbChain(oswindow hWndRemove, oswindow hWndAfter);
       void OnDestroyClipboard();
       void OnDrawClipboard();

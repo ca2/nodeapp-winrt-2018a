@@ -25,6 +25,7 @@ namespace metrowin
          ::metrowin::window * pTemp;
          pMap->m_temporaryMap.get_next_assoc(pos, h, pTemp);
 
+
          if(!::IsWindow((oswindow) h))
          {
             hwndaRemove.add((oswindow) h);

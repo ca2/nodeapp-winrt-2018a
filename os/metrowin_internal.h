@@ -11,7 +11,7 @@
 
 
 #include "metrowin_dir.h"
-#include "metrowin_WFileFind.h"
+#include "metrowin_file_find.h"
 #include "metrowin_file_system.h"
 #include "metrowin_file.h"
 #include "metrowin_shell.h"

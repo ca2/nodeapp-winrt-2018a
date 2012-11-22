@@ -32,27 +32,61 @@ namespace metrowin
    }
    UINT palette::GetPaletteEntries(UINT nStartIndex, UINT nNumEntries,
       LPPALETTEENTRY lpPaletteColors) const
-   { ASSERT(get_os_data() != NULL); return ::GetPaletteEntries((HPALETTE)get_os_data(), nStartIndex,
-   nNumEntries, lpPaletteColors); }
+   {
+
+#ifdef WINDOWSEX
+      ASSERT(get_os_data() != NULL); 
+      return ::GetPaletteEntries((HPALETTE)get_os_data(), nStartIndex, nNumEntries, lpPaletteColors); 
+#else
+      throw todo(get_app());
+#endif
+   
+   }
    UINT palette::SetPaletteEntries(UINT nStartIndex, UINT nNumEntries,
       LPPALETTEENTRY lpPaletteColors)
-   { ASSERT(get_os_data() != NULL); return ::SetPaletteEntries((HPALETTE)get_os_data(), nStartIndex,
-   nNumEntries, lpPaletteColors); }
+   { 
+#ifdef WINDOWSEX
+      ASSERT(get_os_data() != NULL); return ::SetPaletteEntries((HPALETTE)get_os_data(), nStartIndex,
+   nNumEntries, lpPaletteColors); 
+#else
+      throw todo(get_app());
+#endif
+   
+   }
    void palette::AnimatePalette(UINT nStartIndex, UINT nNumEntries,
       LPPALETTEENTRY lpPaletteColors)
-   { ASSERT(get_os_data() != NULL); ::AnimatePalette((HPALETTE)get_os_data(), nStartIndex, nNumEntries,
-   lpPaletteColors); }
+   {
+      throw todo(get_app());
+      
+   //   ASSERT(get_os_data() != NULL); ::AnimatePalette((HPALETTE)get_os_data(), nStartIndex, nNumEntries,
+   //lpPaletteColors); 
+   
+   }
+
    UINT palette::GetNearestPaletteIndex(COLORREF crColor) const
-   { ASSERT(get_os_data() != NULL); return ::GetNearestPaletteIndex((HPALETTE)get_os_data(), crColor); }
+   { 
+      
+      throw todo(get_app());
+
+   /*   ASSERT(get_os_data() != NULL); return ::GetNearestPaletteIndex((HPALETTE)get_os_data(), crColor); 
+   */
+   }
    
    bool palette::ResizePalette(UINT nNumEntries)
    {
-      ASSERT(get_os_data() != NULL); 
-      return ::ResizePalette((HPALETTE)get_os_data(), nNumEntries) != FALSE;
+      throw todo(get_app());
+
+      //ASSERT(get_os_data() != NULL); 
+      //return ::ResizePalette((HPALETTE)get_os_data(), nNumEntries) != FALSE;
    }
 
    int palette::GetEntryCount()
-   { ASSERT(get_os_data() != NULL); WORD nEntries;
-   ::GetObject((HANDLE) get_os_data(), sizeof(WORD), &nEntries); return (int)nEntries; }
+   {
+      throw todo(get_app());
+      
+   //   ASSERT(get_os_data() != NULL); WORD nEntries;
+   //::GetObject((HANDLE) get_os_data(), sizeof(WORD), &nEntries); return (int)nEntries; 
+   
+   }
 
 } // namespace metrowin

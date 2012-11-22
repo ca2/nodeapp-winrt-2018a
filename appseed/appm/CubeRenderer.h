@@ -3,7 +3,7 @@
 #include <wrl/client.h>
 #include <memory>
 
-#include "Direct3DBase.h"
+#include "DirectXBase.h"
 #include <DirectXMath.h>
 
 struct ModelViewProjectionConstantBuffer
@@ -19,7 +19,7 @@ struct VertexPositionColor
     DirectX::XMFLOAT3 color;
 };
 
-ref class CubeRenderer sealed : public Direct3DBase
+ref class CubeRenderer sealed : public DirectXBase
 {
 public:
 	CubeRenderer();

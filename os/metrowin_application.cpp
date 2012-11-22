@@ -42,7 +42,7 @@ namespace metrowin
 //      m_eHelpType = afxWinHelp;
       m_nSafetyPoolSize = 512;        // default size
 
-      WindowsShell::theWindowsShell.Initialize();
+      shell::theWindowsShell.Initialize();
    }
 
    application::~application()
@@ -177,6 +177,7 @@ namespace metrowin
 
    bool application::Ex2OnAppUninstall()
    {
+#ifdef WINDOWSEX
       if(VistaTools::IsVista())
       {
          if(VistaTools::IsElevated() != S_OK)
@@ -185,14 +186,16 @@ namespace metrowin
             return false;
          }
       }
+#endif
       return true;
    }
 
+   /*
    bool application::DeferRegisterClass(LONG fToRegister, const char ** ppszClass)
    {
       return __end_defer_register_class(fToRegister, ppszClass);
    }
-
+   */
 
    void application::LockTempMaps()
    {
@@ -544,7 +547,17 @@ namespace metrowin
    {
       return ::metrowin::graphics::from_handle((HDC) pdata);
    }*/
+#ifdef METROWIN
+   ::user::interaction * application::window_from_os_data(void * pdata)
+   {
+      return ((oswindow) pdata).window();
+   }
 
+   ::user::interaction * application::window_from_os_data_permanent(void * pdata)
+   {
+      return ((oswindow) pdata).window();
+   }
+#else
    ::ca::window * application::window_from_os_data(void * pdata)
    {
       return ::metrowin::window::from_handle((oswindow) pdata);
@@ -565,6 +578,7 @@ namespace metrowin
       }
       return NULL;
    }
+#endif
 
    ::radix::thread * application::GetThread()
    {

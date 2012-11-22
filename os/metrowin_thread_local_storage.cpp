@@ -16,16 +16,17 @@ void * PASCAL no_track_object::operator new(size_t nSize, const char *, int)
 void PASCAL no_track_object::operator delete(void * pObject, const char *, int)
 {
    if (pObject != NULL)
-      ::LocalFree(pObject);
+      ::free(pObject);
 }
 #endif
 
 #undef new
 void * PASCAL no_track_object::operator new(size_t nSize)
 {
-   void * p = ::LocalAlloc(LPTR, nSize);
+   void * p = ::malloc(nSize);
+   zero(p, nSize);
    if (p == NULL)
-      throw memory_exception();
+      throw memory_exception(NULL);
    return p;
 }
 #define new DEBUG_NEW
@@ -33,7 +34,7 @@ void * PASCAL no_track_object::operator new(size_t nSize)
 void PASCAL no_track_object::operator delete(void * p)
 {
    if (p != NULL)
-      ::LocalFree(p);
+      ::free(p);
 }
 
 
@@ -58,7 +59,7 @@ thread_local_storage::thread_local_storage()
 {
    m_tlsIndex = TlsAlloc();
    if (m_tlsIndex == (DWORD)-1)
-      throw memory_exception();
+      throw memory_exception(NULL);
 }
 
 
@@ -84,6 +85,7 @@ thread_slot_data * thread_local_storage::get_slot_data()
    if(pdata == NULL)
    {
       void * p = malloc(sizeof(thread_slot_data));
+      zero(p, sizeof(thread_slot_data));
       pdata = ::new(p) thread_slot_data();
       TlsSetValue(m_tlsIndex, (LPVOID) pdata);
    }

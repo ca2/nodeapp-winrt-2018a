@@ -59,12 +59,12 @@ interface ID3D11DeviceContext;
 interface ID3D11Device1;
 interface IDXGIDevice;
 
-IDWriteFactory * TlsGetWriteFactory();
-ID2D1Factory1 * TlsGetD2D1Factory1();
-ID3D11Device * TlsGetD3D11Device();
-ID3D11DeviceContext * TlsGetD3D11DeviceContext();
-ID3D11Device1 * TlsGetD3D11Device1();
-IDXGIDevice * TlsGetDXGIDevice();
+CLASS_DECL_c IDWriteFactory * TlsGetWriteFactory();
+CLASS_DECL_c ID2D1Factory1 * TlsGetD2D1Factory1();
+CLASS_DECL_c ID3D11Device * TlsGetD3D11Device();
+CLASS_DECL_c ID3D11DeviceContext * TlsGetD3D11DeviceContext();
+CLASS_DECL_c ID3D11Device1 * TlsGetD3D11Device1();
+CLASS_DECL_c IDXGIDevice * TlsGetDXGIDevice();
 
 #define TLS_WRITE_FACTORY     12
 #define TLS_D2D1_FACTORY1     13
@@ -72,5 +72,6 @@ IDXGIDevice * TlsGetDXGIDevice();
 #define TLS_d3_2              15
 #define TLS_d3_3              16
 #define TLS_d3_4              17
+#define TLS_MESSAGE_QUEUE     127
 
 #endif

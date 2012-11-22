@@ -25,10 +25,10 @@ namespace metrowin
       virtual ~font();
 
 
-      virtual void * get_os_data() const;
+      virtual IDWriteTextFormat * get_os_font(::metrowin::graphics * pdc) const;
 
 
-      virtual void font::construct(const ::ca::font & fontParam);
+/*      virtual void construct(const ::ca::font & fontParam);
 
       virtual bool CreateFontIndirect(const LOGFONT* lpLogFont);
       virtual bool CreateFont(int nHeight, int nWidth, int nEscapement,
@@ -39,7 +39,7 @@ namespace metrowin
       virtual bool CreatePointFont(int nPointSize, const char * lpszFaceName, ::ca::graphics * pgraphics = NULL);
       virtual bool CreatePointFontIndirect(const LOGFONT* lpLogFont, ::ca::graphics * pgraphics = NULL);
 
-      virtual int GetLogFont(LOGFONT* pLogFont);
+      virtual int GetLogFont(LOGFONT* pLogFont);*/
 
       virtual void dump(dump_context & dumpcontext) const;
 

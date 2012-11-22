@@ -153,8 +153,8 @@ namespace metrowin
       if(!::ca4::copydesk::initialize())
          return false;
 
-      if(!m_p->CreateEx(0, System.RegisterWndClass(0), NULL, 0, rect(0, 0, 0, 0), NULL, id()))
-         return false;
+      /*if(!m_p->CreateEx(0, System.RegisterWndClass(0), NULL, 0, rect(0, 0, 0, 0), NULL, id()))
+         return false;*/
 
       return true;
 

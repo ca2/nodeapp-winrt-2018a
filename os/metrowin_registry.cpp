@@ -4,7 +4,7 @@
 namespace metrowin
 {
 
-
+#if FALSE
    registry::registry()
    {
 
@@ -212,7 +212,7 @@ namespace metrowin
       free(pszBuf);
       return stra.get_count();
    }
-
+#endif
 
 } // namespace metrowin
 

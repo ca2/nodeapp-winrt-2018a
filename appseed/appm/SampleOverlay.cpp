@@ -57,7 +57,7 @@ void SampleOverlay::ResetDirectXResources()
     ComPtr<IWICBitmapDecoder> wicBitmapDecoder;
     ::win::throw_if_failed(
         m_wicFactory->CreateDecoderFromFilename(
-            L"windowsbig-sdk.png",
+            L"ca2-5c-49.png",
             nullptr,
             GENERIC_READ,
             WICDecodeMetadataCacheOnDemand,

@@ -70,6 +70,10 @@ namespace metrowin
                   }
                }
             }
+            else
+            {
+               iLenFolder--;
+            }
          }
          else
          {
@@ -182,7 +186,7 @@ namespace metrowin
 
    bool path::is_equal(const char * lpcsz1, const char * lpcsz2)
    {
-      return System.file_system().ComparePath(lpcsz1, lpcsz2);
+      return System.file_system().cmp(lpcsz1, lpcsz2) == 0;
    }
 
    void dir::root_ones(stringa & stra, ::ca::application * papp)
@@ -208,7 +212,7 @@ namespace metrowin
 
       free(lpszAlloc);
 #else
-      throw todo(get_app());
+      stra.add(str(Windows::Storage::KnownFolders::DocumentsLibrary->Path));
 #endif
    }
 
@@ -219,7 +223,7 @@ namespace metrowin
       {
          return ::ca::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
       }
-      FileFind filefind;
+      file_find filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, pszPattern));
       while(bWorking)
@@ -246,7 +250,38 @@ namespace metrowin
          }
       }
 #else
-      throw todo(get_app());
+
+      if(::ca::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
+      {
+         return ::ca::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
+      }
+      stra_dup stra;
+      ::dir::ls(stra, lpcsz);
+      for(int i = 0; i < stra.get_count(); i++)
+      {
+         string strPath = stra[i];
+         string strName = System.file().name_(strPath);
+         if(!matches_wildcard_criteria(pszPattern, strName))
+            continue;
+         if(pstraPath != NULL)
+         {
+            pstraPath->add(strPath);
+         }
+         if(pstraTitle != NULL)
+         {
+            pstraTitle->add(strName);
+         }
+         if(pbaIsDir != NULL)
+         {
+            pbaIsDir->add(is(strPath, papp));
+         }
+         if(piaSize != NULL)
+         {
+            piaSize->add(System.file().length(strPath));
+         }
+      }
+
+      
 #endif
    }
 
@@ -282,7 +317,7 @@ namespace metrowin
          }
       }
 
-      FileFind filefind;
+      file_find filefind;
       bool bWorking = filefind.FindFile(System.dir().path(lpcsz, lpszPattern)) != FALSE;
       if(bWorking)
       {
@@ -344,7 +379,7 @@ namespace metrowin
 
 #ifdef WINDOWSEX
 
-      FileFind filefind;
+      file_find filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
       while(bWorking)
@@ -390,7 +425,7 @@ namespace metrowin
    void dir::ls_dir(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle)
    {
 #ifdef WINDOWSEX      
-      FileFind filefind;
+      file_find filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
       if(!bWorking)
@@ -421,7 +456,7 @@ namespace metrowin
    void dir::ls_file(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle)
    {
 #ifdef WINDOWSEX
-      FileFind filefind;
+      file_find filefind;
       bool bWorking;
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
       while(bWorking)
@@ -454,8 +489,16 @@ namespace metrowin
       
       bool bIsDir;
 
-      if(m_isdirmap.lookup(lpcszPath, bIsDir))
+      DWORD dwLastError;
+
+      if(m_isdirmap.lookup(lpcszPath, bIsDir, dwLastError))
+      {
+         if(!bIsDir)
+         {
+            ::SetLastError(dwLastError);
+         }
          return bIsDir;
+      }
 
       if(::ca::dir::system::is(lpcszPath, papp))
          return true;
@@ -485,7 +528,7 @@ namespace metrowin
 
       bIsDir = ::dir::is(strPath);
       
-      m_isdirmap.set(lpcszPath, bIsDir);
+      m_isdirmap.set(lpcszPath, bIsDir, ::GetLastError());
 
       return bIsDir;
    }
@@ -497,9 +540,16 @@ namespace metrowin
          return true;
 
       bool bIsDir;
+      DWORD dwLastError;
 
-      if(m_isdirmap.lookup(strPath, bIsDir))
+      if(m_isdirmap.lookup(strPath, bIsDir, dwLastError))
+      {
+         if(!bIsDir)
+         {
+            ::SetLastError(dwLastError);
+         }
          return bIsDir;
+      }
 
       wstring wstrPath;
       
@@ -527,7 +577,7 @@ namespace metrowin
   //    bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
       bIsDir = ::dir::is(strPath);
       
-      m_isdirmap.set(strPath, bIsDir);
+      m_isdirmap.set(strPath, bIsDir, ::GetLastError());
 
       return bIsDir;
    }
@@ -567,15 +617,16 @@ namespace metrowin
 
       
       bool bIsDir;
+      DWORD dwLastError;
 
 
-      if(m_isdirmap.lookup(str, bIsDir, (int) iLast))
+      if(m_isdirmap.lookup(str, bIsDir, dwLastError, (int) iLast))
          return bIsDir;
 
 
       if(papp->m_bZipIsDir && iLast >= 3  && !strnicmp_dup(&((const char *) str)[iLast - 3], ".zip", 4))
       {
-         m_isdirmap.set(str.Left(iLast + 1), true);
+         m_isdirmap.set(str.Left(iLast + 1), true, 0);
          return true;
       }
       
@@ -584,10 +635,11 @@ namespace metrowin
       if(papp->m_bZipIsDir && iFind >= 0 && iFind < iLast)
       {
          bool bHasSubFolder;
-         if(m_isdirmap.lookup(str, bHasSubFolder))
+         DWORD dwLastError;
+         if(m_isdirmap.lookup(str, bHasSubFolder, dwLastError))
             return bHasSubFolder;
          bHasSubFolder = m_pziputil->HasSubFolder(papp, str);
-         m_isdirmap.set(str.Left(iLast + 1), bHasSubFolder);
+         m_isdirmap.set(str.Left(iLast + 1), bHasSubFolder, ::GetLastError());
          return bHasSubFolder;
       }
 
@@ -624,7 +676,7 @@ namespace metrowin
 
       bIsDir = ::dir::is(gen::international::unicode_to_utf8(wstrPath));
       
-      m_isdirmap.set(str.Left(iLast + 1), bIsDir);
+      m_isdirmap.set(str.Left(iLast + 1), bIsDir, ::GetLastError());
 
       return bIsDir;
    }
@@ -747,7 +799,7 @@ namespace metrowin
       System.file().get_ascendants_path(lpcsz, stra);
       for(int i = 0; i < stra.get_size(); i++)
       {
-         if(!is(stra[i], papp))
+         if(!is(stra[i], papp) && ::GetLastError() != ERROR_ACCESS_DENIED)
          {
             
             if(!::CreateDirectoryW(gen::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
@@ -776,7 +828,7 @@ namespace metrowin
                   }
                   if(::CreateDirectoryW(gen::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
                   {
-                     m_isdirmap.set(stra[i], true);
+                     m_isdirmap.set(stra[i], true, 0);
                      goto try1;
                   }
                   else
@@ -790,7 +842,7 @@ namespace metrowin
             }
             else
             {
-               m_isdirmap.set(stra[i], true);
+               m_isdirmap.set(stra[i], true, 0);
             }
             try1:
             
@@ -982,7 +1034,7 @@ namespace metrowin
       }
       return path(path(str, "ca2", strRelative), lpcsz, lpcsz2);
 #else
-      throw todo(get_app());
+      return path(::Windows::Storage::ApplicationData::Current->LocalFolder->Path->Begin(), lpcsz, lpcsz2);
 #endif
    }
 
@@ -1054,7 +1106,27 @@ namespace metrowin
       }*/
 #else
 
-      throw todo(get_app());
+      string str = appdata();
+
+/*      string strRelative;
+      strRelative = ca2();
+      index iFind = strRelative.find(':');
+      if(iFind >= 0)
+      {
+         strsize iFind1 = strRelative.reverse_find("\\", iFind);
+         strsize iFind2 = strRelative.reverse_find("/", iFind);
+         strsize iStart = max(iFind1 + 1, iFind2 + 1);
+         strRelative = strRelative.Left(iFind - 1) + "_" + strRelative.Mid(iStart, iFind - iStart) + strRelative.Mid(iFind + 1);
+      }*/
+
+      string strUserFolderShift;
+
+      if(App(papp).directrix().m_varTopicQuery.has_property("user_folder_relative_path"))
+      {
+         strUserFolderShift = App(papp).directrix().m_varTopicQuery["user_folder_relative_path"].get_string();
+      }
+
+      return path(path(str, "ca2", strUserFolderShift), lpcsz, lpcsz2);
 
 
 #endif
@@ -1075,9 +1147,9 @@ namespace metrowin
          }
       }
 #else
-      throw todo(get_app());
+      return "CurrentUser";
 #endif
-      return gen::international::unicode_to_utf8(buf);
+      //return gen::international::unicode_to_utf8(buf);
    }
 
    string dir::default_userappdata(::ca::application * papp, const char * lpcszPrefix, const char * lpcszLogin, const char * pszRelativePath)
@@ -1107,38 +1179,41 @@ namespace metrowin
 
    string dir::userquicklaunch(::ca::application * papp, const char * lpcszRelativePath, const char * lpcsz2)
    {
-      UNREFERENCED_PARAMETER(papp);
-      string str;
-      SHGetSpecialFolderPath(
-         NULL,
-         str,
-         CSIDL_APPDATA,
-         FALSE);
-      str = path(str, "Microsoft\\Internet Explorer\\Quick Launch");
-      return path(str, lpcszRelativePath, lpcsz2);
+throw todo(get_app());
+      //UNREFERENCED_PARAMETER(papp);
+      //string str;
+      //SHGetSpecialFolderPath(
+      //   NULL,
+      //   str,
+      //   CSIDL_APPDATA,
+      //   FALSE);
+      //str = path(str, "Microsoft\\Internet Explorer\\Quick Launch");
+      //return path(str, lpcszRelativePath, lpcsz2);
    }
 
    string dir::userprograms(::ca::application * papp, const char * lpcszRelativePath, const char * lpcsz2)
    {
-      UNREFERENCED_PARAMETER(papp);
-      string str;
-      SHGetSpecialFolderPath(
-         NULL,
-         str,
-         CSIDL_PROGRAMS,
-         FALSE);
-      return path(str, lpcszRelativePath, lpcsz2);
+throw todo(get_app());
+      //UNREFERENCED_PARAMETER(papp);
+      //string str;
+      //SHGetSpecialFolderPath(
+      //   NULL,
+      //   str,
+      //   CSIDL_PROGRAMS,
+      //   FALSE);
+      //return path(str, lpcszRelativePath, lpcsz2);
    }
 
    string dir::commonprograms(const char * lpcszRelativePath, const char * lpcsz2)
    {
-      string str;
-      SHGetSpecialFolderPath(
-         NULL,
-         str,
-         CSIDL_COMMON_PROGRAMS,
-         FALSE);
-      return path(str, lpcszRelativePath, lpcsz2);
+throw todo(get_app());
+      //string str;
+      //SHGetSpecialFolderPath(
+      //   NULL,
+      //   str,
+      //   CSIDL_COMMON_PROGRAMS,
+      //   FALSE);
+      //return path(str, lpcszRelativePath, lpcsz2);
    }
 
    bool dir::is_inside_time(const char * pszPath, ::ca::application * papp)
@@ -1153,7 +1228,9 @@ namespace metrowin
 
    bool dir::has_subdir(::ca::application * papp, const char * pszDir)
    {
-      FileFind filefind;
+      throw todo(get_app());
+
+/*      file_find filefind;
       bool bWorking;
       bWorking = filefind.FindFile(path(pszDir, "*.*"));
       while(bWorking)
@@ -1164,7 +1241,7 @@ namespace metrowin
             return true;
          }
       }
-      return false;
+      return false;*/
    }
 
 } // namespace metrowin

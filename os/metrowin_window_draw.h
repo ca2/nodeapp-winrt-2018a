@@ -8,6 +8,9 @@ namespace user
 namespace metrowin
 {
 
+
+   ref class directx_base;
+
    class CLASS_DECL_metrowin window_draw : 
       virtual public ::ca::window_draw,
       virtual public ::ca::message_window_simple_callback
@@ -22,7 +25,9 @@ namespace metrowin
          OptimizeAllNext,
       };
 
-      user::interaction_ptr_array                       m_wndpaOut;
+
+      directx_base ^                         m_directx;
+      user::interaction_ptr_array            m_wndpaOut;
       mutex                                  m_mutexRendering;
       mutex                                  m_mutexRgnUpdate;
       semaphore                              m_semaphoreBuffer;

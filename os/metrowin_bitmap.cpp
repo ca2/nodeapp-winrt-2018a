@@ -45,23 +45,28 @@ namespace metrowin
 
       D2D1_BITMAP_PROPERTIES1 props;
 
-      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-      props.dpiX = 72.0;
-      props.dpiY = 72.0;
-      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      props.dpiX = 0.f;
+      props.dpiY = 0.f;
+      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
+      props.colorContext = NULL;
 
       //if(ppdata != NULL)
       {
         // g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
       }
       //else
-      {
-          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, lpBits, cx * sizeof(COLORREF), props, &m_pbitmap);
-      }
+      //{
+          HRESULT hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, lpBits, cx * sizeof(COLORREF), props, &m_pbitmap);
+      //}
 
-      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+      if(FAILED(hr))
+         return false;
 
+      zero(&m_map, sizeof(m_map));
+  //    m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+//
       //if(ppdata != NULL)
         // *ppdata = (COLORREF *) m_map.bits;
 
@@ -88,30 +93,34 @@ namespace metrowin
 
       D2D1_SIZE_U size;
 
-      size.width = lpbmi->bmiHeader.biWidth;
-      size.height = lpbmi->bmiHeader.biHeight;
+      size.width = abs(lpbmi->bmiHeader.biWidth);
+      size.height = abs(lpbmi->bmiHeader.biHeight);
 
       D2D1_BITMAP_PROPERTIES1 props;
 
-      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-      props.dpiX = 72.0;
-      props.dpiY = 72.0;
-      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
+      //TlsGetD2D1Factory1()->GetDesktopDpi(&props.dpiX, &props.dpiY);
+      props.dpiX = 0.f;
+      props.dpiY = 0.f;
+      props.bitmapOptions = D2D1_BITMAP_OPTIONS_CPU_READ | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
+      props.colorContext = NULL;
 
-      if(ppvBits != NULL)
+      //m_memory.allocate(size.width * size.height * sizeof(COLORREF));
+      HRESULT hr;
+      //if(ppvBits == NULL || *ppvBits == NULL)
       {
-         METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, *ppvBits, size.width * sizeof(COLORREF), props, &m_pbitmap);
+        // hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, 0, props, &m_pbitmap);
       }
-      else
+      //else
       {
-         METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
+         hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, m_memory.get_data(), size.width * sizeof(COLORREF), props, &m_pbitmap);
       }
+       hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, 0,  size.width * sizeof(COLORREF), props, &m_pbitmap);
 
-      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+      if(FAILED(hr) || m_pbitmap == NULL)
+         return FALSE;
 
-      if(ppvBits != NULL)
-         *ppvBits = m_map.bits;
 
 
       return true;

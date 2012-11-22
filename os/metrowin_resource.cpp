@@ -1,6 +1,9 @@
 #include "framework.h"
 
 
+#if FALSE
+
+
 WinResource::WinResource(::ca::application * papp) :
    ca(papp)
 {
@@ -132,3 +135,4 @@ bool WinResource::ReadResource(ex1::file & spfile, HINSTANCE hinst, UINT nID,  c
 //} //namespace gen
 
 
+#endif

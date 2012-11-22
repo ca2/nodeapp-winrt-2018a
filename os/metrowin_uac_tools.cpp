@@ -128,6 +128,7 @@ MODIFICATIONS:
 #   define _tsizeof( s )  (sizeof(s)/sizeof(s[0]))
 #endif//_tsizeof
 
+#ifdef WINDOWSEX
 
 
 namespace VistaTools
@@ -574,5 +575,7 @@ RunNonElevated(
 #endif //DONTWANT_RunNonElevated
 
 } // namespace VistaTools
+
+#endif
 
 #endif// IMPLEMENT_VISTA_TOOLS

@@ -223,7 +223,7 @@ namespace metrowin
             (DWRITE_FONT_WEIGHT) m_iFontWeight,
             style,
             stretch,
-            m_eunitFontSize == ::ca::unit_point ? point_dpi(m_dFontSize) : y_dpi(m_dFontSize),
+            (float) (m_eunitFontSize == ::ca::unit_point ? point_dpi(m_dFontSize) : dpiy(m_dFontSize)),
             L"",
             &((font *)  this)->m_pformat);
 

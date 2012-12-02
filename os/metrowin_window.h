@@ -12,8 +12,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin window : 
-      virtual public ::ca::window,
-      virtual public hwnd_handle
+      virtual public ::ca::window
    {
    public:
 
@@ -24,6 +23,8 @@ namespace metrowin
       //visual::dib_sp                m_spdib;
       //visual::dib_sp                m_spdibMultAlphaWork;
 
+      Platform::Agile<Windows::UI::Core::CoreWindow>  m_window;
+
 
       window();
       window(::ca::application * papp);
@@ -31,12 +32,15 @@ namespace metrowin
 
       virtual void on_delete(::ca::ca * poc);
 
-      virtual oswindow get_handle() const;
+      //virtual oswindow get_handle() const;
 
       virtual void mouse_hover_add(::user::interaction* pinterface);
       virtual void mouse_hover_remove(::user::interaction* pinterface);
 
       bool create_message_window(const char * pszName, ::ca::window_callback * pcallback = NULL);
+
+      virtual bool initialize(Windows::UI::Core::CoreWindow ^ window, ::ca::system_window ^ pwindow) override;
+
 
       static const MSG* PASCAL GetCurrentMessage();
 
@@ -77,14 +81,14 @@ namespace metrowin
 
    #endif   // WINVER >= 0x0500
 
-      virtual ::ca::window * from_os_data(void * pdata);
-      virtual void * get_os_data() const;
+//      virtual ::ca::window * from_os_data(void * pdata);
+  //    virtual void * get_os_data() const;
 
-      static window * PASCAL from_handle(oswindow hWnd);
-      static window * PASCAL FromHandlePermanent(oswindow hWnd);
-      static void PASCAL DeleteTempMap();
-      bool Attach(oswindow hWndNew);
-      oswindow Detach();
+//      static window * PASCAL from_handle(oswindow hWnd);
+  //    static window * PASCAL FromHandlePermanent(oswindow hWnd);
+      //static void PASCAL DeleteTempMap();
+//      bool Attach(oswindow hWndNew);
+  //    oswindow Detach();
 
       // subclassing/unsubclassing functions
       virtual void pre_subclass_window();
@@ -142,7 +146,7 @@ namespace metrowin
       ::user::interaction* GetTopLevelOwner();
       ::user::interaction* GetParentOwner();
       frame_window* GetTopLevelFrame();
-      static ::ca::window * PASCAL GetSafeOwner(::ca::window * pParent = NULL, oswindow* pWndTop = NULL);
+      //static ::ca::window * PASCAL GetSafeOwner(::ca::window * pParent = NULL, oswindow* pWndTop = NULL);
 
       virtual bool IsWindow();
 
@@ -297,10 +301,10 @@ namespace metrowin
       virtual ::user::interaction * set_capture(::user::interaction * pinterface = NULL);
       virtual ::user::interaction * release_capture();
       virtual ::user::interaction * get_capture();
-      static ::ca::window * PASCAL GetFocus();
-      ::ca::window * SetFocus();
+      static ::user::interaction * PASCAL GetFocus();
+      ::user::interaction * SetFocus() override;
 
-      static ::ca::window * PASCAL GetDesktopWindow();
+      static ::user::interaction * PASCAL GetDesktopWindow();
 
    // Obsolete and non-portable APIs - not recommended for new code
       virtual void CloseWindow();

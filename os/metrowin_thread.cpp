@@ -116,7 +116,6 @@ DWORD APIENTRY __thread_entry(void * pParam)
       ::metrowin::thread::s_haThread.add(::GetCurrentThread());
       ::metrowin::thread::s_threadptra.add(pThread);
 
-
       pThread->thread_entry(pStartup);
 
       // pStartup is invlaid after the following
@@ -130,6 +129,8 @@ DWORD APIENTRY __thread_entry(void * pParam)
       VERIFY(::WaitForSingleObjectEx(hEvent2, INFINITE, FALSE) == WAIT_OBJECT_0);
       ::CloseHandle(hEvent2);
 
+
+      Sys(pThread->get_app()).get_cursor_pos(&(__get_thread_state()->m_ptCursorLast));
 
 
       int n = pThread->m_p->main();
@@ -314,7 +315,7 @@ bool __internal_is_idle_message(gen::signal_object * pobj)
 
 
 
-bool __internal_is_idle_message(LPMSG lpmsg)
+bool __internal_is_idle_message(LPMESSAGE lpmsg)
 {
    // Return FALSE if the message just dispatched should _not_
    // cause on_idle to be run.  Messages which do not usually
@@ -350,7 +351,7 @@ bool __cdecl __is_idle_message(gen::signal_object * pobj)
       return __internal_is_idle_message(pobj);
 }
 
-bool __cdecl __is_idle_message(MSG* pMsg)
+bool __cdecl __is_idle_message(MESSAGE* pMsg)
 {
    metrowin::thread * pThread = __get_thread();
    if(pThread)
@@ -531,7 +532,6 @@ namespace metrowin
       // initialize message pump
       m_nDisablePumpCount = 0;
       pState->m_nMsgLast = WM_NULL;
-      System.get_cursor_pos(&(pState->m_ptCursorLast));
 
       // most threads are deleted when not needed
       m_bAutoDelete  = TRUE;
@@ -614,7 +614,7 @@ namespace metrowin
       if (pState->m_pCurrentWinThread == this)
          pState->m_pCurrentWinThread = NULL;
 
-      window::DeleteTempMap();
+//      window::DeleteTempMap();
       //      graphics::DeleteTempMap();
       //    graphics_object::DeleteTempMap();
 
@@ -989,12 +989,11 @@ namespace metrowin
       ::radix::application * pappThis2 = dynamic_cast < ::radix::application * > (m_p);
 
       // acquire and dispatch messages until a WM_QUIT message is received.
-      MSG msg;
+      MESSAGE msg;
       while(m_bRun)
       {
          // phase1: check to see if we can do idle work
-         while (bIdle &&
-            !::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
+         while (bIdle && !::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE))
          {
             // call on_idle while in bIdle state
             if (!on_idle(lIdleCount++))
@@ -1056,7 +1055,7 @@ namespace metrowin
                pappThis2->m_dwAlive = m_dwAlive;
             }
          }
-         while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE);
+         while (::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE);
 
       }
 stop_run:
@@ -1068,7 +1067,7 @@ stop_run:
       return __internal_is_idle_message(pobj);
    }
 
-   bool thread::is_idle_message(LPMSG lpmsg)
+   bool thread::is_idle_message(LPMESSAGE lpmsg)
    {
       return __internal_is_idle_message(lpmsg);
    }
@@ -1078,7 +1077,7 @@ stop_run:
 
       //      graphics_object::DeleteTempMap();
       //    graphics::DeleteTempMap();
-      window::DeleteTempMap();
+//      window::DeleteTempMap();
 
    }
 
@@ -1358,10 +1357,10 @@ stop_run:
 
       SCAST_PTR(::gen::message::base, pbase, pobj);
 
+#ifdef WINDOWSEX
       frame_window* pTopFrameWnd;
       ::user::interaction* pMainWnd;
       ::user::interaction* pMsgWnd;
-#ifdef WINDOWSEX
       switch (code)
       {
       case MSGF_DDEMGR:
@@ -1439,11 +1438,10 @@ stop_run:
 
    bool thread::pump_message()
    {
-#ifdef WINDOWSEX
       try
       {
-         MSG msg;
-         if(!::GetMessage(&msg, NULL, NULL, NULL))
+         MESSAGE msg;
+         if(!::GetMessage(&msg, ::ca::null(), NULL, NULL))
          {
             TRACE(::radix::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
             m_nDisablePumpCount++; // application must die
@@ -1558,8 +1556,9 @@ stop_run:
                spbase.destroy();
             }
             {
-               ::TranslateMessage(&msg);
-               ::DispatchMessage(&msg);
+//               ::TranslateMessage(&msg);
+  //             ::DispatchMessage(&msg);
+               msg.oswindow.window()->send_message(msg.message, msg.wParam, msg.lParam);
             }
          }
          return TRUE;
@@ -1577,7 +1576,6 @@ stop_run:
       {
          return FALSE;
       }
-#endif
 
       return true;
 
@@ -1810,7 +1808,7 @@ run:
             // clean up temp objects
             //         graphics_object::DeleteTempMap();
             //       graphics::DeleteTempMap();
-            window::DeleteTempMap();
+//            window::DeleteTempMap();
          }
 
 
@@ -1882,7 +1880,7 @@ run:
       install_message_handling(pThread);
       m_p->install_message_handling(pThread);
 
-      ::ca::window threadWnd;
+//      ::ca::window threadWnd;
 
       m_ptimera            = new ::user::interaction::timer_array(get_app());
       m_puiptra            = new user::interaction_ptr_array;
@@ -2043,8 +2041,8 @@ run:
    bool thread::has_message()
    {
       ASSERT(GetCurrentThreadId() == m_nThreadID);
-      MSG msg;
-      return ::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE;
+      MESSAGE msg;
+      return ::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE;
    }
 
 

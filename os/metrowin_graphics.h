@@ -14,19 +14,23 @@ namespace metrowin
    class CLASS_DECL_metrowin graphics : 
       virtual public ::ca::graphics
    {
-      // // DECLARE_DYNCREATE(::ca::graphics_sp)
    public:
 
-      ID2D1Device *           m_pd;
-      ID2D1DeviceContext *    m_pdc;
-      IDXGIAdapter *          m_pad;
-      IDXGIFactory2 *         m_pfax;
-      ID2D1Layer *            m_player;
-      ID2D1PathGeometry *     m_pclip;
 
-      int                     m_iType;
+      ID2D1Device *                    m_pd;
+      ID2D1RenderTarget *              m_pdc;
+      ID2D1DeviceContext *             m_pdevicecontext;
+      ID2D1BitmapRenderTarget *        m_pbitmaprendertarget;
 
-      D2D1_INTERPOLATION_MODE    m_interpolationmode;
+      IDXGIAdapter *                   m_pad;
+      IDXGIFactory2 *                  m_pfax;
+      ID2D1Layer *                     m_player;
+      ID2D1PathGeometry *              m_pclip;
+
+      int                              m_iType;
+
+      D2D1_BITMAP_INTERPOLATION_MODE   m_bitmapinterpolationmode;
+      D2D1_INTERPOLATION_MODE          m_interpolationmode;
 
 /*      ::Gdiplus::Graphics *         m_pgraphics;
       ::Gdiplus::GraphicsPath *     m_ppath;
@@ -159,6 +163,7 @@ namespace metrowin
 
       virtual bool draw_path(::ca::graphics_path * ppath);
       virtual bool fill_path(::ca::graphics_path * ppath);
+      virtual bool path(::ca::graphics_path * ppath);
 
 
       // World transform
@@ -489,7 +494,7 @@ namespace metrowin
       virtual HDC get_handle1() const;
       virtual HDC get_handle2() const;
 
-      virtual void attach(void * pdata);
+      virtual bool attach(void * pdata);
       virtual void * detach();
 
 

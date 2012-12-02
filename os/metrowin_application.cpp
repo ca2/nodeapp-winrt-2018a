@@ -432,7 +432,7 @@ namespace metrowin
       {
          if(__get_module_state()->m_pmapHWND == NULL)
          {
-            __get_module_state()->m_pmapHWND = new hwnd_map;
+//            __get_module_state()->m_pmapHWND = new hwnd_map;
             __get_module_state()->m_pmutexHwnd = new mutex(this);
          }
 /*         if(__get_module_state()->m_pmapHDC == NULL)

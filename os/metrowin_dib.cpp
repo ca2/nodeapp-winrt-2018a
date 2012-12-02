@@ -28,7 +28,10 @@ namespace metrowin
       m_spgraphics(papp)
    {
       m_pcolorref          = NULL;
-      m_size               = class size(0, 0);
+      cx                   = 0;
+      cy                   = 0;
+      scan                 = 0;
+      m_bMapped            = false;
    }
 
    COLORREF * dib::get_data()
@@ -76,7 +79,9 @@ namespace metrowin
    void    dib::construct (int cx,  int cy)
    {
       m_pcolorref    = NULL;
-      m_size         = class size(0, 0);
+      cx             = 0;
+      cy             = 0;
+      scan           = 0;
       create(cx, cy);
    }
 
@@ -94,8 +99,8 @@ namespace metrowin
    {
       if(m_spbitmap.is_set()
       && m_spbitmap->get_os_data() != NULL 
-      && width == m_size.cx
-      && height == m_size.cy)
+      && width == cx
+      && height == cy)
          return TRUE;
 
       Destroy();
@@ -116,51 +121,55 @@ namespace metrowin
       m_spbitmap.create(get_app());
       m_spbitmapMap.create(get_app());
       m_spgraphics.create(get_app());
+      m_spgraphicsMap.create(get_app());
 
-      if(m_spbitmap.m_p == NULL || m_spbitmapMap.is_null())
+      if(m_spbitmap.m_p == NULL || m_spbitmapMap.is_null() || m_spgraphics.is_null() || m_spgraphicsMap.is_null())
       {
-         m_size = class size(0, 0);
-         return FALSE;
+         
+         cx    = 0;
+
+         cy    = 0;
+
+         scan  = 0;
+         
+         return false;
+
       }
 
-      m_spgraphics->CreateCompatibleDC(NULL);
-
-
-      //m_pcolorref = (COLORREF *) ca2_alloc(width * height * sizeof(COLORREF));
-
-      if(!m_spbitmapMap->CreateDIBSection(m_spgraphics, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, NULL, NULL))
+      m_spgraphicsMap->CreateCompatibleDC(NULL);
+      
+      if(!m_spbitmapMap->CreateDIBSection(m_spgraphicsMap, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, NULL, NULL))
       {
-         m_size = class size(0, 0);
-         return FALSE;
+
+         cx       = 0;
+
+         cy       = 0;
+
+         scan     = 0;
+
+         return false;
+
       }
 
-      if(!m_spbitmap->CreateBitmap(m_spgraphics, m_size.cx, m_size.cy, 1, 32, m_pcolorref))
+      if(m_spbitmapMap->get_os_data() == NULL)
       {
-         m_size = class size(0, 0);
-         return FALSE;
-      }
 
-
-      if(m_spbitmap->get_os_data() != NULL)
-      {
-         //m_spgraphics->CreateCompatibleDC(NULL);
-         ::ca::bitmap * pbitmap = m_spgraphics->SelectObject(m_spbitmap);
-         //m_hbitmapOriginal
-         /*if(pbitmap == NULL || pbitmap->get_os_data() == NULL)
-         {
-            Destroy();
-            return FALSE;
-         }
-         ((Gdiplus::Bitmap *)pbitmap->get_os_data())->GetHBITMAP(Gdiplus::Color(0, 0, 0, 0), &m_hbitmapOriginal);*/
-         m_size = class size(width, height);
-         m_scan = width * sizeof(COLORREF);
-         return TRUE;
-      }
-      else
-      {
          Destroy();
-         return FALSE;
+
+         return false;
+
       }
+
+      m_spgraphics->SelectObject(m_spbitmapMap);
+
+      cx    = width;
+      
+      cy    = height;
+
+      scan  = width * sizeof(COLORREF);
+
+      return true;
+
    }
 
    bool dib::dc_select(bool bSelect)
@@ -192,6 +201,12 @@ namespace metrowin
 
    bool dib::Destroy ()
    {
+
+      if(m_bMapped)
+      {
+         unmap();
+      }
+
       if(m_spbitmap.is_set())
          gen::release(m_spbitmap.m_p);
 
@@ -199,7 +214,10 @@ namespace metrowin
       if(m_spgraphics.is_set())
          gen::release(m_spgraphics.m_p);
  
-      m_size         = class size(0, 0);
+      cx             = 0;
+
+      cy             = 0;
+
       m_pcolorref    = NULL;
       
       return TRUE;
@@ -214,7 +232,7 @@ namespace metrowin
          (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1(), 
          pt.x, pt.y, 
          size.cx, size.cy, 
-         ptSrc.x, ptSrc.y, ptSrc.y, m_size.cy - ptSrc.y, 
+         ptSrc.x, ptSrc.y, ptSrc.y, cy - ptSrc.y, 
          m_pcolorref, &m_info, 0)
             != FALSE; */
 
@@ -235,100 +253,101 @@ namespace metrowin
          return false;
       }
       throw todo(get_app());
-      //bool bOk = GetDIBits(WIN_HDC(pdc), (HBITMAP) pbitmap->get_os_data(), 0, m_size.cy, m_pcolorref, &(m_info), DIB_RGB_COLORS) != FALSE; 
+      //bool bOk = GetDIBits(WIN_HDC(pdc), (HBITMAP) pbitmap->get_os_data(), 0, cy, m_pcolorref, &(m_info), DIB_RGB_COLORS) != FALSE; 
       METROWIN_DC(pdc)->SelectObject(pbitmap);
       return bOk;
    }
 
+
    bool dib::from(point ptDest, ::ca::graphics * pdc, point pt, class size sz)
    {
+
       return m_spgraphics->BitBlt(ptDest.x, ptDest.y, sz.cx, sz.cy, pdc, pt.x, pt.y, SRCCOPY) != FALSE;
+
    }
 
-   void dib::Fill ( int R, int G, int B )
+
+   void dib::Fill(int A, int R, int G, int B)
    {
-      COLORREF color=RGB ( B, G, R );
-      int size=m_size.cx*m_size.cy;
+      
+      map();
+
+      COLORREF color = ARGB(A, B, G, R);
 
       COLORREF * pcr;
 
-      int iSize32 = size / 32;
-      int i;
-      for (i=0; i < iSize32; i+=32 )
+      for(int y = 0; y < cy; y++)
       {
-         pcr = &m_pcolorref[i];
-         pcr[0] = color;
-         pcr[1] = color;
-         pcr[2] = color;
-         pcr[3] = color;
-         pcr[4] = color;
-         pcr[5] = color;
-         pcr[6] = color;
-         pcr[7] = color;
-         pcr[8] = color;
-         pcr[9] = color;
-         pcr[10] = color;
-         pcr[11] = color;
-         pcr[12] = color;
-         pcr[13] = color;
-         pcr[14] = color;
-         pcr[15] = color;
-         pcr[16] = color;
-         pcr[17] = color;
-         pcr[18] = color;
-         pcr[19] = color;
-         pcr[20] = color;
-         pcr[21] = color;
-         pcr[22] = color;
-         pcr[23] = color;
-         pcr[24] = color;
-         pcr[25] = color;
-         pcr[26] = color;
-         pcr[27] = color;
-         pcr[28] = color;
-         pcr[29] = color;
-         pcr[30] = color;
-         pcr[31] = color;
+
+         pcr = (COLORREF *) &((byte *) m_pcolorref)[scan * y];
+
+         for(int x = 0; x < cx; x++)
+         {
+
+            *pcr     = color;
+
+            pcr++;
+
+         }
+
       }
 
-      for (i=0; i<size; i++ )
-      {
-         m_pcolorref[i]=color;
-      }
    }
+
 
    void dib::set_rgb(int R, int G, int B)
    {
-      int size=m_size.cx*m_size.cy;
 
-      BYTE * pbyte = (BYTE *) m_pcolorref;
+      map();
 
-      int i;
-      for (i=0; i<size; i++ )
+      byte * pdata = (byte *) m_pcolorref;
+
+      byte * p;
+
+      for(int y = 0; y < cy; y++)
       {
-         *pbyte++ = (BYTE) R;
-         *pbyte++ = (BYTE) G;
-         *pbyte++ = (BYTE) B;
-         pbyte++;
+
+         p = &pdata[scan * y];
+
+         for(int x = 0; x < cx; x++)
+         {
+
+            p[0]     = R;
+
+            p[1]     = G;
+
+            p[2]     = B;
+
+            p += 4;
+
+         }
+
       }
+
    }
+
 
    void dib::ToAlpha(int i)
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
 
-      while ( size-- )
+      BYTE * dst = (BYTE *) m_pcolorref;
+
+      int size = cx * cy;
+
+      while(size--)
       {
          dst[3] = dst[i];
-         dst+=4;
+         dst += 4;
       }
+
    }
 
    void dib::from_alpha()
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int64_t size = m_size.area();
+      
+      BYTE * dst = (BYTE*) m_pcolorref;
+
+      int64_t size = cx * cy;
 
       while ( size-- )
       {
@@ -337,6 +356,7 @@ namespace metrowin
          dst[2] = dst[3];
          dst+=4;
       }
+
    }
 
    //DIB = DIB * SRC_ALPHA
@@ -358,7 +378,7 @@ namespace metrowin
          pdibWork = dibWork;
       }
 
-      if(pdibWork->create(width(), height()))
+      if(pdibWork->create(cx, cy))
          return;
 
       pdibWork->FillByte(0);
@@ -392,21 +412,29 @@ namespace metrowin
 
    void dib::Map(int ToRgb, int FromRgb)
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+
+      BYTE * dst = (BYTE *) m_pcolorref;
+
+      int size = cx * cy;
 
       while ( size-- )
       {
+
          *dst = (byte) (*dst == FromRgb ? ToRgb : *dst);
-         dst+=4;
+
+         dst += 4;
+
       }
+
    }
 
 
    void dib::ToAlphaAndFill(int i, COLORREF cr)
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      
+      BYTE * dst = (BYTE *) m_pcolorref;
+
+      int size = cx * cy;
 
       BYTE uchB = rgba_get_b(cr);
       BYTE uchG = rgba_get_g(cr);
@@ -424,8 +452,10 @@ namespace metrowin
 
    void dib::GrayToARGB(COLORREF cr)
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+
+      BYTE * dst = (BYTE *) m_pcolorref;
+
+      int size = cx * cy;
 
       DWORD dwB = rgba_get_b(cr);
       DWORD dwG = rgba_get_g(cr);
@@ -446,19 +476,24 @@ namespace metrowin
    {
       if(op == 123) // zero dest RGB, invert alpha, and OR src RGB
       {
-         int isize=m_size.cx*m_size.cy;
-         LPDWORD lpbitsSrc= (LPDWORD) WIN_DIB(pdib)->m_pcolorref;
-         LPDWORD lpbitsDest= (LPDWORD) m_pcolorref;
+
+         int isize = cx * cy;
+
+         LPDWORD lpbitsSrc = (LPDWORD) WIN_DIB(pdib)->m_pcolorref;
+         LPDWORD lpbitsDst = (LPDWORD) m_pcolorref;
 
          COLORREF _colorref = RGB ( 0, 0, 0 ) | (255 << 24);
          COLORREF colorrefa[2];
+
          colorrefa[0] = _colorref;
          colorrefa[1] = _colorref;
 
          COLORREF _colorrefN = RGB ( 255, 255, 255) | (0 << 24);
          COLORREF colorrefaN[2];
+
          colorrefaN[0] = _colorrefN;
          colorrefaN[1] = _colorrefN;
+
    #ifdef AMD64
 
          //x64
@@ -467,7 +502,7 @@ namespace metrowin
          {
             emms
             mov      eax, isize
-            mov      ebx, lpbitsDest
+            mov      ebx, lpbitsDst
             mov      ecx, lpbitsSrc
             movq     mm0, colorrefa
             movq     mm7, colorrefaN
@@ -498,24 +533,39 @@ namespace metrowin
 
    void dib::Invert()
    {
-      int size=m_size.cx*m_size.cy;
+
+      int size = cx * cy;
+
       LPBYTE lpb = (LPBYTE) m_pcolorref;
+
       for ( int i=0; i<size; i++ )
       {
+
          lpb[0] = 255 - lpb[0];
+
          lpb[1] = 255 - lpb[1];
+
          lpb[2] = 255 - lpb[2];
+
          lpb += 4;
+
       }
+
    }
 
    void dib::channel_invert(visual::rgba::echannel echannel)
    {
-      int64_t size   = m_size.area();
+
+      int64_t size   = area();
+
       register int64_t size64 = size / 64;
+
       LPBYTE lpb = (LPBYTE) m_pcolorref;
+
       lpb += ((int)echannel) % 4;
+
       register int64_t i = 0;
+
       for(; i < size64; i++)
       {
          lpb[4 *  0] = 255 - lpb[4 *  0];
@@ -613,8 +663,10 @@ namespace metrowin
 
    void dib::FillGlass ( int R, int G, int B, int A )
    {
-      BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+
+      BYTE * dst = (BYTE *) m_pcolorref;
+
+      int size = cx * cy;
          
       while ( size-- )
       {
@@ -623,13 +675,16 @@ namespace metrowin
          dst[2]=(BYTE)(((R-dst[2])*A+(dst[2]<<8))>>8);   
          dst+=4;
       }
+
    }
 
    void dib::FillStippledGlass ( int R, int G, int B )
    {   
+      
       COLORREF color=RGB ( B, G, R );
-      int w=m_size.cx;
-      int h=m_size.cy;
+
+      int w = cx;
+      int h = cy;
 
       for ( int j=0; j<w; j++ )
       {
@@ -643,27 +698,33 @@ namespace metrowin
    void dib::copy(::ca::dib * pdib)
    {
       // If DibSize Wrong Re-create dib
-      if ( (WIN_DIB(pdib)->m_size.cx!=m_size.cx) || (WIN_DIB(pdib)->m_size.cy!=m_size.cy) )
-         WIN_DIB(pdib)->create ( m_size.cx, m_size.cy );
+      if ( (WIN_DIB(pdib)->cx!=cx) || (WIN_DIB(pdib)->cy!=cy) )
+         WIN_DIB(pdib)->create (cx, cy );
       // do copy
-      memcpy ( WIN_DIB(pdib)->m_pcolorref, m_pcolorref, m_size.cx*m_size.cy*4 );
+      memcpy ( WIN_DIB(pdib)->m_pcolorref, m_pcolorref, cx*cy*4 );
    }
 
 
    void dib::Paste ( ::ca::dib * pdib )
    {
       // If DibSize Wrong Re-create dib
-      if ( (m_size.cx!=WIN_DIB(pdib)->m_size.cx) || (m_size.cy!=WIN_DIB(pdib)->m_size.cy) )
-         create ( WIN_DIB(pdib)->m_size.cx, WIN_DIB(pdib)->m_size.cy );
-      // do Paste
-      memcpy ( m_pcolorref, WIN_DIB(pdib)->m_pcolorref, m_size.cx*m_size.cy*4 );
+      if ( (cx!=WIN_DIB(pdib)->cx) || (cy!=WIN_DIB(pdib)->cy) )
+         create ( WIN_DIB(pdib)->cx, WIN_DIB(pdib)->cy );
+      if(WIN_DIB(pdib)->m_pcolorref == NULL)
+         return;
+      map();
+      if(m_pcolorref != NULL)
+      {
+         // do Paste
+         memcpy ( m_pcolorref, WIN_DIB(pdib)->m_pcolorref, cx*cy*4 );
+      }
    }
 
    bool dib::color_blend(COLORREF cr, BYTE bAlpha)
    {
 
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
 
       DWORD dwB = rgba_get_b(cr);
       DWORD dwG = rgba_get_g(cr);
@@ -686,12 +747,12 @@ namespace metrowin
 
    void dib::Blend (::ca::dib * pdib, int A )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -705,14 +766,14 @@ namespace metrowin
 
    bool dib::Blend(::ca::dib *pdib, ::ca::dib *pdibA, int A)
    {
-      if(m_size != WIN_DIB(pdib)->m_size ||
-         m_size != WIN_DIB(pdibA)->m_size)
+      if(size() != WIN_DIB(pdib)->size() ||
+         size() != WIN_DIB(pdibA)->size())
          return false;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
       BYTE *alf=(BYTE*)WIN_DIB(pdibA)->m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
 
       A = 2 - A;
          
@@ -731,12 +792,12 @@ namespace metrowin
 
    void dib::Darken (::ca::dib * pdib )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -750,12 +811,12 @@ namespace metrowin
 
    void dib::Difference (::ca::dib * pdib )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -773,12 +834,12 @@ namespace metrowin
 
    void dib::Lighten (::ca::dib * pdib )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -793,12 +854,12 @@ namespace metrowin
 
    void dib::Multiply (::ca::dib * pdib )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -812,12 +873,12 @@ namespace metrowin
 
    void dib::Screen (::ca::dib * pdib )
    {
-      if ( m_size!=WIN_DIB(pdib)->m_size )
+      if ( size()!=WIN_DIB(pdib)->size() )
          return;
 
       BYTE *src=(BYTE*)WIN_DIB(pdib)->m_pcolorref;
       BYTE *dst=(BYTE*)m_pcolorref;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
          
       while ( size-- )
       {
@@ -838,8 +899,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -847,11 +908,11 @@ namespace metrowin
       if ( (dx<=0) || (dy<=0) )
          return;
       // If DibSize Wrong Re-create dib
-      if ( (dx!=WIN_DIB(pdib)->m_size.cx) || (dy!=WIN_DIB(pdib)->m_size.cy) )
+      if ( (dx!=WIN_DIB(pdib)->cx) || (dy!=WIN_DIB(pdib)->cy) )
          WIN_DIB(pdib)->create ( dx, dy );
 
       // Prepare buffer Addresses
-      COLORREF *src=m_pcolorref+(py*m_size.cx)+px;
+      COLORREF *src=m_pcolorref+(py*cx)+px;
       COLORREF *dst=WIN_DIB(pdib)->m_pcolorref;
 
       // Do copy
@@ -859,8 +920,8 @@ namespace metrowin
       {
          for ( int i=0; i<dx; i++ )
             dst[i]=src[i];
-         src+=m_size.cx;
-         dst+=WIN_DIB(pdib)->m_size.cx;
+         src+=cx;
+         dst+=WIN_DIB(pdib)->cx;
       }
    }
 
@@ -869,8 +930,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -879,16 +940,16 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      COLORREF *src=WIN_DIB(pdib)->m_pcolorref+((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x;
-      COLORREF *dst=m_pcolorref+(py*m_size.cx)+px;
+      COLORREF *src=WIN_DIB(pdib)->m_pcolorref+((py-y)*WIN_DIB(pdib)->cx)+px-x;
+      COLORREF *dst=m_pcolorref+(py*cx)+px;
 
       // Do Paste
       while ( dy-- )
       {
          for ( int i=0; i<dx; i++ )
             dst[i]=src[i];
-         src+=WIN_DIB(pdib)->m_size.cx;
-         dst+=m_size.cx;
+         src+=WIN_DIB(pdib)->cx;
+         dst+=cx;
       }
    }
 
@@ -897,8 +958,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+w)<m_size.cx) ? w : m_size.cx-x;
-      int dy=((y+h)<m_size.cy) ? h : m_size.cy-y;
+      int dx=((x+w)<cx) ? w : cx-x;
+      int dy=((y+h)<cy) ? h : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -907,7 +968,7 @@ namespace metrowin
          return;
 
       // Prepare buffer Address
-      COLORREF *dst=m_pcolorref+(py*m_size.cx)+px;
+      COLORREF *dst=m_pcolorref+(py*cx)+px;
       COLORREF color=RGB ( B, G, R );
 
       // Do Fill
@@ -917,7 +978,7 @@ namespace metrowin
          {
             dst[i]=color;   
          }
-         dst+=m_size.cx;
+         dst+=cx;
       }
    }
 
@@ -926,8 +987,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+w)<m_size.cx) ? w : m_size.cx-x;
-      int dy=((y+h)<m_size.cy) ? h : m_size.cy-y;
+      int dx=((x+w)<cx) ? w : cx-x;
+      int dy=((y+h)<cy) ? h : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -936,7 +997,7 @@ namespace metrowin
          return;
 
       // Prepare buffer Address
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do FillGlass
       while ( dy-- )
@@ -948,7 +1009,7 @@ namespace metrowin
             dst[2]=(BYTE)(((R-dst[2])*A+(dst[2]<<8))>>8);   
             dst+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
       }
    }
 
@@ -957,8 +1018,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+w)<m_size.cx) ? w : m_size.cx-x;
-      int dy=((y+h)<m_size.cy) ? h : m_size.cy-y;
+      int dx=((x+w)<cx) ? w : cx-x;
+      int dy=((y+h)<cy) ? h : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -967,7 +1028,7 @@ namespace metrowin
          return;
 
       // Prepare buffer Address
-      COLORREF *dst=m_pcolorref+(py*m_size.cx)+px;
+      COLORREF *dst=m_pcolorref+(py*cx)+px;
       COLORREF color=RGB ( B, G, R );
 
       // Do FillStippledGlass
@@ -977,7 +1038,7 @@ namespace metrowin
          {
             dst[i]=((i+j)&0x1) ? dst[i] : color;   
          }
-         dst+=m_size.cx;
+         dst+=cx;
       }
    }
 
@@ -986,8 +1047,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -996,8 +1057,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Blend
       while ( dy-- )
@@ -1010,8 +1071,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1020,8 +1081,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -1030,8 +1091,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Darken
       while ( dy-- )
@@ -1044,8 +1105,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1054,8 +1115,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -1064,8 +1125,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Difference
       while ( dy-- )
@@ -1082,8 +1143,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1092,8 +1153,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -1102,8 +1163,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Lighten
       while ( dy-- )
@@ -1116,8 +1177,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1126,8 +1187,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -1136,8 +1197,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Multiply
       while ( dy-- )
@@ -1150,8 +1211,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1160,8 +1221,8 @@ namespace metrowin
       // Clip Rect
       int px=(x>=0) ? x : 0;
       int py=(y>=0) ? y : 0;
-      int dx=((x+WIN_DIB(pdib)->m_size.cx)<m_size.cx) ? WIN_DIB(pdib)->m_size.cx : m_size.cx-x;
-      int dy=((y+WIN_DIB(pdib)->m_size.cy)<m_size.cy) ? WIN_DIB(pdib)->m_size.cy : m_size.cy-y;
+      int dx=((x+WIN_DIB(pdib)->cx)<cx) ? WIN_DIB(pdib)->cx : cx-x;
+      int dy=((y+WIN_DIB(pdib)->cy)<cy) ? WIN_DIB(pdib)->cy : cy-y;
       dx=(x>=0) ? dx : dx + x;
       dy=(y>=0) ? dy : dy + y;
 
@@ -1170,8 +1231,8 @@ namespace metrowin
          return;
 
       // Prepare buffer Addresses
-      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->m_size.cx)+px-x)*4;
-      BYTE *dst=(BYTE *)m_pcolorref+((py*m_size.cx)+px)*4;
+      BYTE *src=(BYTE *)WIN_DIB(pdib)->m_pcolorref+(((py-y)*WIN_DIB(pdib)->cx)+px-x)*4;
+      BYTE *dst=(BYTE *)m_pcolorref+((py*cx)+px)*4;
 
       // Do Screen
       while ( dy-- )
@@ -1184,8 +1245,8 @@ namespace metrowin
             dst+=4;
             src+=4;
          }
-         dst+=(m_size.cx-dx)<<2;
-         src+=(WIN_DIB(pdib)->m_size.cx-dx)<<2;
+         dst+=(cx-dx)<<2;
+         src+=(WIN_DIB(pdib)->cx-dx)<<2;
       }
    }
 
@@ -1206,7 +1267,7 @@ namespace metrowin
       x=x1;
       y=y1;
 
-      m_pcolorref[y*m_size.cx+x]=color;
+      m_pcolorref[y*cx+x]=color;
       while (x<dx) 
       {
          if (d<=0) 
@@ -1220,7 +1281,7 @@ namespace metrowin
             x++;
             y++;
          }
-         m_pcolorref[y*m_size.cx+x]=color;
+         m_pcolorref[y*cx+x]=color;
       }
    }*/
 
@@ -1243,7 +1304,7 @@ namespace metrowin
          d=ay-(ax>>1);
          while ( x!=x2 )
          {
-            m_pcolorref[y*m_size.cx+x]=color;
+            m_pcolorref[y*cx+x]=color;
             if ( d>=0 )
             {
                y+=sy;
@@ -1258,7 +1319,7 @@ namespace metrowin
          d=ax-(ay>>1);
          while ( y!=y2 )
          {
-            m_pcolorref[y*m_size.cx+x]=color;
+            m_pcolorref[y*cx+x]=color;
             if ( d>=0 )
             {
                x+=sx;
@@ -1290,9 +1351,9 @@ namespace metrowin
          d=ay-(ax>>1);
          while ( x!=x2 )
          {
-            dst[(y*m_size.cx+x)<<2]=(BYTE)(((B-dst[(y*m_size.cx+x)<<2])*A+(dst[(y*m_size.cx+x)<<2]<<8))>>8);
-            dst[((y*m_size.cx+x)<<2)+1]=(BYTE)(((G-dst[((y*m_size.cx+x)<<2)+1])*A+(dst[((y*m_size.cx+x)<<2)+1]<<8))>>8);
-            dst[((y*m_size.cx+x)<<2)+2]=(BYTE)(((R-dst[((y*m_size.cx+x)<<2)+2])*A+(dst[((y*m_size.cx+x)<<2)+2]<<8))>>8);
+            dst[(y*cx+x)<<2]=(BYTE)(((B-dst[(y*cx+x)<<2])*A+(dst[(y*cx+x)<<2]<<8))>>8);
+            dst[((y*cx+x)<<2)+1]=(BYTE)(((G-dst[((y*cx+x)<<2)+1])*A+(dst[((y*cx+x)<<2)+1]<<8))>>8);
+            dst[((y*cx+x)<<2)+2]=(BYTE)(((R-dst[((y*cx+x)<<2)+2])*A+(dst[((y*cx+x)<<2)+2]<<8))>>8);
             if ( d>=0 )
             {
                y+=sy;
@@ -1307,9 +1368,9 @@ namespace metrowin
          d=ax-(ay>>1);
          while ( y!=y2 )
          {
-            dst[(y*m_size.cx+x)<<2]=(BYTE)(((B-dst[(y*m_size.cx+x)<<2])*A+(dst[(y*m_size.cx+x)<<2]<<8))>>8);
-            dst[((y*m_size.cx+x)<<2)+1]=(BYTE)(((G-dst[((y*m_size.cx+x)<<2)+1])*A+(dst[((y*m_size.cx+x)<<2)+1]<<8))>>8);
-            dst[((y*m_size.cx+x)<<2)+2]=(BYTE)(((R-dst[((y*m_size.cx+x)<<2)+2])*A+(dst[((y*m_size.cx+x)<<2)+2]<<8))>>8);
+            dst[(y*cx+x)<<2]=(BYTE)(((B-dst[(y*cx+x)<<2])*A+(dst[(y*cx+x)<<2]<<8))>>8);
+            dst[((y*cx+x)<<2)+1]=(BYTE)(((G-dst[((y*cx+x)<<2)+1])*A+(dst[((y*cx+x)<<2)+1]<<8))>>8);
+            dst[((y*cx+x)<<2)+2]=(BYTE)(((R-dst[((y*cx+x)<<2)+2])*A+(dst[((y*cx+x)<<2)+2]<<8))>>8);
             if ( d>=0 )
             {
                x+=sx;
@@ -1327,7 +1388,7 @@ namespace metrowin
       COLORREF crSet = RGB(rgba_get_b(crInMask), rgba_get_g(crInMask), rgba_get_r(crInMask));
       COLORREF crUnset  = RGB(rgba_get_b(crOutMask), rgba_get_g(crOutMask), rgba_get_r(crOutMask));
 
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
 
       for ( int i=0; i<size; i++ )
          if(m_pcolorref[i]== crFind)
@@ -1351,7 +1412,7 @@ namespace metrowin
 
    void dib::channel_mask(unsigned char uchFind, unsigned char uchSet, unsigned char uchUnset, visual::rgba::echannel echannel)
    {
-      int size = m_size.cx * m_size.cy;
+      int size = cx * cy;
       unsigned char * puch = (unsigned char * ) m_pcolorref;
       puch += ((int) echannel) % 4;
 
@@ -1367,7 +1428,7 @@ namespace metrowin
 
    DWORD dib::GetPixel(int x, int y)
    {
-      DWORD dw = *(m_pcolorref + x + (m_size.cy - y - 1) * m_size.cx);
+      DWORD dw = *(m_pcolorref + x + (cy - y - 1) * cx);
       return RGB(rgba_get_b(dw), rgba_get_g(dw), rgba_get_r(dw));
    }
 
@@ -1392,14 +1453,14 @@ namespace metrowin
 
 
          if(xL < 0) xL = 0;
-         if(xU >= m_Size.cx) xU = m_Size.cx - 1;
+         if(xU >= cx) xU = cx - 1;
          if(yL < 0) yL = 0;
-         if(yU >= m_Size.cy) yU = m_Size.cy - 1;
+         if(yU >= cy) yU = cy - 1;
 
 
-         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * m_Size.cx));
-         DWORD dwAdd = ((m_Size.cx - 1 - xU) + xL) * 4;
-         int size=m_Size.cx*m_Size.cy;
+         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * cx));
+         DWORD dwAdd = ((cx - 1 - xU) + xL) * 4;
+         int size=cx*cy;
          double iLevel;
 
          int dx, dy;
@@ -1499,14 +1560,14 @@ namespace metrowin
 
 
          if(xL < 0) xL = 0;
-         if(xU >= m_size.cx) xU = m_size.cx - 1;
+         if(xU >= cx) xU = cx - 1;
          if(yL < 0) yL = 0;
-         if(yU >= m_size.cy) yU = m_size.cy - 1;
+         if(yU >= cy) yU = cy - 1;
       
 
-         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * m_size.cx));
-         DWORD dwAdd = ((m_size.cx - 1 - xU) + xL) * 4;
-//         int size=m_size.cx*m_size.cy;
+         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * cx));
+         DWORD dwAdd = ((cx - 1 - xU) + xL) * 4;
+//         int size=cx*cy;
       
          int dx, dy;
 
@@ -1552,14 +1613,14 @@ namespace metrowin
 
 
          if(xL < 0) xL = 0;
-         if(xU >= m_Size.cx) xU = m_Size.cx - 1;
+         if(xU >= cx) xU = cx - 1;
          if(yL < 0) yL = 0;
-         if(yU >= m_Size.cy) yU = m_Size.cy - 1;
+         if(yU >= cy) yU = cy - 1;
 
 
-         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * m_Size.cx));
-         DWORD dwAdd = ((m_Size.cx - 1 - xU) + xL) * 4;
-         int size=m_Size.cx*m_Size.cy;
+         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * cx));
+         DWORD dwAdd = ((cx - 1 - xU) + xL) * 4;
+         int size=cx*cy;
          double iLevel;
 
          int dx, dy;
@@ -1659,14 +1720,14 @@ namespace metrowin
 
 
          if(xL < 0) xL = 0;
-         if(xU >= m_size.cx) xU = m_size.cx - 1;
+         if(xU >= cx) xU = cx - 1;
          if(yL < 0) yL = 0;
-         if(yU >= m_size.cy) yU = m_size.cy - 1;
+         if(yU >= cy) yU = cy - 1;
       
 
-         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * m_size.cx));
-         DWORD dwAdd = ((m_size.cx - 1 - xU) + xL) * 4;
-//         int size=m_size.cx*m_size.cy;
+         BYTE *dst = ((BYTE*)(m_pcolorref + xL + yL * cx));
+         DWORD dwAdd = ((cx - 1 - xU) + xL) * 4;
+//         int size=cx*cy;
       
          int dx, dy;
 
@@ -1708,7 +1769,7 @@ namespace metrowin
       // White blend dib
       dib dib1(get_app());
       dib1.create(cx, cy);
-      dib1.Fill(255, 255, 255);
+      dib1.Fill(0, 255, 255, 255);
 
 #ifdef WINDOWSEX
 
@@ -1729,7 +1790,7 @@ namespace metrowin
       // Black blend dib
       ::ca::dib_sp spdib2(get_app());
       spdib2->create(cx, cy);
-      spdib2->Fill(0, 0, 0);
+      spdib2->Fill(0, 0, 0, 0);
 
 #ifdef WINDOWSEX
       spdib2->get_graphics()->DrawIcon(
@@ -1766,7 +1827,7 @@ namespace metrowin
       BYTE * r2=(BYTE*)spdib2->get_data();
       BYTE * srcM=(BYTE*)dibM.m_pcolorref;
       BYTE * dest=(BYTE*)m_pcolorref;
-      int iSize = m_size.cx*m_size.cy;
+      int iSize = cx*cy;
     
       BYTE b;
       BYTE bMax;
@@ -1805,8 +1866,8 @@ namespace metrowin
      // ::ca::dib_sp spdib(get_app());
    //   spdib->Paste(this);
 
-      int cx = m_size.cx;
-      int cy = m_size.cy;
+/*      int cx = cx;
+      int cy = cy; */
 
       int l = max(cx, cy);
 
@@ -1835,7 +1896,7 @@ namespace metrowin
             x=int(cos10(i, iAngle) - sin10(j, iAngle)) + ioff;
             y=int(sin10(i, iAngle) + cos10(j, iAngle)) + joff;
             m_pcolorref[(j+joff)*cx+(i+ioff)]=
-               spdib->m_pcolorref[abs(y%m_size.cy)*m_size.cx+abs(x%m_size.cx)];
+               spdib->m_pcolorref[abs(y%cy)*cx+abs(x%cx)];
             //k++;
          }
          (j+joff)*cx+(i+ioff)
@@ -1844,8 +1905,8 @@ namespace metrowin
       int k = 0;
       double dCos = ::cos(dAngle * dPi / 180.0) * dScale;
       double dSin = ::sin(dAngle * dPi / 180.0) * dScale;
-      int cx1 = m_size.cx - 1;
-      int cy1 = m_size.cy - 1;
+      int cx1 = cx - 1;
+      int cy1 = cy - 1;
         for ( int j=jmin; j<jmax; j++ )
       {
          for ( int i=imin; i<imax; i++ )
@@ -1853,28 +1914,28 @@ namespace metrowin
             int x, y;
 
             // A Combination of a 2d Translation/rotation/Scale Matrix
-            //x=abs((int(dCos * i - dSin * j) + ioff) % m_size.cx);
-            //y=abs((int(dSin * i + dCos * j) + joff) % m_size.cy);
+            //x=abs((int(dCos * i - dSin * j) + ioff) % cx);
+            //y=abs((int(dSin * i + dCos * j) + joff) % cy);
 
             x = (int) abs((dCos * i - dSin * j) + ioff);
             y = (int) abs((dSin * i + dCos * j) + joff);
 
-            if((x / m_size.cx) % 2 == 0)
+            if((x / cx) % 2 == 0)
             {
-               x %= m_size.cx;
+               x %= cx;
             }
             else
             {
-               x = cx1 - (x % m_size.cx);
+               x = cx1 - (x % cx);
             }
 
-            if((y / m_size.cy) % 2 == 0)
+            if((y / cy) % 2 == 0)
             {
-               y %= m_size.cy;
+               y %= cy;
             }
             else
             {
-               y = cy1 - (y % m_size.cy);
+               y = cy1 - (y % cy);
             }
 
 
@@ -1890,8 +1951,8 @@ namespace metrowin
    void dib::Rotate034(::ca::dib * pdib, double dAngle, double dScale)
    {
      
-      int cx = m_size.cx;
-      int cy = m_size.cy;
+/*      int cx = cx;
+      int cy = cy;*/
 
       int l = max(cx, cy);
 
@@ -1915,8 +1976,8 @@ namespace metrowin
       int k = 0;
       double dCos = ::cos(dAngle * dPi / 180.0) * dScale;
       double dSin = ::sin(dAngle * dPi / 180.0) * dScale;
-      int cx1 = m_size.cx - 1;
-      int cy1 = m_size.cy - 1;
+      int cx1 = cx - 1;
+      int cy1 = cy - 1;
         for ( int j=jmin; j<jmax; j++ )
       {
          for ( int i=imin; i<imax; i++ )
@@ -1924,28 +1985,28 @@ namespace metrowin
             int x, y;
 
             // A Combination of a 2d Translation/rotation/Scale Matrix
-            //x=abs((int(dCos * i - dSin * j) + ioff) % m_size.cx);
-            //y=abs((int(dSin * i + dCos * j) + joff) % m_size.cy);
+            //x=abs((int(dCos * i - dSin * j) + ioff) % cx);
+            //y=abs((int(dSin * i + dCos * j) + joff) % cy);
 
             x = (int) abs((dCos * i - dSin * j) + ioff);
             y = (int) abs((dSin * i + dCos * j) + joff);
 
-            if((x / m_size.cx) % 2 == 0)
+            if((x / cx) % 2 == 0)
             {
-               x %= m_size.cx;
+               x %= cx;
             }
             else
             {
-               x = cx1 - (x % m_size.cx);
+               x = cx1 - (x % cx);
             }
 
-            if((y / m_size.cy) % 2 == 0)
+            if((y / cy) % 2 == 0)
             {
-               y %= m_size.cy;
+               y %= cy;
             }
             else
             {
-               y = cy1 - (y % m_size.cy);
+               y = cy1 - (y % cy);
             }
 
 
@@ -1957,11 +2018,7 @@ namespace metrowin
       }
    }
 
-   void dib::rotate(
-      ::ca::dib * pdib,
-      LPCRECT lpcrect,
-      double dAngle, 
-      double dScale)
+   void dib::rotate(::ca::dib * pdib, LPCRECT lpcrect, double dAngle, double dScale)
    {
      // ::ca::dib_sp spdib(get_app());
    //   spdib->Paste(this);
@@ -1999,7 +2056,7 @@ namespace metrowin
             x=int(cos10(i, iAngle) - sin10(j, iAngle)) + ioff;
             y=int(sin10(i, iAngle) + cos10(j, iAngle)) + joff;
             m_pcolorref[(j+joff)*cx+(i+ioff)]=
-               spdib->m_pcolorref[abs(y%m_size.cy)*m_size.cx+abs(x%m_size.cx)];
+               spdib->m_pcolorref[abs(y%cy)*cx+abs(x%cx)];
             //k++;
          }
          (j+joff)*cx+(i+ioff)
@@ -2017,8 +2074,8 @@ namespace metrowin
             int x, y;
 
             // A Combination of a 2d Translation/rotation/Scale Matrix
-            //x=abs((int(dCos * i - dSin * j) + ioff) % m_size.cx);
-            //y=abs((int(dSin * i + dCos * j) + joff) % m_size.cy);
+            //x=abs((int(dCos * i - dSin * j) + ioff) % cx);
+            //y=abs((int(dSin * i + dCos * j) + joff) % cy);
 
             x = (int) abs((dCos * i - dSin * j) + ioff);
             y = (int) abs((dSin * i + dCos * j) + joff);
@@ -2043,8 +2100,8 @@ namespace metrowin
 
 
             
-            m_pcolorref[(j+joff)*m_size.cx+(i+ioff)]=
-               WIN_DIB(pdib)->m_pcolorref[y * m_size.cx + x];
+            m_pcolorref[(j+joff)*cx+(i+ioff)]=
+               WIN_DIB(pdib)->m_pcolorref[y * cx + x];
             k++;
          }
       }
@@ -2063,12 +2120,14 @@ namespace metrowin
 
 
 
-   void dib::Fill (int A, int R, int G, int B )
+   /*void dib::Fill (int A, int R, int G, int B )
    {
       COLORREF color = RGB ( B, G, R ) | (A << 24);
-      int size=m_size.cx*m_size.cy;
+      int size=stride*cy;
 
       COLORREF * pcr;
+
+      map();
 
       int iSize32 = size / 32;
       int i;
@@ -2114,7 +2173,8 @@ namespace metrowin
          m_pcolorref[i]=color;
       }
 
-   }
+   }*/
+
 
    COLORREF dib::GetAverageColor()
    {
@@ -2124,16 +2184,16 @@ namespace metrowin
       int iRLine;
       int iGLine;
       int iBLine;
-      double dDiv = m_size.cx * m_size.cy;
+      double dDiv = cx * cy;
       if(dDiv > 0)
       {
          LPBYTE lpb = (LPBYTE) m_pcolorref;
-         for (int y = 0; y < m_size.cy; y++)
+         for (int y = 0; y < cy; y++)
          {
             iRLine = 0;
             iGLine = 0;
             iBLine = 0;
-            for (int x = 0; x < m_size.cx; x++)
+            for (int x = 0; x < cx; x++)
             {
                iRLine += lpb[2];
                iGLine += lpb[1];
@@ -2159,12 +2219,12 @@ namespace metrowin
 
    void dib::xor(::ca::dib * pdib)
    {
-      if(m_size.cx != WIN_DIB(pdib)->m_size.cx
-      || m_size.cy != WIN_DIB(pdib)->m_size.cy)
+      if(cx != WIN_DIB(pdib)->cx
+      || cy != WIN_DIB(pdib)->cy)
       {
          return;
       }
-      int iCount = m_size.cx * m_size.cy;
+      int iCount = cx * cy;
       LPDWORD lpd1 = (LPDWORD) m_pcolorref;
       LPDWORD lpd2 = (LPDWORD) WIN_DIB(pdib)->m_pcolorref;
       for(int i = 0; i < iCount; i++)
@@ -2188,16 +2248,16 @@ namespace metrowin
       int iSliceCount = (int) sqrt((double) iFrameCount);
       if(iSliceCount == 0)
          iSliceCount = 1;
-      int iFrameWidth = m_size.cx / iSliceCount;
-      int iFrameHeight = m_size.cy / iSliceCount;
+      int iFrameWidth = cx / iSliceCount;
+      int iFrameHeight = cy / iSliceCount;
       int iX = iFrame % iSliceCount;
       int iY = iFrame / iSliceCount;
-      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * m_size.cx];
+      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * cx];
       COLORREF * lpSrc = (COLORREF *) lpdata;
       COLORREF * lpDestLine;
       for(int y = 0; y < iFrameHeight; y++)
       {
-         lpDestLine = &lpDest[y * m_size.cx];
+         lpDestLine = &lpDest[y * cx];
          for(int x = 0; x < iFrameWidth; x++)
          {
              *lpDestLine = *lpSrc;
@@ -2214,16 +2274,16 @@ namespace metrowin
       int iSliceCount = (int) sqrt((double) iFrameCount);
       if(iSliceCount == 0)
          iSliceCount = 1;
-      int iFrameWidth = m_size.cx / iSliceCount;
-      int iFrameHeight = m_size.cy / iSliceCount;
+      int iFrameWidth = cx / iSliceCount;
+      int iFrameHeight = cy / iSliceCount;
       int iX = iFrame % iSliceCount;
       int iY = iFrame / iSliceCount;
-      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * m_size.cx];
+      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * cx];
       COLORREF * lpSrc = (COLORREF *) lpdata;
       COLORREF * lpDestLine;
       for(int y = iFrameHeight - 1; y >= 0; y--)
       {
-         lpDestLine = &lpDest[y * m_size.cx];
+         lpDestLine = &lpDest[y * cx];
          for(int x = 0; x < iFrameWidth; x++)
          {
              *lpDestLine = *lpSrc;
@@ -2240,16 +2300,16 @@ namespace metrowin
       int iSliceCount = (int) sqrt((double) iFrameCount);
       if(iSliceCount == 0)
          iSliceCount = 1;
-      int iFrameWidth = m_size.cx / iSliceCount;
-      int iFrameHeight = m_size.cy / iSliceCount;
+      int iFrameWidth = cx / iSliceCount;
+      int iFrameHeight = cy / iSliceCount;
       int iX = iFrame % iSliceCount;
       int iY = iFrame / iSliceCount;
-      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * m_size.cx];
+      COLORREF * lpDest = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight * cx];
       COLORREF * lpSrc = (COLORREF *) lpdata;
       COLORREF * lpDestLine;
       for(int y = iFrameHeight - 1; y >= 0; y--)
       {
-         lpDestLine = &lpDest[y * m_size.cx];
+         lpDestLine = &lpDest[y * cx];
          for(int x = 0; x < iFrameWidth; x++)
          {
              *lpDestLine ^= *lpSrc;
@@ -2262,16 +2322,16 @@ namespace metrowin
    void dib::get_frame(void * lpdata, int iFrame, int iFrameCount)
    {
       int iSliceCount = (int) sqrt((double) iFrameCount);
-      int iFrameWidth = m_size.cx / iSliceCount;
-      int iFrameHeight = m_size.cy / iSliceCount;
+      int iFrameWidth = cx / iSliceCount;
+      int iFrameHeight = cy / iSliceCount;
       int iX = iFrame % iSliceCount;
       int iY = iFrame / iSliceCount;
-      COLORREF * lpSrc = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight *  m_size.cx];
+      COLORREF * lpSrc = &m_pcolorref[iFrameWidth * iX + iY * iFrameHeight *  cx];
       COLORREF * lpDest = (COLORREF *) lpdata;
       COLORREF * lpSrcLine;
       for(int y = 0; y < iFrameHeight; y++)
       {
-         lpSrcLine = &lpSrc[y * m_size.cx];
+         lpSrcLine = &lpSrc[y * cx];
          for(int x = 0; x < iFrameWidth; x++)
          {
              *lpDest = *lpSrcLine;
@@ -2283,7 +2343,7 @@ namespace metrowin
 
    bool dib::is_rgb_black()
    {
-      int iSize = m_size.cx * m_size.cy;
+      int iSize = cx * cy;
       COLORREF * lp = m_pcolorref;
       for(int i = 0; i < iSize; i++)
       {
@@ -2300,7 +2360,7 @@ namespace metrowin
       {
          return;
       }
-      int iCount = m_size.cx * m_size.cy;
+      int iCount = cx * cy;
       LPBYTE lp = ((LPBYTE) m_pcolorref);
       int i = 0;
       int iCount1 = iCount - iCount % 8;
@@ -2355,7 +2415,7 @@ namespace metrowin
       {
          return;
       }
-      int iCount = m_size.cx * m_size.cy;
+      int iCount = cx * cy;
       LPBYTE lp = ((LPBYTE) m_pcolorref);
       for(int i = 0; i < iCount; i++)
       {
@@ -2373,7 +2433,7 @@ namespace metrowin
       {
          return;
       }
-      int iCount = m_size.cx * m_size.cy;
+      int iCount = cx * cy;
       LPBYTE lp = ((LPBYTE) m_pcolorref);
       for(int i = 0; i < iCount; i++)
       {
@@ -2386,9 +2446,9 @@ namespace metrowin
    void dib::stretch_dib(::ca::dib * pdib)
    {
 
-      D2D1_RECT_F rectDest = D2D1::RectF(0, 0, (FLOAT) width(), (FLOAT) height());
+      D2D1_RECT_F rectDest = D2D1::RectF(0, 0, (FLOAT) cx, (FLOAT) cy);
 
-      D2D1_RECT_F rectSource = D2D1::RectF(0, 0, (FLOAT) pdib->width(), (FLOAT) pdib->height());
+      D2D1_RECT_F rectSource = D2D1::RectF(0, 0, (FLOAT) pdib->cx, (FLOAT) pdib->cy);
 
       ((ID2D1RenderTarget * ) m_spgraphics->get_os_data())->DrawBitmap(((ID2D1Bitmap1 *)pdib->get_bitmap()->get_os_data()), rectDest, 1.0, D2D1_BITMAP_INTERPOLATION_MODE_LINEAR, rectSource);
 
@@ -2396,9 +2456,9 @@ namespace metrowin
       ::StretchDIBits(
          SP_HDC(m_spgraphics),
          0, 0,
-         m_size.cx, m_size.cy,
+         cx, cy,
          0, 0, 
-         WIN_DIB(pdib)->m_size.cx, WIN_DIB(pdib)->m_size.cy,
+         WIN_DIB(pdib)->cx, WIN_DIB(pdib)->cy,
          WIN_DIB(pdib)->m_pcolorref,
          &WIN_DIB(pdib)->m_info,
          DIB_RGB_COLORS,
@@ -2408,6 +2468,7 @@ namespace metrowin
 
    ::ca::graphics * dib::get_graphics()
    {
+      unmap();
       return m_spgraphics;
    }
 
@@ -2419,7 +2480,7 @@ namespace metrowin
    void dib::fill_channel(int intensity, visual::rgba::echannel echannel)
    {
        int offset = ((int)echannel) % 4;
-      int size=m_size.cx*m_size.cy;
+      int size=cx*cy;
 
       BYTE * pb;
 
@@ -2492,79 +2553,141 @@ namespace metrowin
    void dib::map()
    {
 
+      if(m_bMapped)
+         return;
+
       if(m_spbitmapMap.is_null() || m_spbitmap.is_null())
          return;
 
-      D2D1_POINT_2U p;
 
-      p.x = 0;
-      p.y = 0;
+      HRESULT hr;
 
-      D2D1_RECT_U srcRect;
+      if(m_spbitmap->get_os_data() != NULL)
+      {
 
-      srcRect.left = 0;
-      srcRect.right = m_size.cx;
-      srcRect.top = 0;
-      srcRect.bottom = m_size.cy;
+         hr = METROWIN_DC(m_spgraphics.m_p)->m_pdc->EndDraw();
 
-      METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->CopyFromBitmap(&p, (ID2D1Bitmap *) m_spbitmap->get_os_data(), &srcRect);
+         hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap1->CopyFromBitmap(NULL, (ID2D1Bitmap *) m_spbitmap->get_os_data(), NULL);
+
+      }
 
       zero(&METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map, sizeof(METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map));
 
-      HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->Map(D2D1_MAP_OPTIONS_READ, &METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map);
+      hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap1->Map(D2D1_MAP_OPTIONS_READ, &METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map);
 
       if(FAILED(hr) || METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.bits == NULL)
          throw "";
 
       m_pcolorref = (COLORREF *) METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.bits;
-      m_scan = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.pitch;
+      
+      scan = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map.pitch;
+
+      int compare_scan = cx * sizeof(COLORREF);
+
+      for(int y = 0; y < cy; y++)
+      {
+         byte * p = &((byte *) m_pcolorref)[scan * y];
+         for(int x = 0; x < cx; x++)
+         {
+            if(p[3] == 0)
+            {
+               p[0] = 255;
+               p[1] = 255;
+               p[2] = 255;
+            }
+            else
+            {
+               p[0] = (p[0] * 255 / p[3]);
+               p[1] = (p[1] * 255 / p[3]);
+               p[2] = (p[2] * 255 / p[3]);
+            }
+            p += 4;
+         }
+      }
+
+      m_bMapped = true;
 
    }
 
    void dib::unmap()
    {
 
+      if(!m_bMapped)
+         return;
+
       if(m_spbitmapMap.is_null() || m_spbitmap.is_null())
          return;
 
-      ::metrowin::bitmap b(get_app());
+      if(m_spbitmap->get_os_data() == NULL)
+      {
 
-      if(!b.CreateBitmap(m_spgraphics, m_size.cx, m_size.cy, 1, 32, m_pcolorref))
-         throw "";
+         HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap1->Unmap();
 
-      //zero(&METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map, sizeof(METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map));
+         m_pcolorref = NULL;
 
-      HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->Unmap();
+         m_bMapped = false;
 
-      if(FAILED(hr))
-        throw "";
+         return;
 
-      D2D1_POINT_2U p;
+      }
 
-      p.x = 0;
-      p.y = 0;
+      int iArea = area();
+
+      byte * p = (byte *) m_pcolorref;
+
+      for(int y = 0; y < cy; y++)
+      {
+         byte * p = &((byte *) m_pcolorref)[scan * y];
+         for(int x = 0; x < cx; x++)
+         {
+            p[0] = (p[0] * p[3] / 255);
+            p[1] = (p[1] * p[3] / 255);
+            p[2] = (p[2] * p[3] / 255);
+            p += 4;
+         }
+      }
+
 
       D2D1_RECT_U srcRect;
 
       srcRect.left = 0;
-      srcRect.right = m_size.cx;
+      srcRect.right = cx;
       srcRect.top = 0;
-      srcRect.bottom = m_size.cy;
+      srcRect.bottom = cy;
 
-      hr = METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap->CopyFromBitmap(&p, (ID2D1Bitmap *) b.get_os_data(), &srcRect);
+      //memset(m_pcolorref, 127, scan * cy / 2);
 
+      HRESULT hr = METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap->CopyFromMemory(&srcRect, m_pcolorref, scan);
+      //zero(&METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map, sizeof(METROWIN_BITMAP(m_spbitmapMap.m_p)->m_map));
+
+      hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap1->Unmap();
+
+      m_pcolorref = NULL;
+
+      if(FAILED(hr))
+      {
+         
+         m_bMapped = false;
+         
+         throw "";
+
+      }
+
+      METROWIN_DC(m_spgraphics.m_p)->m_pdc->BeginDraw();
+
+      m_bMapped = false;
 
    }
 
-   int dib::width()
+/*   int dib::cx
    {
-      return m_size.cx;
+      return cx;
    }
 
-   int dib::height()
+   int dib::cy
    {
-      return m_size.cy;
-   }
+      return cy;
+   }*/
 
 #undef new
 
@@ -2616,9 +2739,8 @@ namespace metrowin
 
       memcpy(m_pcolorref, pdata, (size_t) (area() * sizeof(COLORREF)));
 
-      unmap();
 
-      RGBQUAD bkcolor;
+//      RGBQUAD bkcolor;
 
       /*if(pbi->bmiHeader.biBitCount == 32)
       {
@@ -2645,6 +2767,144 @@ namespace metrowin
 
 
 #define new DEBUG_NEW
+
+   bool dib::defer_realize(::ca::graphics * pdc)
+   {
+      
+      if(is_realized())
+      {
+         METROWIN_DC(m_spgraphics.m_p)->m_pdc->BeginDraw();
+         return true;
+      }
+
+      return realize(pdc);
+
+   }
+
+   bool dib::realize(::ca::graphics * pdc)
+   {
+
+      if(is_realized())
+         unrealize();
+
+      if(is_realized())
+         return false;
+      
+      m_spbitmap.create(get_app());
+      m_spgraphics.create(get_app());
+
+      if(m_spbitmap.is_null() || m_spbitmapMap.is_null() || m_spgraphics.is_null() || m_spgraphicsMap.is_null())
+      {
+         return false;
+      }
+
+      ::metrowin::graphics * pgraphicsSrc = dynamic_cast < ::metrowin::graphics * > (pdc);
+
+      ::metrowin::graphics * pgraphics = dynamic_cast < ::metrowin::graphics * > (m_spgraphics.m_p);
+
+      ::metrowin::bitmap * pbitmap = dynamic_cast < ::metrowin::bitmap * > (m_spbitmap.m_p);
+
+      pgraphics->m_pbitmaprendertarget = NULL;
+
+      pgraphics->m_iType = 11;
+
+      D2D1_SIZE_U sizeu = D2D1::SizeU(cx, cy);
+      D2D1_PIXEL_FORMAT pixelformat;
+
+      pixelformat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+      pixelformat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+      HRESULT hr = pgraphicsSrc->m_pdc->CreateCompatibleRenderTarget(NULL, &sizeu, &pixelformat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &pgraphics->m_pbitmaprendertarget);
+
+      if(pgraphics->m_pbitmaprendertarget == NULL)
+         return false;
+
+      if(FAILED(pgraphics->m_pbitmaprendertarget->QueryInterface(IID_ID2D1RenderTarget, (void **) &pgraphics->m_pdc)))
+      {
+         pgraphics->m_pbitmaprendertarget->Release();
+         pgraphics->m_pbitmaprendertarget = NULL;
+         return false;
+      }
+
+      pgraphics->m_pbitmaprendertarget->GetBitmap(&pbitmap->m_pbitmap);
+
+      if(pbitmap->m_pbitmap == NULL)
+      {
+         m_spgraphics.destroy();
+         return false;
+      }
+
+      if(pgraphics->m_bitmap.is_null())
+         pgraphics->m_bitmap.create(get_app());
+
+      METROWIN_BITMAP(pgraphics->m_bitmap.m_p)->m_pbitmap = pbitmap->m_pbitmap;
+
+      METROWIN_BITMAP(pgraphics->m_bitmap.m_p)->m_pbitmap->AddRef();
+
+      D2D1_POINT_2U p;
+
+      p.x = 0;
+      p.y = 0;
+
+      D2D1_RECT_U srcRect;
+
+      srcRect.left = 0;
+      srcRect.right = cx;
+      srcRect.top = 0;
+      srcRect.bottom = cy;
+
+      //hr = METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap->CopyFromBitmap(&p, METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap, &srcRect);
+
+      METROWIN_DC(m_spgraphics.m_p)->m_pdc->BeginDraw();
+
+      return true;
+
+   }
+
+
+   bool dib::unrealize()
+   {
+
+      if(!is_realized())
+         return false;
+
+      D2D1_POINT_2U p;
+
+      p.x = 0;
+      p.y = 0;
+
+      D2D1_RECT_U srcRect;
+
+      srcRect.left = 0;
+      srcRect.right = cx;
+      srcRect.top = 0;
+      srcRect.bottom = cy;
+
+      HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->CopyFromBitmap(&p, METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap, &srcRect);
+
+      m_spgraphics.destroy();
+      
+      return true;
+
+   }
+
+
+   bool dib::is_realized()
+   {
+
+      if(m_spgraphics->get_os_data() == NULL)
+         return false;
+
+      return true;
+
+   }
+
+/*   int dib::scan()
+   {
+      
+      return scan;
+
+   }*/
 
 
 }

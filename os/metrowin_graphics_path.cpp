@@ -1,9 +1,13 @@
 #include "framework.h"
 
+#define d2d1_fax_options D2D1_FACTORY_OPTIONS // fax of merde
+#define single_threaded D2D1_FACTORY_TYPE_SINGLE_THREADED // ???? muliple performance multi thread hidden option there exists cost uses?
 
 namespace metrowin
 {
 
+
+   
 
    graphics_path::graphics_path(::ca::application * papp) :
       ca(papp)
@@ -11,9 +15,12 @@ namespace metrowin
 
       m_bFill  = false;
 
-      //m_ppath = new Gdiplus::GraphicsPath();
+      m_ppath = NULL;
 
-      m_ppath  = NULL;
+      HRESULT hr = ::GetD2D1Factory1()->CreatePathGeometry(&m_ppath);
+
+      ::metrowin::throw_if_failed(hr);
+         
 
       m_psink  = NULL;
 
@@ -38,6 +45,27 @@ namespace metrowin
 
    bool graphics_path::begin_figure(bool bFill, ::ca::e_fill_mode efillmode)
    {
+
+      if(m_psink != NULL)
+      {
+         
+         m_psink->Release();
+
+         m_psink = NULL;
+
+      }
+
+      if(m_ppath != NULL)
+      {
+
+         m_ppath->Release();
+
+         m_ppath = NULL;
+
+      }
+
+
+      //m_ppath  = new Gdiplus::GraphicsPath();
 
 
       m_bFill        = true;
@@ -65,6 +93,8 @@ namespace metrowin
          m_psink->EndFigure(D2D1_FIGURE_END_OPEN);
 
       }
+
+      m_bFigureEnded = true;
 
       m_bFill = true;
 
@@ -140,6 +170,8 @@ namespace metrowin
 
          }
 
+         m_bFigureEnded = false;
+
       }
       else
       {
@@ -206,6 +238,9 @@ namespace metrowin
       if(m_psink != NULL)
       {
 
+         if(!m_bFigureEnded)
+            throw "figure not ended";
+
          m_psink->Close();
 
          m_psink->Release();
@@ -215,6 +250,13 @@ namespace metrowin
       }
 
       return (ID2D1PathGeometry *) m_ppath;
+
+   }
+
+   ID2D1PathGeometry * graphics_path::get_os_path()
+   {
+
+      return (ID2D1PathGeometry *) get_os_data();
 
    }
 

@@ -15,52 +15,263 @@ using namespace Windows::System;
 using namespace Windows::Graphics::Display;
 using namespace Windows::System::Threading;
 
-      UINT system_main(LPVOID lp)
+uint_ptr keycode_to_char(uint_ptr n)
+{
+   return n;
+}
+
+
+uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
+{
+   switch(e)
+   {
+   case ::Windows::System::VirtualKey::Number0:
+      return '0';
+   case ::Windows::System::VirtualKey::Number1:
+      return '1';
+   case ::Windows::System::VirtualKey::Number2:
+      return '2';
+   case ::Windows::System::VirtualKey::Number3:
+      return '3';
+   case ::Windows::System::VirtualKey::Number4:
+      return '4';
+   case ::Windows::System::VirtualKey::Number5:
+      return '5';
+   case ::Windows::System::VirtualKey::Number6:
+      return '6';
+   case ::Windows::System::VirtualKey::Number7:
+      return '7';
+   case ::Windows::System::VirtualKey::Number8:
+      return '8';
+   case ::Windows::System::VirtualKey::Number9:
+      return '9';
+   case ::Windows::System::VirtualKey::A:
+      return 'a';
+   case ::Windows::System::VirtualKey::B:
+      return 'b';
+   case ::Windows::System::VirtualKey::C:
+      return 'c';
+   case ::Windows::System::VirtualKey::D:
+      return 'd';
+   case ::Windows::System::VirtualKey::E:
+      return 'e';
+   case ::Windows::System::VirtualKey::F:
+      return 'f';
+   case ::Windows::System::VirtualKey::G:
+      return 'g';
+   case ::Windows::System::VirtualKey::H:
+      return 'h';
+   case ::Windows::System::VirtualKey::I:
+      return 'i';
+   case ::Windows::System::VirtualKey::J:
+      return 'j';
+   case ::Windows::System::VirtualKey::K:
+      return 'k';
+   case ::Windows::System::VirtualKey::L:
+      return 'l';
+   case ::Windows::System::VirtualKey::M:
+      return 'm';
+   case ::Windows::System::VirtualKey::N:
+      return 'n';
+   case ::Windows::System::VirtualKey::O:
+      return 'o';
+   case ::Windows::System::VirtualKey::P:
+      return 'p';
+   case ::Windows::System::VirtualKey::Q:
+      return 'q';
+   case ::Windows::System::VirtualKey::R:
+      return 'r';
+   case ::Windows::System::VirtualKey::S:
+      return 's';
+   case ::Windows::System::VirtualKey::T:
+      return 't';
+   case ::Windows::System::VirtualKey::U:
+      return 'u';
+   case ::Windows::System::VirtualKey::V:
+      return 'v';
+   case ::Windows::System::VirtualKey::W:
+      return 'w';
+   case ::Windows::System::VirtualKey::Y:
+      return 'y';
+   case ::Windows::System::VirtualKey::Z:
+      return 'z';
+   case ::Windows::System::VirtualKey::Shift:
+      return VK_SHIFT;
+   case ::Windows::System::VirtualKey::LeftShift:
+      return VK_LSHIFT;
+   case ::Windows::System::VirtualKey::RightShift:
+      return VK_RSHIFT;
+   case ::Windows::System::VirtualKey::Control:
+      return VK_CONTROL;
+   case ::Windows::System::VirtualKey::LeftControl:
+      return VK_LCONTROL;
+   case ::Windows::System::VirtualKey::RightControl:
+      return VK_RCONTROL;
+   case ::Windows::System::VirtualKey::Menu:
+      return VK_MENU;
+   case ::Windows::System::VirtualKey::LeftMenu:
+      return VK_LMENU;
+   case ::Windows::System::VirtualKey::RightMenu:
+      return VK_RMENU;
+   case ::Windows::System::VirtualKey::Tab:
+      return VK_TAB;
+   case ::Windows::System::VirtualKey::Enter:
+      return VK_RETURN;
+   default:;
+   }
+   return (int)e;
+}
+
+uint_ptr virtualkey_to_code(::Windows::System::VirtualKey e)
+{
+   switch(e)
+   {
+   case 190:
+      return 52;
+   case ::Windows::System::VirtualKey::Number0:
+      return 1;
+   case ::Windows::System::VirtualKey::Number1:
+      return 2;
+   case ::Windows::System::VirtualKey::Number2:
+      return 3;
+   case ::Windows::System::VirtualKey::Number3:
+      return 4;
+   case ::Windows::System::VirtualKey::Number4:
+      return 5;
+   case ::Windows::System::VirtualKey::Number5:
+      return 6;
+   case ::Windows::System::VirtualKey::Number6:
+      return 7;
+   case ::Windows::System::VirtualKey::Number7:
+      return 8;
+   case ::Windows::System::VirtualKey::Number8:
+      return 9;
+   case ::Windows::System::VirtualKey::Number9:
+      return 10;
+   case ::Windows::System::VirtualKey::A:
+      return 'a';
+   case ::Windows::System::VirtualKey::B:
+      return 'b';
+   case ::Windows::System::VirtualKey::C:
+      return 'c';
+   case ::Windows::System::VirtualKey::D:
+      return 'd';
+   case ::Windows::System::VirtualKey::E:
+      return 'e';
+   case ::Windows::System::VirtualKey::F:
+      return 'f';
+   case ::Windows::System::VirtualKey::G:
+      return 'g';
+   case ::Windows::System::VirtualKey::H:
+      return 'h';
+   case ::Windows::System::VirtualKey::I:
+      return 'i';
+   case ::Windows::System::VirtualKey::J:
+      return 'j';
+   case ::Windows::System::VirtualKey::K:
+      return 'k';
+   case ::Windows::System::VirtualKey::L:
+      return 'l';
+   case ::Windows::System::VirtualKey::M:
+      return 'm';
+   case ::Windows::System::VirtualKey::N:
+      return 'n';
+   case ::Windows::System::VirtualKey::O:
+      return 'o';
+   case ::Windows::System::VirtualKey::P:
+      return 'p';
+   case ::Windows::System::VirtualKey::Q:
+      return 'q';
+   case ::Windows::System::VirtualKey::R:
+      return 'r';
+   case ::Windows::System::VirtualKey::S:
+      return 's';
+   case ::Windows::System::VirtualKey::T:
+      return 't';
+   case ::Windows::System::VirtualKey::U:
+      return 'u';
+   case ::Windows::System::VirtualKey::V:
+      return 'v';
+   case ::Windows::System::VirtualKey::W:
+      return 'w';
+   case ::Windows::System::VirtualKey::Y:
+      return 'y';
+   case ::Windows::System::VirtualKey::Z:
+      return 'z';
+   case ::Windows::System::VirtualKey::Shift:
+      return VK_SHIFT;
+   case ::Windows::System::VirtualKey::LeftShift:
+      return VK_LSHIFT;
+   case ::Windows::System::VirtualKey::RightShift:
+      return VK_RSHIFT;
+   case ::Windows::System::VirtualKey::Control:
+      return VK_CONTROL;
+   case ::Windows::System::VirtualKey::LeftControl:
+      return VK_LCONTROL;
+   case ::Windows::System::VirtualKey::RightControl:
+      return VK_RCONTROL;
+   case ::Windows::System::VirtualKey::Menu:
+      return VK_MENU;
+   case ::Windows::System::VirtualKey::LeftMenu:
+      return VK_LMENU;
+   case ::Windows::System::VirtualKey::RightMenu:
+      return VK_RMENU;
+   default:;
+   }
+   return (int)e;
+}
+
+UINT system_main(LPVOID lp)
+{
+   ::plane::system * m_psystem = (::plane::system *) lp;
+   try
+   {
+      m_psystem->set_thread(m_psystem);
+      m_psystem->m_iReturnCode = 0;
+      m_psystem->m_bReady = true;
+      m_psystem->m_iReturnCode = m_psystem->on_run();
+      if(m_psystem->m_iReturnCode != 0)
       {
-         ::plane::system * m_psystem = (::plane::system *) lp;
-         try
-         {
-            m_psystem->set_thread(m_psystem);
-            m_psystem->m_iReturnCode = 0;
-            m_psystem->m_bReady = true;
-            m_psystem->m_iReturnCode = m_psystem->on_run();
-            if(m_psystem->m_iReturnCode != 0)
-            {
-               ::OutputDebugStringW(L"application::main on_run termination failure");
-            }
-            if(m_psystem->is_system())
-            {
-               m_psystem->os().post_to_all_threads(WM_QUIT, 0, 0);
-            }
-            try
-            {
-               m_psystem->m_iReturnCode = m_psystem->exit();
-            }
-            catch(...)
-            {
-               m_psystem->m_iReturnCode = -1;
-            }
-
-         }
-         catch(::exit_exception &)
-         {
-
-            m_psystem->os().post_to_all_threads(WM_QUIT, 0, 0);
-
-         }
-
-         return 0;
+         ::OutputDebugStringW(L"application::main on_run termination failure");
       }
-      
+      if(m_psystem->is_system())
+      {
+         m_psystem->os().post_to_all_threads(WM_QUIT, 0, 0);
+      }
+      try
+      {
+         m_psystem->m_iReturnCode = m_psystem->exit();
+      }
+      catch(...)
+      {
+         m_psystem->m_iReturnCode = -1;
+      }
+
+   }
+   catch(::exit_exception &)
+   {
+
+      m_psystem->os().post_to_all_threads(WM_QUIT, 0, 0);
+
+   }
+
+   return 0;
+}
+
 
 
 namespace metrowin
 {
 
 
-   directx_application::directx_application(::Platform::String ^ strId)
+   directx_application::directx_application(::Platform::String ^ strId) :
+      m_mutex(NULL)
    {
-      
+
+      m_ptLastCursor.X = 0;
+      m_ptLastCursor.Y = 0;
+
+
       m_strId = strId;
 
       if(!main_initialize())
@@ -71,11 +282,14 @@ namespace metrowin
 
       m_psystem = new ::plane::system();
 
+
+      m_psystem->m_pui = new ::user::interaction(m_psystem);
+
       m_psystem->m_pwindow = this;
 
       m_papp = m_psystem;
 
-   //   ASSERT(hPrevInstance == NULL);
+      //   ASSERT(hPrevInstance == NULL);
 
       int nReturnCode = 0;
 
@@ -84,10 +298,10 @@ namespace metrowin
 
 
 
-   //pinitmaindata->m_hInstance             = hInstance;
-   //pinitmaindata->m_hPrevInstance         = hPrevInstance;
+      pinitmaindata->m_hInstance             = NULL;
+      pinitmaindata->m_hPrevInstance         = NULL;
       pinitmaindata->m_vssCommandLine        = gen::international::unicode_to_utf8(strId->Begin());
-   //pinitmaindata->m_nCmdShow              = nCmdShow;
+      pinitmaindata->m_nCmdShow              = 0;
 
       m_psystem->init_main_data(pinitmaindata);
 
@@ -116,183 +330,181 @@ namespace metrowin
 
    }
 
-/*   void directx_application::CreateDeviceIndependentResources()
+   /*   void directx_application::CreateDeviceIndependentResources()
    {
-      directx_base::CreateDeviceIndependentResources();
+   directx_base::CreateDeviceIndependentResources();
 
-      // Create a DirectWrite text format object.
-      ::metrowin::throw_if_failed(
-         m_dwriteFactory->CreateTextFormat(
-         L"Gabriola",
-         nullptr,
-         DWRITE_FONT_WEIGHT_REGULAR,
-         DWRITE_FONT_STYLE_NORMAL,
-         DWRITE_FONT_STRETCH_NORMAL,
-         64.0f,
-         L"en-US", // locale
-         &m_textFormat
-         )
-         );
+   // Create a DirectWrite text format object.
+   ::metrowin::throw_if_failed(
+   m_dwriteFactory->CreateTextFormat(
+   L"Gabriola",
+   nullptr,
+   DWRITE_FONT_WEIGHT_REGULAR,
+   DWRITE_FONT_STYLE_NORMAL,
+   DWRITE_FONT_STRETCH_NORMAL,
+   64.0f,
+   L"en-US", // locale
+   &m_textFormat
+   )
+   );
 
-      // Center the text horizontally.
-      ::metrowin::throw_if_failed(
-         m_textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER)
-         );
+   // Center the text horizontally.
+   ::metrowin::throw_if_failed(
+   m_textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER)
+   );
 
-      // Center the text vertically.
-      ::metrowin::throw_if_failed(
-         m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER)
-         );
+   // Center the text vertically.
+   ::metrowin::throw_if_failed(
+   m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER)
+   );
    }
 
    void directx_application::CreateDeviceResources()
    {
-      directx_base::CreateDeviceResources();
+   directx_base::CreateDeviceResources();
 
-      m_sampleOverlay = ref new SampleOverlay();
+   m_sampleOverlay = ref new SampleOverlay();
 
-      m_sampleOverlay->Initialize(
-         m_d2dDevice.Get(),
-         m_d2dContext.Get(),
-         m_wicFactory.Get(),
-         m_dwriteFactory.Get(),
-         "DirectWrite Hello World sample"
-         );
+   m_sampleOverlay->Initialize(
+   m_d2dDevice.Get(),
+   m_d2dContext.Get(),
+   m_wicFactory.Get(),
+   m_dwriteFactory.Get(),
+   "DirectWrite Hello World sample"
+   );
 
-      ::metrowin::throw_if_failed(
-         m_d2dContext->CreateSolidColorBrush(
-         D2D1::ColorF(D2D1::ColorF::Black),
-         &m_blackBrush
-         )
-         );
+   ::metrowin::throw_if_failed(
+   m_d2dContext->CreateSolidColorBrush(
+   D2D1::ColorF(D2D1::ColorF::Black),
+   &m_blackBrush
+   )
+   );
    }
 
    void directx_application::CreateWindowSizeDependentResources()
    {
-      directx_base::CreateWindowSizeDependentResources();
+   directx_base::CreateWindowSizeDependentResources();
 
-      Platform::String^ text = "Hello World From ... DirectWrite!";
+   Platform::String^ text = "Hello World From ... DirectWrite!";
 
-      D2D1_SIZE_F size = m_d2dContext->GetSize();
+   D2D1_SIZE_F size = m_d2dContext->GetSize();
 
-      // Create a DirectWrite Text Layout object
-      ::metrowin::throw_if_failed(
-         m_dwriteFactory->CreateTextLayout(
-         text->Data(),                       // Text to be displayed
-         text->Length(),                     // Length of the text
-         m_textFormat.Get(),                 // DirectWrite Text Format object
-         size.width,                         // Width of the Text Layout
-         size.height,                        // Height of the Text Layout
-         &m_textLayout
-         )
-         );
+   // Create a DirectWrite Text Layout object
+   ::metrowin::throw_if_failed(
+   m_dwriteFactory->CreateTextLayout(
+   text->Data(),                       // Text to be displayed
+   text->Length(),                     // Length of the text
+   m_textFormat.Get(),                 // DirectWrite Text Format object
+   size.width,                         // Width of the Text Layout
+   size.height,                        // Height of the Text Layout
+   &m_textLayout
+   )
+   );
 
-      // Text range for the "DirectWrite!" at the end of the string
-      DWRITE_TEXT_RANGE textRange = {21, 12}; // 21 references the "D" in DirectWrite! and 12 is the number of characters in the word
+   // Text range for the "DirectWrite!" at the end of the string
+   DWRITE_TEXT_RANGE textRange = {21, 12}; // 21 references the "D" in DirectWrite! and 12 is the number of characters in the word
 
-      // Set the font size on that text range to 100
-      ::metrowin::throw_if_failed(
-         m_textLayout->SetFontSize(100.0f, textRange)
-         );
+   // Set the font size on that text range to 100
+   ::metrowin::throw_if_failed(
+   m_textLayout->SetFontSize(100.0f, textRange)
+   );
 
-      // Create a DirectWrite Typography object
-      ::metrowin::throw_if_failed(
-         m_dwriteFactory->CreateTypography(
-         &m_textTypography
-         )
-         );
+   // Create a DirectWrite Typography object
+   ::metrowin::throw_if_failed(
+   m_dwriteFactory->CreateTypography(
+   &m_textTypography
+   )
+   );
 
-      // Enumerate a stylistic set 6 font feature for application to our text layout
-      DWRITE_FONT_FEATURE fontFeature = {DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_6, 1};
+   // Enumerate a stylistic set 6 font feature for application to our text layout
+   DWRITE_FONT_FEATURE fontFeature = {DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_6, 1};
 
-      // Apply the previously enumerated font feature to our Text Typography object
-      ::metrowin::throw_if_failed(
-         m_textTypography->AddFontFeature(fontFeature)
-         );
+   // Apply the previously enumerated font feature to our Text Typography object
+   ::metrowin::throw_if_failed(
+   m_textTypography->AddFontFeature(fontFeature)
+   );
 
-      // Move our text range to the entire length of the string
-      textRange.length = text->Length();
-      textRange.startPosition = 0;
+   // Move our text range to the entire length of the string
+   textRange.length = text->Length();
+   textRange.startPosition = 0;
 
-      // Apply our recently defined typography to our entire text range
-      ::metrowin::throw_if_failed(
-         m_textLayout->SetTypography(
-         m_textTypography.Get(),
-         textRange
-         )
-         );
+   // Apply our recently defined typography to our entire text range
+   ::metrowin::throw_if_failed(
+   m_textLayout->SetTypography(
+   m_textTypography.Get(),
+   textRange
+   )
+   );
 
-      // Move the text range to the end again
-      textRange.length = 12;
-      textRange.startPosition = 21;
+   // Move the text range to the end again
+   textRange.length = 12;
+   textRange.startPosition = 21;
 
-      // Set the underline on the text range
-      ::metrowin::throw_if_failed(
-         m_textLayout->SetUnderline(TRUE, textRange)
-         );
+   // Set the underline on the text range
+   ::metrowin::throw_if_failed(
+   m_textLayout->SetUnderline(TRUE, textRange)
+   );
 
-      // Set the font weight on the text range
-      ::metrowin::throw_if_failed(
-         m_textLayout->SetFontWeight(DWRITE_FONT_WEIGHT_BOLD, textRange)
-         );
+   // Set the font weight on the text range
+   ::metrowin::throw_if_failed(
+   m_textLayout->SetFontWeight(DWRITE_FONT_WEIGHT_BOLD, textRange)
+   );
    }
 
    void directx_application::Render()
    {
-      m_d2dContext->BeginDraw();
+   m_d2dContext->BeginDraw();
 
-      D2D1_COLOR_F cr = D2D1::ColorF(D2D1::ColorF::White);
-      m_d2dContext->Clear(cr);
-
-
-      ::ca::graphics_sp dc(::ca::get_thread_app());
-
-      dc->attach((ID2D1DeviceContext * ) m_d2dContext);
-
-      Sys(::ca::get_thread_app())._001OnDraw(&dc);
-
-      dc->detach();
-
-      m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
-
-      m_d2dContext->DrawTextLayout(
-         D2D1::Point2F(0.0f, 0.0f),
-         m_textLayout.Get(),
-         m_blackBrush.Get()
-         );
-
-      simple_graphics g;
-
-      g.reference_os_data(m_d2dContext.Get());
-
-      RECT rect;
-
-      rect.left     = 200;
-      rect.top      = 200;
-      rect.right    = 300;
-      rect.bottom   = 100;
-
-      g.fill_solid_rect(rect, ARGB(127, 255, 255, 240));
-
-      g.m_pdc = NULL;
+   D2D1_COLOR_F cr = D2D1::ColorF(D2D1::ColorF::White);
+   m_d2dContext->Clear(cr);
 
 
-      // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
-      // is lost. It will be handled during the next call to Present.
-      HRESULT hr = m_d2dContext->EndDraw();
-      if (hr != D2DERR_RECREATE_TARGET)
-      {
-         ::metrowin::throw_if_failed(hr);
-      }
+   ::ca::graphics_sp dc(::ca::get_thread_app());
 
-//      m_sampleOverlay->Render();
+   dc->attach((ID2D1DeviceContext * ) m_d2dContext);
+
+   Sys(::ca::get_thread_app())._001OnDraw(&dc);
+
+   dc->detach();
+
+   m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
+
+   m_d2dContext->DrawTextLayout(
+   D2D1::Point2F(0.0f, 0.0f),
+   m_textLayout.Get(),
+   m_blackBrush.Get()
+   );
+
+   simple_graphics g;
+
+   g.reference_os_data(m_d2dContext.Get());
+
+   RECT rect;
+
+   rect.left     = 200;
+   rect.top      = 200;
+   rect.right    = 300;
+   rect.bottom   = 100;
+
+   g.fill_solid_rect(rect, ARGB(127, 255, 255, 240));
+
+   g.m_pdc = NULL;
+
+
+   // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
+   // is lost. It will be handled during the next call to Present.
+   HRESULT hr = m_d2dContext->EndDraw();
+   if (hr != D2DERR_RECREATE_TARGET)
+   {
+   ::metrowin::throw_if_failed(hr);
+   }
+
+   //      m_sampleOverlay->Render();
 
 
    }*/
 
-   void directx_application::Initialize(
-      _In_ CoreApplicationView^ applicationView
-      )
+   void directx_application::Initialize(CoreApplicationView ^ applicationView)
    {
       applicationView->Activated +=
          ref new TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &directx_application::OnActivated);
@@ -304,23 +516,39 @@ namespace metrowin
          ref new EventHandler<Platform::Object^>(this, &directx_application::OnResuming);
    }
 
-   void directx_application::SetWindow(
-      _In_ CoreWindow^ window
-      )
+   void directx_application::SetWindow(_In_ CoreWindow^ window)
    {
       m_window = window;
 
+      m_psystem->m_pui->initialize(m_window.Get(), this);
+
       m_psystem->m_window = m_window;
+
 
       window->PointerCursor = ref new CoreCursor(CoreCursorType::Arrow, 0);
 
       window->SizeChanged +=
          ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &directx_application::OnWindowSizeChanged);
 
-   window->PointerMoved +=
-        ref new Windows::Foundation::TypedEventHandler<
-            Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
-                this, &directx_application::OnPointerMoved);
+      window->PointerMoved +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
+         this, &directx_application::OnPointerMoved);
+
+      window->CharacterReceived +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::CharacterReceivedEventArgs^>(
+         this, &directx_application::OnCharacterReceived);
+
+      window->KeyDown +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^>(
+         this, &directx_application::OnKeyDown);
+
+      window->KeyUp +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^>(
+         this, &directx_application::OnKeyUp);
 
       DisplayProperties::LogicalDpiChanged +=
          ref new DisplayPropertiesEventHandler(this, &directx_application::OnLogicalDpiChanged);
@@ -333,17 +561,18 @@ namespace metrowin
       ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
 
       pdraw->m_directx->Initialize(window, DisplayProperties::LogicalDpi);
+
+      m_rectLastWindowRect = m_window->Bounds;
+
    }
 
-   void directx_application::Load(
-      _In_ Platform::String^ entryPoint
-      )
+   void directx_application::Load(Platform::String^ entryPoint)
    {
    }
 
    void directx_application::Run()
    {
-/*      Render();
+      /*      Render();
       Present();
       */
       m_window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
@@ -353,34 +582,36 @@ namespace metrowin
    {
    }
 
-   void directx_application::OnWindowSizeChanged(
-      _In_ CoreWindow^ sender,
-      _In_ WindowSizeChangedEventArgs^ args
-      )
+   void directx_application::OnWindowSizeChanged(CoreWindow ^ sender, WindowSizeChangedEventArgs ^ args)
    {
       ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
 
+
+      m_rectLastWindowRect = m_window->Bounds;
+
+
       pdraw->m_directx->UpdateForWindowSizeChange();
+
+
+
       //UpdateForWindowSizeChange();
-//      m_sampleOverlay->UpdateForWindowSizeChange();
-/*      Render();
+      //      m_sampleOverlay->UpdateForWindowSizeChange();
+      /*      Render();
       Present();*/
    }
 
-   void directx_application::OnLogicalDpiChanged(
-      _In_ Platform::Object^ sender
-      )
+   void directx_application::OnLogicalDpiChanged(Platform::Object ^ sender)
    {
       ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
+
+      m_rectLastWindowRect = m_window->Bounds;
 
       pdraw->m_directx->SetDpi(DisplayProperties::LogicalDpi);
       /*SetDpi(DisplayProperties::LogicalDpi);
       Render();
       Present();*/
    }
-   void directx_application::OnDisplayContentsInvalidated(
-      _In_ Platform::Object^ sender
-      )
+   void directx_application::OnDisplayContentsInvalidated(Platform::Object ^ sender)
    {
       // Ensure the D3D Device is available for rendering.
       ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
@@ -392,128 +623,254 @@ namespace metrowin
       Present();*/
    }
 
-   void directx_application::OnActivated(
-      _In_ CoreApplicationView^ applicationView,
-      _In_ IActivatedEventArgs^ args
-      )
+   void directx_application::OnActivated(CoreApplicationView^ applicationView, IActivatedEventArgs^ args)
    {
       m_window->Activate();
    }
 
-   void directx_application::OnSuspending(
-      _In_ Platform::Object^ sender,
-      _In_ SuspendingEventArgs^ args
-      )
+   void directx_application::OnSuspending(Platform::Object ^ sender, SuspendingEventArgs ^ args)
    {
    }
 
-   void directx_application::OnResuming(
-      _In_ Platform::Object^ sender,
-      _In_ Platform::Object^ args
-      )
+   void directx_application::OnResuming(Platform::Object ^ sender, Platform::Object ^ args)
    {
    }
 
+   void directx_application::OnCharacterReceived(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::CharacterReceivedEventArgs ^ args)
+   { 
+      
+      if(m_psystem == NULL)
+         return;
 
-void directx_application::OnPointerMoved(
-    _In_ Windows::UI::Core::CoreWindow^,
-    _In_ Windows::UI::Core::PointerEventArgs^ args)
-{ 
-    Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
+      if(m_psystem->m_pui == NULL)
+         return;
 
-    ::g_iMouse = pointerPoint->PointerId;
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
 
-    /*// Make sure the event belongs to the pointer that is currently inking
-    if (_pointerId == (int) pointerPoint->PointerId)
-    {
-        if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Erasing)
-        {
-            // Erase ink that intersects line from last point to current point
-            Windows::Foundation::Rect invalidateRect = _strokeContainer->SelectWithLine(_manipulationPoints->GetAt(0), pointerPoint->Position);
-            if (invalidateRect.Height != 0 || invalidateRect.Width != 0)
-            {
-                _strokeContainer->DeleteSelected();
-                Render();
-            }
+      ::ca::smart_pointer < ::gen::message::base > spbase;
 
-            // Store current point: it will be the starting point at next pointer update
-            _manipulationPoints->Clear();
-            _manipulationPoints->Append(pointerPoint->Position);
-        }
-        else
-        {
-            Windows::Foundation::Point previousPoint;
-            ID2D1StrokeStyle* strokeStyle;
-            ID2D1SolidColorBrush* brush;
-            float width;
+      gen::message::key * pkey = new  ::gen::message::key(get_app());
 
-            if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Inking)
-            {
-                // Obtain intermediate points (including the last/current one)
-                Windows::Foundation::Collections::IVector<Windows::UI::Input::PointerPoint^>^ intermediatePoints = args->GetIntermediatePoints();
+      spbase = pkey;
 
-                // Update ink manager with all intermediate points
-                int i = intermediatePoints->Size - 1;
-                // AppendToStroke returns the last point that was added to the stroke builder.
-                // We need to save it because it is the initial point of the new line we want to render.
-                previousPoint = _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i))->Position;
-                for (i = i - 1; i >= 0; i--)
-                {
-                    _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i));
-                }
+      pkey->m_uiMessage = WM_CHAR;
+      pkey->m_pwnd = m_psystem->m_pui;
+      pkey->m_nChar = keycode_to_char(args->KeyCode);
+//      pkey->m_charrecv = args;
 
-                // Setup drawing attributes for live rendering
-                strokeStyle = _inkStyle.Get();
-                brush = _inkBrush.Get();
-                width = _drawingAttributes->Size.Width;
-            }
-            else // _manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Selecting
-            {
-                previousPoint = _manipulationPoints->GetAt(_manipulationPoints->Size - 1);
-                _manipulationPoints->Append(pointerPoint->Position);
 
-                // Setup drawing attributes for live rendering
-                strokeStyle = _selectionStyle.Get();
-                brush = _selectionBrush.Get();
-                width = 1.0f;
-            }
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
 
-            // Live rendering
-            // First we need to copy the content of the last presented buffer: it contains
-            // the Beziers and the lines we rendered at previous pointer moves.
-            m_d3dContext->CopyResource(_currentBuffer.Get(), _previousBuffer.Get());
-            // Then we draw a new line, from the last position of the pointer to its current one.
-            m_d2dContext->BeginDraw();
-            m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
-            m_d2dContext->DrawLine(
-                D2D1::Point2F(previousPoint.X, previousPoint.Y), 
-                D2D1::Point2F(pointerPoint->Position.X, pointerPoint->Position.Y), 
-                brush, 
-                width, 
-                strokeStyle);
+   }
 
-            // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
-            // is lost. It will be handled during the next call to Present.
-            HRESULT hr = m_d2dContext->EndDraw();
-            if (hr != D2DERR_RECREATE_TARGET)
-            {
-                DX::ThrowIfFailed(hr);
-            }
 
-            Present();
-        }
-    }*/
-}
+   void directx_application::OnKeyDown(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::KeyEventArgs ^ args)
+   { 
+      
+      if(m_psystem == NULL)
+         return;
 
-      directx_application_source::directx_application_source(Platform::String ^ strId)
+      if(m_psystem->m_pui == NULL)
+         return;
+
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
+
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      gen::message::key * pkey = new  ::gen::message::key(get_app());
+
+      spbase = pkey;
+
+      pkey->m_uiMessage          = WM_KEYDOWN;
+      pkey->m_pwnd               = m_psystem->m_pui;
+      pkey->m_nChar              = virtualkey_to_char(args->VirtualKey);
+      pkey->m_wparam             = pkey->m_nChar;
+      pkey->m_nFlags             = virtualkey_to_code(args->VirtualKey);
+      pkey->m_lparam             = pkey->m_nFlags << 16;
+//      pkey->m_key = args;
+
+
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+
+   }
+
+   void directx_application::OnKeyUp(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::KeyEventArgs ^ args)
+   { 
+      
+      if(m_psystem == NULL)
+         return;
+
+      if(m_psystem->m_pui == NULL)
+         return;
+
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
+
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      gen::message::key * pkey = new  ::gen::message::key(get_app());
+
+      spbase = pkey;
+
+      pkey->m_uiMessage       = WM_KEYUP;
+      pkey->m_pwnd            = m_psystem->m_pui;
+      pkey->m_nChar           = virtualkey_to_char(args->VirtualKey);
+      pkey->m_wparam          = pkey->m_nChar;
+//      pkey->m_key = args;
+
+
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+
+   }
+
+
+   void directx_application::OnPointerMoved(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::PointerEventArgs ^ args)
+   { 
+      Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
+
+      ::g_iMouse = pointerPoint->PointerId;
+
+      if(m_psystem == NULL)
+         return;
+
+      if(m_psystem->m_pui == NULL)
+         return;
+
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
+
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+
+      spbase = pmouse;
+
+      pmouse->m_pt.x = pointerPoint->RawPosition.X;
+      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
+      pmouse->m_uiMessage = WM_MOUSEMOVE;
+      pmouse->m_pwnd = m_psystem->m_pui;
+
+      m_ptLastCursor = pointerPoint->RawPosition;
+
+
+
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+
+      /*
+      if(m_psystem->frames().get_count() <= 0)
+      return;
+
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+
+      spbase = pmouse;
+
+      pmouse->m_pt.x = pointerPoint->RawPosition.X;
+      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
+      pmouse->m_uiMessage = WM_MOUSEMOVE;
+      pmouse->m_pwnd = m_psystem->frames()[0];
+      for(int i = 0; i < m_psystem->frames().get_count(); i++)
       {
-         m_strId = strId;
+      m_psystem->frames()[i]->message_handler(spbase);
+
+      if(spbase->m_bRet)
+      break;
+      }*/
+
+      /*// Make sure the event belongs to the pointer that is currently inking
+      if (_pointerId == (int) pointerPoint->PointerId)
+      {
+      if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Erasing)
+      {
+      // Erase ink that intersects line from last point to current point
+      Windows::Foundation::Rect invalidateRect = _strokeContainer->SelectWithLine(_manipulationPoints->GetAt(0), pointerPoint->Position);
+      if (invalidateRect.Height != 0 || invalidateRect.Width != 0)
+      {
+      _strokeContainer->DeleteSelected();
+      Render();
       }
 
-      Windows::ApplicationModel::Core::IFrameworkView^ directx_application_source::CreateView()
-      {
-         return ref new directx_application(m_strId);
+      // Store current point: it will be the starting point at next pointer update
+      _manipulationPoints->Clear();
+      _manipulationPoints->Append(pointerPoint->Position);
       }
+      else
+      {
+      Windows::Foundation::Point previousPoint;
+      ID2D1StrokeStyle* strokeStyle;
+      ID2D1SolidColorBrush* brush;
+      float width;
+
+      if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Inking)
+      {
+      // Obtain intermediate points (including the last/current one)
+      Windows::Foundation::Collections::IVector<Windows::UI::Input::PointerPoint^>^ intermediatePoints = args->GetIntermediatePoints();
+
+      // Update ink manager with all intermediate points
+      int i = intermediatePoints->Size - 1;
+      // AppendToStroke returns the last point that was added to the stroke builder.
+      // We need to save it because it is the initial point of the new line we want to render.
+      previousPoint = _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i))->Position;
+      for (i = i - 1; i >= 0; i--)
+      {
+      _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i));
+      }
+
+      // Setup drawing attributes for live rendering
+      strokeStyle = _inkStyle.Get();
+      brush = _inkBrush.Get();
+      width = _drawingAttributes->Size.Width;
+      }
+      else // _manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Selecting
+      {
+      previousPoint = _manipulationPoints->GetAt(_manipulationPoints->Size - 1);
+      _manipulationPoints->Append(pointerPoint->Position);
+
+      // Setup drawing attributes for live rendering
+      strokeStyle = _selectionStyle.Get();
+      brush = _selectionBrush.Get();
+      width = 1.0f;
+      }
+
+      // Live rendering
+      // First we need to copy the content of the last presented buffer: it contains
+      // the Beziers and the lines we rendered at previous pointer moves.
+      m_d3dContext->CopyResource(_currentBuffer.Get(), _previousBuffer.Get());
+      // Then we draw a new line, from the last position of the pointer to its current one.
+      m_d2dContext->BeginDraw();
+      m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
+      m_d2dContext->DrawLine(
+      D2D1::Point2F(previousPoint.X, previousPoint.Y), 
+      D2D1::Point2F(pointerPoint->Position.X, pointerPoint->Position.Y), 
+      brush, 
+      width, 
+      strokeStyle);
+
+      // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
+      // is lost. It will be handled during the next call to Present.
+      HRESULT hr = m_d2dContext->EndDraw();
+      if (hr != D2DERR_RECREATE_TARGET)
+      {
+      DX::ThrowIfFailed(hr);
+      }
+
+      Present();
+      }
+      }*/
+   }
+
+   directx_application_source::directx_application_source(Platform::String ^ strId)
+   {
+      m_strId = strId;
+   }
+
+   Windows::ApplicationModel::Core::IFrameworkView^ directx_application_source::CreateView()
+   {
+      return ref new directx_application(m_strId);
+   }
 
    directx_application_source ^ new_directx_application_source(Platform::String ^ id)
    {
@@ -524,9 +881,9 @@ void directx_application::OnPointerMoved(
    Windows::Foundation::Rect directx_application::get_window_rect()
    {
 
-      Windows::Foundation::Rect rect;
+      Windows::Foundation::Rect rect = m_rectLastWindowRect;
 
-      rect.X = 0;
+/*      rect.X = 0;
       rect.Y = 0;
       rect.Width = 600;
       rect.Height = 480;
@@ -543,7 +900,7 @@ void directx_application::OnPointerMoved(
          catch(...)
          {
          }
-      })));
+      })));*/
 
       return rect;
 
@@ -552,12 +909,14 @@ void directx_application::OnPointerMoved(
    Windows::Foundation::Point directx_application::get_cursor_pos()
    {
 
-      Windows::Foundation::Point p;
+      single_lock sl(&m_mutex, true);
 
-      p.X = 0;
-      p.Y = 0;
+      Windows::Foundation::Point p = m_ptLastCursor;
 
-      if(m_window == nullptr)
+/*      if(m_window == nullptr)
+         return p;
+
+      if(g_iMouse < 0)
          return p;
 
       ::wait(m_window->Dispatcher->RunAsync(Windows::UI::Core::CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler ([=, &p]()
@@ -575,11 +934,11 @@ void directx_application::OnPointerMoved(
                if(dev->PointerDeviceType == ::Windows::Devices::Input::PointerDeviceType::Mouse)
                {
 
-                   Windows::UI::Input::PointerPoint ^ pointerPoint = Windows::UI::Input::PointerPoint::GetCurrentPoint(g_iMouse);
+                  Windows::UI::Input::PointerPoint ^ pointerPoint = Windows::UI::Input::PointerPoint::GetCurrentPoint(g_iMouse);
 
-                   p = pointerPoint->RawPosition;
+                  p = pointerPoint->RawPosition;
 
-                   break;
+                  break;
 
                }
 
@@ -589,7 +948,9 @@ void directx_application::OnPointerMoved(
          catch(...)
          {
          }
-      })));
+      })), 5); // wait for up to 5 milliseconds
+
+      m_ptLastCursor = p;*/
 
       return p;
 

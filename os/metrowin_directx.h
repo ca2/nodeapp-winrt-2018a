@@ -35,6 +35,8 @@ namespace metrowin
 
       ::ca::application * m_papp;
 
+      mutex    m_mutexDc;
+
       bool m_bInitialized;
 
       directx_base(::ca::application * papp);
@@ -70,7 +72,7 @@ namespace metrowin
       Microsoft::WRL::ComPtr<ID3D11RenderTargetView>  m_d3dRenderTargetView;
 
       // Direct2D Rendering Objects. Required for 2D.
-      Microsoft::WRL::ComPtr<ID2D1Factory1>           m_d2dFactory;
+      //Microsoft::WRL::ComPtr<ID2D1Factory1>           m_d2dFactory;
       Microsoft::WRL::ComPtr<ID2D1Device>             m_d2dDevice;
       Microsoft::WRL::ComPtr<ID2D1DeviceContext>      m_d2dContext;
       Microsoft::WRL::ComPtr<ID2D1Bitmap1>            m_d2dTargetBitmap;

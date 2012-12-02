@@ -47,7 +47,7 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-      set_handle(::ca::null());
+//      set_handle(::ca::null());
       m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
@@ -61,7 +61,7 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-      set_handle(hWnd);
+//      set_handle(hWnd);
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
       m_nModalResult = 0;
@@ -76,7 +76,7 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-      set_handle(::ca::null());
+//      set_handle(::ca::null());
       m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
@@ -86,17 +86,18 @@ namespace metrowin
       m_pguieCapture = NULL;
    }
 
-   ::ca::window * window::from_os_data(void * pdata)
+/*   ::ca::window * window::from_os_data(void * pdata)
    {
       return dynamic_cast <::ca::window *>(from_handle((oswindow) pdata));   
    }
 
    void * window::get_os_data() const
    {
-      return hwnd_handle::get_handle();
+//      return hwnd_handle::get_handle();
+      return oswindow(m_pguie);
    }
 
-
+   */
 
    // Change a window's style
 
@@ -158,9 +159,9 @@ namespace metrowin
    }
 
 
-   window * PASCAL window::from_handle(oswindow hWnd)
-   {
-      single_lock sl(afxMutexHwnd(), TRUE);
+   //window * PASCAL window::from_handle(oswindow hWnd)
+   //{
+/*      single_lock sl(afxMutexHwnd(), TRUE);
       hwnd_map* pMap = afxMapHWND(TRUE); //create ::collection::map if not exist
       try
       {
@@ -173,11 +174,11 @@ namespace metrowin
       catch(...)
       {
          return NULL;
-      }
-   }
+      }*/
+   //}
 
 
-   oswindow window::get_handle() const
+/*   oswindow window::get_handle() const
    {
       return hwnd_handle::get_handle();
    }
@@ -231,7 +232,7 @@ namespace metrowin
       }
 
       return hWnd;
-   }
+   }*/
 
    void window::pre_subclass_window()
    {
@@ -399,6 +400,20 @@ namespace metrowin
          rect.left, rect.top,
          rect.right - rect.left, rect.bottom - rect.top,
          pParentWnd->get_handle(), id, (LPVOID)pContext);
+   }
+
+   bool window::initialize(Windows::UI::Core::CoreWindow ^ window, ::ca::system_window ^ pwindow)
+   {
+      
+      m_window = window;
+
+      m_pwindow = pwindow;
+
+      m_pthread = dynamic_cast < ::radix::thread * > (::ca::get_thread());
+
+
+      return true;
+
    }
 
    bool window::create_message_window(const char * pszName, ::ca::window_callback * pcallback)
@@ -593,7 +608,7 @@ namespace metrowin
 #else
       throw todo(get_app());
 #endif
-      Detach();
+//      Detach();
       ASSERT(get_handle() == NULL);
       m_pfnDispatchWindowProc = &window::_start_user_message_handler;
       // call special post-cleanup routine
@@ -606,7 +621,7 @@ namespace metrowin
 
    void window::PostNcDestroy()
    {
-      set_handle(::ca::null());
+//      set_handle(::ca::null());
       // default to nothing
    }
 
@@ -701,16 +716,16 @@ namespace metrowin
       }
 #endif
 
-      ::ca::window * pWnd = ::metrowin::window::FromHandlePermanent(get_handle());
-      if (pWnd != this)
-         dumpcontext << " (Detached or temporary window)";
-      else
-         dumpcontext << " (permanent window)";
-
+//      ::ca::window * pWnd = ::metrowin::window::FromHandlePermanent(get_handle());
+   //   if (pWnd != this)
+   //      dumpcontext << " (Detached or temporary window)";
+ //     else
+//dumpcontext << " (permanent window)";
+//
       // dump out window specific statistics
       char szBuf [64];
-      if (!const_cast < window * > (this)->send_message(WM_QUERYAFXWNDPROC, 0, 0) && pWnd == this)
-         ((::ca::window *) this)->GetWindowText(szBuf, _countof(szBuf));
+//      if (!const_cast < window * > (this)->send_message(WM_QUERYAFXWNDPROC, 0, 0) && pWnd == this)
+  //       ((::ca::window *) this)->GetWindowText(szBuf, _countof(szBuf));
 #ifdef WINDOWSEX
       else
          ::DefWindowProc(get_handle(), WM_GETTEXT, _countof(szBuf), (LPARAM)&szBuf[0]);
@@ -748,7 +763,7 @@ namespace metrowin
       pMap = NULL;
       pWnd = NULL;
       hWndOrig = ::ca::null();
-      if (get_handle() != NULL)
+/*      if (get_handle() != NULL)
       {
          single_lock sl(afxMutexHwnd(), TRUE);
          pMap = afxMapHWND();
@@ -791,7 +806,7 @@ namespace metrowin
             // Detach after DestroyWindow called just in case
             Detach();
          }
-      }
+      }*/
 
       return bResult;
    }
@@ -802,6 +817,8 @@ namespace metrowin
 
    LRESULT window::DefWindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam)
    {
+      return 0;
+
 #ifdef WINDOWSEX
       if (m_pfnSuper != NULL)
          return ::CallWindowProc(m_pfnSuper, get_handle(), nMsg, wParam, lParam);
@@ -1275,20 +1292,26 @@ namespace metrowin
             || pbase->m_uiMessage == WM_MBUTTONDOWN
             || pbase->m_uiMessage == WM_MOUSEMOVE)
          {
-            if(Application.m_puser != NULL)
+            if(Application.m_puser != NULL && m_papp->m_psession != NULL && m_papp->m_psession->m_pbergedge != NULL)
             {
-               if(&ApplicationUser != NULL)
+               try
                {
-                  if(ApplicationUser.m_ppresence != NULL)
+                  if(&ApplicationUser != NULL)
                   {
-                     try
+                     if(ApplicationUser.m_ppresence != NULL)
                      {
-                        ApplicationUser.m_ppresence->report_activity();
-                     }
-                     catch(...)
-                     {
+                        try
+                        {
+                           ApplicationUser.m_ppresence->report_activity();
+                        }
+                        catch(...)
+                        {
+                        }
                      }
                   }
+               }
+               catch(...)
+               {
                }
             }
          }
@@ -1405,14 +1428,9 @@ restart_mouse_hover_check:
                return;
             }
          }
-         user::oswindow_array hwnda;
-         user::interaction_ptr_array wnda;
-         wnda = System.frames();
-         wnda.get_wnda(hwnda);
-         user::window_util::SortByZOrder(hwnda);
-         for(int i = 0; i < hwnda.get_size(); i++)
+         for(int i = 0; i < m_pguie->m_uiptraChild.get_size(); i++)
          {
-            ::user::interaction * pguie = wnda.find_first(hwnda[i]);
+            ::user::interaction * pguie = m_pguie->m_uiptraChild[i];
             if(pguie != NULL && pguie->m_pguie != NULL)
             {
                pguie->m_pguie->_000OnMouse(pmouse);
@@ -2157,12 +2175,12 @@ restart_mouse_hover_check:
       return pFrameWnd;
    }
 
-   ::ca::window * PASCAL window::GetSafeOwner(::ca::window * pParent, oswindow* pWndTop)
+/*   ::ca::window * PASCAL window::GetSafeOwner(::ca::window * pParent, oswindow* pWndTop)
    {
       oswindow hWnd = GetSafeOwner_((oswindow) pParent->get_os_data(), pWndTop);
       return ::metrowin::window::from_handle(hWnd);
    }
-
+   */
    int window::message_box(const char * lpszText, const char * lpszCaption, UINT nType)
    {
       if (lpszCaption == NULL)
@@ -2758,11 +2776,10 @@ restart_mouse_hover_check:
          return FALSE;
 
       // check if in permanent ::collection::map, if it is reflect it (could be OLE control)
-      ::ca::window * pWnd = dynamic_cast < ::ca::window * > (pMap->lookup_permanent(hWndChild));
-      ASSERT(pWnd == NULL || WIN_WINDOW(pWnd)->get_handle() == hWndChild);
+      ::user::interaction * pWnd = hWndChild.window();
       if (pWnd == NULL)
       {
-         return FALSE;
+         return false;
       }
 
       // only OLE controls and permanent windows will get reflected msgs
@@ -3783,7 +3800,7 @@ restart_mouse_hover_check:
       }
       else
       {
-      // only certain button controls get automagically disabled
+      // only certain button controls get automagically disabledi
       UINT nStyle = (UINT)(wndTemp.GetStyle() & 0x0F);
       if (nStyle == (UINT)BS_AUTOCHECKBOX ||
       nStyle == (UINT)BS_AUTO3STATE ||
@@ -3805,140 +3822,137 @@ restart_mouse_hover_check:
    {
 
             
-      throw todo(get_app());
-
-
-
       // for tracking the idle time state
-//      bool bIdle = TRUE;
-//      LONG lIdleCount = 0;
-//      bool bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
-//      oswindow hWndParent = ::GetParent(get_handle());
-//      m_iModal = m_iModalCount;
-//      int iLevel = m_iModal;
-//      oprop(string("RunModalLoop.thread(") + gen::str::itoa(iLevel) + ")") = System.GetThread();
-//      m_iModalCount++;
-//
-//      m_iaModalThread.add(::GetCurrentThreadId());
-//      ::radix::application * pappThis1 = dynamic_cast < ::radix::application * > (m_pthread->m_p);
-//      ::radix::application * pappThis2 = dynamic_cast < ::radix::application * > (m_pthread);
-//      // acquire and dispatch messages until the modal state is done
-//      MSG msg;
-//      for (;;)
-//      {
-//         ASSERT(ContinueModal(iLevel));
-//
-//         // phase1: check to see if we can do idle work
-//         while (bIdle && !::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
-//         {
-//            ASSERT(ContinueModal(iLevel));
-//
-//            // show the dialog when the message queue goes idle
-//            if (bShowIdle)
-//            {
-//               ShowWindow(SW_SHOWNORMAL);
-//               UpdateWindow();
-//               bShowIdle = FALSE;
-//            }
-//
-//            // call on_idle while in bIdle state
-//            if (!(dwFlags & MLF_NOIDLEMSG) && hWndParent != NULL && lIdleCount == 0)
-//            {
-//               // send WM_ENTERIDLE to the parent
-//               ::SendMessage(hWndParent, WM_ENTERIDLE, MSGF_DIALOGBOX, (LPARAM)get_handle());
-//            }
-//            if ((dwFlags & MLF_NOKICKIDLE) ||
-//               !__call_window_procedure(this, get_handle(), WM_KICKIDLE, MSGF_DIALOGBOX, lIdleCount++))
-//            {
-//               // stop idle processing next time
-//               bIdle = FALSE;
-//            }
-//
-//            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
-//            if(pappThis1 != NULL)
-//            {
-//               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
-//            }
-//            if(pappThis2 != NULL)
-//            {
-//               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
-//            }
-//            if(pliveobject != NULL)
-//            {
-//               pliveobject->keep_alive();
-//            }
-//         }
-//
-//
-//         // phase2: pump messages while available
-//         do
-//         {
-//            if (!ContinueModal(iLevel))
-//               goto ExitModal;
-//
-//            // pump message, but quit on WM_QUIT
-//            if (!m_pthread->pump_message())
-//            {
-//               __post_quit_message(0);
-//               return -1;
-//            }
-//
-//            // show the window when certain special messages rec'd
-//            if (bShowIdle &&
-//               (msg.message == 0x118 || msg.message == WM_SYSKEYDOWN))
-//            {
-//               ShowWindow(SW_SHOWNORMAL);
-//               UpdateWindow();
-//               bShowIdle = FALSE;
-//            }
-//
-//            if (!ContinueModal(iLevel))
-//               goto ExitModal;
-//
-//            // reset "no idle" state after pumping "normal" message
-//            if (__is_idle_message(&msg))
-//            {
-//               bIdle = TRUE;
-//               lIdleCount = 0;
-//            }
-//
-//            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
-//            if(pappThis1 != NULL)
-//            {
-//               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
-//            }
-//            if(pappThis2 != NULL)
-//            {
-//               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
-//            }
-//            if(pliveobject != NULL)
-//            {
-//               pliveobject->keep_alive();
-//            }
-//
-//            /*            if(pliveobject != NULL)
-//            {
-//            pliveobject->keep();
-//            }*/
-//
-//         } 
-//         while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE);
-//
-//
-//         if(m_pguie->m_pthread != NULL)
-//         {
-//            m_pguie->m_pthread->step_timer();
-//         }
-//         if (!ContinueModal(iLevel))
-//            goto ExitModal;
-//
-//
-//      }
-//
-//ExitModal:
-//      m_iaModalThread.remove_first(::GetCurrentThreadId());
-//      m_iModal = m_iModalCount;
-//      return m_nModalResult;
+      bool bIdle = TRUE;
+      LONG lIdleCount = 0;
+      bool bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
+      oswindow hWndParent = get_parent();
+      m_iModal = m_iModalCount;
+      int iLevel = m_iModal;
+      oprop(string("RunModalLoop.thread(") + gen::str::from(iLevel) + ")") = System.GetThread();
+      m_iModalCount++;
+
+      m_iaModalThread.add(::GetCurrentThreadId());
+      ::radix::application * pappThis1 = dynamic_cast < ::radix::application * > (m_pthread->m_p);
+      ::radix::application * pappThis2 = dynamic_cast < ::radix::application * > (m_pthread);
+      // acquire and dispatch messages until the modal state is done
+      MESSAGE msg;
+      for (;;)
+      {
+         ASSERT(ContinueModal(iLevel));
+
+         // phase1: check to see if we can do idle work
+         while (bIdle && !::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE))
+         {
+            ASSERT(ContinueModal(iLevel));
+
+            // show the dialog when the message queue goes idle
+            if (bShowIdle)
+            {
+               ShowWindow(SW_SHOWNORMAL);
+               UpdateWindow();
+               bShowIdle = FALSE;
+            }
+
+            // call on_idle while in bIdle state
+            if (!(dwFlags & MLF_NOIDLEMSG) && hWndParent != NULL && lIdleCount == 0)
+            {
+               // send WM_ENTERIDLE to the parent
+// xxx todo               ::SendMessage(hWndParent, WM_ENTERIDLE, MSGF_DIALOGBOX, (LPARAM)get_handle());
+            }
+            if ((dwFlags & MLF_NOKICKIDLE) )
+               
+// xxx todo    ||           !__call_window_procedure(this, get_handle(), WM_KICKIDLE, MSGF_DIALOGBOX, lIdleCount++))
+            {
+               // stop idle processing next time
+               bIdle = FALSE;
+            }
+
+            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
+            if(pappThis1 != NULL)
+            {
+               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
+            }
+            if(pappThis2 != NULL)
+            {
+               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
+            }
+            if(pliveobject != NULL)
+            {
+               pliveobject->keep_alive();
+            }
+         }
+
+
+         // phase2: pump messages while available
+         do
+         {
+            if (!ContinueModal(iLevel))
+               goto ExitModal;
+
+            // pump message, but quit on WM_QUIT
+            if (!m_pthread->pump_message())
+            {
+               __post_quit_message(0);
+               return -1;
+            }
+
+            // show the window when certain special messages rec'd
+            if (bShowIdle &&
+               (msg.message == 0x118 || msg.message == WM_SYSKEYDOWN))
+            {
+               ShowWindow(SW_SHOWNORMAL);
+               UpdateWindow();
+               bShowIdle = FALSE;
+            }
+
+            if (!ContinueModal(iLevel))
+               goto ExitModal;
+
+            // reset "no idle" state after pumping "normal" message
+            if (__is_idle_message(&msg))
+            {
+               bIdle = TRUE;
+               lIdleCount = 0;
+            }
+
+            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
+            if(pappThis1 != NULL)
+            {
+               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
+            }
+            if(pappThis2 != NULL)
+            {
+               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
+            }
+            if(pliveobject != NULL)
+            {
+               pliveobject->keep_alive();
+            }
+
+            /*            if(pliveobject != NULL)
+            {
+            pliveobject->keep();
+            }*/
+
+         } 
+         while (::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE);
+
+
+         if(m_pguie->m_pthread != NULL)
+         {
+            m_pguie->m_pthread->step_timer();
+         }
+         if (!ContinueModal(iLevel))
+            goto ExitModal;
+
+
+      }
+
+ExitModal:
+      m_iaModalThread.remove_first(::GetCurrentThreadId());
+      m_iModal = m_iModalCount;
+      return m_nModalResult;
    }
 
    bool window::ContinueModal(int iLevel)
@@ -3972,32 +3986,32 @@ restart_mouse_hover_check:
    void window::EndAllModalLoops(id nResult)
    {
             
-      throw todo(get_app());
+      //throw todo(get_app());
 
       //ASSERT(::IsWindow(get_handle()));
 
-      //// this result will be returned from window::RunModalLoop
-      //m_idModalResult = nResult;
+      // this result will be returned from window::RunModalLoop
+      m_idModalResult = nResult;
 
-      //// make sure a message goes through to exit the modal loop
-      //if(m_iModalCount > 0)
-      //{
-      //   int iLevel = m_iModalCount - 1;
-      //   m_iModalCount = 0;
-      //   PostMessage(WM_NULL);
-      //   System.GetThread()->PostThreadMessage(WM_NULL, 0, 0);
-      //   for(int i = iLevel; i >= 0; i--)
-      //   {
-      //      ::ca::thread * pthread = oprop(string("RunModalLoop.thread(") + gen::str::itoa(i) + ")").ca2 < ::ca::thread > ();
-      //      try
-      //      {
-      //         pthread->PostThreadMessage(WM_NULL, 0, 0);
-      //      }
-      //      catch(...)
-      //      {
-      //      }
-      //   }
-      //}
+      // make sure a message goes through to exit the modal loop
+      if(m_iModalCount > 0)
+      {
+         int iLevel = m_iModalCount - 1;
+         m_iModalCount = 0;
+         PostMessage(WM_NULL);
+         System.GetThread()->post_thread_message(WM_NULL, 0, 0);
+         for(int i = iLevel; i >= 0; i--)
+         {
+            ::ca::thread * pthread = oprop(string("RunModalLoop.thread(") + gen::str::from(i) + ")").ca2 < ::ca::thread > ();
+            try
+            {
+               pthread->post_thread_message(WM_NULL, 0, 0);
+            }
+            catch(...)
+            {
+            }
+         }
+      }
    }
 
 
@@ -4313,7 +4327,19 @@ restart_mouse_hover_check:
 
    void window::GetWindowRect(__rect64 * lprect)
    {
-      if(!::IsWindow(get_handle()))
+      
+      Windows::Foundation::Rect rect = m_pwindow->get_window_rect();
+
+
+      lprect->left = rect.X;
+      
+      lprect->top = rect.Y;
+
+      lprect->right = lprect->left + rect.Width;
+
+      lprect->bottom = lprect->top + rect.Height;
+
+      /*if(!::IsWindow(get_handle()))
          throw simple_exception(get_app(), "no more a window");
       // if it is temporary window - probably not ca2 wrapped window
       if(m_pguie == NULL || m_pguie == this)
@@ -4328,7 +4354,7 @@ throw todo(get_app());
       else
       {
          interaction::GetWindowRect(lprect);
-      }
+      }*/
    }
 
    void window::GetClientRect(__rect64 * lprect)
@@ -4621,10 +4647,45 @@ throw todo(get_app());
       m_pguieOwner = pOwnerWnd; 
    }
 
-   LRESULT window::send_message(UINT message, WPARAM wParam, LPARAM lParam)
+   LRESULT window::send_message(UINT uiMessage, WPARAM wparam, LPARAM lparam)
    {
 
-      throw todo(get_app());
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      spbase(get_base(m_pguie, uiMessage, wparam, lparam));
+
+/*      try
+      {
+         ::user::interaction * pui = m_pguie;
+         while(pui != NULL)
+         {
+            try
+            {
+               pui->pre_translate_message(spbase);
+            }
+            catch(...)
+            {
+               break;
+            }
+            if(spbase->m_bRet)
+               return spbase->get_lresult();
+            try
+            {
+               pui = pui->get_parent();
+            }
+            catch(...)
+            {
+               break;
+            }
+         }
+      }
+      catch(...)
+      {
+      }*/
+      message_handler(spbase);
+      return spbase->get_lresult();
+
+      //throw todo(get_app());
 
       ////ASSERT(::IsWindow(get_handle())); 
       //return ::SendMessage(get_handle(), message, wParam, lParam);
@@ -4633,9 +4694,9 @@ throw todo(get_app());
    bool window::PostMessage(UINT message, WPARAM wParam, LPARAM lParam)
    { 
 
-      throw todo(get_app());
+//      throw todo(get_app());
 
-      //return ::PostMessage(get_handle(), message, wParam, lParam) != FALSE; 
+      return ::PostMessage(get_handle(), message, wParam, lParam) != FALSE; 
    }
 
    bool window::DragDetect(POINT pt) const
@@ -4899,6 +4960,8 @@ throw todo(get_app());
    bool window::IsWindowVisible()
    {
 
+      return true;
+
       if(!::IsWindow(get_handle()))
          return false;
 
@@ -5095,7 +5158,8 @@ throw todo(get_app());
    bool window::IsWindowEnabled()
    {
 
-      throw todo(get_app());
+      return true;
+      //throw todo(get_app());
 
       //if(!::IsWindow(get_handle()))
       //   return false;
@@ -5148,41 +5212,38 @@ throw todo(get_app());
    ::user::interaction * window::set_capture(::user::interaction* pinterface)
    { 
 
-      throw todo(get_app());
+      //throw todo(get_app());
 
       //ASSERT(::IsWindow(get_handle())); 
       //
-      //if(pinterface != NULL) 
-      //   m_pguieCapture = pinterface; 
-      //
-      //return dynamic_cast < ::ca::window * > (::metrowin::window::from_handle(::SetCapture(get_handle()))); 
+      if(pinterface != NULL) 
+         m_pguieCapture = pinterface; 
+      
+      return ::SetCapture(this).window(); 
 
    }
 
-   ::ca::window * PASCAL window::GetFocus()
+   ::user::interaction * PASCAL window::GetFocus()
    { 
 
-      throw todo(::ca::get_thread_app());
+      return ::GetFocus().window();
 
-      //return ::metrowin::window::from_handle(::GetFocus());
-   
    }
 
-   ::ca::window * window::SetFocus()
+   ::user::interaction * window::SetFocus()
    { 
-
-      throw todo(get_app());
 
       //ASSERT(::IsWindow(get_handle()));
-      //
-      //return ::metrowin::window::from_handle(::SetFocus(get_handle()));
+      return ::SetFocus(m_pguie).window();
    
    }
 
-   ::ca::window * PASCAL window::GetDesktopWindow()
+   ::user::interaction * PASCAL window::GetDesktopWindow()
    {
 
-      throw todo(::ca::get_thread_app());
+      return NULL;
+
+      //return System.m_pui;
 
       //return ::metrowin::window::from_handle(::GetDesktopWindow());
    
@@ -6398,10 +6459,10 @@ lCallNextHook:
    void window::_001OnTriggerMouseInside()
    {
 
-      throw todo(get_app());
+      //throw todo(get_app());
 
 
-      //m_bMouseHover = true;
+      m_bMouseHover = true;
       //TRACKMOUSEEVENT tme = { sizeof(tme) };
       //tme.dwFlags = TME_LEAVE;
       //tme.hwndTrack = get_handle();

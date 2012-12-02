@@ -9,6 +9,7 @@ namespace metrowin
       ca(papp)
    { 
 
+      m_psolidbrush = NULL;
 
    }
 
@@ -374,7 +375,7 @@ namespace metrowin
          if(m_psolidbrush != NULL)
          {
 
-            ((brush *)this)->destroy();
+            ((pen *)this)->destroy();
 
          }
 
@@ -398,6 +399,25 @@ namespace metrowin
 
    }
 
+
+   bool pen::destroy()
+   {
+      
+      if(m_psolidbrush != NULL)
+      {
+         try
+         {
+            m_psolidbrush->Release();
+         }
+         catch(...)
+         {
+         }
+         m_psolidbrush = NULL;
+      }
+
+      return true;
+
+   }
 
 } // namespace metrowin
 

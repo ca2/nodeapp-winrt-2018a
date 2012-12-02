@@ -25,6 +25,8 @@ namespace metrowin
       virtual ID2D1Brush * get_os_pen_brush(::metrowin::graphics * pdc) const;
 
 
+      bool destroy();
+
       virtual ~pen();
       virtual void dump(dump_context & dumpcontext) const;
 

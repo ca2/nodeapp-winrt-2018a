@@ -20,7 +20,8 @@ namespace metrowin
    directx_base::directx_base(::ca::application * papp) :
       m_papp(papp),
       m_windowSizeChangeInProgress(false),
-      m_dpi(-1.0f)
+      m_dpi(-1.0f),
+      m_mutexDc(papp)
    {
       m_bInitialized = false;
    }
@@ -61,14 +62,14 @@ namespace metrowin
       options.debugLevel = D2D1_DEBUG_LEVEL_INFORMATION;
 #endif
 
-      ::metrowin::throw_if_failed(
+/*      ::metrowin::throw_if_failed(
          D2D1CreateFactory(
          D2D1_FACTORY_TYPE_SINGLE_THREADED,
          __uuidof(ID2D1Factory1),
          &options,
-         &m_d2dFactory
+         GetD
          )
-         );
+         );*/
 
       ::metrowin::throw_if_failed(
          DWriteCreateFactory(
@@ -232,7 +233,7 @@ namespace metrowin
 
       // Create the Direct2D device object and a corresponding context.
       ::metrowin::throw_if_failed(
-         m_d2dFactory->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)
+         GetD2D1Factory1()->CreateDevice(dxgiDevice.Get(), &m_d2dDevice)
          );
 
       ::metrowin::throw_if_failed(
@@ -244,7 +245,8 @@ namespace metrowin
 
 
 
-
+      System.m_pdc = m_d2dContext.Get();
+      System.m_pmutexDc = &m_mutexDc;
 
 
 
@@ -333,6 +335,12 @@ namespace metrowin
          m_windowSizeChangeInProgress = true;
          CreateWindowSizeDependentResources();
       }
+
+      System.m_pui->m_rectParentClient.left = 0;
+      System.m_pui->m_rectParentClient.top = 0;
+      System.m_pui->m_rectParentClient.right = m_window->Bounds.Width;
+      System.m_pui->m_rectParentClient.bottom = m_window->Bounds.Height;
+
    }
 
    // Allocate all memory resources that change on a window SizeChanged event.
@@ -345,7 +353,7 @@ namespace metrowin
       if (m_swapChain != nullptr)
       {
          // If the swap chain already exists, resize it.
-         HRESULT hr = m_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
+         HRESULT hr = m_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
 
          if (hr == DXGI_ERROR_DEVICE_REMOVED)
          {
@@ -366,7 +374,7 @@ namespace metrowin
          DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {0};
          swapChainDesc.Width = 0;                                     // Use automatic sizing.
          swapChainDesc.Height = 0;
-         swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;           // This is the most common swap chain format.
+         swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;           // This is the most common swap chain format.
          swapChainDesc.Stereo = false;
          swapChainDesc.SampleDesc.Count = 1;                          // Don't use multi-sampling.
          swapChainDesc.SampleDesc.Quality = 0;
@@ -472,7 +480,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 bitmapProperties =
          BitmapProperties1(
          D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-         PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+         PixelFormat(DXGI_FORMAT_R8G8B8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
          m_dpi,
          m_dpi
          );
@@ -762,10 +770,16 @@ namespace metrowin
 
       dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
 
+
+      System.m_pui->_000OnDraw(dc);
+
+      /*
       for(int i = 0; i < uiptra.get_count(); i++)
       {
-         uiptra[i]->_001OnDraw(dc);
-      }
+
+         uiptra[i]->_000OnDraw(dc);
+
+      }*/
 
       dc->detach();
 

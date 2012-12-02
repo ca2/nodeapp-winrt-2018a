@@ -186,11 +186,11 @@ public:
    friend class ::radix::thread;
 };
 
-class CLASS_DECL_metrowin hwnd_map :
+/*class CLASS_DECL_metrowin hwnd_map :
    public handle_map < ::metrowin::hwnd_handle, ::metrowin::window >
 {
 public:
-};
+};*/
 
 /*class CLASS_DECL_metrowin hdc_map :
    public handle_map < ::metrowin::hdc_handle, ::metrowin::graphics >

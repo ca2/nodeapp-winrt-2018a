@@ -271,7 +271,6 @@ static void TraceDDE(const char * lpszPrefix, const MSG* pMsg)
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-#ifdef WINDOWSEX
 void __trace_message(const char * lpszPrefix, gen::signal_object * pobj)
 {
    ENSURE_ARG(__is_valid_string(lpszPrefix));
@@ -302,8 +301,9 @@ void __trace_message(const char * lpszPrefix, gen::signal_object * pobj)
    {
       // Window message registered with 'RegisterWindowMessage'
       //  (actually a USER atom)
+      /*
       if (::GetClipboardFormatNameA(pbase->m_uiMessage, szBuf, _countof(szBuf)))
-         lpszMsgName = szBuf;
+         lpszMsgName = szBuf;*/
    }
    else if (pbase->m_uiMessage >= WM_USER)
    {
@@ -355,7 +355,7 @@ void __trace_message(const char * lpszPrefix, gen::signal_object * pobj)
 }
 
 
-void __trace_message(const char * lpszPrefix, LPMSG lpmsg)
+void __trace_message(const char * lpszPrefix, LPMESSAGE lpmsg)
 {
    ENSURE_ARG(__is_valid_string(lpszPrefix));
    ENSURE_ARG(lpmsg != NULL);
@@ -384,8 +384,8 @@ void __trace_message(const char * lpszPrefix, LPMSG lpmsg)
    {
       // Window message registered with 'RegisterWindowMessage'
       //  (actually a USER atom)
-      if (::GetClipboardFormatNameA(lpmsg->message, szBuf, _countof(szBuf)))
-         lpszMsgName = szBuf;
+//      if (::GetClipboardFormatNameA(lpmsg->message, szBuf, _countof(szBuf)))
+  //       lpszMsgName = szBuf;
    }
    else if (lpmsg->message >= WM_USER)
    {
@@ -436,4 +436,3 @@ void __trace_message(const char * lpszPrefix, LPMSG lpmsg)
       TraceDDE(lpszPrefix, pMsg);*/
 }
 
-#endif

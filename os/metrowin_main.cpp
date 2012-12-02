@@ -50,6 +50,10 @@ int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
 
    ::metrowin::main_init_data * pinitmaindata  = new ::metrowin::main_init_data;
 
+   pinitmaindata->m_hInstance             = NULL;
+   pinitmaindata->m_hPrevInstance         = NULL;
+   pinitmaindata->m_vssCommandLine        = "";
+   pinitmaindata->m_nCmdShow              = 0;
 
    //pinitmaindata->m_hInstance             = hInstance;
    //pinitmaindata->m_hPrevInstance         = hPrevInstance;

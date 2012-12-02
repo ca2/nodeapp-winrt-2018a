@@ -12,7 +12,7 @@
 namespace metrowin
 {
 
-
+   
    graphics::graphics(::ca::application * papp) :
       ca(papp)
    {
@@ -23,7 +23,19 @@ namespace metrowin
 
       m_pclip     = NULL;
 
+      m_pdevicecontext  = NULL;
+
+      m_pbitmaprendertarget   = NULL;
+
+      m_pd        = NULL;
+
       m_iType     = 0;
+
+      m_interpolationmode = D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC;
+      m_bitmapinterpolationmode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+
+
+      
 
       /*m_bPrinting       = FALSE;
       m_pdibAlphaBlend  = NULL;
@@ -43,6 +55,18 @@ namespace metrowin
       m_player    = NULL;
 
       m_pclip     = NULL;
+
+      m_pdevicecontext  = NULL;
+
+      m_pbitmaprendertarget   = NULL;
+
+      m_pd        = NULL;
+
+      m_iType     = 0;
+
+      m_interpolationmode = D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC;
+      m_bitmapinterpolationmode = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+
       /*      m_bPrinting       = FALSE;
       m_pdc       = NULL;
       m_pdc       = NULL;
@@ -142,44 +166,143 @@ namespace metrowin
 
    bool graphics::CreateCompatibleDC(::ca::graphics * pgraphics)
    { 
+      
+      single_lock sl(System.m_pmutexDc, true);
 
       if(m_iType != 0)
          destroy();
 
-      TlsGetD2D1Factory1()->CreateDevice(TlsGetDXGIDevice(), &m_pd);
-
-      m_pd->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &m_pdc);
-
-      if(m_pdc == NULL)
+      /*if(pgraphics == NULL)
       {
-         m_pd->Release();
+         
+         GetD2D1Factory1()->CreateDevice(TlsGetDXGIDevice(), &m_pd);
+
+         m_pd->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &m_pdevicecontext);
+
+         if(m_pdevicecontext == NULL)
+         {
+            m_pd->Release();
+            m_pd = NULL;
+            return false;
+         }
+
          m_pdc = NULL;
-         return false;
-      }
 
-      return true;
+         HRESULT hr = m_pdevicecontext->QueryInterface(IID_ID2D1RenderTarget, (void **) &m_pdc);
 
-      /*
-      HDC hdc = NULL;
+         if(FAILED(hr) || m_pdc == NULL)
+         {
+            m_pd->Release();
+            m_pd = NULL;
+            m_pdevicecontext->Release();
+            m_pdevicecontext = NULL;
+            return false;
+         }
 
-      if(pgraphics == NULL)
+
+         m_iType = 3;
+
+         return true;         
+      }*/
+      //else
+
+
+      ID2D1RenderTarget * pdc;
+
+      if(pgraphics == NULL || METROWIN_DC(pgraphics)->m_pdc == NULL)
       {
-      hdc = ::CreateCompatibleDC(NULL);
+         pdc = System.m_pdc;
       }
       else
       {
-      hdc = ::CreateCompatibleDC((HDC)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1()); 
+         pdc = METROWIN_DC(pgraphics)->m_pdc;
       }
 
-      if(!Attach(hdc))
+      if(pdc == NULL)
       {
-      ::DeleteDC(hdc);
-      return FALSE;
+         GetD2D1Factory1()->CreateDevice(TlsGetDXGIDevice(), &m_pd);
+
+         m_pd->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &m_pdevicecontext);
+
+         if(m_pdevicecontext == NULL)
+         {
+            m_pd->Release();
+            m_pd = NULL;
+            return false;
+         }
+
+         m_pdc = NULL;
+
+         HRESULT hr = m_pdevicecontext->QueryInterface(IID_ID2D1RenderTarget, (void **) &m_pdc);
+
+         if(FAILED(hr) || m_pdc == NULL)
+         {
+            m_pd->Release();
+            m_pd = NULL;
+            m_pdevicecontext->Release();
+            m_pdevicecontext = NULL;
+            return false;
+         }
+
+
+         m_iType = 3;
+
+         return true;         
       }
+
+      D2D1_SIZE_U sizeu = D2D1::SizeU(1, 1);
+      D2D1_PIXEL_FORMAT pixelformat;
+
+      pixelformat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
+      pixelformat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+      pdc->CreateCompatibleRenderTarget(NULL, &sizeu, &pixelformat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &m_pbitmaprendertarget);
+
+      if(m_pbitmaprendertarget == NULL)
+      {
+         return false;
+      }
+
+      HRESULT hr = m_pbitmaprendertarget->QueryInterface(IID_ID2D1RenderTarget, (void **) &m_pdc);
+
+      if(FAILED(hr))
+      {
+         m_pbitmaprendertarget->Release();
+         m_pbitmaprendertarget = NULL;
+         return false;
+      }
+
+      hr = m_pbitmaprendertarget->QueryInterface(IID_ID2D1DeviceContext, (void **) &m_pdevicecontext);
+
+      if(FAILED(hr))
+      {
+         m_pdc->Release();
+         m_pdc = NULL;
+         m_pbitmaprendertarget->Release();
+         m_pbitmaprendertarget = NULL;
+         return false;
+      }
+
+
+
+      if(m_bitmap.is_null())
+         m_bitmap.create(get_app());
+
+      METROWIN_BITMAP(m_bitmap.m_p)->destroy();
+
+      hr = m_pbitmaprendertarget->GetBitmap(&METROWIN_BITMAP(m_bitmap.m_p)->m_pbitmap);
+
+      if(FAILED(hr))
+      {
+         m_pbitmaprendertarget->Release();
+         m_pbitmaprendertarget = NULL;
+         return false;
+      }
+
+      m_iType = 3;
 
       return true;
 
-      */
 
    }
 
@@ -238,6 +361,9 @@ namespace metrowin
       if(pBitmap == NULL)
          return NULL;
 
+      if(m_pdevicecontext == NULL)
+         return NULL;
+
       /*      if(get_handle1() == NULL)
       return NULL;
       if(pBitmap == NULL)
@@ -248,7 +374,11 @@ namespace metrowin
          CreateCompatibleDC(NULL);
       }
 
-      m_pdc->SetTarget(METROWIN_BITMAP(pBitmap)->m_pbitmap);
+      m_pdevicecontext->SetTarget(METROWIN_BITMAP(pBitmap)->m_pbitmap);
+
+      m_bitmap = pBitmap;
+
+      
 
       m_iType = 3;
 
@@ -558,7 +688,7 @@ namespace metrowin
       path->add_arc(rect, (int) start, (int) end);
       path->end_figure(false);
 
-      return path(path);
+      return this->path(path);
 
    }
 
@@ -1091,10 +1221,23 @@ namespace metrowin
          if(pgraphicsSrc->GetCurrentBitmap().get_os_data() == NULL)
             return FALSE;
 
-         D2D1_RECT_F rectDst = D2D1::RectF(x, y, x + nWidth, y + nHeight);
-         D2D1_RECT_F rectSrc = D2D1::RectF(xSrc, ySrc, xSrc + nWidth, ySrc + nHeight);
+         D2D1_RECT_F rectDst = D2D1::RectF((float) x, (float) y, (float) (x + nWidth), (float) (y + nHeight));
+         D2D1_RECT_F rectSrc = D2D1::RectF((float) xSrc, (float) ySrc, (float) (xSrc + nWidth), (float) (ySrc + nHeight));
 
-         m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, 1.0, m_interpolationmode, rectSrc);
+         HRESULT hr = METROWIN_DC(pgraphicsSrc)->m_pdc->EndDraw();
+
+         if(m_pdevicecontext != NULL)
+         {
+            m_pdevicecontext->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, 1.0, m_interpolationmode, rectSrc);
+         }
+         else
+         {
+            m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), &rectDst, 1.0, m_bitmapinterpolationmode, &rectSrc);
+         }
+
+         //hr = m_pdc->Flush();
+
+         //METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
 
          return true;
 
@@ -1124,10 +1267,23 @@ namespace metrowin
          if(pgraphicsSrc->GetCurrentBitmap().get_os_data() == NULL)
             return FALSE;
 
-         D2D1_RECT_F rectDst = D2D1::RectF(xDst, yDst, xDst + nDstWidth, yDst + nDstHeight);
-         D2D1_RECT_F rectSrc = D2D1::RectF(xSrc, ySrc, xSrc + nSrcWidth, ySrc + nSrcHeight);
+         D2D1_RECT_F rectDst = D2D1::RectF((float) xDst, (float) yDst, (float) (xDst + nDstWidth), (float) (yDst + nDstHeight));
+         D2D1_RECT_F rectSrc = D2D1::RectF((float) xSrc, (float) ySrc, (float) (xSrc + nSrcWidth), (float) (ySrc + nSrcHeight));
 
-         m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, 1.0, m_interpolationmode, rectSrc);
+         HRESULT hr = METROWIN_DC(pgraphicsSrc)->m_pdc->EndDraw();
+
+         if(m_pdevicecontext != NULL)
+         {
+            m_pdevicecontext->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, 1.0, m_interpolationmode, rectSrc);
+         }
+         else
+         {
+            m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), &rectDst, 1.0, m_bitmapinterpolationmode,& rectSrc);
+         }
+
+         //hr = m_pdc->Flush();
+
+         //METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
 
          return true;
 
@@ -1531,9 +1687,9 @@ namespace metrowin
 
       size.cy = (LONG) m.height;
 
-      lpMetrics->tmAveCharWidth = m.width / (double) wstr.get_length();
-      lpMetrics->tmAscent = m.height;
-      lpMetrics->tmDescent = m2.height - m.height;
+      lpMetrics->tmAveCharWidth = (LONG) (m.width / (double) wstr.get_length());
+      lpMetrics->tmAscent = (LONG) m.height;
+      lpMetrics->tmDescent = (LONG) (m2.height - m.height);
 
    }
 
@@ -2325,11 +2481,23 @@ namespace metrowin
          if(pgraphicsSrc->GetCurrentBitmap().get_os_data() == NULL)
             return FALSE;
 
-         D2D1_RECT_F rectDst = D2D1::RectF(xDst, yDst, xDst + nDstWidth, yDst + nDstHeight);
-         D2D1_RECT_F rectSrc = D2D1::RectF(xSrc, ySrc, xSrc + nSrcWidth, ySrc + nSrcHeight);
+         D2D1_RECT_F rectDst = D2D1::RectF((float) xDst, (float) yDst, (float) (xDst + nDstWidth), (float) (yDst + nDstHeight));
+         D2D1_RECT_F rectSrc = D2D1::RectF((float) xSrc, (float) ySrc, (float) (xSrc + nSrcWidth), (float) (ySrc + nSrcHeight));
 
-         m_pdc->DrawBitmap(
-            (ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, (float) dRate, m_interpolationmode, rectSrc);
+         HRESULT hr = METROWIN_DC(pgraphicsSrc)->m_pdc->EndDraw();
+
+         if(m_pdevicecontext != NULL)
+         {
+            m_pdevicecontext->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, (float) dRate, m_interpolationmode, rectSrc);
+         }
+         else
+         {
+            m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), rectDst, (float) dRate, m_bitmapinterpolationmode, rectSrc);
+         }
+
+         //hr = m_pdc->Flush();
+
+         //METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
 
          return true;
 
@@ -3068,8 +3236,12 @@ namespace metrowin
 
    COLORREF graphics::SetBkColor(COLORREF crColor)
    {
+
       
-      throw todo(get_app());
+      return 0;
+      //throw todo(get_app());
+
+
 
       //COLORREF crRetVal = CLR_INVALID;
       //if(get_handle1() != NULL && get_handle1() != get_handle2())
@@ -3122,15 +3294,18 @@ namespace metrowin
    {
       if(nStretchMode == 0)
       {
-         m_interpolationmode = D2D1_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
+         m_bitmapinterpolationmode     = D2D1_BITMAP_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
+         m_interpolationmode           = D2D1_INTERPOLATION_MODE_NEAREST_NEIGHBOR;;
       }
       else if(nStretchMode == HALFTONE)
       {
-         m_interpolationmode = D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC;
+         m_bitmapinterpolationmode     = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+         m_interpolationmode           = D2D1_INTERPOLATION_MODE_HIGH_QUALITY_CUBIC;
       }
       else
       {
-         m_interpolationmode = D2D1_INTERPOLATION_MODE_LINEAR;
+         m_bitmapinterpolationmode     = D2D1_BITMAP_INTERPOLATION_MODE_LINEAR;
+         m_interpolationmode           = D2D1_INTERPOLATION_MODE_LINEAR;
       }
       return 1;
       /*int nRetVal = 0;
@@ -3333,7 +3508,9 @@ namespace metrowin
    int graphics::SelectClipRgn(::ca::region * pregion)
    {
       
-      throw todo(get_app());
+      return 0;
+
+      //throw todo(get_app());
 
 
       //if(pregion == NULL)
@@ -3879,19 +4056,19 @@ namespace metrowin
          switch(m_etextrendering)
          {
          case ::ca::text_rendering_anti_alias:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_anti_alias_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_single_bit_per_pixel:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_clear_type_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
          }
@@ -3958,11 +4135,11 @@ namespace metrowin
 
       m_pdc->SetTransform(pmNew);*/
 
-      D2D1_RECT_F rectf = D2D1::RectF(lpRect->left, lpRect->top, lpRect->right, lpRect->bottom);
+      D2D1_RECT_F rectf = D2D1::RectF((FLOAT) lpRect->left, (FLOAT) lpRect->top, (FLOAT) lpRect->right, (FLOAT) lpRect->bottom);
 
       wstring wstr(str);
 
-      m_pdc->DrawText(wstr, wstr.get_length(), METROWIN_FONT(m_spfont.m_p)->m_pformat, &rectf, METROWIN_BRUSH(m_spbrush.m_p)->m_pbrush);
+      m_pdc->DrawText(wstr, wstr.get_length(), get_os_font(), &rectf, get_os_brush());
 
       //m_pdc->SetTransform(&m);
 
@@ -4524,7 +4701,7 @@ namespace metrowin
    HRESULT hr = TlsGetWriteFactory()->CreateTextLayout(
       wstr,                // The string to be laid out and formatted.
       wstr.get_length(),   // The length of the string.
-      METROWIN_FONT(m_spfont.m_p)->m_pformat,    // The text format to apply to the string (contains font information, etc).
+      get_os_font(),    // The text format to apply to the string (contains font information, etc).
       1024.f * 1024.f,               // The width of the layout box.
       1024.f * 1024.f,        // The height of the layout box.
       &playout  // The IDWriteTextLayout interface pointer.
@@ -4909,19 +5086,19 @@ namespace metrowin
          switch(m_etextrendering)
          {
          case ::ca::text_rendering_anti_alias:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_anti_alias_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_single_bit_per_pixel:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_clear_type_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
          }
@@ -5000,6 +5177,7 @@ namespace metrowin
 
       m_pdc->DrawText(wstr, wstr.get_length(), get_os_font(), &rect, get_os_brush());
 
+      return true;
 
    }
 
@@ -5231,19 +5409,19 @@ namespace metrowin
          switch(m_etextrendering)
          {
          case ::ca::text_rendering_anti_alias:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_anti_alias_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_single_bit_per_pixel:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
          case ::ca::text_rendering_clear_type_grid_fit:
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
          }
@@ -5312,17 +5490,16 @@ namespace metrowin
 
       D2D1_RECT_F rect;
 
-      rect.left = (FLOAT) x;
-      rect.top = (FLOAT) y;
-      rect.right = x + (1024.f * 1024.f);
-      rect.bottom = y + (1024.f * 1024.f);
+      rect.left      = (FLOAT) x;
+      rect.top       = (FLOAT) y;
+      rect.right     = (FLOAT)  (x + (1024.f * 1024.f));
+      rect.bottom    = (FLOAT)  (y + (1024.f * 1024.f));
 
       wstring wstr(string(lpszString, nCount));
 
-      m_pdc->DrawText(wstr, wstr.get_length(), METROWIN_FONT(m_spfont.m_p)->m_pformat, &rect, METROWIN_BRUSH(m_spbrush.m_p)->m_pbrush);
+      m_pdc->DrawText(wstr, wstr.get_length(), get_os_font(), &rect, get_os_brush());
 
-
-
+      return true;
 
    }
 
@@ -5364,11 +5541,11 @@ namespace metrowin
          ::ca::graphics::set_alpha_mode(ealphamode);
          if(m_ealphamode == ::ca::alpha_mode_blend)
          {
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
          }
          else if(m_ealphamode == ::ca::alpha_mode_set)
          {
-            m_pdc->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_COPY);
+            if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_COPY);
          }
 
       }
@@ -5410,21 +5587,63 @@ namespace metrowin
       return get_handle();
    }
 
-   void graphics::attach(void * pdata)
+
+   bool graphics::attach(void * pdata)
    {
+   
       if(m_pdc != NULL)
       {
+
          delete m_pdc;
+
       }
-      m_pdc = (ID2D1DeviceContext *) pdata;
+
+      m_pdc = (ID2D1RenderTarget *) pdata;
+
+      HRESULT hr = m_pdc->QueryInterface(IID_ID2D1DeviceContext, (void **) &m_pdevicecontext);
+
+      if(FAILED(hr))
+      {
+         m_pdevicecontext = NULL;
+         return false;
+      }
+
+      hr = m_pdc->QueryInterface(IID_ID2D1BitmapRenderTarget, (void **) &m_pbitmaprendertarget);
+
+      if(FAILED(hr))
+      {
+         m_pbitmaprendertarget = NULL;
+      }
+
+      return true;
+
    }
+
 
    void * graphics::detach()
    {
 
-      ID2D1DeviceContext * pdc = m_pdc;
+      ID2D1RenderTarget * pdc = m_pdc;
 
       m_pdc = NULL;
+
+      if(m_pdevicecontext != NULL)
+      {
+         
+         m_pdevicecontext->Release();
+
+         m_pdevicecontext = NULL;
+
+      }
+
+      if(m_pbitmaprendertarget != NULL)
+      {
+         
+         m_pbitmaprendertarget->Release();
+
+         m_pbitmaprendertarget = NULL;
+
+      }
 
       return pdc;
 
@@ -5539,6 +5758,9 @@ namespace metrowin
    bool graphics::destroy()
    {
 
+      single_lock sl(System.m_pmutexDc, true);
+
+
       if(m_player != NULL)
       {
          m_pdc->PopLayer();
@@ -5554,9 +5776,52 @@ namespace metrowin
 
       if(m_pdc != NULL)
       {
-         m_pdc->Release();
+         try
+         {
+            m_pdc->Release();
+         }
+         catch(...)
+         {
+         }
          m_pdc = NULL;
       }
+
+      if(m_pd != NULL)
+      {
+         try
+         {
+            m_pd->Release();
+         }
+         catch(...)
+         {
+         }
+         m_pd = NULL;
+      }
+
+      if(m_pdevicecontext != NULL)
+      {
+         try
+         {
+            m_pdevicecontext->Release();
+         }
+         catch(...)
+         {
+         }
+         m_pdevicecontext = NULL;
+      }
+
+      if(m_pbitmaprendertarget != NULL)
+      {
+         try
+         {
+            m_pbitmaprendertarget->Release();
+         }
+         catch(...)
+         {
+         }
+         m_pbitmaprendertarget = NULL;
+      }
+
 
       return true;
 
@@ -5566,7 +5831,9 @@ namespace metrowin
    bool graphics::draw_path(::ca::graphics_path * ppath)
    {
 
-      m_pdc->DrawGeometry(METROWIN_PATH(ppath)->m_ppath, METROWIN_PEN(m_sppen.m_p)->m_psolidbrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
+      ::ID2D1Brush * pbrush = get_os_pen_brush();
+
+      m_pdc->DrawGeometry(METROWIN_PATH(ppath)->get_os_path(), pbrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
 
       return true;
 
@@ -5575,9 +5842,20 @@ namespace metrowin
    bool graphics::fill_path(::ca::graphics_path * ppath)
    {
 
-      m_pdc->FillGeometry(METROWIN_PATH(ppath)->m_ppath, (ID2D1Brush *) METROWIN_PEN(m_spbrush.m_p)->get_os_data());
+      m_pdc->FillGeometry(METROWIN_PATH(ppath)->get_os_path(), get_os_brush());
 
       return true;
+
+   }
+
+   bool graphics::path(::ca::graphics_path * ppath)
+   {
+
+      bool bOk1 = fill_path(ppath);
+
+      bool bOk2 = draw_path(ppath);
+
+      return bOk1 && bOk2;
 
    }
 

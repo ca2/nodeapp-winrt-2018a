@@ -60,7 +60,7 @@ interface ID3D11Device1;
 interface IDXGIDevice;
 
 CLASS_DECL_c IDWriteFactory * TlsGetWriteFactory();
-CLASS_DECL_c ID2D1Factory1 * TlsGetD2D1Factory1();
+CLASS_DECL_c ID2D1Factory1 * GetD2D1Factory1();
 CLASS_DECL_c ID3D11Device * TlsGetD3D11Device();
 CLASS_DECL_c ID3D11DeviceContext * TlsGetD3D11DeviceContext();
 CLASS_DECL_c ID3D11Device1 * TlsGetD3D11Device1();

@@ -2,7 +2,7 @@
 
 
 
-/*extern "C" int APIENTRY
+extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
    UNREFERENCED_PARAMETER(lpReserved);
@@ -19,10 +19,9 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
    else if (dwReason == DLL_PROCESS_DETACH)
    {
 
-      /*
       HMODULE hmodule;
    
-      try
+      /*try
       {
       
          if(::GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, "c.dll", &hmodule) != FALSE)
@@ -46,14 +45,14 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
       {
       } */
 
-/*      ::OutputDebugStringW(L"::ca2:: metrowin.dll :: terminating!\n");
+      ::OutputDebugStringW(L"::ca2:: metrowin.dll :: terminating!\n");
 
    }
 
    return 1;   // ok
 
 }
-*/
+
 
 
 

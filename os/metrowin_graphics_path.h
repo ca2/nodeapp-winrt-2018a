@@ -16,6 +16,7 @@ namespace metrowin
       ID2D1GeometrySink *        m_psink;
       bool                       m_bFill;
       ::ca::e_fill_mode          m_efillmode;
+      bool                       m_bFigureEnded;
 
 
       graphics_path(::ca::application * papp);
@@ -40,6 +41,9 @@ namespace metrowin
       virtual bool get_arc(D2D1_POINT_2F & pt, D2D1_ARC_SEGMENT & arcseg, const RECT & rect, int iStart, int iAngle);
 
       virtual void * get_os_data();
+
+
+      ID2D1PathGeometry * get_os_path();
 
 
    };

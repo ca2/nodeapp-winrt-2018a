@@ -14,6 +14,8 @@ namespace metrowin
 
       m_pbitmap   = NULL;
 
+      m_pbitmap1  = NULL;
+
    }
 
    bitmap::~bitmap()
@@ -28,7 +30,7 @@ namespace metrowin
 
    }
 
-   bool bitmap::CreateBitmap(::ca::graphics * pgraphics, int cx, int cy, UINT nPlanes, UINT nBitcount, const void * lpBits)
+   bool bitmap::CreateBitmap(::ca::graphics * pgraphics, int cx, int cy, UINT nPlanes, UINT nBitcount, const void * lpBits, int stride)
    { 
 
       if(m_pbitmap != NULL)
@@ -43,14 +45,14 @@ namespace metrowin
       size.width = cx;
       size.height = cy;
 
-      D2D1_BITMAP_PROPERTIES1 props;
+      D2D1_BITMAP_PROPERTIES props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
       props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
-      props.dpiX = 0.f;
-      props.dpiY = 0.f;
-      props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
-      props.colorContext = NULL;
+      props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+      props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+      //props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
+      //props.colorContext = NULL;
 
       //if(ppdata != NULL)
       {
@@ -58,7 +60,8 @@ namespace metrowin
       }
       //else
       //{
-          HRESULT hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, lpBits, cx * sizeof(COLORREF), props, &m_pbitmap);
+      HRESULT hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, lpBits, stride, props, &m_pbitmap);
+
       //}
 
       if(FAILED(hr))
@@ -99,10 +102,9 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
-      //TlsGetD2D1Factory1()->GetDesktopDpi(&props.dpiX, &props.dpiY);
-      props.dpiX = 0.f;
-      props.dpiY = 0.f;
+      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+      props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_CPU_READ | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
       props.colorContext = NULL;
 
@@ -114,14 +116,14 @@ namespace metrowin
       }
       //else
       {
-         hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, m_memory.get_data(), size.width * sizeof(COLORREF), props, &m_pbitmap);
+         //hr = METROWIN_DC(pgraphics)->m_pdevicecontext->CreateBitmap(size, m_memory.get_data(), size.width * sizeof(COLORREF), props, &m_pbitmap1);
       }
-       hr = METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, 0,  size.width * sizeof(COLORREF), props, &m_pbitmap);
+       hr = METROWIN_DC(pgraphics)->m_pdevicecontext->CreateBitmap(size, NULL,  0, props, &m_pbitmap1);
 
-      if(FAILED(hr) || m_pbitmap == NULL)
+      if(FAILED(hr) || m_pbitmap1 == NULL)
          return FALSE;
 
-
+      m_pbitmap = m_pbitmap1;
 
       return true;
 
@@ -207,10 +209,10 @@ namespace metrowin
 
       D2D1_BITMAP_PROPERTIES1 props;
 
-      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
       props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-      props.dpiX = 72.0;
-      props.dpiY = 72.0;
+      props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+      props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
 
       //if(ppdata != NULL)
@@ -218,11 +220,11 @@ namespace metrowin
         // g.m_pdc->CreateBitmap(size, *ppdata, cx * sizeof(COLORREF), props, &m_pbitmap);
       }
       //else
+//      ID2D1Bitmap1 * pbitmap1;
       {
-          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
+          METROWIN_DC(pgraphics)->m_pdevicecontext->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap1);
       }
-
-      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+      m_pbitmap = m_pbitmap1;
 
       //if(ppdata != NULL)
         // *ppdata = (COLORREF *) m_map.bits;
@@ -266,10 +268,10 @@ namespace metrowin
 
       D2D1_BITMAP_PROPERTIES1 props;
 
-      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_STRAIGHT;
+      props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
       props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-      props.dpiX = 72.0;
-      props.dpiY = 72.0;
+      props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
+      props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
 
       //if(ppdata != NULL)
@@ -278,10 +280,10 @@ namespace metrowin
       }
       //else
       {
-          METROWIN_DC(pgraphics)->m_pdc->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), props, &m_pbitmap);
+          METROWIN_DC(pgraphics)->m_pdevicecontext->CreateBitmap(size, NULL, size.width * sizeof(COLORREF), &props, &m_pbitmap1);
       }
-
-      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+      m_pbitmap = m_pbitmap1;
+      //m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
 
       //if(ppdata != NULL)
         // *ppdata = (COLORREF *) m_map.bits;
@@ -349,9 +351,18 @@ namespace metrowin
 
       }
 
-      m_pbitmap = (ID2D1Bitmap1 *) hbitmap;
+      m_pbitmap = (ID2D1Bitmap *) hbitmap;
 
-      m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
+      if(SUCCEEDED(m_pbitmap->QueryInterface(IID_ID2D1Bitmap1, (void **) &m_pbitmap1)))
+      {
+         m_pbitmap1->Release();
+      }
+      else
+      {
+         m_pbitmap1 = NULL;
+      }
+
+      //m_pbitmap->Map(D2D1_MAP_OPTIONS_READ | D2D1_MAP_OPTIONS_WRITE, &m_map);
 
       return true;
 
@@ -360,7 +371,7 @@ namespace metrowin
    void * bitmap::detach()
    {
 
-      m_pbitmap->Unmap();
+      //m_pbitmap->Unmap();
 
       ID2D1Bitmap * pbitmap = m_pbitmap;
 
@@ -374,9 +385,17 @@ namespace metrowin
    bool bitmap::destroy()
    {
 
-      m_pbitmap->Unmap();
+      if(m_pbitmap != NULL)
+      {
 
-      m_pbitmap->Release();
+         m_pbitmap->Release();
+
+      }
+
+
+      m_pbitmap   = NULL;
+
+      m_pbitmap1  = NULL;
 
       return true;
 

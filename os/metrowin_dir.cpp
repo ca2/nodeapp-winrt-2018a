@@ -567,7 +567,7 @@ namespace metrowin
             ::gen::str::begin(wstrPath, L"\\\\?\\");
          }
       }
-      DWORD dwAttrib;
+//      DWORD dwAttrib;
 /*      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
@@ -665,7 +665,7 @@ namespace metrowin
             ::gen::str::begin(wstrPath, L"\\\\?\\");
          }
       }
-      DWORD dwAttrib;
+//      DWORD dwAttrib;
 ///      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
@@ -1136,9 +1136,9 @@ namespace metrowin
    string dir::default_os_user_path_prefix(::ca::application * papp)
    {
       UNREFERENCED_PARAMETER(papp);
-      wchar_t buf[MAX_PATH];
-      ULONG ulSize = sizeof(buf) / sizeof(wchar_t);
+//      wchar_t buf[MAX_PATH];
 #ifdef WINDOWSEX
+      ULONG ulSize = sizeof(buf) / sizeof(wchar_t);
       if(!::GetUserNameExW(NameCanonical, buf, &ulSize))
       {
          if(!::GetUserNameW(buf, &ulSize))

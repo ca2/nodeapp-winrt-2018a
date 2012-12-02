@@ -200,7 +200,7 @@ namespace metrowin
 
          //m_strFileName = ::gen::international::unicode_to_utf8(m_wstrFileName);
 
-         hFile = ::create_file(m_strFileName, dwAccess, dwShareMode, &sa, dwCreateFlag, FILE_ATTRIBUTE_NORMAL, NULL);
+         hFile = ::create_file("\\\\?\\" + m_strFileName, dwAccess, dwShareMode, &sa, dwCreateFlag, FILE_ATTRIBUTE_NORMAL, NULL);
 
          if (hFile == INVALID_HANDLE_VALUE)
          {

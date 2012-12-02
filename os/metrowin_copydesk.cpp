@@ -48,6 +48,8 @@ namespace metrowin
 
          //iCount = ::DragQueryFile(hglobal , 0xFFFFFFFF, NULL, 0);
 
+         throw todo(get_app());
+
       }
       else if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::StorageItems))
       {

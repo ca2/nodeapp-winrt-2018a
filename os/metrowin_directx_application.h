@@ -7,17 +7,23 @@ namespace metrowin
 
    ref class directx_application : 
       public Windows::ApplicationModel::Core::IFrameworkView,
-      public plane::system_window
+      public ::ca::system_window
    {
    internal:
 
+
+      Windows::Foundation::Point m_ptLastCursor;
 
       Platform::String ^ m_strId;
 
       Platform::Agile<Windows::UI::Core::CoreWindow>  m_window;
 
+      mutex m_mutex;
+
       ::plane::system * m_psystem;
       ::ca::application * m_papp;
+
+      Windows::Foundation::Rect m_rectLastWindowRect;
 
       ::ca::application * get_app() const
       {
@@ -76,9 +82,11 @@ namespace metrowin
          _In_ Platform::Object^ args
          );
 
-void OnPointerMoved(
-    _In_ Windows::UI::Core::CoreWindow^,
-    _In_ Windows::UI::Core::PointerEventArgs^ args);
+      void OnPointerMoved(Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^ args);
+
+      void OnCharacterReceived(Windows::UI::Core::CoreWindow^, Windows::UI::Core::CharacterReceivedEventArgs^ args);
+      void OnKeyDown(Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^ args);
+      void OnKeyUp(Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^ args);
 
 
       //Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>                    m_blackBrush;

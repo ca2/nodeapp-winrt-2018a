@@ -21,14 +21,15 @@ namespace metrowin
       static int64_t Cos10N[10]; // until 10 degress
       static int64_t Sin10N[10]; // more precision * 1 << 34
       static double dPi;
-      DWORD m_scan;
 
       COLORREF *           m_pcolorref;
       BITMAPINFO           m_info;
       ::ca::bitmap_sp      m_spbitmap;
       ::ca::bitmap_sp      m_spbitmapMap;
       ::ca::graphics_sp    m_spgraphics;
-      class size           m_size;
+      ::ca::graphics_sp    m_spgraphicsMap;
+      //class size           m_size;
+      bool                 m_bMapped;
       //HBITMAP              m_hbitmapOriginal;
 
       virtual ::ca::graphics * get_graphics();
@@ -94,6 +95,11 @@ namespace metrowin
       bool create(::ca::graphics * pdc);
       bool Destroy();
 
+      virtual bool realize(::ca::graphics * pdc);
+      virtual bool unrealize();
+      virtual bool is_realized();
+      virtual bool defer_realize(::ca::graphics * pdc);
+
 
       void DivideRGB(int iDivide);
       void DivideARGB(int iDivide);
@@ -106,7 +112,7 @@ namespace metrowin
       
       virtual void fill_channel(int C, visual::rgba::echannel echannel);
       void Fill (int A, int R, int G, int B );
-      void Fill ( int R, int G, int B );
+      //void Fill ( int R, int G, int B );
       void FillGlass ( int R, int G, int B, int A );
       void FillStippledGlass ( int R, int G, int B );
       void Invert();
@@ -149,8 +155,8 @@ namespace metrowin
       void xor_dib_frame2(void * lpdata, int iFrame, int iFrameCount);
 
 
-      int width();
-      int height();
+      //int width();
+      //int height();
       double pi();
 
       virtual bool from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI);

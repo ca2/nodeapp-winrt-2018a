@@ -48,7 +48,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
       props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       //props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
@@ -102,7 +102,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
       props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_CPU_READ | D2D1_BITMAP_OPTIONS_CANNOT_DRAW;
@@ -210,7 +210,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
       props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;
@@ -269,7 +269,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 props;
 
       props.pixelFormat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      props.pixelFormat.format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+      props.pixelFormat.format = DXGI_FORMAT_B8G8R8A8_UNORM_SRGB;
       props.dpiX = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.dpiY = ::Windows::Graphics::Display::DisplayProperties::LogicalDpi;
       props.bitmapOptions = D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CPU_READ;

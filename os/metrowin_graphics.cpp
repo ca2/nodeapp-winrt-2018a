@@ -254,7 +254,7 @@ namespace metrowin
       D2D1_PIXEL_FORMAT pixelformat;
 
       pixelformat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      pixelformat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      pixelformat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
 
       pdc->CreateCompatibleRenderTarget(NULL, &sizeu, &pixelformat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &m_pbitmaprendertarget);
 

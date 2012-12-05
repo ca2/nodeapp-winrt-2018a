@@ -2065,8 +2065,8 @@ namespace metrowin
       int k = 0;
       double dCos = ::cos(dAngle * dPi / 180.0) * dScale;
       double dSin = ::sin(dAngle * dPi / 180.0) * dScale;
-      int cx1 = cx - 1;
-      int cy1 = cy - 1;
+      int cx1 = this->cx - 1;
+      int cy1 = this->cy - 1;
         for ( int j=jmin; j<jmax; j++ )
       {
          for ( int i=imin; i<imax; i++ )
@@ -2704,7 +2704,7 @@ namespace metrowin
       BITMAPINFO * pbi = FreeImage_GetInfo(pfiNew);
       if(!create(pbi->bmiHeader.biWidth, pbi->bmiHeader.biHeight))
          return false;
-      void * pdata = FreeImage_GetBits(pfiNew);
+      COLORREF * pdata = (COLORREF *) FreeImage_GetBits(pfiNew);
 
       COLORREF * pcolorref = NULL;
 
@@ -2737,7 +2737,13 @@ namespace metrowin
 
       map();
 
-      memcpy(m_pcolorref, pdata, (size_t) (area() * sizeof(COLORREF)));
+
+      for(int i = 0; i < cy; i++)
+      {
+         memcpy(&((byte *) m_pcolorref)[scan * i], &pdata[(cy - i - 1) * cx], scan);
+      }
+
+      //memcpy(m_pcolorref, pdata, (size_t) (area() * sizeof(COLORREF)));
 
 
 //      RGBQUAD bkcolor;
@@ -2812,7 +2818,7 @@ namespace metrowin
       D2D1_PIXEL_FORMAT pixelformat;
 
       pixelformat.alphaMode = D2D1_ALPHA_MODE_PREMULTIPLIED;
-      pixelformat.format = DXGI_FORMAT_R8G8B8A8_UNORM;
+      pixelformat.format = DXGI_FORMAT_B8G8R8A8_UNORM;
 
       HRESULT hr = pgraphicsSrc->m_pdc->CreateCompatibleRenderTarget(NULL, &sizeu, &pixelformat, D2D1_COMPATIBLE_RENDER_TARGET_OPTIONS_NONE, &pgraphics->m_pbitmaprendertarget);
 

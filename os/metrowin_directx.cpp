@@ -353,7 +353,7 @@ namespace metrowin
       if (m_swapChain != nullptr)
       {
          // If the swap chain already exists, resize it.
-         HRESULT hr = m_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0);
+         HRESULT hr = m_swapChain->ResizeBuffers(2, 0, 0, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
 
          if (hr == DXGI_ERROR_DEVICE_REMOVED)
          {
@@ -374,7 +374,7 @@ namespace metrowin
          DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {0};
          swapChainDesc.Width = 0;                                     // Use automatic sizing.
          swapChainDesc.Height = 0;
-         swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;           // This is the most common swap chain format.
+         swapChainDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;           // This is the most common swap chain format.
          swapChainDesc.Stereo = false;
          swapChainDesc.SampleDesc.Count = 1;                          // Don't use multi-sampling.
          swapChainDesc.SampleDesc.Quality = 0;
@@ -480,7 +480,7 @@ namespace metrowin
       D2D1_BITMAP_PROPERTIES1 bitmapProperties =
          BitmapProperties1(
          D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW,
-         PixelFormat(DXGI_FORMAT_R8G8B8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
+         PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_PREMULTIPLIED),
          m_dpi,
          m_dpi
          );

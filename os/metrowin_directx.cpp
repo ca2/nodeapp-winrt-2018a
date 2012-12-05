@@ -642,6 +642,8 @@ namespace metrowin
       if(!m_bInitialized)
          return;
 
+      single_lock slDc(System.m_pmutexDc, true);
+
       // The application may optionally specify "dirty" or "scroll" rects to improve efficiency
       // in certain scenarios.  In this sample, however, we do not utilize those features.
       DXGI_PRESENT_PARAMETERS parameters = {0};
@@ -673,6 +675,8 @@ namespace metrowin
       {
          ::metrowin::throw_if_failed(hr);
       }
+
+      slDc.unlock();
 
       m_window->Dispatcher->RunAsync(CoreDispatcherPriority::Normal, ref new Windows::UI::Core::DispatchedHandler([this]()
       {

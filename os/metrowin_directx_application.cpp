@@ -271,6 +271,10 @@ namespace metrowin
       m_ptLastCursor.X = 0;
       m_ptLastCursor.Y = 0;
 
+      m_bLeftButton        = false;
+      m_bMiddleButton      = false;
+      m_bRightButton       = false;
+
 
       m_strId = strId;
 
@@ -550,6 +554,16 @@ namespace metrowin
          Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^>(
          this, &directx_application::OnKeyUp);
 
+      window->PointerPressed +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
+         this, &directx_application::OnPointerPressed);
+
+      window->PointerReleased +=
+         ref new Windows::Foundation::TypedEventHandler<
+         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
+         this, &directx_application::OnPointerReleased);
+
       DisplayProperties::LogicalDpiChanged +=
          ref new DisplayPropertiesEventHandler(this, &directx_application::OnLogicalDpiChanged);
 
@@ -728,9 +742,6 @@ namespace metrowin
 
    void directx_application::OnPointerMoved(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::PointerEventArgs ^ args)
    { 
-      Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
-
-      ::g_iMouse = pointerPoint->PointerId;
 
       if(m_psystem == NULL)
          return;
@@ -740,6 +751,10 @@ namespace metrowin
 
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
+
+      Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
+
+      ::g_iMouse = pointerPoint->PointerId;
 
       ::ca::smart_pointer < ::gen::message::base > spbase;
 
@@ -754,13 +769,25 @@ namespace metrowin
 
       m_ptLastCursor = pointerPoint->RawPosition;
 
-
-
       m_psystem->m_pui->m_pimpl->message_handler(spbase);
 
-      /*
-      if(m_psystem->frames().get_count() <= 0)
-      return;
+   }
+
+   void directx_application::OnPointerPressed(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::PointerEventArgs ^ args)
+   { 
+      
+      if(m_psystem == NULL)
+         return;
+
+      if(m_psystem->m_pui == NULL)
+         return;
+
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
+
+      Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
+
+      ::g_iMouse = pointerPoint->PointerId;
 
       ::ca::smart_pointer < ::gen::message::base > spbase;
 
@@ -769,97 +796,105 @@ namespace metrowin
       spbase = pmouse;
 
       pmouse->m_pt.x = pointerPoint->RawPosition.X;
+      
       pmouse->m_pt.y = pointerPoint->RawPosition.Y;
-      pmouse->m_uiMessage = WM_MOUSEMOVE;
-      pmouse->m_pwnd = m_psystem->frames()[0];
-      for(int i = 0; i < m_psystem->frames().get_count(); i++)
-      {
-      m_psystem->frames()[i]->message_handler(spbase);
 
-      if(spbase->m_bRet)
-      break;
-      }*/
+      if(args->CurrentPoint->Properties->IsLeftButtonPressed && !m_bLeftButton)
+      {
+         
+         pmouse->m_uiMessage     = WM_LBUTTONDOWN;
+         
+         m_bLeftButton           = true;
+         m_bMiddleButton         = false;
+         m_bRightButton          = false;
 
-      /*// Make sure the event belongs to the pointer that is currently inking
-      if (_pointerId == (int) pointerPoint->PointerId)
+      }
+      else if(args->CurrentPoint->Properties->IsRightButtonPressed && !m_bRightButton)
       {
-      if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Erasing)
+         
+         pmouse->m_uiMessage     = WM_RBUTTONDOWN;
+         
+         m_bLeftButton           = false;
+         m_bMiddleButton         = false;
+         m_bRightButton          = true;
+
+      }
+      else if(args->CurrentPoint->Properties->IsMiddleButtonPressed && !m_bMiddleButton)
       {
-      // Erase ink that intersects line from last point to current point
-      Windows::Foundation::Rect invalidateRect = _strokeContainer->SelectWithLine(_manipulationPoints->GetAt(0), pointerPoint->Position);
-      if (invalidateRect.Height != 0 || invalidateRect.Width != 0)
-      {
-      _strokeContainer->DeleteSelected();
-      Render();
+         
+         pmouse->m_uiMessage     = WM_MBUTTONDOWN;
+         
+         m_bLeftButton           = false;
+         m_bMiddleButton         = true;
+         m_bRightButton          = false;
+
       }
 
-      // Store current point: it will be the starting point at next pointer update
-      _manipulationPoints->Clear();
-      _manipulationPoints->Append(pointerPoint->Position);
-      }
-      else
+      pmouse->m_pwnd = m_psystem->m_pui;
+
+      m_ptLastCursor = pointerPoint->RawPosition;
+
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+
+   }
+
+   void directx_application::OnPointerReleased(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::PointerEventArgs ^ args)
+   { 
+      
+      if(m_psystem == NULL)
+         return;
+
+      if(m_psystem->m_pui == NULL)
+         return;
+
+      if(m_psystem->m_pui->m_pimpl == NULL)
+         return;
+
+      Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
+
+      ::g_iMouse = pointerPoint->PointerId;
+
+      ::ca::smart_pointer < ::gen::message::base > spbase;
+
+      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+
+      spbase = pmouse;
+
+      pmouse->m_pt.x = pointerPoint->RawPosition.X;
+
+      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
+
+      if(m_bLeftButton && !args->CurrentPoint->Properties->IsLeftButtonPressed)
       {
-      Windows::Foundation::Point previousPoint;
-      ID2D1StrokeStyle* strokeStyle;
-      ID2D1SolidColorBrush* brush;
-      float width;
 
-      if (_manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Inking)
+         pmouse->m_uiMessage     = WM_LBUTTONUP;
+         m_bLeftButton           = false;
+
+      }
+      else if(m_bRightButton && !args->CurrentPoint->Properties->IsRightButtonPressed)
       {
-      // Obtain intermediate points (including the last/current one)
-      Windows::Foundation::Collections::IVector<Windows::UI::Input::PointerPoint^>^ intermediatePoints = args->GetIntermediatePoints();
+         
+         pmouse->m_uiMessage     = WM_RBUTTONUP;
+         m_bRightButton          = false;
 
-      // Update ink manager with all intermediate points
-      int i = intermediatePoints->Size - 1;
-      // AppendToStroke returns the last point that was added to the stroke builder.
-      // We need to save it because it is the initial point of the new line we want to render.
-      previousPoint = _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i))->Position;
-      for (i = i - 1; i >= 0; i--)
+      }
+      else if(m_bMiddleButton && !args->CurrentPoint->Properties->IsMiddleButtonPressed)
       {
-      _strokeBuilder->AppendToStroke(intermediatePoints->GetAt(i));
+         
+         pmouse->m_uiMessage     = WM_MBUTTONUP;
+         m_bMiddleButton         = false;
+
       }
 
-      // Setup drawing attributes for live rendering
-      strokeStyle = _inkStyle.Get();
-      brush = _inkBrush.Get();
-      width = _drawingAttributes->Size.Width;
-      }
-      else // _manipulationMode == Windows::UI::Input::Inking::InkManipulationMode::Selecting
-      {
-      previousPoint = _manipulationPoints->GetAt(_manipulationPoints->Size - 1);
-      _manipulationPoints->Append(pointerPoint->Position);
 
-      // Setup drawing attributes for live rendering
-      strokeStyle = _selectionStyle.Get();
-      brush = _selectionBrush.Get();
-      width = 1.0f;
-      }
 
-      // Live rendering
-      // First we need to copy the content of the last presented buffer: it contains
-      // the Beziers and the lines we rendered at previous pointer moves.
-      m_d3dContext->CopyResource(_currentBuffer.Get(), _previousBuffer.Get());
-      // Then we draw a new line, from the last position of the pointer to its current one.
-      m_d2dContext->BeginDraw();
-      m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
-      m_d2dContext->DrawLine(
-      D2D1::Point2F(previousPoint.X, previousPoint.Y), 
-      D2D1::Point2F(pointerPoint->Position.X, pointerPoint->Position.Y), 
-      brush, 
-      width, 
-      strokeStyle);
 
-      // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
-      // is lost. It will be handled during the next call to Present.
-      HRESULT hr = m_d2dContext->EndDraw();
-      if (hr != D2DERR_RECREATE_TARGET)
-      {
-      DX::ThrowIfFailed(hr);
-      }
+      pmouse->m_pwnd = m_psystem->m_pui;
 
-      Present();
-      }
-      }*/
+      m_ptLastCursor = pointerPoint->RawPosition;
+
+      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+
    }
 
    directx_application_source::directx_application_source(Platform::String ^ strId)

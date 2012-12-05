@@ -23,6 +23,10 @@ namespace metrowin
       ::plane::system * m_psystem;
       ::ca::application * m_papp;
 
+      bool        m_bLeftButton;
+      bool        m_bMiddleButton;
+      bool        m_bRightButton;
+
       Windows::Foundation::Rect m_rectLastWindowRect;
 
       ::ca::application * get_app() const
@@ -87,6 +91,8 @@ namespace metrowin
       void OnCharacterReceived(Windows::UI::Core::CoreWindow^, Windows::UI::Core::CharacterReceivedEventArgs^ args);
       void OnKeyDown(Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^ args);
       void OnKeyUp(Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^ args);
+      void OnPointerPressed(Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^ args);
+      void OnPointerReleased(Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^ args);
 
 
       //Microsoft::WRL::ComPtr<ID2D1SolidColorBrush>                    m_blackBrush;

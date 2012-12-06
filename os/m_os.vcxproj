@@ -42,7 +42,7 @@
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
     <ProjectGuid>{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>m_os</ProjectName>
+    <ProjectName>os</ProjectName>
     <RootNamespace>m_os</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -410,9 +410,12 @@
     <ClCompile Include="metrowin_file_find.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="m_os.def" />
+    <None Include="os.def" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
+      <Project>{99892e42-0f2f-4b0f-ac18-5abbc3968407}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\ca\m_ca.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
     </ProjectReference>

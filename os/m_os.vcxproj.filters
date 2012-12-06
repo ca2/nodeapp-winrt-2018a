@@ -388,7 +388,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="m_os.def">
+    <None Include="os.def">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

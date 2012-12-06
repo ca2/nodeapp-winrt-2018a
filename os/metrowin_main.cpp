@@ -24,7 +24,8 @@ void __cdecl _null_se_translator(unsigned int uiCode, EXCEPTION_POINTERS * ppoin
 // Standard WinMain implementation
 //  Can be replaced as long as 'gen::WinInit' is called first
 
-int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
+
+int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ args)
 {
 
    //UNREFERENCED_PARAMETER(lpCmdLine);
@@ -98,7 +99,7 @@ int CLASS_DECL_metrowin main(::Platform::Array < ::Platform::String ^ > ^ args)
 
    try
    {
-      delete __get_module_state()->m_pmapHWND;
+//      delete __get_module_state()->m_pmapHWND;
    }
    catch(...)
    {
@@ -196,7 +197,7 @@ int CLASS_DECL_metrowin ca2_main(HINSTANCE hInstance, HINSTANCE hPrevInstance, c
 
       try
       {
-         delete __get_module_state()->m_pmapHWND;
+//         delete __get_module_state()->m_pmapHWND;
       }
       catch(...)
       {

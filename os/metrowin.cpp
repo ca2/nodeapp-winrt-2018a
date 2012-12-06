@@ -2,6 +2,9 @@
 
 
 
+#ifdef METROWIN
+[Platform::MTAThread]
+#endif
 extern "C" int APIENTRY
 DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {

@@ -2,27 +2,24 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{425C510B-8C9C-4260-AAF9-FB1F6DB15C4D}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\appseed\appm\m_app.vcxproj = ..\..\appseed\appm\m_app.vcxproj
-	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c", "..\..\..\app\appseed\c\m_c.vcxproj", "{5487686F-8A2F-401A-A38E-FDA8900EBB72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_c", "..\..\..\app\appseed\c\m_c.vcxproj", "{5487686F-8A2F-401A-A38E-FDA8900EBB72}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ca", "..\..\..\app\appseed\ca\m_ca.vcxproj", "{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_ca", "..\..\..\app\appseed\ca\m_ca.vcxproj", "{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "..\..\os\m_os.vcxproj", "{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_os", "..\..\os\m_os.vcxproj", "{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "optca", "..\..\..\app\appseed\optca\m_optca.vcxproj", "{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_optca", "..\..\..\app\appseed\optca\m_optca.vcxproj", "{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ca2", "..\..\..\app\appseed\ca2\m_ca2.vcxproj", "{99892E42-0F2F-4B0F-AC18-5ABBC3968407}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_ca2", "..\..\..\app\appseed\ca2\m_ca2.vcxproj", "{99892E42-0F2F-4B0F-AC18-5ABBC3968407}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os2", "..\..\os2\m_os2.vcxproj", "{5C2AE0FE-A604-4666-B24F-A96473E2B59E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_os2", "..\..\os2\m_os2.vcxproj", "{5C2AE0FE-A604-4666-B24F-A96473E2B59E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_hellomultiverse", "..\..\..\app-core\appseed\hellomultiverse\m_hellomultiverse.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_app_core_uinteraction", "..\..\..\app-core\appseed\uinteraction\m_uinteraction.vcxproj", "{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_uinteraction", "..\..\..\app-core\appseed\uinteraction\m_uinteraction.vcxproj", "{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "m_app_core_projection", "..\..\..\app-core\appseed\projection\m_projection.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_hellomultiverse", "..\..\..\app-core\appseed\hellomultiverse\winmetro_hellomultiverse.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_projection", "..\..\..\app-core\appseed\projection\m_app_core_projection.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,60 +261,6 @@ Global
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.Release|Win32.Build.0 = Release|Win32
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.Release|x64.ActiveCfg = Release|x64
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.Release|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.ActiveCfg = basis|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.Build.0 = basis|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.Deploy.0 = basis|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|Win32.ActiveCfg = basis|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|Win32.Build.0 = basis|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|Win32.Deploy.0 = basis|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.ActiveCfg = basis|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.Build.0 = basis|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.Deploy.0 = basis|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.ActiveCfg = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.Build.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.Deploy.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.ActiveCfg = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.Build.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.Deploy.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.ActiveCfg = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.Deploy.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.ActiveCfg = Debug|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.Build.0 = Debug|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.Deploy.0 = Debug|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.ActiveCfg = Debug|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.Build.0 = Debug|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.Deploy.0 = Debug|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.ActiveCfg = Debug|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.Build.0 = Debug|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.Deploy.0 = Debug|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.ActiveCfg = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.Build.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.Deploy.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.ActiveCfg = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.Build.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.Deploy.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.ActiveCfg = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Deploy.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.ActiveCfg = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Build.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Deploy.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.ActiveCfg = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Build.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Deploy.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.ActiveCfg = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Deploy.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.ActiveCfg = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Build.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Deploy.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.ActiveCfg = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.Build.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.Deploy.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.ActiveCfg = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.Deploy.0 = Release|x64
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.basis|ARM.ActiveCfg = basis|ARM
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.basis|ARM.Build.0 = basis|ARM
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.basis|ARM.Deploy.0 = basis|ARM
@@ -371,6 +314,59 @@ Global
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.Release|x64.ActiveCfg = Release|x64
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.Release|x64.Build.0 = Release|x64
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.Release|x64.Deploy.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.ActiveCfg = basis|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.Build.0 = basis|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|ARM.Deploy.0 = basis|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|Win32.ActiveCfg = basis|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|Win32.Build.0 = basis|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.ActiveCfg = basis|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.Build.0 = basis|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.basis|x64.Deploy.0 = basis|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.ActiveCfg = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.Build.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|ARM.Deploy.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.ActiveCfg = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.Build.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|Win32.Deploy.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.ActiveCfg = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.Build.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.codeanalysis|x64.Deploy.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.ActiveCfg = Debug|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.Build.0 = Debug|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|ARM.Deploy.0 = Debug|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.Build.0 = Debug|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|Win32.Deploy.0 = Debug|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.ActiveCfg = Debug|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.Build.0 = Debug|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Debug|x64.Deploy.0 = Debug|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.ActiveCfg = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.Build.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|ARM.Deploy.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.ActiveCfg = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.Build.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|Win32.Deploy.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.ActiveCfg = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Build.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Deploy.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.ActiveCfg = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Build.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Deploy.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.ActiveCfg = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Build.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Deploy.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.ActiveCfg = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Build.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Deploy.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.ActiveCfg = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Build.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Deploy.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.ActiveCfg = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.Build.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|Win32.Deploy.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.ActiveCfg = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.Build.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|x64.Deploy.0 = Release|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.basis|ARM.ActiveCfg = basis|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.basis|ARM.Build.0 = basis|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.basis|ARM.Deploy.0 = basis|ARM

@@ -318,15 +318,15 @@ namespace metrowin
 
       nReturnCode = m_psystem->main_start();
 
-      string strLibrary = "m_" + m_psystem->command().m_varTopicQuery["app"];
+      string strLibrary = m_psystem->command().m_varTopicQuery["app"];
 
       strLibrary.replace("\\", "_");
       strLibrary.replace("/", "_");
       strLibrary.replace("-", "_");
 
       m_psystem->m_mapAppLibrary[m_psystem->command().m_varTopicQuery["app"]] = strLibrary;
-      m_psystem->m_mapAppLibrary["app/ca2/cube"] = "m_ca2";
-      m_psystem->m_mapAppLibrary["app/ca2/bergedge"] = "m_ca2";
+      m_psystem->m_mapAppLibrary["app/ca2/cube"] = "ca2";
+      m_psystem->m_mapAppLibrary["app/ca2/bergedge"] = "ca2";
 
       __begin_thread(m_psystem, &system_main, m_psystem);
 

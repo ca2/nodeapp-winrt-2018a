@@ -42,7 +42,7 @@
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
     <ProjectGuid>{5C2AE0FE-A604-4666-B24F-A96473E2B59E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <ProjectName>m_os2</ProjectName>
+    <ProjectName>os2</ProjectName>
     <RootNamespace>m_os2</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
@@ -300,7 +300,7 @@
     <ClCompile Include="win2_printer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="m_os2.def" />
+    <None Include="os2.def" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">

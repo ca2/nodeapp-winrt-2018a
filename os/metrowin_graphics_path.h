@@ -40,8 +40,10 @@ namespace metrowin
       virtual bool prepare(D2D1_POINT_2F pt);
       virtual bool get_arc(D2D1_POINT_2F & pt, D2D1_ARC_SEGMENT & arcseg, const RECT & rect, int iStart, int iAngle);
 
-      virtual void * get_os_data();
+      virtual bool add_rect(int x1, int y1, int x2, int y2);
 
+      virtual void * get_os_data();
+      virtual void * detach();
 
       ID2D1PathGeometry * get_os_path();
 

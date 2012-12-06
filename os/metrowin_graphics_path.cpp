@@ -49,20 +49,20 @@ namespace metrowin
       if(m_psink != NULL)
       {
          
-         m_psink->Release();
+         end_figure(false);
 
-         m_psink = NULL;
+//         m_psink = NULL;
 
       }
 
-      if(m_ppath != NULL)
+/*      if(m_ppath != NULL)
       {
 
          m_ppath->Release();
 
          m_ppath = NULL;
 
-      }
+      }*/
 
 
       //m_ppath  = new Gdiplus::GraphicsPath();
@@ -259,6 +259,31 @@ namespace metrowin
       return (ID2D1PathGeometry *) get_os_data();
 
    }
+
+   bool graphics_path::add_rect(int x1, int y1, int x2, int y2)
+   {
+
+      add_move(x1, y1);
+      add_line(x2, y1);
+      add_line(x2, y2);
+      add_line(x1, y2);
+      end_figure(true);
+
+      return true;
+
+   }
+
+   void * graphics_path::detach()
+   {
+
+      ID2D1PathGeometry * pgeometry = (ID2D1PathGeometry *) get_os_data();
+
+      m_ppath = NULL;
+
+      return pgeometry;
+
+   }
+
 
 } // namespace metrowin
 

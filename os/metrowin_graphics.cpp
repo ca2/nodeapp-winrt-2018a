@@ -1034,7 +1034,21 @@ namespace metrowin
    bool graphics::Polygon(const POINT* lpPoints, int nCount)
    {
 
-      throw todo(get_app());
+      ::ca::graphics_path_sp path(get_app());
+
+      path->begin_figure(get_os_brush() != NULL, ::ca::fill_mode_winding);
+
+      path->add_lines(lpPoints, nCount);
+
+      path->end_figure(true);
+
+      return this->path(path);
+
+      //bool bOk2 = Draw(path);
+
+      //return bOk1 && bOk2;
+
+      //throw todo(get_app());
 
       //if(nCount <= 0)
       //   return TRUE;
@@ -1237,7 +1251,7 @@ namespace metrowin
 
          //hr = m_pdc->Flush();
 
-         //METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
+         METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
 
          return true;
 
@@ -1280,6 +1294,8 @@ namespace metrowin
          {
             m_pdc->DrawBitmap((ID2D1Bitmap *) pgraphicsSrc->GetCurrentBitmap().get_os_data(), &rectDst, 1.0, m_bitmapinterpolationmode,& rectSrc);
          }
+
+         METROWIN_DC(pgraphicsSrc)->m_pdc->BeginDraw();
 
          //hr = m_pdc->Flush();
 

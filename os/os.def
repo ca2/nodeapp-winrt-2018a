@@ -1,4 +1,4 @@
-LIBRARY "m_os"
+LIBRARY "os"
 
 EXPORTS
 ca2_factory_exchange

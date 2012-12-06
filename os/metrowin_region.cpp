@@ -9,20 +9,20 @@ namespace metrowin
       ca(papp)
    { 
       
-/*      m_pregion = NULL;
+      m_pgeometry = NULL;
       m_bUpdated = false;
-      */
+      
    }
 
    region::~region()
    {
-/*      
-      if(m_pregion != NULL)
+      
+      if(m_pgeometry != NULL)
       {
-         delete m_pregion;
-         m_pregion = NULL;
+         m_pgeometry->Release();
+         m_pgeometry = NULL;
       }
-      */
+      
    }
 
 
@@ -103,25 +103,35 @@ namespace metrowin
       //ASSERT(get_os_data() != NULL); return ::GetRgnBox((HRGN)get_os_data(), lpRect); 
    }
    
-   bool region::PtInRegion(int x, int y) const
+   bool region::contains(int x, int y) const
    { 
    
-      throw todo(get_app());
+      ((region *) this)->defer_update();
 
-      
+      BOOL b = FALSE;
+
+      HRESULT hr = m_pgeometry->FillContainsPoint(D2D1::Point2F(x, y), NULL, &b);
+
+      if(FAILED(hr))
+         return false;
+
+      return b != FALSE;
 
       //Gdiplus::PointF pointf((Gdiplus::REAL) x, (Gdiplus::REAL) y);
       //
       //ASSERT(get_os_data() != NULL); //return ::PtInRegion((HRGN)get_os_data(), x, y); 
 
-      //return m_pregion->IsVisible(pointf)  != FALSE;
+      //return m_pgeometry->IsVisible(pointf)  != FALSE;
    
    }
 
-   bool region::PtInRegion(POINT point) const
+   bool region::contains(POINT point) const
    { 
-   
-      throw todo(get_app());
+
+      return contains(point.x, point.y);
+
+
+      //throw todo(get_app());
 
       
 
@@ -130,7 +140,7 @@ namespace metrowin
       //
       //ASSERT(get_os_data() != NULL); //return ::PtInRegion((HRGN)get_os_data(), x, y); 
 
-      //return m_pregion->IsVisible(pointf)  != FALSE;
+      //return m_pgeometry->IsVisible(pointf)  != FALSE;
 
    }
 
@@ -146,67 +156,250 @@ namespace metrowin
       //
       //ASSERT(get_os_data() != NULL); //return ::PtInRegion((HRGN)get_os_data(), x, y); 
 
-      //return m_pregion->IsVisible(rectf)  != FALSE;
+      //return m_pgeometry->IsVisible(rectf)  != FALSE;
 
    }
 
    void * region::get_os_data() const
    {
    
-      throw todo(get_app());
+      ((region *) this)->defer_update();
 
+      return (ID2D1Geometry *) m_pgeometry;
+
+   }
+
+
+
+   void region::defer_update()
+   {
       
+      if(m_pgeometry == NULL || !m_bUpdated)
+      {
 
-      //if(m_pregion == NULL || !m_bUpdated)
-      //{
-      //   if(m_pregion != NULL)
-      //   {
-      //      delete m_pregion;
-      //   }
+         if(m_pgeometry != NULL)
+         {
 
-      //   Gdiplus::GraphicsPath path;
+            try
+            {
+            
+               m_pgeometry->Release();
 
-      //   if(m_etype == type_elliptic)
-      //   {
-      //      path.AddEllipse((INT) m_pta[0].x, (INT) m_pta[0].y, (INT) (m_pta[1].x - m_pta[0].x), (INT) (m_pta[1].y - m_pta[0].y));
-      //   }
-      //   else if(m_etype == type_polygon)
-      //   {
-      //      raw_array < Gdiplus::PointF > pa;
+            }
+            catch(...)
+            {
 
-      //      for(int i = 0; i < m_pta.get_size(); i++)
-      //      {
-      //         pa.add(Gdiplus::PointF((Gdiplus::REAL) m_pta[i].x, (Gdiplus::REAL) m_pta[i].y));
-      //      }
+            }
 
-      //      path.AddPolygon(pa.get_data(), (int) pa.get_count());
-      //   }
-      //   else if(m_etype == type_rect)
-      //   {
-      //      
-      //      Gdiplus::RectF rect;
+            m_pgeometry = NULL;
 
-      //      rect.X      = (Gdiplus::REAL) m_pta[0].x;
-      //      rect.Y      = (Gdiplus::REAL) m_pta[0].y;
-      //      rect.Width  = (Gdiplus::REAL) (m_pta[1].x - m_pta[0].x);
-      //      rect.Height = (Gdiplus::REAL) (m_pta[1].y - m_pta[0].y);
+         }
 
-      //      path.AddRectangle(rect);
+         m_pgeometry = get();
 
-      //   }
+      }
 
-      //   ((region *) this)->m_pregion = new Gdiplus::Region(&path);
-      //   
-      //}
+   }
 
-      //if(m_pregion != NULL)
-      //{
-      //   ((region *) this)->m_bUpdated = true;
-      //}
+   ID2D1Geometry * region::get()
+   {
+      
+      switch(m_etype)
+      {
+      case type_none:
+         {
+            
+            ID2D1PathGeometry * ppathgeometry = NULL;
 
+            HRESULT hr = GetD2D1Factory1()->CreatePathGeometry(&ppathgeometry);
 
+            if(FAILED(hr))
+               return NULL;
 
-      //return (int_ptr) (Gdiplus::Region *) m_pregion;
+            return ppathgeometry;
+
+         }
+      case type_rect:
+         return get_rect();
+      case type_oval:
+         return get_oval();
+      case type_polygon:
+         return get_polygon();
+      case type_poly_polygon:
+         return get_polygon();
+      case type_combine:
+         return get_combine();
+      default:
+         throw not_implemented(get_app());
+      }
+
+      return NULL;
+
+   }
+
+   ID2D1Geometry * region::get_rect()
+   {
+
+      ID2D1RectangleGeometry * pgeometry = NULL;
+
+      GetD2D1Factory1()->CreateRectangleGeometry(D2D1::RectF(m_x1, m_x2, m_x2 - m_x1, m_y2 - m_y1), &pgeometry);
+
+      return pgeometry;
+         
+   }
+
+   ID2D1Geometry * region::get_oval()
+   {
+      
+       const D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+            D2D1::Point2F((m_x2 + m_x1) / 2.f, (m_y2 + m_y1) / 2.f),
+            (m_x2 - m_x1) / 2.f,
+            (m_y2 - m_y1) / 2.f
+            );
+
+      ID2D1EllipseGeometry * pgeometry = NULL;
+
+      GetD2D1Factory1()->CreateEllipseGeometry(ellipse, &pgeometry);
+
+      return pgeometry;
+
+   }
+
+   ID2D1Geometry * region::get_polygon()
+   {
+
+      ::ca::graphics_path_sp path(get_app());
+
+      /*point_array pa;
+
+      for(int i = 0; i < m_nCount; i++)
+      {
+         pa.add(Gdiplus::PointF((Gdiplus::REAL) m_lppoints[i].x, (Gdiplus::REAL) m_lppoints[i].y));
+      }*/
+
+      /*
+      if(m_efillmode == ::ca::fill_mode_alternate)
+      {
+         path.SetFillMode(Gdiplus::FillModeAlternate);
+      }
+      else
+      {
+         path.SetFillMode(Gdiplus::FillModeWinding);
+      }
+      */
+
+      path->begin_figure(true, m_efillmode);
+      path->add_lines(m_lppoints, m_nCount);
+      path->end_figure(true);
+
+      return (ID2D1PathGeometry *) path->detach();
+
+   }
+
+   ID2D1Geometry * region::get_poly_polygon()
+   {
+
+      ::ca::graphics_path_sp path(get_app());
+
+      point_array pa;
+
+      /*if(m_efillmode == ::ca::fill_mode_alternate)
+      {
+         path.SetFillMode(Gdiplus::FillModeAlternate);
+      }
+      else
+      {
+         path.SetFillMode(Gdiplus::FillModeWinding);
+      }*/
+
+      int n = 0;
+
+      for(int i = 0; i < m_nCount; i++)
+      {
+         int jCount = m_lppolycounts[i];
+         pa.remove_all();
+         for(int j = 0; j < jCount; j++)
+         {
+            pa.add(point(m_lppoints[n].x, m_lppoints[n].y));
+            n++;
+         }
+         path->begin_figure(true, m_efillmode);
+         path->add_lines(pa.get_data(), (int) pa.get_count());
+         path->end_figure(true);
+      }
+
+      return (ID2D1PathGeometry *) path->detach();
+
+   }
+
+   ID2D1Geometry * region::get_combine()
+   {
+
+      ID2D1PathGeometry * ppathgeometry = NULL;
+
+      HRESULT hr = GetD2D1Factory1()->CreatePathGeometry(&ppathgeometry);
+
+      ID2D1GeometrySink * psink = NULL;
+
+      if(FAILED(hr))
+         return NULL;
+
+      hr = ppathgeometry->Open(&psink);
+
+      if(FAILED(hr))
+      {
+         ppathgeometry->Release();
+         return NULL;
+      }
+
+      ID2D1Geometry * pgeometry1 = (ID2D1Geometry *) m_pregion1->get_os_data();
+      ID2D1Geometry * pgeometry2 = (ID2D1Geometry *) m_pregion2->get_os_data();
+
+      if(m_ecombine == combine_add)
+      {
+         hr = pgeometry1->CombineWithGeometry(pgeometry2, D2D1_COMBINE_MODE_UNION, NULL, NULL, psink);
+      }
+      else if(m_ecombine == combine_exclude)
+      {
+         hr = pgeometry1->CombineWithGeometry(pgeometry2, D2D1_COMBINE_MODE_EXCLUDE, NULL, NULL, psink);
+      }
+      else if(m_ecombine == combine_intersect)
+      {
+         hr = pgeometry1->CombineWithGeometry(pgeometry2, D2D1_COMBINE_MODE_INTERSECT, NULL, NULL, psink);
+      }
+      else
+      {
+         hr = pgeometry1->CombineWithGeometry(pgeometry2, D2D1_COMBINE_MODE_UNION, NULL, NULL, psink);
+      }
+
+      if(FAILED(hr))
+      {
+         psink->Release();
+         ppathgeometry->Release();
+         return NULL;
+      }
+
+      hr = psink->Close();
+
+      if(FAILED(hr))
+      {
+         psink->Release();
+         ppathgeometry->Release();
+         return NULL;
+      }
+
+      try
+      {
+
+         psink->Release();
+
+      }
+      catch(...)
+      {
+      }
+
+      return ppathgeometry;
+
    }
 
 

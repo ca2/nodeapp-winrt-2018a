@@ -12,16 +12,20 @@ namespace metrowin
 
 
 //      Gdiplus::Region *       m_pregion;
-      ID2D1PathGeometry *        m_ppath;
-      ID2D1GeometrySink *        m_psink;
-      bool                       m_bFill;
-      ::ca::e_fill_mode          m_efillmode;
+      ID2D1Geometry *            m_pgeometry;
+//      ID2D1GeometrySink *        m_psink;
+  //    bool                       m_bFill;
+      //::ca::e_fill_mode          m_efillmode;
 
       //static region * PASCAL from_handle(::ca::application * papp, HRGN hRgn);
       //operator HRGN() const;
 
       region(::ca::application * papp);
       virtual ~region();
+
+            
+      void defer_update();
+
 
       /*bool CreateRectRgn(int x1, int y1, int x2, int y2);
       bool CreateRectRgnIndirect(LPCRECT lpRect);
@@ -44,12 +48,20 @@ namespace metrowin
       int OffsetRgn(int x, int y);
       int OffsetRgn(POINT point);
       int GetRgnBox(LPRECT lpRect) const;
-      bool PtInRegion(int x, int y) const;
-      bool PtInRegion(POINT point) const;
+      bool contains(int x, int y) const;
+      bool contains(POINT point) const;
       bool RectInRegion(LPCRECT lpRect) const;
       int GetRegionData(LPRGNDATA lpRgnData, int nCount) const;
 
       virtual void * get_os_data() const;
+
+      ID2D1Geometry * get();
+      ID2D1Geometry * get_rect();
+      ID2D1Geometry * get_oval();
+      ID2D1Geometry * get_polygon();
+      ID2D1Geometry * get_poly_polygon();
+      ID2D1Geometry * get_combine();
+
 
    };
 

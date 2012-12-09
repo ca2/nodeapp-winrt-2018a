@@ -33,6 +33,8 @@ namespace metrowin
 
       virtual bool add_arc(const RECT & rect, int iStart, int iAngle);
 
+      virtual bool add_line(int x1, int y1, int x2, int y2);
+
       virtual bool add_line(int x, int y);
 
       virtual bool add_move(int x, int y);

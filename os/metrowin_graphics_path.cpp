@@ -120,6 +120,18 @@ namespace metrowin
 
    }
 
+   
+   bool graphics_path::add_line(int x1, int y1, int x2, int y2)
+   {
+
+      bool bOk1 = add_line(x1, y1);
+
+      bool bOk2 = add_line(x2, y2);
+
+      return bOk1 && bOk2;
+
+   }
+
 
    bool graphics_path::add_line(int x, int y)
    {

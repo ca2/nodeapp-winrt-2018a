@@ -239,6 +239,7 @@ namespace metrowin
       ::metrowin::throw_if_failed(
          m_d2dDevice->CreateDeviceContext(
          D2D1_DEVICE_CONTEXT_OPTIONS_NONE,
+         //D2D1_DEVICE_CONTEXT_OPTIONS_ENABLE_MULTITHREADED_OPTIMIZATIONS,
          &m_d2dContext
          )
          );

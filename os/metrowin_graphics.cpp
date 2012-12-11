@@ -1114,7 +1114,7 @@ namespace metrowin
 
       bool bOk2 = true;
 
-      if(METROWIN_PEN(m_sppen.m_p)->m_psolidbrush != NULL)
+      if(METROWIN_PEN(m_sppen.m_p)->m_pimagebrush != NULL)
       {
 
          bOk2 = DrawRectangle(x1, y1, x2, y2);
@@ -5535,7 +5535,7 @@ namespace metrowin
       p2.x = (FLOAT) x;
       p2.y = (FLOAT) y;
 
-      m_pdc->DrawLine(p1, p2, METROWIN_PEN(m_sppen.m_p)->m_psolidbrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
+      m_pdc->DrawLine(p1, p2, METROWIN_PEN(m_sppen.m_p)->m_pimagebrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
 
       m_x = x;
       m_y = y;
@@ -5851,6 +5851,8 @@ namespace metrowin
 
       m_pdc->DrawGeometry(METROWIN_PATH(ppath)->get_os_path(), pbrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
 
+      //HRESULT hr = m_pdc->Flush();
+
       return true;
 
    }
@@ -5859,6 +5861,8 @@ namespace metrowin
    {
 
       m_pdc->FillGeometry(METROWIN_PATH(ppath)->get_os_path(), get_os_brush());
+
+      //HRESULT hr = m_pdc->Flush();
 
       return true;
 

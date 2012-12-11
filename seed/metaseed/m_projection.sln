@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{425C510B-8C9C-4260-AAF9-FB1F6DB15C4D}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c", "..\..\..\app\appseed\c\m_c.vcxproj", "{5487686F-8A2F-401A-A38E-FDA8900EBB72}"
 EndProject
@@ -70,8 +73,8 @@ Global
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.memdleak|x64.Build.0 = Release|x64
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|ARM.ActiveCfg = Release|ARM
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|ARM.Build.0 = Release|ARM
-		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|Win32.ActiveCfg = Release|Win32
-		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|Win32.Build.0 = Release|Win32
+		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|Win32.ActiveCfg = profiler|Win32
+		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|Win32.Build.0 = profiler|Win32
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|x64.ActiveCfg = Release|x64
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.profiler|x64.Build.0 = Release|x64
 		{5487686F-8A2F-401A-A38E-FDA8900EBB72}.Release|ARM.ActiveCfg = Release|ARM
@@ -107,8 +110,8 @@ Global
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.memdleak|x64.Build.0 = Release|x64
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|ARM.ActiveCfg = Release|ARM
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|ARM.Build.0 = Release|ARM
-		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|Win32.ActiveCfg = Release|Win32
-		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|Win32.Build.0 = Release|Win32
+		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|Win32.ActiveCfg = profiler|Win32
+		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|Win32.Build.0 = profiler|Win32
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|x64.ActiveCfg = Release|x64
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.profiler|x64.Build.0 = Release|x64
 		{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}.Release|ARM.ActiveCfg = Release|ARM
@@ -143,8 +146,8 @@ Global
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.memdleak|x64.Build.0 = Release|x64
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|ARM.ActiveCfg = Release|ARM
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|ARM.Build.0 = Release|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|Win32.ActiveCfg = Release|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|Win32.Build.0 = Release|Win32
+		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|Win32.ActiveCfg = profiler|Win32
+		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|Win32.Build.0 = profiler|Win32
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|x64.ActiveCfg = Release|x64
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.profiler|x64.Build.0 = Release|x64
 		{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}.Release|ARM.ActiveCfg = Release|ARM
@@ -179,8 +182,8 @@ Global
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.memdleak|x64.Build.0 = Release|x64
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|ARM.ActiveCfg = Release|ARM
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|ARM.Build.0 = Release|ARM
-		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|Win32.ActiveCfg = Release|Win32
-		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|Win32.Build.0 = Release|Win32
+		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|Win32.ActiveCfg = profiler|Win32
+		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|Win32.Build.0 = profiler|Win32
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|x64.ActiveCfg = Release|x64
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.profiler|x64.Build.0 = Release|x64
 		{73472F5D-E2E2-4ED4-A2E0-65FAE45F0353}.Release|ARM.ActiveCfg = Release|ARM
@@ -215,8 +218,8 @@ Global
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.memdleak|x64.Build.0 = Release|x64
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|ARM.ActiveCfg = Release|ARM
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|ARM.Build.0 = Release|ARM
-		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|Win32.ActiveCfg = Release|Win32
-		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|Win32.Build.0 = Release|Win32
+		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|Win32.ActiveCfg = profiler|Win32
+		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|Win32.Build.0 = profiler|Win32
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|x64.ActiveCfg = Release|x64
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.profiler|x64.Build.0 = Release|x64
 		{99892E42-0F2F-4B0F-AC18-5ABBC3968407}.Release|ARM.ActiveCfg = Release|ARM
@@ -251,8 +254,8 @@ Global
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.memdleak|x64.Build.0 = Release|x64
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|ARM.ActiveCfg = Release|ARM
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|ARM.Build.0 = Release|ARM
-		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|Win32.ActiveCfg = Release|Win32
-		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|Win32.Build.0 = Release|Win32
+		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|Win32.ActiveCfg = profiler|Win32
+		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|Win32.Build.0 = profiler|Win32
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|x64.ActiveCfg = Release|x64
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.profiler|x64.Build.0 = Release|x64
 		{5C2AE0FE-A604-4666-B24F-A96473E2B59E}.Release|ARM.ActiveCfg = Release|ARM
@@ -299,9 +302,9 @@ Global
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|ARM.ActiveCfg = Release|ARM
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|ARM.Build.0 = Release|ARM
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|ARM.Deploy.0 = Release|ARM
-		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.ActiveCfg = Release|Win32
-		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.Build.0 = Release|Win32
-		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.Deploy.0 = Release|Win32
+		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.ActiveCfg = profiler|Win32
+		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.Build.0 = profiler|Win32
+		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|Win32.Deploy.0 = profiler|Win32
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|x64.ActiveCfg = Release|x64
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|x64.Build.0 = Release|x64
 		{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}.profiler|x64.Deploy.0 = Release|x64
@@ -352,9 +355,9 @@ Global
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.ActiveCfg = Release|ARM
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Build.0 = Release|ARM
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Deploy.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.ActiveCfg = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Build.0 = Release|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Deploy.0 = Release|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.ActiveCfg = profiler|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Build.0 = profiler|Win32
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Deploy.0 = profiler|Win32
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.ActiveCfg = Release|x64
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Build.0 = Release|x64
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Deploy.0 = Release|x64
@@ -406,9 +409,9 @@ Global
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.ActiveCfg = Release|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Build.0 = Release|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Deploy.0 = Release|ARM
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.ActiveCfg = Release|Win32
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Build.0 = Release|Win32
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Deploy.0 = Release|Win32
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.ActiveCfg = profiler|Win32
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Build.0 = profiler|Win32
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Deploy.0 = profiler|Win32
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.ActiveCfg = Release|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Build.0 = Release|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Deploy.0 = Release|x64
@@ -424,5 +427,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

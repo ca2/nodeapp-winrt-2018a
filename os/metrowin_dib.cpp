@@ -2832,6 +2832,13 @@ namespace metrowin
          return false;
       }
 
+      if(FAILED(pgraphics->m_pbitmaprendertarget->QueryInterface(IID_ID2D1DeviceContext, (void **) &pgraphics->m_pdevicecontext)))
+      {
+         pgraphics->m_pbitmaprendertarget->Release();
+         pgraphics->m_pbitmaprendertarget = NULL;
+         return false;
+      }
+
       pgraphics->m_pbitmaprendertarget->GetBitmap(&pbitmap->m_pbitmap);
 
       if(pbitmap->m_pbitmap == NULL)

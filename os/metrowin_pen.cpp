@@ -1,5 +1,109 @@
 #include "framework.h"
 
+HRESULT RenderPatternToCommandList(ID2D1RenderTarget * pdc, D2D1_COLOR_F *pcr)
+{
+
+   HRESULT hr;
+
+   pdc->BeginDraw();
+
+   pdc->Clear(pcr);
+
+   ID2D1SolidColorBrush * pbr = NULL;
+
+   //hr = pdc->CreateSolidColorBrush(*pcr, &pbr);
+
+   //pdc->DrawRectangle(D2D1::RectF(0.f, 0.f, 256.f, 256.f), pbr, 0.f);
+
+   //pbr->Release();
+
+   hr = pdc->EndDraw();
+
+   return hr;
+
+}
+
+HRESULT
+CreatePatternBrush(
+     __in ID2D1DeviceContext *pDeviceContext,
+     D2D1_COLOR_F * pcr,
+     __deref_out ID2D1ImageBrush **ppImageBrush
+     )
+{
+
+   HRESULT hrEndDraw = pDeviceContext->EndDraw();
+
+    HRESULT hr = S_OK;
+    ID2D1Image *pOldTarget = NULL;
+    pDeviceContext->GetTarget(&pOldTarget);
+
+    ID2D1CommandList *pCommandList = NULL;
+    hr = pDeviceContext->CreateCommandList(&pCommandList);
+     
+    if (SUCCEEDED(hr))
+    {   
+        pDeviceContext->SetTarget(pCommandList);
+        hr = RenderPatternToCommandList(pDeviceContext, pcr);
+    }
+
+    pDeviceContext->SetTarget(pOldTarget);
+
+    ID2D1ImageBrush *pImageBrush = NULL;
+
+    if(SUCCEEDED(hr))
+    {
+       hr = pCommandList->Close();
+    }
+
+    if (SUCCEEDED(hr))
+    {        
+
+        D2D1_IMAGE_BRUSH_PROPERTIES props;
+
+        props.sourceRectangle.left = 0.f;
+        props.sourceRectangle.top = 0.f;
+        props.sourceRectangle.right = 256.f;
+        props.sourceRectangle.bottom = 256.f;
+
+        props.extendModeX = D2D1_EXTEND_MODE_WRAP;
+        props.extendModeY = D2D1_EXTEND_MODE_WRAP;
+
+        props.interpolationMode = D2D1_INTERPOLATION_MODE_NEAREST_NEIGHBOR;
+
+        hr = pDeviceContext->CreateImageBrush(
+                 pCommandList, &props, NULL, &pImageBrush);
+    }
+    
+    // Fill a rectangle with the image brush.
+    /*if (SUCCEEDED(hr))
+    {
+        pDeviceContext->FillRectangle(
+            D2D1::RectF(0, 0, 100, 100), pImageBrush);
+    }*/
+
+    //pImageBrush->Release();
+    pCommandList->Release();
+    //pOldTarget->Release();
+
+    if(hrEndDraw == S_OK)
+    {
+       pDeviceContext->BeginDraw();
+    }
+
+    if(SUCCEEDED(hr))
+    {
+
+       *ppImageBrush = pImageBrush;
+
+    }
+    else
+    {
+
+       *ppImageBrush = NULL;
+    }
+
+    return hr;
+}
 
 namespace metrowin
 {
@@ -9,8 +113,9 @@ namespace metrowin
       ca(papp)
    { 
 
-      m_psolidbrush = NULL;
-
+      m_pimagebrush     = NULL;
+      m_bMetroColor     = false;
+      m_crMetro         = 0;
    }
 
    pen::~pen()
@@ -348,6 +453,8 @@ namespace metrowin
    bool pen::create_solid(::ca::graphics * pgraphics, double dWidth, COLORREF cr)
    {
 
+
+
       if(!::ca::pen::create_solid(pgraphics, dWidth, cr))
          return false;
 
@@ -359,7 +466,16 @@ namespace metrowin
       c.g = GetGValue(cr) / 255.0f;
       c.b = GetBValue(cr) / 255.0f;
 
-      METROWIN_DC(pgraphics)->m_pdc->CreateSolidColorBrush(c, &m_psolidbrush);
+      //METROWIN_DC(pgraphics)->m_pdc->CreateSolidColorBrush(c, &m_psolidbrush);
+
+/*      CreatePatternBrush(METROWIN_DC(pgraphics)->m_pdevicecontext, &c, &m_pimagebrush);
+
+      if(m_pimagebrush != NULL)
+      {
+         m_crMetro         = m_cr;
+         m_bMetroColor     = true;
+      }
+      */
 
       return TRUE;
 
@@ -369,10 +485,10 @@ namespace metrowin
    ID2D1Brush * pen::get_os_pen_brush(::metrowin::graphics * pdc) const
    {
 
-      if(!m_bUpdated || m_psolidbrush == NULL)
+      if((!m_bUpdated && (!m_bMetroColor || m_crMetro != m_cr)) || m_pimagebrush == NULL)
       {
 
-         if(m_psolidbrush != NULL)
+         if(m_pimagebrush != NULL)
          {
 
             ((pen *)this)->destroy();
@@ -386,16 +502,18 @@ namespace metrowin
          c.g = GetGValue(m_cr) / 255.0f;
          c.b = GetBValue(m_cr) / 255.0f;
 
-         pdc->m_pdc->CreateSolidColorBrush(c, (ID2D1SolidColorBrush **) &m_psolidbrush);
+         CreatePatternBrush(METROWIN_DC(pdc)->m_pdevicecontext, &c, (ID2D1ImageBrush **) &m_pimagebrush);
 
-         if(m_psolidbrush != NULL)
+         if(m_pimagebrush != NULL)
          {
-            ((font *) this)->m_bUpdated = true;
+            ((pen *) this)->m_bUpdated      = true;
+            ((pen *) this)->m_crMetro       = m_cr;
+            ((pen *) this)->m_bMetroColor   = true;
          }
 
       }
 
-      return (ID2D1Brush *) m_psolidbrush;
+      return (ID2D1Brush *) m_pimagebrush;
 
    }
 
@@ -403,16 +521,16 @@ namespace metrowin
    bool pen::destroy()
    {
       
-      if(m_psolidbrush != NULL)
+      if(m_pimagebrush != NULL)
       {
          try
          {
-            m_psolidbrush->Release();
+            m_pimagebrush->Release();
          }
          catch(...)
          {
          }
-         m_psolidbrush = NULL;
+         m_pimagebrush = NULL;
       }
 
       return true;

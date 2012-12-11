@@ -12,7 +12,12 @@ namespace metrowin
    public:
 
 
-      ID2D1SolidColorBrush *  m_psolidbrush;
+      //ID2D1SolidColorBrush *  m_psolidbrush;
+
+      ID2D1ImageBrush *    m_pimagebrush;
+
+      bool                 m_bMetroColor;
+      COLORREF             m_crMetro;
 
       pen(::ca::application * papp);
       /*virtual void construct(int nPenStyle, double nWidth, COLORREF crColor);

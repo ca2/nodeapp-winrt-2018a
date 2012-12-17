@@ -451,7 +451,7 @@ namespace metrowin
          Sys(m_papp).m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_pthread->m_mutex, TRUE);
       if(m_pfont != NULL)
       {
          delete m_pfont;
@@ -567,7 +567,7 @@ namespace metrowin
    // WM_NCDESTROY is the absolute LAST message sent.
    void window::_001OnNcDestroy(gen::signal_object * pobj)
    {
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_mutex, TRUE);
       pobj->m_bRet = true;
       // cleanup main and active windows
       ::ca::thread* pThread = System.GetThread();
@@ -750,7 +750,7 @@ namespace metrowin
 
    bool window::DestroyWindow()
    {
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_mutex, TRUE);
       ::ca::window * pWnd;
       hwnd_map * pMap;
       oswindow hWndOrig;
@@ -1245,7 +1245,7 @@ namespace metrowin
       }
       if(pbase->m_uiMessage == WM_TIMER)
       {
-         m_pthread->step_timer();
+         m_pthread->m_pthread->step_timer();
       }
       else if(pbase->m_uiMessage == WM_LBUTTONDOWN)
       {
@@ -2194,7 +2194,7 @@ restart_mouse_hover_check:
       
       throw todo(::ca::get_thread_app());
 
-      //single_lock sl(&hWnd->m_pthread->m_mutex, TRUE);
+      //single_lock sl(&hWnd->m_pthread->m_pthread->m_mutex, TRUE);
       //// GetDlgItem recursive (return first found)
       //// breadth-first for 1 level, then depth-first for next level
 
@@ -3271,8 +3271,8 @@ restart_mouse_hover_check:
    void window::_001OnProdevianSynch(gen::signal_object * pobj)
    {
       UNREFERENCED_PARAMETER(pobj);
-      System.get_event(m_pthread)->SetEvent();
-      System.get_event(System.get_twf())->wait(millis(8400));
+//      System.get_event(m_pthread)->SetEvent();
+  //    System.get_event(System.get_twf())->wait(millis(8400));
    }
 
    void window::_001OnPaint(gen::signal_object * pobj)
@@ -3833,8 +3833,8 @@ restart_mouse_hover_check:
       m_iModalCount++;
 
       m_iaModalThread.add(::GetCurrentThreadId());
-      ::radix::application * pappThis1 = dynamic_cast < ::radix::application * > (m_pthread->m_p);
-      ::radix::application * pappThis2 = dynamic_cast < ::radix::application * > (m_pthread);
+      ::radix::application * pappThis1 = dynamic_cast < ::radix::application * > (m_pthread->m_pthread->m_p);
+      ::radix::application * pappThis2 = dynamic_cast < ::radix::application * > (m_pthread->m_pthread);
       // acquire and dispatch messages until the modal state is done
       MESSAGE msg;
       for (;;)
@@ -3868,14 +3868,14 @@ restart_mouse_hover_check:
                bIdle = FALSE;
             }
 
-            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
+            m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
+               pappThis1->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
+               pappThis2->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -3891,7 +3891,7 @@ restart_mouse_hover_check:
                goto ExitModal;
 
             // pump message, but quit on WM_QUIT
-            if (!m_pthread->pump_message())
+            if (!m_pthread->m_pthread->pump_message())
             {
                __post_quit_message(0);
                return -1;
@@ -3916,14 +3916,14 @@ restart_mouse_hover_check:
                lIdleCount = 0;
             }
 
-            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
+            m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_pthread->m_dwAlive;
+               pappThis1->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_pthread->m_dwAlive;
+               pappThis2->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -3941,7 +3941,7 @@ restart_mouse_hover_check:
 
          if(m_pguie->m_pthread != NULL)
          {
-            m_pguie->m_pthread->step_timer();
+            m_pguie->m_pthread->m_pthread->step_timer();
          }
          if (!ContinueModal(iLevel))
             goto ExitModal;

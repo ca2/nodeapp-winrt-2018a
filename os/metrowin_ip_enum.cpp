@@ -36,7 +36,7 @@ namespace metrowin
       ::Windows::Foundation::Collections::IVectorView < ::Windows::Networking::HostName ^ > ^ names = ::Windows::Networking::Connectivity::NetworkInformation::GetHostNames();
 
 
-      for(int i = 0; i < names->Size; i++)
+      for(unsigned int i = 0; i < names->Size; i++)
       {
 
          ::Windows::Networking::HostName ^ name = names->GetAt(i);

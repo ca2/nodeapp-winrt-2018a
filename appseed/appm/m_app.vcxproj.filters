@@ -56,6 +56,6 @@
     <Image Include="assets\SmallLogo30.png" />
     <Image Include="assets\Wide-310-150.png" />
     <Image Include="assets\Notification24.png" />
-    <Image Include="ca2-5c-49.png" />
+    <Image Include="assets\ca2-5c-49.png" />
   </ItemGroup>
 </Project>

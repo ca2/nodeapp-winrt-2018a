@@ -130,7 +130,7 @@
     <IncludePath>$(VCInstallDir)include;$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageCertificateKeyFile>Direct3DApp2_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>m_app.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">
     <OutDir>$(SolutionDir)..\..\..\stage\x86\</OutDir>
@@ -160,6 +160,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Image Include="assets\ca2-5c-49.png" />
     <Image Include="Assets\Logo.png" />
     <Image Include="assets\Logo150.png" />
     <Image Include="assets\Notification24.png" />
@@ -169,7 +170,6 @@
     <Image Include="Assets\StoreLogo.png" />
     <Image Include="Assets\SplashScreen.png" />
     <Image Include="assets\Wide-310-150.png" />
-    <Image Include="ca2-5c-49.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />

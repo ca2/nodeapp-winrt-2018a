@@ -22,7 +22,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
    else if (dwReason == DLL_PROCESS_DETACH)
    {
 
-      HMODULE hmodule;
+//      HMODULE hmodule;
    
       /*try
       {

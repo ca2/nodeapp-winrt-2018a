@@ -337,10 +337,10 @@ namespace metrowin
          CreateWindowSizeDependentResources();
       }
 
-      System.m_pui->m_rectParentClient.left = 0;
-      System.m_pui->m_rectParentClient.top = 0;
-      System.m_pui->m_rectParentClient.right = m_window->Bounds.Width;
-      System.m_pui->m_rectParentClient.bottom = m_window->Bounds.Height;
+      System.m_pui->m_rectParentClient.left     = 0;
+      System.m_pui->m_rectParentClient.top      = 0;
+      System.m_pui->m_rectParentClient.right    = (int64_t) m_window->Bounds.Width;
+      System.m_pui->m_rectParentClient.bottom   = (int64_t) m_window->Bounds.Height;
 
    }
 

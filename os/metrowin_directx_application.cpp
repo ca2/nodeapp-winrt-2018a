@@ -762,10 +762,10 @@ namespace metrowin
 
       spbase = pmouse;
 
-      pmouse->m_pt.x = pointerPoint->RawPosition.X;
-      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
-      pmouse->m_uiMessage = WM_MOUSEMOVE;
-      pmouse->m_pwnd = m_psystem->m_pui;
+      pmouse->m_pt.x       = (LONG) pointerPoint->RawPosition.X;
+      pmouse->m_pt.y       = (LONG) pointerPoint->RawPosition.Y;
+      pmouse->m_uiMessage  = WM_MOUSEMOVE;
+      pmouse->m_pwnd       = m_psystem->m_pui;
 
       m_ptLastCursor = pointerPoint->RawPosition;
 
@@ -795,9 +795,9 @@ namespace metrowin
 
       spbase = pmouse;
 
-      pmouse->m_pt.x = pointerPoint->RawPosition.X;
+      pmouse->m_pt.x = (LONG) pointerPoint->RawPosition.X;
       
-      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
+      pmouse->m_pt.y = (LONG) pointerPoint->RawPosition.Y;
 
       if(args->CurrentPoint->Properties->IsLeftButtonPressed && !m_bLeftButton)
       {
@@ -860,9 +860,9 @@ namespace metrowin
 
       spbase = pmouse;
 
-      pmouse->m_pt.x = pointerPoint->RawPosition.X;
+      pmouse->m_pt.x = (LONG) pointerPoint->RawPosition.X;
 
-      pmouse->m_pt.y = pointerPoint->RawPosition.Y;
+      pmouse->m_pt.y = (LONG) pointerPoint->RawPosition.Y;
 
       if(m_bLeftButton && !args->CurrentPoint->Properties->IsLeftButtonPressed)
       {

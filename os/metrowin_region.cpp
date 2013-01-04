@@ -110,7 +110,7 @@ namespace metrowin
 
       BOOL b = FALSE;
 
-      HRESULT hr = m_pgeometry->FillContainsPoint(D2D1::Point2F(x, y), NULL, &b);
+      HRESULT hr = m_pgeometry->FillContainsPoint(D2D1::Point2F((FLOAT) x, (FLOAT) y), NULL, &b);
 
       if(FAILED(hr))
          return false;
@@ -242,7 +242,7 @@ namespace metrowin
 
       ID2D1RectangleGeometry * pgeometry = NULL;
 
-      GetD2D1Factory1()->CreateRectangleGeometry(D2D1::RectF(m_x1, m_x2, m_x2 - m_x1, m_y2 - m_y1), &pgeometry);
+      GetD2D1Factory1()->CreateRectangleGeometry(D2D1::RectF((FLOAT) m_x1, (FLOAT) m_x2, (FLOAT) (m_x2 - m_x1), (FLOAT) (m_y2 - m_y1)), &pgeometry);
 
       return pgeometry;
          

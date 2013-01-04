@@ -723,10 +723,10 @@ namespace metrowin
 //dumpcontext << " (permanent window)";
 //
       // dump out window specific statistics
-      char szBuf [64];
 //      if (!const_cast < window * > (this)->send_message(WM_QUERYAFXWNDPROC, 0, 0) && pWnd == this)
   //       ((::ca::window *) this)->GetWindowText(szBuf, _countof(szBuf));
 #ifdef WINDOWSEX
+      char szBuf [64];
       else
          ::DefWindowProc(get_handle(), WM_GETTEXT, _countof(szBuf), (LPARAM)&szBuf[0]);
       dumpcontext << "\ncaption = \"" << szBuf << "\"";
@@ -4331,13 +4331,13 @@ ExitModal:
       Windows::Foundation::Rect rect = m_pwindow->get_window_rect();
 
 
-      lprect->left = rect.X;
+      lprect->left   = (int64_t) rect.X;
       
-      lprect->top = rect.Y;
+      lprect->top    = (int64_t) rect.Y;
 
-      lprect->right = lprect->left + rect.Width;
+      lprect->right  = (int64_t) (lprect->left + rect.Width);
 
-      lprect->bottom = lprect->top + rect.Height;
+      lprect->bottom = (int64_t) (lprect->top + rect.Height);
 
       /*if(!::IsWindow(get_handle()))
          throw simple_exception(get_app(), "no more a window");

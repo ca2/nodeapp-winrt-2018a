@@ -2631,7 +2631,7 @@ namespace metrowin
 
       }
 
-      int iArea = area();
+      int64_t iArea = area();
 
       byte * p = (byte *) m_pcolorref;
 

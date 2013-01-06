@@ -80,8 +80,8 @@ namespace metrowin
       */
 
       // for bidi and mirrored localization
-      DWORD GetLayout() const;
-      DWORD SetLayout(DWORD dwLayout);
+      uint32_t GetLayout() const;
+      uint32_t SetLayout(uint32_t dwLayout);
 
 
       virtual double get_dpix() const;
@@ -168,7 +168,7 @@ namespace metrowin
 
       // World transform
       bool SetWorldTransform(const XFORM* pXform);
-      bool ModifyWorldTransform(const XFORM* pXform,DWORD iMode);
+      bool ModifyWorldTransform(const XFORM* pXform,uint32_t iMode);
       bool GetWorldTransform(XFORM* pXform) const;
 
       // Mapping Functions
@@ -252,7 +252,7 @@ namespace metrowin
       bool PolyDraw(const POINT* lpPoints, const BYTE* lpTypes, int nCount);
       bool PolylineTo(const POINT* lpPoints, int nCount);
       bool PolyPolyline(const POINT* lpPoints,
-         const DWORD* lpPolyPoints, int nCount);
+         const uint32_t* lpPolyPoints, int nCount);
 
       bool PolyBezier(const POINT* lpPoints, int nCount);
       bool PolyBezierTo(const POINT* lpPoints, int nCount);
@@ -304,11 +304,11 @@ namespace metrowin
       bool RoundRect(LPCRECT lpRect, POINT point);
 
    // Bitmap Functions
-      bool PatBlt(int x, int y, int nWidth, int nHeight, DWORD dwRop);
+      bool PatBlt(int x, int y, int nWidth, int nHeight, uint32_t dwRop);
       bool BitBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
-         int xSrc, int ySrc, DWORD dwRop);
+         int xSrc, int ySrc, uint32_t dwRop);
       bool StretchBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
-         int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, DWORD dwRop);
+         int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, uint32_t dwRop);
       COLORREF GetPixel(int x, int y) const;
       COLORREF GetPixel(POINT point) const;
       COLORREF SetPixel(int x, int y, COLORREF crColor);
@@ -317,13 +317,13 @@ namespace metrowin
       bool ExtFloodFill(int x, int y, COLORREF crColor, UINT nFillType);
       bool MaskBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
          int xSrc, int ySrc, ::ca::bitmap& maskBitmap, int xMask, int yMask,
-         DWORD dwRop);
+         uint32_t dwRop);
       bool PlgBlt(LPPOINT lpPoint, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc,
          int nWidth, int nHeight, ::ca::bitmap& maskBitmap, int xMask, int yMask);
       bool SetPixelV(int x, int y, COLORREF crColor);
       bool SetPixelV(POINT point, COLORREF crColor);
       bool GradientFill(TRIVERTEX* pVertices, ULONG nVertices, 
-        void * pMesh, ULONG nMeshElements, DWORD dwMode);
+        void * pMesh, ULONG nMeshElements, uint32_t dwMode);
       bool TransparentBlt(int xDest, int yDest, int nDestWidth, int nDestHeight,
         ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, 
         UINT clrTransparent);
@@ -379,8 +379,8 @@ namespace metrowin
       int GetTextCharacterExtra() const;
       int SetTextCharacterExtra(int nCharExtra);
 
-//      DWORD GetCharacterPlacement(const char * lpString, int nCount, int nMaxExtent, LPGCP_RESULTS lpResults, DWORD dwFlags) const;
-  //    DWORD GetCharacterPlacement(string & str, int nMaxExtent, LPGCP_RESULTS lpResults, DWORD dwFlags) const;
+//      uint32_t GetCharacterPlacement(const char * lpString, int nCount, int nMaxExtent, LPGCP_RESULTS lpResults, uint32_t dwFlags) const;
+  //    uint32_t GetCharacterPlacement(string & str, int nMaxExtent, LPGCP_RESULTS lpResults, uint32_t dwFlags) const;
 
    #if (_WIN32_WINNT >= 0x0500)
 
@@ -402,22 +402,22 @@ namespace metrowin
    // font Functions
       bool GetCharWidth(UINT nFirstChar, UINT nLastChar, LPINT lpBuffer) const;
       bool GetOutputCharWidth(UINT nFirstChar, UINT nLastChar, LPINT lpBuffer) const;
-      DWORD SetMapperFlags(DWORD dwFlag);
+      uint32_t SetMapperFlags(uint32_t dwFlag);
       size GetAspectRatioFilter() const;
 
 //      bool GetCharABCWidths(UINT nFirstChar, UINT nLastChar, LPABC lpabc) const;
-      DWORD GetFontData(DWORD dwTable, DWORD dwOffset, LPVOID lpData, DWORD cbData) const;
+      uint32_t GetFontData(uint32_t dwTable, uint32_t dwOffset, LPVOID lpData, uint32_t cbData) const;
 //      int GetKerningPairs(int nPairs, LPKERNINGPAIR lpkrnpair) const;
 //      UINT GetOutlineTextMetrics(UINT cbData, LPOUTLINETEXTMETRIC lpotm) const;
-//      DWORD GetGlyphOutline(UINT nChar, UINT nFormat, LPGLYPHMETRICS lpgm,
-//         DWORD cbBuffer, LPVOID lpBuffer, const MAT2* lpmat2) const;
+//      uint32_t GetGlyphOutline(UINT nChar, UINT nFormat, LPGLYPHMETRICS lpgm,
+//         uint32_t cbBuffer, LPVOID lpBuffer, const MAT2* lpmat2) const;
 
 //      bool GetCharABCWidths(UINT nFirstChar, UINT nLastChar,
 //         LPABCFLOAT lpABCF) const;
       bool GetCharWidth(UINT nFirstChar, UINT nLastChar,
          float* lpFloatBuffer) const;
 
-      DWORD GetFontLanguageInfo() const;
+      uint32_t GetFontLanguageInfo() const;
 
    #if (_WIN32_WINNT >= 0x0500)
 

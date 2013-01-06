@@ -34,17 +34,17 @@
 #define CREATE_SUSPENDED 0x00000004
 #endif
 
-CLASS_DECL_c HANDLE WINAPI CreateThread(_In_opt_ LPSECURITY_ATTRIBUTES unusedThreadAttributes, _In_ SIZE_T unusedStackSize, _In_ LPTHREAD_START_ROUTINE lpStartAddress, _In_opt_ LPVOID lpParameter, _In_ DWORD dwCreationFlags, _Out_opt_ LPDWORD unusedThreadId);
-CLASS_DECL_c DWORD WINAPI ResumeThread(_In_ HANDLE hThread);
-CLASS_DECL_c BOOL WINAPI SetThreadPriority(_In_ HANDLE hThread, _In_ int nPriority);
-CLASS_DECL_c int WINAPI GetThreadPriority(_In_ HANDLE hThread);
+CLASS_DECL_c HANDLE WINAPI CreateThread(LPSECURITY_ATTRIBUTES unusedThreadAttributes, uint_ptr unusedStackSize,  uint32_t (* pfn)(void *), void * pv, uint32_t dwCreationFlags, uint32_t * puiId);
+CLASS_DECL_c DWORD WINAPI ResumeThread(HANDLE hThread);
+CLASS_DECL_c BOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
+CLASS_DECL_c int WINAPI GetThreadPriority(HANDLE hThread);
 
 CLASS_DECL_c VOID WINAPI Sleep(_In_ DWORD dwMilliseconds);
 
 CLASS_DECL_c DWORD WINAPI TlsAlloc();
-CLASS_DECL_c BOOL WINAPI TlsFree(_In_ DWORD dwTlsIndex);
-CLASS_DECL_c LPVOID WINAPI TlsGetValue(_In_ DWORD dwTlsIndex);
-CLASS_DECL_c BOOL WINAPI TlsSetValue(_In_ DWORD dwTlsIndex, _In_opt_ LPVOID lpTlsValue);
+CLASS_DECL_c BOOL WINAPI TlsFree(DWORD dwTlsIndex);
+CLASS_DECL_c LPVOID WINAPI TlsGetValue(DWORD dwTlsIndex);
+CLASS_DECL_c BOOL WINAPI TlsSetValue(DWORD dwTlsIndex, LPVOID lpTlsValue);
 
 void WINAPI TlsShutdown();
 

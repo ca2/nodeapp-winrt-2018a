@@ -1,7 +1,9 @@
 #pragma once
 
+
 namespace metrowin
 {
+
 
    //////////////////////////////////////////////////////////////////////
    //   Creator : El Barto (ef00@luc.ac.be)
@@ -84,7 +86,7 @@ namespace metrowin
          BYTE a2, BYTE r2, BYTE g2, BYTE b2, // border colors
          int x, int y, int iRadius);
 
-      DWORD GetPixel(int x, int y);
+      uint32_t GetPixel(int x, int y);
       void Mask(COLORREF crMask, COLORREF crInMask, COLORREF crOutMask);
       void channel_mask(BYTE uchFind, BYTE uchSet, BYTE uchUnset, visual::rgba::echannel echannel);
       void transparent_color(color color);
@@ -161,6 +163,12 @@ namespace metrowin
 
       virtual bool from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI);
 
+
    };
 
+
 } // namespace metrowin
+
+
+
+

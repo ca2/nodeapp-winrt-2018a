@@ -343,7 +343,7 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 
 
-CLASS_DECL_c Platform::String ^ rtstr(const char * psz);
+//CLASS_DECL_c Platform::String ^ rtstr(const char * psz);
 CLASS_DECL_c Platform::String ^ itort(int i);
 CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszTitle, int iFlags);
 

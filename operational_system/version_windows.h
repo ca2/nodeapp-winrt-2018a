@@ -126,6 +126,8 @@
 #include <windows.h>
 #include <shlwapi.h>
 #include <wrl/client.h>
+#define __PLACEMENT_NEW_INLINE
+#include <agile.h>
 
 
 #include "oswindow.h"

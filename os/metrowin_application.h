@@ -130,7 +130,7 @@ namespace metrowin
 
       /*virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
-      virtual bool Begin(int nPriority = THREAD_PRIORITY_NORMAL, UINT nStackSize = 0,
+      virtual bool begin(int nPriority = THREAD_PRIORITY_NORMAL, UINT nStackSize = 0,
          DWORD dwCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL);
 
       bool CreateThread(DWORD dwCreateFlags = 0, UINT nStackSize = 0,

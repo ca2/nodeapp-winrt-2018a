@@ -339,10 +339,10 @@ namespace metrowin
    }
 
 
-   bool application::Begin(int nPriority, UINT nStackSize,
+   bool application::begin(int nPriority, UINT nStackSize,
                            DWORD dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
    {
-      return ::metrowin::thread::Begin(nPriority, nStackSize, dwCreateFlags, lpSecurityAttrs);
+      return ::metrowin::thread::begin(nPriority, nStackSize, dwCreateFlags, lpSecurityAttrs);
    }
 
    bool application::CreateThread(DWORD dwCreateFlags, UINT nStackSize,

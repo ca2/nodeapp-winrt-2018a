@@ -645,7 +645,7 @@ namespace metrowin
       return m_hThread;
    }
 
-   bool thread::Begin(::ca::e_thread_priority epriority, UINT nStackSize, DWORD dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
+   bool thread::begin(::ca::e_thread_priority epriority, UINT nStackSize, DWORD dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
    {
       if (!create_thread(epriority, dwCreateFlags, nStackSize,
          lpSecurityAttrs))
@@ -2236,7 +2236,7 @@ throw memory_exception();
 ASSERT_VALID(pThread);
 
 pThread->m_pThreadParams = NULL;
-if(pThread->Begin(
+if(pThread->begin(
 nPriority, 
 nStackSize, 
 dwCreateFlags, 

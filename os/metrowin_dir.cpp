@@ -1034,7 +1034,7 @@ namespace metrowin
       }
       return path(path(str, "ca2", strRelative), lpcsz, lpcsz2);
 #else
-      return path(::Windows::Storage::ApplicationData::Current->LocalFolder->Path->Begin(), lpcsz, lpcsz2);
+      return path(::Windows::Storage::ApplicationData::Current->LocalFolder->Path->begin(), lpcsz, lpcsz2);
 #endif
    }
 

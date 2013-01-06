@@ -376,4 +376,3 @@ CLASS_DECL_c int MessageBox(void * p, const char * pszMessage, const char * pszT
 
 
 
-#include <stdint.h>

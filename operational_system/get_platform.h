@@ -31,7 +31,7 @@
 #endif
 
 
-#include "inttypes.h"
+#include "integer_type.h"
 //
 //#ifde
 //#define IMPLEMENT_VISTA_TOOLS

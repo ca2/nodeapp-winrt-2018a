@@ -49,11 +49,6 @@ typedef std::type_info std_type_info;
 
 
 
-#include "inttypes.h"
-
-
-
-
 #include <vadefs.h>
 
 

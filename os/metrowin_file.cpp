@@ -408,13 +408,13 @@ namespace metrowin
    }
 
    /*
-   void PASCAL file::Rename(const char * lpszOldName, const char * lpszNewName)
+   void file::Rename(const char * lpszOldName, const char * lpszNewName)
    {
    if (!::MoveFile((LPTSTR)lpszOldName, (LPTSTR)lpszNewName))
    WinFileException::ThrowOsError(get_app(), (LONG)::GetLastError());
    }
 
-   void PASCAL file::remove(const char * lpszFileName)
+   void file::remove(const char * lpszFileName)
    {
    if (!::DeleteFile((LPTSTR)lpszFileName))
    WinFileException::ThrowOsError(get_app(), (LONG)::GetLastError());
@@ -971,13 +971,13 @@ namespace metrowin
 
 
 
-   void PASCAL WinFileException::ThrowOsError(::ca::application * papp, LONG lOsError, const char * lpszFileName /* = NULL */)
+   void WinFileException::ThrowOsError(::ca::application * papp, LONG lOsError, const char * lpszFileName /* = NULL */)
    {
       if (lOsError != 0)
          vfxThrowFileException(papp, WinFileException::OsErrorToException(lOsError), lOsError, lpszFileName);
    }
 
-   void PASCAL WinFileException::ThrowErrno(::ca::application * papp, int nErrno, const char * lpszFileName /* = NULL */)
+   void WinFileException::ThrowErrno(::ca::application * papp, int nErrno, const char * lpszFileName /* = NULL */)
    {
       if (nErrno != 0)
          vfxThrowFileException(papp, WinFileException::ErrnoToException(nErrno), _doserrno, lpszFileName);
@@ -1001,7 +1001,7 @@ namespace metrowin
       throw ::ex1::file_exception(papp, cause, lOsError, lpszFileName);
    }
 
-   int PASCAL WinFileException::ErrnoToException(int nErrno)
+   int WinFileException::ErrnoToException(int nErrno)
    {
       switch(nErrno)
       {
@@ -1027,7 +1027,7 @@ namespace metrowin
       }
    }
 
-   int PASCAL WinFileException::OsErrorToException(LONG lOsErr)
+   int WinFileException::OsErrorToException(LONG lOsErr)
    {
       // NT Error codes
       switch ((UINT)lOsErr)
@@ -1262,7 +1262,7 @@ namespace metrowin
    }
 
 
-   bool PASCAL file::GetStatus(const char * lpszFileName, ::ex1::file_status& rStatus)
+   bool file::GetStatus(const char * lpszFileName, ::ex1::file_status& rStatus)
    {
 
 #ifdef WINDOWSEX
@@ -1384,7 +1384,7 @@ namespace metrowin
    */
 
    /*
-   void PASCAL file::SetStatus(const char * lpszFileName, const ::ex1::file_status& status)
+   void file::SetStatus(const char * lpszFileName, const ::ex1::file_status& status)
    {
    DWORD wAttr;
    FILETIME creationTime;

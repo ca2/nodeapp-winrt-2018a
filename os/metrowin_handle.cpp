@@ -5,7 +5,7 @@ namespace metrowin
 {
 
 
-//   void PASCAL window::DeleteTempMap()
+//   void window::DeleteTempMap()
   // {
       
       /*hwnd_map* pMap = __get_module_state()->m_pmapHWND;

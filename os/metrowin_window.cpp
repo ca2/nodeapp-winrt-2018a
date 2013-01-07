@@ -5197,7 +5197,7 @@ throw todo(get_app());
    
    }
    
-   ::ca::window * PASCAL window::GetCapture()
+   ::user::interaction * PASCAL window::GetCapture()
    {
 
       //throw todo(::ca::get_thread_app());

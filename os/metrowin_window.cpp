@@ -5200,9 +5200,9 @@ throw todo(get_app());
    ::ca::window * PASCAL window::GetCapture()
    {
 
-      throw todo(::ca::get_thread_app());
+      //throw todo(::ca::get_thread_app());
 
-      //return ::metrowin::window::from_handle(::GetCapture());
+      return ::GetCapture().window();
    
    }
 

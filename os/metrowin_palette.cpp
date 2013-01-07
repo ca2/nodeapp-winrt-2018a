@@ -13,7 +13,7 @@ namespace metrowin
    { 
       return (HPALETTE)(this == NULL ? NULL : get_os_data()); 
    }
-   palette* PASCAL palette::from_handle(::ca::application * papp, HPALETTE hPalette)
+   palette* palette::from_handle(::ca::application * papp, HPALETTE hPalette)
    { 
       //return dynamic_cast < palette * > (::metrowin::graphics_object::from_handle(papp, hPalette)); 
       return NULL;

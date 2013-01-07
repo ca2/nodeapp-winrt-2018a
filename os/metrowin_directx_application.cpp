@@ -304,7 +304,7 @@ namespace metrowin
 
       pinitmaindata->m_hInstance             = NULL;
       pinitmaindata->m_hPrevInstance         = NULL;
-      pinitmaindata->m_vssCommandLine        = gen::international::unicode_to_utf8(strId->begin());
+      pinitmaindata->m_vssCommandLine        = strId;
       pinitmaindata->m_nCmdShow              = 0;
 
       m_psystem->init_main_data(pinitmaindata);

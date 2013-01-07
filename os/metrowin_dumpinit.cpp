@@ -77,7 +77,7 @@ void __cdecl __crt_dump_client(void * pvData, size_t nBytes)
 int __cdecl __crt_report_hook(int nRptType, __in char *szMsg, int* pResult)
 {
    // no hook on asserts or when m_pFile is NULL
-   if (nRptType == _CRT_ASSERT || g_dumpcontext.m_pFile == NULL)
+   if (nRptType == _CRT_ASSERT || g_dumpcontext.m_pfile == NULL)
       return FALSE;
 
    ASSERT( pResult != NULL );

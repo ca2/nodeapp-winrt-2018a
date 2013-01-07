@@ -1426,7 +1426,7 @@ namespace metrowin
       }
    }
 
-   DWORD dib::GetPixel(int x, int y)
+   uint32_t dib::GetPixel(int x, int y)
    {
       DWORD dw = *(m_pcolorref + x + (cy - y - 1) * cx);
       return RGB(rgba_get_b(dw), rgba_get_g(dw), rgba_get_r(dw));

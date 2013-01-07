@@ -714,7 +714,7 @@ namespace metrowin
    #endif
    }
 
-   unsigned long application::get_thread_id()
+   uint32_t application::get_thread_id()
    {
       return ::GetCurrentThreadId();
    }

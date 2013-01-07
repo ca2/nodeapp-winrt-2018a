@@ -1,23 +1,34 @@
 #pragma once
 
+
 bool __internal_pre_translate_message(MSG* pMsg);
+
 
 namespace ca
 {
+
+
    struct  thread_startup
    {
+
+
       ::ca::thread *          m_pthread;    // thread for new thread
       HANDLE hEvent;          // event triggered after success/non-success
       HANDLE hEvent2;         // event triggered after thread is resumed
 
+
       thread_startup();
       ~thread_startup();
+
    };
+
 
 } // namespace ca
 
+
 namespace metrowin
 {
+
 
    class CLASS_DECL_metrowin thread :
       virtual public ::radix::thread,
@@ -25,39 +36,30 @@ namespace metrowin
    {
    public:
 
-   #ifdef _WIN32
+
       // only valid while running
-      HANDLE m_hThread;       // this thread's HANDLE
-      operator HANDLE() const;
-      DWORD m_nThreadID;      // this thread's ID
-   #else
-      operator pthread_t() const;
-      pthread_t m_thread;
-   #endif
+      HANDLE                                       m_hThread;       // this thread's HANDLE
+      uint32_t                                     m_nThreadID;      // this thread's ID
 
-
-      static comparable_array < HANDLE > s_haThread;
-      static comparable_array < ::ca::thread * > s_threadptra;
-
-
+      static comparable_array < HANDLE >           s_haThread;
+      static comparable_array < ::ca::thread * >   s_threadptra;
       // list of frame_window objects for thread
-      simple_list < frame_window * >   m_frameList;
-
+      simple_list < frame_window * >               m_frameList;
       // temporary/permanent ::collection::map state
-      DWORD m_nTempMapLock;           // if not 0, temp maps locked
+      uint32_t                                     m_nTempMapLock;           // if not 0, temp maps locked
+      LPVOID                                       m_pThreadParams; // generic parameters passed to starting function
+      __THREADPROC                                 m_pfnThreadProc;
+      event                                        m_evFinish;
+      UINT                                         m_nDisablePumpCount;
+      mutex                                        m_mutexUiPtra;
+      ::ca::thread *                               m_pAppThread;
+      UINT                                         m_dwFinishTimeout;
 
 
+      thread(::ca::application * papp);
 
-      LPVOID                              m_pThreadParams; // generic parameters passed to starting function
-      __THREADPROC                      m_pfnThreadProc;
 
-      event                              m_evFinish;
-      UINT                                m_nDisablePumpCount;
-      mutex                               m_mutexUiPtra;
-      
-      ::ca::thread *                      m_pAppThread;
-
-      UINT                                m_dwFinishTimeout;
+      operator HANDLE() const;
 
       virtual void * get_os_data() const;
       virtual int_ptr get_os_int() const;
@@ -67,7 +69,6 @@ namespace metrowin
 
       virtual void set_p(::radix::thread * p);
 
-      thread(::ca::application * papp);
 
       virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
@@ -114,8 +115,8 @@ namespace metrowin
       bool SetThreadPriority(int nPriority);
 
    // Operations
-      DWORD SuspendThread();
-      DWORD ResumeThread();
+      uint32_t SuspendThread();
+      uint32_t ResumeThread();
       bool post_thread_message(UINT message, WPARAM wParam, LPARAM lParam) override;
       bool post_message(::user::interaction * pguie, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -198,8 +199,10 @@ namespace metrowin
 
    };
 
+
    CLASS_DECL_metrowin ::ca::thread * get_thread();
    CLASS_DECL_metrowin ::ca::thread_state * get_thread_state();
+
 
 } // namespace metrowin
 

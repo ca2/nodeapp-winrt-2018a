@@ -29,12 +29,12 @@ namespace metrowin
       {
          return 1;
       }
-      else if(view->Contains(rtstr("FileDrop")))
+      else if(view->Contains("FileDrop"))
       {
          
          HGLOBAL hglobal;
 
-         ::Windows::Storage::Streams::IInputStream ^ stream = (::Windows::Storage::Streams::IInputStream ^):: wait(view->GetDataAsync(rtstr("FileDrop")));
+         ::Windows::Storage::Streams::IInputStream ^ stream = (::Windows::Storage::Streams::IInputStream ^):: wait(view->GetDataAsync("FileDrop"));
 
          ::Windows::Storage::Streams::IBuffer ^ buffer = ref new ::Windows::Storage::Streams::Buffer(sizeof(HGLOBAL));
 

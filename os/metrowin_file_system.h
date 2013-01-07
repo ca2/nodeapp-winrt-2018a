@@ -12,21 +12,25 @@ namespace metrowin
 {
 
 
-/*   class file_system :
-      virtual public ex1::file_system
+   class file_system :
+      virtual public ::ca::file::system
    {
    public:
+      
+      
       file_system(::ca::application * papp);
       virtual ~file_system();
+
 
       virtual bool FullPath(string & str, const char * lpszFileIn);
       virtual bool FullPath(wstring & wstrFullPath, const wstring & wstrPath);
       virtual UINT GetFileName(const char * lpszPathName, string & str);
       virtual void GetModuleShortFileName(HINSTANCE hInst, string & strShortName);
 
+      virtual var length(const char * pszPath);
+
    };
 
-   */
 
 } // namespace metrowin
 

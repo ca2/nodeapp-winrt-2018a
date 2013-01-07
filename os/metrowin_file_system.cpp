@@ -4,7 +4,6 @@
 namespace metrowin
 {
 
-/*
    file_system::file_system(::ca::application * papp) :
       ca(papp)
    {
@@ -19,8 +18,8 @@ namespace metrowin
 
    bool file_system::FullPath(string &str, const char * lpszFileIn)
    {
-      if(::ex1::file_system::FullPath(str, lpszFileIn))
-         return true;
+      /*      if(::ex1::file_system::FullPath(str, lpszFileIn))
+      return true;*/
       if(gen::str::begins_ci(lpszFileIn, "http://"))
       {
          str = lpszFileIn;
@@ -34,19 +33,21 @@ namespace metrowin
       wstring wstrFileIn;
       wstrFileIn = gen::international::utf8_to_unicode(lpszFileIn);
       wstring wstrFileOut;
-      bool b = vfxFullPath(wstrFileOut.alloc(MAX_PATH * 8), wstrFileIn) != FALSE;
-      if(b)
+      //      bool b = vfxFullPath(wstrFileOut.alloc(MAX_PATH * 8), wstrFileIn) != FALSE;
+      /*      if(b)
       {
-         gen::international::unicode_to_utf8(str, wstrFileOut);
+      gen::international::unicode_to_utf8(str, wstrFileOut);
       }
-      return b;
+      return b;*/
+
+      return false;
    }
 
    bool file_system::FullPath(wstring & wstrFullPath, const wstring & wstrPath)
    {
 
-      if(::ex1::file_system::FullPath(wstrFullPath, wstrPath))
-         return true;
+      //if(::ex1::file_system::FullPath(wstrFullPath, wstrPath))
+      // return true;
 
       if(gen::str::begins_ci(wstrPath, L"http://"))
       {
@@ -59,7 +60,8 @@ namespace metrowin
          return true;
       }
 
-      return vfxFullPath(wstrFullPath, wstrPath) != FALSE;
+      //return vfxFullPath(wstrFullPath, wstrPath) != FALSE;
+      return false;
 
    }
 
@@ -70,16 +72,39 @@ namespace metrowin
       wstring wstrPathName;
       wstrPathName = gen::international::utf8_to_unicode(lpszPathName);
       wstring wstrTitle;
-      UINT user = vfxGetFileName(wstrPathName, wstrTitle.alloc(nMax), nMax);
+      //UINT user = vfxGetFileName(wstrPathName, wstrTitle.alloc(nMax), nMax);
       str = gen::international::unicode_to_utf8(wstrTitle);
-      return user;
+      //return user;
+      return 0;
    }
 
    void file_system::GetModuleShortFileName(HINSTANCE hInst, string & strShortName)
    {
-      vfxGetModuleShortFileName(hInst, strShortName);
+      //vfxGetModuleShortFileName(hInst, strShortName);
    }
-   */
+
+
+   var file_system::length(const char * pszPath)
+   {
+
+      var varRet;
+
+      WIN32_FILE_ATTRIBUTE_DATA data;
+
+      if(!GetFileAttributesExW(gen::international::utf8_to_unicode(pszPath), GetFileExInfoStandard, &data))
+      {
+         varRet.set_type(var::type_null);
+      }
+      else
+      {
+         varRet = (uint32_t) data.nFileSizeLow;
+      }
+
+
+      return varRet;
+
+   }
+
 
 
 } // namespace metrowin

@@ -146,7 +146,7 @@ namespace metrowin
 
    bool os::get_pid_by_path(const char * pszName, DWORD & dwPid)
    {
-      dword_array dwa;
+      uint32_array dwa;
       get_all_processes(dwa);
       for(int i = 0; i < dwa.get_count(); i++)
       {
@@ -161,7 +161,7 @@ namespace metrowin
 
    bool os::get_pid_by_title(const char * pszName, DWORD & dwPid)
    {
-      dword_array dwa;
+      uint32_array dwa;
       get_all_processes(dwa);
       for(int i = 0; i < dwa.get_count(); i++)
       {
@@ -206,7 +206,7 @@ namespace metrowin
       return strName;
    }
 
-   void os::get_all_processes(dword_array & dwa )
+   void os::get_all_processes(uint32_array & dwa )
    {
 #ifdef WINDOWSEX
       dwa.set_size(0);

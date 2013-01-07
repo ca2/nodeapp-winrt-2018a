@@ -21,7 +21,7 @@ using namespace Windows::Graphics::Display;
 int main(Platform::Array<Platform::String^>^)
 {
    
-   auto source = ::metrowin::new_directx_application_source(rtstr("m_app.exe : app=bergedge"));
+   auto source = ::metrowin::new_directx_application_source("m_app.exe : app=bergedge");
 
    ::Windows::ApplicationModel::Core::CoreApplication::Run(source);
    

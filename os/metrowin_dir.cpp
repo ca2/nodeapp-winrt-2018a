@@ -191,8 +191,10 @@ namespace metrowin
 
    void dir::root_ones(stringa & stra, ::ca::application * papp)
    {
+
 #ifdef WINDOWSEX
-      DWORD dwSize = ::GetLogicalDriveStrings(0, NULL);
+
+      uint32_t dwSize = ::GetLogicalDriveStrings(0, NULL);
       LPTSTR lpszAlloc = (LPTSTR) malloc(dwSize + 1);
       LPTSTR lpsz = lpszAlloc;
       dwSize = ::GetLogicalDriveStrings(dwSize + 1, lpsz);
@@ -211,9 +213,13 @@ namespace metrowin
       }
 
       free(lpszAlloc);
+
 #else
-      stra.add(str(Windows::Storage::KnownFolders::DocumentsLibrary->Path));
+
+      stra.add(Windows::Storage::KnownFolders::DocumentsLibrary->Path);
+
 #endif
+
    }
 
    void dir::ls_pattern(::ca::application * papp, const char * lpcsz, const char * pszPattern, stringa * pstraPath, stringa * pstraTitle, base_array < bool, bool > * pbaIsDir, base_array < int64_t, int64_t > * piaSize)
@@ -489,7 +495,7 @@ namespace metrowin
       
       bool bIsDir;
 
-      DWORD dwLastError;
+      uint32_t dwLastError;
 
       if(m_isdirmap.lookup(lpcszPath, bIsDir, dwLastError))
       {
@@ -517,7 +523,7 @@ namespace metrowin
          }
       }
       /*
-      DWORD dwAttrib;
+      uint32_t dwAttrib;
       dwAttrib = GetFileAttributesW(gen::international::utf8_to_unicode(strPath));
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
@@ -540,7 +546,7 @@ namespace metrowin
          return true;
 
       bool bIsDir;
-      DWORD dwLastError;
+      uint32_t dwLastError;
 
       if(m_isdirmap.lookup(strPath, bIsDir, dwLastError))
       {
@@ -567,7 +573,7 @@ namespace metrowin
             ::gen::str::begin(wstrPath, L"\\\\?\\");
          }
       }
-//      DWORD dwAttrib;
+//      uint32_t dwAttrib;
 /*      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
@@ -617,7 +623,7 @@ namespace metrowin
 
       
       bool bIsDir;
-      DWORD dwLastError;
+      uint32_t dwLastError;
 
 
       if(m_isdirmap.lookup(str, bIsDir, dwLastError, (int) iLast))
@@ -635,7 +641,7 @@ namespace metrowin
       if(papp->m_bZipIsDir && iFind >= 0 && iFind < iLast)
       {
          bool bHasSubFolder;
-         DWORD dwLastError;
+         uint32_t dwLastError;
          if(m_isdirmap.lookup(str, bHasSubFolder, dwLastError))
             return bHasSubFolder;
          bHasSubFolder = m_pziputil->HasSubFolder(papp, str);
@@ -665,7 +671,7 @@ namespace metrowin
             ::gen::str::begin(wstrPath, L"\\\\?\\");
          }
       }
-//      DWORD dwAttrib;
+//      uint32_t dwAttrib;
 ///      dwAttrib = GetFileAttributesW(wstrPath);
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
@@ -804,7 +810,7 @@ namespace metrowin
             
             if(!::CreateDirectoryW(gen::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
             {
-               DWORD dwError = ::GetLastError();
+               uint32_t dwError = ::GetLastError();
                if(dwError == ERROR_ALREADY_EXISTS)
                {
                   string str;
@@ -1015,7 +1021,9 @@ namespace metrowin
 
    string dir::appdata(const char * lpcsz, const char * lpcsz2)
    {
+
 #ifdef WINDOWSEX
+
       string str;
       SHGetSpecialFolderPath(
          NULL,
@@ -1033,9 +1041,13 @@ namespace metrowin
          strRelative = strRelative.Left(iFind - 1) + "_" + strRelative.Mid(iStart, iFind - iStart) + strRelative.Mid(iFind + 1);
       }
       return path(path(str, "ca2", strRelative), lpcsz, lpcsz2);
+
 #else
-      return path(::Windows::Storage::ApplicationData::Current->LocalFolder->Path->begin(), lpcsz, lpcsz2);
+
+      return path(::Windows::Storage::ApplicationData::Current->LocalFolder->Path, lpcsz, lpcsz2);
+
 #endif
+
    }
 
    string dir::usersystemappdata(::ca::application * papp, const char * lpcszPrefix, const char * lpcsz, const char * lpcsz2)

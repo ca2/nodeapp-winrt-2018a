@@ -53,7 +53,7 @@ namespace metrowin
          if(name->IPInformation->NetworkAdapter->NetworkAdapterId == connectionProfile->NetworkAdapter->NetworkAdapterId)
          {
 
-            stra.add(name->DisplayName->begin());
+            stra.add(name->DisplayName);
 
             c++;
 

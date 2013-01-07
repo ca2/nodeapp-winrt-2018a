@@ -1207,7 +1207,7 @@ namespace metrowin
    }
 
 
-   bool graphics::PatBlt(int x, int y, int nWidth, int nHeight, DWORD dwRop)
+   bool graphics::PatBlt(int x, int y, int nWidth, int nHeight, uint32_t dwRop)
    {
 
       throw todo(get_app());
@@ -1219,7 +1219,7 @@ namespace metrowin
    }
 
 
-   bool graphics::BitBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, DWORD dwRop)
+   bool graphics::BitBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, uint32_t dwRop)
    { 
 
 
@@ -1266,7 +1266,7 @@ namespace metrowin
    }
 
 
-   bool graphics::StretchBlt(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, DWORD dwRop)
+   bool graphics::StretchBlt(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, uint32_t dwRop)
    { 
 
       try
@@ -1805,7 +1805,7 @@ namespace metrowin
 
    }
 
-   DWORD graphics::GetFontLanguageInfo() const
+   uint32_t graphics::GetFontLanguageInfo() const
    {
       
       throw todo(get_app());
@@ -1818,7 +1818,7 @@ namespace metrowin
 
 #ifdef WINDOWSEX
 
-   DWORD graphics::GetCharacterPlacement(const char * lpString, int nCount, int nMaxExtent, LPGCP_RESULTS lpResults, DWORD dwFlags) const
+   uint32_t graphics::GetCharacterPlacement(const char * lpString, int nCount, int nMaxExtent, LPGCP_RESULTS lpResults, uint32_t dwFlags) const
    {
       
       throw todo(get_app());
@@ -1829,7 +1829,7 @@ namespace metrowin
 
    }
 
-   DWORD graphics::GetCharacterPlacement(string & str, int nMaxExtent, LPGCP_RESULTS lpResults, DWORD dwFlags) const
+   uint32_t graphics::GetCharacterPlacement(string & str, int nMaxExtent, LPGCP_RESULTS lpResults, uint32_t dwFlags) const
    { 
       
       throw todo(get_app());
@@ -1938,7 +1938,7 @@ namespace metrowin
 
 #endif
 
-   DWORD graphics::GetFontData(DWORD dwTable, DWORD dwOffset, LPVOID lpData, DWORD cbData) const
+   uint32_t graphics::GetFontData(uint32_t dwTable, uint32_t dwOffset, LPVOID lpData, uint32_t cbData) const
    {
       
       throw todo(get_app());
@@ -1962,7 +1962,7 @@ namespace metrowin
 
    }
 
-   DWORD graphics::GetGlyphOutline(UINT nChar, UINT nFormat, LPGLYPHMETRICS lpgm,  DWORD cbBuffer, LPVOID lpBuffer, const MAT2* lpmat2) const
+   uint32_t graphics::GetGlyphOutline(UINT nChar, UINT nFormat, LPGLYPHMETRICS lpgm,  uint32_t cbBuffer, LPVOID lpBuffer, const MAT2* lpmat2) const
    {
       
       throw todo(get_app());
@@ -2046,7 +2046,7 @@ namespace metrowin
    }
 
 
-   bool graphics::MaskBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, ::ca::bitmap& maskBitmap, int xMask, int yMask, DWORD dwRop)
+   bool graphics::MaskBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, ::ca::bitmap& maskBitmap, int xMask, int yMask, uint32_t dwRop)
    {
       
       throw todo(get_app());
@@ -2126,7 +2126,7 @@ namespace metrowin
 
    }
 
-   bool graphics::PolyPolyline(const POINT* lpPoints, const DWORD* lpPolyPoints, int nCount)
+   bool graphics::PolyPolyline(const POINT* lpPoints, const uint32_t* lpPolyPoints, int nCount)
    {
       
       throw todo(get_app());
@@ -2627,7 +2627,7 @@ namespace metrowin
 
    }
 
-   bool graphics::GradientFill(TRIVERTEX* pVertices, ULONG nVertices, void * pMesh, ULONG nMeshElements, DWORD dwMode)
+   bool graphics::GradientFill(TRIVERTEX* pVertices, ULONG nVertices, void * pMesh, ULONG nMeshElements, uint32_t dwMode)
    {
       
       throw todo(get_app());
@@ -3379,7 +3379,7 @@ namespace metrowin
       //return nRetVal;
    }
 
-   bool graphics::ModifyWorldTransform(const XFORM* pXform,DWORD iMode)
+   bool graphics::ModifyWorldTransform(const XFORM* pXform,uint32_t iMode)
    {
       
       throw todo(get_app());
@@ -3678,13 +3678,13 @@ namespace metrowin
       //return nRetVal;
    }
 
-   DWORD graphics::SetMapperFlags(DWORD dwFlag)
+   uint32_t graphics::SetMapperFlags(uint32_t dwFlag)
    {
       
       throw todo(get_app());
 
       //ASSERT(get_handle1() != NULL);
-      //DWORD dwRetVal = GDI_ERROR;
+      //uint32_t dwRetVal = GDI_ERROR;
       //if(get_handle1() != NULL && get_handle1() != get_handle2())
       //   dwRetVal = ::SetMapperFlags(get_handle1(), dwFlag);
       //if(get_handle2() != NULL)
@@ -3692,17 +3692,17 @@ namespace metrowin
       //return dwRetVal;
    }
 
-   typedef DWORD (CALLBACK* __GDIGETLAYOUTPROC)(HDC);
-   typedef DWORD (CALLBACK* __GDISETLAYOUTPROC)(HDC, DWORD);
+   typedef uint32_t (CALLBACK* __GDIGETLAYOUTPROC)(HDC);
+   typedef uint32_t (CALLBACK* __GDISETLAYOUTPROC)(HDC, uint32_t);
 
-   DWORD graphics::GetLayout() const
+   uint32_t graphics::GetLayout() const
    {
       
       throw todo(get_app());
 
       //HINSTANCE hInst = ::GetModuleHandleA("GDI32.DLL");
       //ASSERT(hInst != NULL);
-      //DWORD dwGetLayout = LAYOUT_LTR;
+      //uint32_t dwGetLayout = LAYOUT_LTR;
       //__GDIGETLAYOUTPROC pfn;
       //pfn = (__GDIGETLAYOUTPROC) GetProcAddress(hInst, "GetLayout");
       //// if they API is available, just call it. If it is not
@@ -3717,14 +3717,14 @@ namespace metrowin
       //return dwGetLayout;
    }
 
-   DWORD graphics::SetLayout(DWORD dwSetLayout)
+   uint32_t graphics::SetLayout(uint32_t dwSetLayout)
    {
       
       throw todo(get_app());
 
       //HINSTANCE hInst = ::GetModuleHandleA("GDI32.DLL");
       //ASSERT(hInst != NULL);
-      //DWORD dwGetLayout = LAYOUT_LTR;
+      //uint32_t dwGetLayout = LAYOUT_LTR;
       //__GDISETLAYOUTPROC pfn;
       //pfn = (__GDISETLAYOUTPROC) GetProcAddress(hInst, "SetLayout");
       //// If the API is availalbe, just call it. If it's not available,

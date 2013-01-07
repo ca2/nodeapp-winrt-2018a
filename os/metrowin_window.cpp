@@ -7187,6 +7187,11 @@ namespace metrowin
 
    }
 
+   ::user::interaction * window::get_wnd()
+   {
+      return this;
+   }
+
 } // namespace metrowin
 
 

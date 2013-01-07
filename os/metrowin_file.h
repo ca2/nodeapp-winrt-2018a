@@ -59,7 +59,7 @@ namespace metrowin
 
       virtual bool open(const char * lpszFileName, UINT nOpenFlags);
 
-      virtual bool PASCAL GetStatus(const char * lpszFileName, ::ex1::file_status& rStatus);
+      virtual bool GetStatus(const char * lpszFileName, ::ex1::file_status& rStatus);
 
       uint64_t ReadHuge(void * lpBuffer, uint64_t dwCount);
       void WriteHuge(const void * lpBuffer, uint64_t dwCount);
@@ -91,10 +91,10 @@ namespace metrowin
 
    namespace WinFileException
    {
-      int PASCAL OsErrorToException(LONG lOsError);
-      int PASCAL ErrnoToException(int nErrno);
-      void PASCAL ThrowOsError(::ca::application * papp, LONG lOsError, const char * lpszFileName = NULL);
-      void PASCAL ThrowErrno(::ca::application * papp, int nErrno, const char * lpszFileName = NULL);
+      int OsErrorToException(LONG lOsError);
+      int ErrnoToException(int nErrno);
+      void ThrowOsError(::ca::application * papp, LONG lOsError, const char * lpszFileName = NULL);
+      void ThrowErrno(::ca::application * papp, int nErrno, const char * lpszFileName = NULL);
 
    }
 

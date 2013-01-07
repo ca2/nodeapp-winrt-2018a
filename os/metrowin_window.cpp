@@ -10,16 +10,6 @@ namespace metrowin
 {
 
 
-   void window::mouse_hover_add(::user::interaction* pinterface)
-   {
-      m_guieptraMouseHover.add_unique(pinterface);
-   }
-
-   void window::mouse_hover_remove(::user::interaction* pinterface)
-   {
-      m_guieptraMouseHover.remove(pinterface); 
-   }
-
    window::window()
    {
       m_pcallback = NULL;
@@ -33,6 +23,7 @@ namespace metrowin
       m_pfont = NULL;
       m_pguieCapture = NULL;
    }
+
 
    void window::construct(oswindow hWnd)
    {
@@ -63,6 +54,7 @@ namespace metrowin
       m_pguieCapture = NULL;
    }
 
+
 /*   ::ca::window * window::from_os_data(void * pdata)
    {
       return dynamic_cast <::ca::window *>(from_handle((oswindow) pdata));   
@@ -78,10 +70,9 @@ namespace metrowin
 
    // Change a window's style
 
-   __STATIC bool CLASS_DECL_metrowin __modify_style(oswindow hWnd, int nStyleOffset,
-      uint32_t dwRemove, uint32_t dwAdd, UINT nFlags)
+   static bool __modify_style(oswindow hWnd, int nStyleOffset, uint32_t dwRemove, uint32_t dwAdd, UINT nFlags)
    {
-#ifdef WINDOWSEX
+      
       ASSERT(hWnd != NULL);
       uint32_t dwStyle = ::GetWindowLong(hWnd, nStyleOffset);
       uint32_t dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
@@ -94,10 +85,8 @@ namespace metrowin
          ::SetWindowPos(hWnd, NULL, 0, 0, 0, 0,
             SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
       }
-#else
-      throw todo(::ca::get_thread_app());
-#endif
       return TRUE;
+
    }
 
    bool PASCAL window::ModifyStyle(oswindow hWnd, uint32_t dwRemove, uint32_t dwAdd, UINT nFlags)
@@ -110,6 +99,16 @@ namespace metrowin
       return __modify_style(hWnd, GWL_EXSTYLE, dwRemove, dwAdd, nFlags);
    }
 
+
+   void window::mouse_hover_add(::user::interaction* pinterface)
+   {
+      m_guieptraMouseHover.add_unique(pinterface);
+   }
+
+   void window::mouse_hover_remove(::user::interaction* pinterface)
+   {
+      m_guieptraMouseHover.remove(pinterface); 
+   }
 
 
    const MSG* PASCAL window::GetCurrentMessage()

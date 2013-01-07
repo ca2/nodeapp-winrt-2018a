@@ -34,7 +34,7 @@ namespace metrowin
 
       //virtual oswindow get_handle() const;
 
-      virtual ::user::interaction * get_wnd();
+      virtual ::user::interaction * get_wnd() const;
 
       virtual void mouse_hover_add(::user::interaction* pinterface);
       virtual void mouse_hover_remove(::user::interaction* pinterface);

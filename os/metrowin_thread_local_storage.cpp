@@ -8,12 +8,12 @@
 
 #if defined(DEBUG) && !defined(___NO_DEBUG_CRT)
 #undef new
-void * PASCAL no_track_object::operator new(size_t nSize, const char *, int)
+void * no_track_object::operator new(size_t nSize, const char *, int)
 {
    return no_track_object::operator new(nSize);
 }
 #define new DEBUG_NEW
-void PASCAL no_track_object::operator delete(void * pObject, const char *, int)
+void no_track_object::operator delete(void * pObject, const char *, int)
 {
    if (pObject != NULL)
       ::free(pObject);
@@ -21,7 +21,7 @@ void PASCAL no_track_object::operator delete(void * pObject, const char *, int)
 #endif
 
 #undef new
-void * PASCAL no_track_object::operator new(size_t nSize)
+void * no_track_object::operator new(size_t nSize)
 {
    void * p = ::malloc(nSize);
    zero(p, nSize);
@@ -31,7 +31,7 @@ void * PASCAL no_track_object::operator new(size_t nSize)
 }
 #define new DEBUG_NEW
 
-void PASCAL no_track_object::operator delete(void * p)
+void no_track_object::operator delete(void * p)
 {
    if (p != NULL)
       ::free(p);

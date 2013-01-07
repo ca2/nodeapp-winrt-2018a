@@ -33,7 +33,7 @@ namespace metrowin
    // {
    //  return (HFONT)(this == NULL ? NULL : get_handle()); 
    //}
-   //font* PASCAL font::from_handle(::ca::application * papp, HFONT hFont)
+   //font* font::from_handle(::ca::application * papp, HFONT hFont)
    //{
    // return dynamic_cast < font * > (::metrowin::graphics_object::from_handle(papp, hFont)); 
    //}

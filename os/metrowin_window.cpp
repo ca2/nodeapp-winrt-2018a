@@ -4,7 +4,6 @@
 #define COMPILE_MULTIMON_STUBS
 #include <multimon.h>
 
-#include "sal.h"
 
 
 __STATIC void CLASS_DECL_metrowin __pre_init_dialog(

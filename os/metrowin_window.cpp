@@ -11,7 +11,7 @@ LRESULT CALLBACK __activation_window_procedure(oswindow hWnd, UINT nMsg, WPARAM 
 
 __STATIC_DATA const char gen_OldWndProc[] = "gen::OldWndProc423";
 
-*
+
 */
 
 struct __CTLCOLOR

@@ -6,7 +6,7 @@
 
 
 static void __pre_init_dialog(::user::interaction * pWnd, LPRECT lpRectOld, uint32_t* pdwStyleOld);
-static void CLASS_DECL_metrowin __post_init_dialog(::user::interaction * pWnd, const RECT& rectOld, uint32_t dwStyleOld);
+static void __post_init_dialog(::user::interaction * pWnd, const RECT& rectOld, uint32_t dwStyleOld);
 LRESULT CALLBACK __activation_window_procedure(oswindow hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 __STATIC_DATA const char gen_OldWndProc[] = "gen::OldWndProc423";

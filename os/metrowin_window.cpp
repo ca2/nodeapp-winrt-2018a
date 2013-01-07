@@ -7193,10 +7193,13 @@ namespace metrowin
    {
 
       return (::user::interaction *) this;
+
    }
 
 
 } // namespace metrowin
+
+
 
 
 

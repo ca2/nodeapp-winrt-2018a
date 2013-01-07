@@ -37,14 +37,14 @@ namespace metrowin
       virtual bool CreateBitmapIndirect(::ca::graphics * pdc, LPBITMAP lpBitmap);
       virtual bool CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
       virtual bool CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      virtual bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset);
-      virtual bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
+      virtual bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, uint32_t offset);
+      virtual bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
 
       virtual bool attach(void * posdata);
       virtual void * detach();
 
-      DWORD SetBitmapBits(DWORD dwCount, const void * lpBits);
-      DWORD GetBitmapBits(DWORD dwCount, LPVOID lpBits) const;
+      uint32_t SetBitmapBits(uint32_t dwCount, const void * lpBits);
+      uint32_t GetBitmapBits(uint32_t dwCount, LPVOID lpBits) const;
       class size SetBitmapDimension(int nWidth, int nHeight);
       class size GetBitmapDimension() const;
 

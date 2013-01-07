@@ -4526,28 +4526,27 @@ throw todo(get_app());
    ::user::interaction * window::release_capture()
    {
 
-      throw todo(get_app());
+      oswindow hwndCapture = ::GetCapture();
+      if(hwndCapture == NULL)
+         return NULL;
+      if(hwndCapture == get_handle())
+      {
+         ::user::interaction * puieCapture = get_capture();
+         if(::ReleaseCapture())
+         {
+            m_pguieCapture = NULL;
+            return puieCapture;
+         }
+         else
+         {
+            return NULL;
+         }
+      }
+      else
+      {
+         return window::GetCapture()->release_capture();
+      }
 
-      //oswindow hwndCapture = ::GetCapture();
-      //if(hwndCapture == NULL)
-      //   return NULL;
-      //if(hwndCapture == get_handle())
-      //{
-      //   ::user::interaction * puieCapture = get_capture();
-      //   if(::ReleaseCapture())
-      //   {
-      //      m_pguieCapture = NULL;
-      //      return puieCapture;
-      //   }
-      //   else
-      //   {
-      //      return NULL;
-      //   }
-      //}
-      //else
-      //{
-      //   return window::GetCapture()->release_capture();
-      //}
    }
 
    ::user::interaction * window::get_capture()

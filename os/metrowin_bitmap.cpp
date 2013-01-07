@@ -84,7 +84,7 @@ namespace metrowin
    }
 
 
-   bool bitmap::CreateDIBSection(::ca::graphics * pgraphics, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, DWORD offset)
+   bool bitmap::CreateDIBSection(::ca::graphics * pgraphics, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, HANDLE hSection, uint32_t offset)
    { 
 
       if(m_pbitmap != NULL)
@@ -130,20 +130,20 @@ namespace metrowin
    }
 
 
-   bool bitmap::CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, DWORD flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage)
+   bool bitmap::CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage)
    { 
       return FALSE;
    }
 
 
-   DWORD bitmap::SetBitmapBits(DWORD dwCount, const void * lpBits)
+   uint32_t bitmap::SetBitmapBits(uint32_t dwCount, const void * lpBits)
    { 
 
       //return ::SetBitmapBits((HBITMAP)get_handle(), dwCount, lpBits);
       return 0;
 
    }
-   DWORD bitmap::GetBitmapBits(DWORD dwCount, LPVOID lpBits) const
+   uint32_t bitmap::GetBitmapBits(uint32_t dwCount, LPVOID lpBits) const
    { 
       //return ::GetBitmapBits((HBITMAP)get_handle(), dwCount, lpBits);
       return 0;

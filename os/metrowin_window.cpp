@@ -5,7 +5,7 @@
 
 
 
-__STATIC void CLASS_DECL_metrowin __pre_init_dialog(
+static void CLASS_DECL_metrowin __pre_init_dialog(
    ::user::interaction * pWnd, LPRECT lpRectOld, uint32_t* pdwStyleOld);
 __STATIC void CLASS_DECL_metrowin __post_init_dialog(
    ::user::interaction * pWnd, const RECT& rectOld, uint32_t dwStyleOld);

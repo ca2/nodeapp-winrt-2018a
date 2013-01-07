@@ -6,14 +6,6 @@ static void __post_init_dialog(::user::interaction * pWnd, const RECT& rectOld, 
 LRESULT CALLBACK __activation_window_procedure(oswindow hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 
 
-/*struct __CTLCOLOR
-{
-   oswindow hWnd;
-   HDC hDC;
-   UINT nCtlType;
-};*/
-
-
 namespace metrowin
 {
 

@@ -1,30 +1,22 @@
 #include "framework.h"
 
 
-#define COMPILE_MULTIMON_STUBS
-
-
-
 static void __pre_init_dialog(::user::interaction * pWnd, LPRECT lpRectOld, uint32_t* pdwStyleOld);
 static void __post_init_dialog(::user::interaction * pWnd, const RECT& rectOld, uint32_t dwStyleOld);
 LRESULT CALLBACK __activation_window_procedure(oswindow hWnd, UINT nMsg, WPARAM wParam, LPARAM lParam);
 
-__STATIC_DATA const char gen_OldWndProc[] = "gen::OldWndProc423";
 
-
-
-
-struct __CTLCOLOR
+/*struct __CTLCOLOR
 {
    oswindow hWnd;
    HDC hDC;
    UINT nCtlType;
-};
+};*/
 
-//const char gen_Wnd[] = __WND;
 
 namespace metrowin
 {
+
 
    void window::mouse_hover_add(::user::interaction* pinterface)
    {

@@ -17,7 +17,7 @@ namespace metrowin
   //    bool                       m_bFill;
       //::ca::e_fill_mode          m_efillmode;
 
-      //static region * PASCAL from_handle(::ca::application * papp, HRGN hRgn);
+      //static region * from_handle(::ca::application * papp, HRGN hRgn);
       //operator HRGN() const;
 
       region(::ca::application * papp);

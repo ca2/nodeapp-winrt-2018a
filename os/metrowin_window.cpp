@@ -1,5 +1,6 @@
 #include "framework.h"
 
+
 #define COMPILE_MULTIMON_STUBS
 #include <multimon.h>
 
@@ -7187,10 +7188,12 @@ namespace metrowin
 
    }
 
-   ::user::interaction * window::get_wnd()
+
+   ::user::interaction * window::get_wnd() const
    {
       return this;
    }
+
 
 } // namespace metrowin
 

@@ -72,7 +72,9 @@ namespace metrowin
 
    static bool __modify_style(oswindow hWnd, int nStyleOffset, uint32_t dwRemove, uint32_t dwAdd, UINT nFlags)
    {
-      
+
+#ifdef WINDOWSEX
+
       ASSERT(hWnd != NULL);
       uint32_t dwStyle = ::GetWindowLong(hWnd, nStyleOffset);
       uint32_t dwNewStyle = (dwStyle & ~dwRemove) | dwAdd;
@@ -85,6 +87,13 @@ namespace metrowin
          ::SetWindowPos(hWnd, NULL, 0, 0, 0, 0,
             SWP_NOSIZE | SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE | nFlags);
       }
+
+#else
+
+      throw todo(::ca::get_thread_app());
+
+#endif
+
       return TRUE;
 
    }

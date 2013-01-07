@@ -7191,7 +7191,7 @@ namespace metrowin
 
    ::user::interaction * window::get_wnd() const
    {
-      return this;
+      return (::user::interaction *) this;
    }
 
 

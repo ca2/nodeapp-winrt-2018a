@@ -296,7 +296,7 @@ namespace metrowin
 
 
       // capture and focus apply to all windows
-      static ::ca::window * PASCAL GetCapture();
+      static ::user::interaction * PASCAL GetCapture();
       virtual ::user::interaction * set_capture(::user::interaction * pinterface = NULL);
       virtual ::user::interaction * release_capture();
       virtual ::user::interaction * get_capture();

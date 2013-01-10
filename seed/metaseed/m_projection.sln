@@ -22,7 +22,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_uinteraction", "..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_projection", "..\..\..\app-core\appseed\projection\m_projection.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_projection", "..\..\..\app-core\appseed\projection\winmetro_app_core_projection.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_projection", "..\..\..\app-core\appseed\projection\winmetro_projection.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -406,15 +406,15 @@ Global
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.memdleak|x64.ActiveCfg = Release|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.memdleak|x64.Build.0 = Release|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.memdleak|x64.Deploy.0 = Release|x64
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.ActiveCfg = Release|ARM
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Build.0 = Release|ARM
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Deploy.0 = Release|ARM
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.ActiveCfg = profiler|ARM
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Build.0 = profiler|ARM
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|ARM.Deploy.0 = profiler|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.ActiveCfg = profiler|Win32
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Build.0 = profiler|Win32
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|Win32.Deploy.0 = profiler|Win32
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.ActiveCfg = Release|x64
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Build.0 = Release|x64
-		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Deploy.0 = Release|x64
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.ActiveCfg = profiler|x64
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Build.0 = profiler|x64
+		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.profiler|x64.Deploy.0 = profiler|x64
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.Release|ARM.ActiveCfg = Release|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.Release|ARM.Build.0 = Release|ARM
 		{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}.Release|ARM.Deploy.0 = Release|ARM

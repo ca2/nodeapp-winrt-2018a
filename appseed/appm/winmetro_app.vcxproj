@@ -130,7 +130,7 @@
     <IncludePath>$(VCInstallDir)include;$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <PackageCertificateKeyFile>m_app.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>winmetro_app.pfx</PackageCertificateKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='basis|Win32'">
     <OutDir>$(SolutionDir)..\..\..\stage\x86\</OutDir>

@@ -199,7 +199,7 @@
     <None Include="..\..\stage\matter\msvc++\msvcr110d.dll" />
     <None Include="..\..\stage\matter\msvc++\vccorlib110d.dll" />
     <None Include="..\..\thirdparty\binary\m_freetype.dll" />
-    <None Include=".\m_app.pfx" />
+    <None Include="winmetro_app.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\app\appseed\ca2\m_ca2.vcxproj">

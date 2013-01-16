@@ -44,11 +44,11 @@
     <AppxManifest Include="Package.appxmanifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".\m_app.pfx" />
     <None Include="..\..\thirdparty\binary\m_freetype.dll" />
     <None Include="..\..\stage\matter\msvc++\msvcp110d.dll" />
     <None Include="..\..\stage\matter\msvc++\msvcr110d.dll" />
     <None Include="..\..\stage\matter\msvc++\vccorlib110d.dll" />
+    <None Include="winmetro_app.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Logo150.png" />

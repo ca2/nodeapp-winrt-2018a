@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="19841115-1951-0422-1977-04027c1c1a6d" Publisher="CN=Camilo" Version="1.0.0.0" />
+  <Identity Name="ca2.nodeapp.appm" Publisher="CN=Camilo" Version="1.0.0.0" />
   <Properties>
-    <DisplayName>appm</DisplayName>
+    <DisplayName>ca2.nodeapp.appm</DisplayName>
     <PublisherDisplayName>ca2 Desenvolvimento de Software Ltda.</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>

@@ -79,7 +79,9 @@ uint32_t __thread_entry(void * pParam)
       {
          // inherit parent's module state
          ___THREAD_STATE* pThreadState = __get_thread_state();
+
          pThreadState->m_pModuleState = pStartup->pThreadState->m_pModuleState;
+         pThreadState->m_pCurrentWinThread = pThread;
 
          // set current thread pointer for System.GetThread
          __MODULE_STATE* pModuleState = __get_module_state();
@@ -153,7 +155,8 @@ uint32_t __thread_entry(void * pParam)
 CLASS_DECL_metrowin ::metrowin::thread * __get_thread()
 {
    // check for current thread in module thread state
-   __MODULE_THREAD_STATE* pState = __get_module_thread_state();
+   //__MODULE_THREAD_STATE* pState = __get_module_thread_state();
+   ___THREAD_STATE* pState =  __get_thread_state();
    ::metrowin::thread* pThread = pState->m_pCurrentWinThread;
    return pThread;
 }
@@ -162,7 +165,8 @@ CLASS_DECL_metrowin ::metrowin::thread * __get_thread()
 CLASS_DECL_metrowin void __set_thread(::radix::thread * pthread)
 {
    // check for current thread in module thread state
-   __MODULE_THREAD_STATE* pState = __get_module_thread_state();
+   //__MODULE_THREAD_STATE* pState = __get_module_thread_state();
+   ___THREAD_STATE* pState =  __get_thread_state();
    pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::ca::thread_sp::m_p);
 }
 
@@ -773,10 +777,12 @@ namespace metrowin
          }
       }
       sl.unlock();
+#ifndef METROWIN
       if(m_spwindowMessage->IsWindow())
       {
          m_spwindowMessage->SetTimer((uint_ptr)-2, iMin, NULL);
       }
+#endif
    }
 
    void thread::unset_timer(::user::interaction * pui, uint_ptr nIDEvent)

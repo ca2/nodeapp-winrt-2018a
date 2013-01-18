@@ -186,7 +186,7 @@ namespace metrowin
 
    bool path::is_equal(const char * lpcsz1, const char * lpcsz2)
    {
-      return System.file_system().cmp(lpcsz1, lpcsz2) == 0;
+      return System.file().path().is_equal(lpcsz1, lpcsz2);
    }
 
    void dir::root_ones(stringa & stra, ::ca::application * papp)

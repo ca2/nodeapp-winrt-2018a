@@ -17,9 +17,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os2", "..\..\os2\m_os2.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_uinteraction", "..\..\..\app-core\appseed\uinteraction\m_uinteraction.vcxproj", "{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_projection", "..\..\..\app-core\appseed\projection\m_projection.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_cidadedecuritiba_alphaclock", "..\..\..\app-cidadedecuritiba\appseed\alphaclock\m_alphaclock.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_projection", "..\..\..\app-core\appseed\projection\winmetro_projection.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_cidadedecuritiba_alphaclock", "..\..\..\app-cidadedecuritiba\appseed\alphaclock\winmetro_alphaclock.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -349,15 +349,14 @@ Global
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.ActiveCfg = Release|x64
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Build.0 = Release|x64
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.memdleak|x64.Deploy.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.ActiveCfg = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Build.0 = Release|ARM
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Deploy.0 = Release|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.ActiveCfg = profiler|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Build.0 = profiler|ARM
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|ARM.Deploy.0 = profiler|ARM
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.ActiveCfg = profiler|Win32
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Build.0 = profiler|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|Win32.Deploy.0 = profiler|Win32
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.ActiveCfg = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Build.0 = Release|x64
-		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Deploy.0 = Release|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.ActiveCfg = profiler|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Build.0 = profiler|x64
+		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.profiler|x64.Deploy.0 = profiler|x64
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.ActiveCfg = Release|ARM
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Build.0 = Release|ARM
 		{1DC17004-A99D-40CA-80F4-537FFED13D2A}.Release|ARM.Deploy.0 = Release|ARM

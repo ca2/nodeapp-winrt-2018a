@@ -675,17 +675,18 @@ namespace metrowin
 
       ::ca::graphics_path_sp path(get_app());
 
+      double pi = 3.1415927f;
 
       rect rect(x1, y1, x2, y2);
 
       double centerx    = (x2 + x1) / 2.0;
       double centery    = (y2 + y1) / 2.0;
 
-      double start      = atan2(y3 - centery, x3 - centerx);
-      double end        = atan2(y4 - centery, x4 - centerx);
+      double start      = atan2(y3 - centery, x3 - centerx) * 180.0 / pi;
+      double end        = atan2(y4 - centery, x4 - centerx) * 180.0 / pi;
 
       path->begin_figure(false, ::ca::fill_mode_winding);
-      path->add_arc(rect, (int) start, (int) end);
+      path->add_arc(rect, (int) start, (int) fmod(end + 360.0 - start, 360.0));
       path->end_figure(false);
 
       return this->path(path);
@@ -1655,7 +1656,7 @@ namespace metrowin
       HRESULT hr = TlsGetWriteFactory()->CreateTextLayout(
          wstr,                // The string to be laid out and formatted.
          wstr.get_length(),   // The length of the string.
-         (IDWriteTextFormat *) m_spfont->get_os_data(),    // The text format to apply to the string (contains font information, etc).
+         (IDWriteTextFormat *) get_os_font(),    // The text format to apply to the string (contains font information, etc).
          1024.f * 1024.f,               // The width of the layout box.
          1024.f * 1024.f,        // The height of the layout box.
          &playout  // The IDWriteTextLayout interface pointer.
@@ -1670,7 +1671,7 @@ namespace metrowin
       HRESULT hr2 = TlsGetWriteFactory()->CreateTextLayout(
          wstr2,                // The string to be laid out and formatted.
          wstr2.get_length(),   // The length of the string.
-         (IDWriteTextFormat *) m_spfont->get_os_data(),    // The text format to apply to the string (contains font information, etc).
+         (IDWriteTextFormat *) get_os_font(),    // The text format to apply to the string (contains font information, etc).
          1024.f * 1024.f,               // The width of the layout box.
          1024.f * 1024.f,        // The height of the layout box.
          &playout2  // The IDWriteTextLayout interface pointer.

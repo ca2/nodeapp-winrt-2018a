@@ -138,7 +138,7 @@ namespace metrowin
 
       m_spgraphicsMap->CreateCompatibleDC(NULL);
       
-      if(!m_spbitmapMap->CreateDIBSection(m_spgraphicsMap, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, NULL, NULL))
+      if(!m_spbitmapMap->CreateDIBSection(m_spgraphicsMap, &m_info, DIB_RGB_COLORS, (void **) &m_pcolorref, &scan, NULL, NULL))
       {
 
          cx       = 0;

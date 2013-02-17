@@ -455,7 +455,23 @@ namespace metrowin
          }
       }
 #else
-      throw todo(get_app());
+      stra_dup stra;
+      ::dir::ls(stra, lpcsz);
+      for(int i = 0; i < stra.get_count(); i++)
+      {
+         string strPath = stra[i];
+         string strName = System.file().name_(strPath);
+         if(::dir::is(strPath))
+            continue;
+         if(pstraPath != NULL)
+         {
+            pstraPath->add(strPath);
+         }
+         if(pstraTitle != NULL)
+         {
+            pstraTitle->add(strName);
+         }
+      }
 #endif
    }
 
@@ -481,7 +497,23 @@ namespace metrowin
          }
       }
 #else
-      throw todo(get_app());
+      stra_dup stra;
+      ::dir::ls(stra, lpcsz);
+      for(int i = 0; i < stra.get_count(); i++)
+      {
+         string strPath = stra[i];
+         string strName = System.file().name_(strPath);
+         if(!::dir::is(strPath))
+            continue;
+         if(pstraPath != NULL)
+         {
+            pstraPath->add(strPath);
+         }
+         if(pstraTitle != NULL)
+         {
+            pstraTitle->add(strName);
+         }
+      }
 #endif
    }
 

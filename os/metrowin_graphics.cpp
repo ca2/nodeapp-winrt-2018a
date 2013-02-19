@@ -17,6 +17,8 @@ namespace metrowin
       ca(papp)
    {
 
+      m_sppen.create(papp);
+
       m_pdc       = NULL;
 
       m_player    = NULL;
@@ -1424,7 +1426,7 @@ namespace metrowin
 
                keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
-               return System.imaging().true_blend(this, point(x, y), rectText.size(), dib1->get_graphics(), null_point());
+               return Application.m_visual.imaging().true_blend(this, point(x, y), rectText.size(), dib1->get_graphics(), null_point());
 
                /*BLENDFUNCTION bf;
                bf.BlendOp     = AC_SRC_OVER;
@@ -1480,7 +1482,7 @@ namespace metrowin
 
                keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
-               return System.imaging().true_blend(this, point((int64_t) x, (int64_t) y), rectText.size(), dib1->get_graphics(), null_point());
+               return Application.m_visual.imaging().true_blend(this, point((int64_t) x, (int64_t) y), rectText.size(), dib1->get_graphics(), null_point());
 
                /*BLENDFUNCTION bf;
                bf.BlendOp     = AC_SRC_OVER;
@@ -2606,7 +2608,7 @@ namespace metrowin
    keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
 
-   return System.imaging().true_blend(this, ptDest, size, pdibWork->get_graphics(), ptSrc); 
+   return Application.m_visual.imaging().true_blend(this, ptDest, size, pdibWork->get_graphics(), ptSrc); 
 
 
    }

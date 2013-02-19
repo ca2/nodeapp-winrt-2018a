@@ -429,9 +429,9 @@ namespace metrowin
    window::~window()
    {
 
-      if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).m_pwindowmap != NULL)
+      if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).user().m_pwindowmap != NULL)
       {
-         Sys(m_papp).m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
+         Sys(m_papp).user().m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
       single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_pthread->m_mutex, TRUE);
@@ -1451,7 +1451,7 @@ restart_mouse_hover_check:
          }
 
          ::gen::message::key * pkey = (::gen::message::key *) pbase;
-         ::user::interaction * puiFocus = dynamic_cast < ::user::interaction * > (Application.get_keyboard_focus());
+         ::user::interaction * puiFocus = dynamic_cast < ::user::interaction * > (Application.user().get_keyboard_focus());
          if(puiFocus != NULL 
             && puiFocus->IsWindow()
             && puiFocus->GetTopLevelParent() != NULL)
@@ -4343,17 +4343,24 @@ throw todo(get_app());
    void window::GetClientRect(__rect64 * lprect)
    {
       ASSERT(::IsWindow(get_handle())); 
+
+      GetWindowRect(lprect);
+
+      lprect->right -= lprect->left;
+      lprect->left = 0;
+      lprect->bottom -= lprect->top;
+      lprect->top = 0;
       // if it is temporary window - probably not ca2 wrapped window
-      if(m_pguie == NULL || m_pguie == this)
+      //if(m_pguie == NULL || m_pguie == this)
       {
-         throw todo(get_app());
+        // throw todo(get_app());
          //rect rect32;
          //::GetClientRect(get_handle(), rect32);
          //::copy(lprect, rect32);
       }
-      else
+      //else
       {
-         interaction::GetClientRect(lprect);
+        // interaction::GetClientRect(lprect);
       }
    }
 

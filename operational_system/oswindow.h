@@ -26,6 +26,7 @@ namespace user
 
 
    class interaction;
+   class interaction_base;
 
 
 } // namespace user
@@ -46,8 +47,8 @@ public:
 
 
    ///static oswindow_dataptra * s_pdataptra;
-   static int find(::user::interaction * pui);
-   static oswindow_data * get(::user::interaction * pui);
+   static int find(::user::interaction_base * pui);
+   static oswindow_data * get(::user::interaction_base * pui);
 
 
 
@@ -56,7 +57,7 @@ public:
 
    oswindow();
    oswindow(const ::ca::null & null);
-   oswindow(::user::interaction * pui);
+   oswindow(::user::interaction_base * pui);
    oswindow(const oswindow & oswindow);
    oswindow(const void * p);
    oswindow(const LPARAM & lparam);
@@ -75,7 +76,7 @@ public:
    }
 
 
-   static bool remove(::user::interaction * pui);
+   static bool remove(::user::interaction_base * pui);
 
 
    oswindow & operator = (const oswindow & window);
@@ -99,6 +100,8 @@ public:
 
    ::user::interaction * window();
    ::user::interaction * window() const;
+
+   virtual Platform::Agile<Windows::UI::Core::CoreWindow> get_os_window();
 
 
 };

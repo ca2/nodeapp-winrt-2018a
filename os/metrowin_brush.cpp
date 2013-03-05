@@ -197,7 +197,7 @@ namespace metrowin
             // declared array of D2D1_GRADIENT_STOP structs.
             HRESULT hr = pdc->m_pdc->CreateGradientStopCollection(gradientstops, 2, D2D1_GAMMA_2_2, D2D1_EXTEND_MODE_CLAMP, &pgradientstops);
 
-            hr = pdc->m_pdc->CreateLinearGradientBrush(&prop, NULL, pgradientstops, (ID2D1LinearGradientBrush **) &m_plineargradientbrush);
+            hr = pdc->m_pdc->CreateLinearGradientBrush(prop, pgradientstops, (ID2D1LinearGradientBrush **) &m_plineargradientbrush);
 
             pgradientstops->Release();
 

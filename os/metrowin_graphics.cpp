@@ -83,12 +83,12 @@ namespace metrowin
 
    void graphics::assert_valid() const
    {
-      ::radix::object::assert_valid();
+      ::ca::object::assert_valid();
    }
 
    void graphics::dump(dump_context & dumpcontext) const
    {
-      ::radix::object::dump(dumpcontext);
+      ::ca::object::dump(dumpcontext);
 
       dumpcontext << "get_handle1() = " << get_handle1();
       dumpcontext << "\nm_hAttribDC = " << get_handle2();
@@ -1164,7 +1164,7 @@ namespace metrowin
    bool graphics::FillRectangle(int x1, int y1, int x2, int y2)
    { 
 
-      if(m_spbrush->get_os_data() == NULL)
+      if(get_os_brush() == NULL)
          return true;
 
       D2D1_RECT_F r;
@@ -1174,7 +1174,7 @@ namespace metrowin
       r.right     = (FLOAT) x2;
       r.bottom    = (FLOAT) y2;
 
-      m_pdc->FillRectangle(r, (ID2D1Brush *) m_spbrush->get_os_data());
+      m_pdc->FillRectangle(r, (ID2D1Brush *) get_os_brush());
 
       return true;
 
@@ -1426,7 +1426,7 @@ namespace metrowin
 
                keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
-               return Application.m_visual.imaging().true_blend(this, point(x, y), rectText.size(), dib1->get_graphics(), null_point());
+               return System.visual().imaging().true_blend(this, point(x, y), rectText.size(), dib1->get_graphics(), null_point());
 
                /*BLENDFUNCTION bf;
                bf.BlendOp     = AC_SRC_OVER;
@@ -1441,7 +1441,7 @@ namespace metrowin
       }
 
       //ASSERT(get_handle1() != NULL); 
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
       return TextOut(x, y, str, (int) str.get_length()); 
 
    } // call virtual
@@ -1482,7 +1482,7 @@ namespace metrowin
 
                keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
-               return Application.m_visual.imaging().true_blend(this, point((int64_t) x, (int64_t) y), rectText.size(), dib1->get_graphics(), null_point());
+               return System.visual().imaging().true_blend(this, point((int64_t) x, (int64_t) y), rectText.size(), dib1->get_graphics(), null_point());
 
                /*BLENDFUNCTION bf;
                bf.BlendOp     = AC_SRC_OVER;
@@ -1497,7 +1497,7 @@ namespace metrowin
       }
 
       //ASSERT(get_handle1() != NULL); 
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
       return TextOut(x, y, str, (int) str.get_length()); 
 
    } // call virtual
@@ -2857,7 +2857,7 @@ namespace metrowin
 
    ::ca::brush* graphics::GetHalftoneBrush(::ca::application * papp)
    {
-      /*      gen::LockGlobals(CRIT_HALFTONEBRUSH);
+      /*      ::ca::LockGlobals(CRIT_HALFTONEBRUSH);
       if (gen_HalftoneBrush == NULL)
       {
       WORD grayPattern[8];
@@ -2872,7 +2872,7 @@ namespace metrowin
       }
       if (!gen_WingdixTerm)
       gen_WingdixTerm = (char)!atexit(&__win_gdi_x_term);
-      gen::UnlockGlobals(CRIT_HALFTONEBRUSH);
+      ::ca::UnlockGlobals(CRIT_HALFTONEBRUSH);
 
       //      return ::metrowin::brush::from_handle(papp, gen_HalftoneBrush);*/
       return NULL;
@@ -3093,7 +3093,7 @@ namespace metrowin
       /*      hdc_map* pMap = afxMapHDC();
       if (pMap != NULL && pMap->lookup_permanent(get_handle1()) == this)
       {
-      TRACE(::radix::trace::category_AppMsg, 0, "Cannot Set Output hDC on Attached graphics.\n");
+      TRACE(::ca::trace::category_AppMsg, 0, "Cannot Set Output hDC on Attached graphics.\n");
       ASSERT(FALSE);
       }*/
 //#endif
@@ -3111,7 +3111,7 @@ namespace metrowin
       /*      hdc_map* pMap = afxMapHDC();
       if (pMap != NULL && pMap->lookup_permanent(get_handle1()) == this)
       {
-      TRACE(::radix::trace::category_AppMsg, 0, "Cannot Release Output hDC on Attached graphics.\n");
+      TRACE(::ca::trace::category_AppMsg, 0, "Cannot Release Output hDC on Attached graphics.\n");
       ASSERT(FALSE);
       }*/
 //#endif
@@ -3875,7 +3875,7 @@ namespace metrowin
       //   HRGN hRgn = ::CreateRectRgn(0, 0, 0, 0);
       //   if (::GetClipRgn(get_handle1(), hRgn) < 0 || !::SelectClipRgn(get_handle2(), hRgn))
       //   {
-      //      TRACE(::radix::trace::category_AppMsg, 0, "Error: unable to transfer clip region in graphics::SelectClipPath!\n");
+      //      TRACE(::ca::trace::category_AppMsg, 0, "Error: unable to transfer clip region in graphics::SelectClipPath!\n");
       //      bResult = FALSE;
       //   }
       //   ::DeleteObject(hRgn);
@@ -4048,7 +4048,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = gen::international::utf8_to_unicode(string(lpszString, nCount));
+      wstring wstr = ::ca::international::utf8_to_unicode(string(lpszString, nCount));
       return ::DrawTextW(get_handle1(), wstr, (int) wcslen(wstr), lpRect, nFormat); */
 
       return draw_text(string(lpszString, nCount), lpRect, nFormat);
@@ -4063,7 +4063,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
       return ::DrawTextW(get_handle1(), (const wchar_t *)wstr, (int)wcslen(wstr), lpRect, nFormat); */
 
       try
@@ -4176,7 +4176,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = gen::international::utf8_to_unicode(string(lpszString, nCount));
+      wstring wstr = ::ca::international::utf8_to_unicode(string(lpszString, nCount));
       return ::DrawTextExW(get_handle1(), const_cast<wchar_t *>((const wchar_t *)wstr), (int)wcslen(wstr), lpRect, nFormat, lpDTParams); 
    }
 
@@ -4186,7 +4186,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
       return ::DrawTextExW(get_handle1(), const_cast<wchar_t *>((const wchar_t *)wstr), (int)wcslen(wstr), lpRect, nFormat, lpDTParams); 
    }
 
@@ -4253,7 +4253,7 @@ namespace metrowin
       if(iIndex < 0)
          return size(0, 0);
 
-      wstring wstr = gen::international::utf8_to_unicode(lpszString, nCount);
+      wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
 
       strsize iRange = 0;
       strsize i = 0;
@@ -4261,10 +4261,10 @@ namespace metrowin
       const char * psz = lpszString;
       while(i < iIndex)
       {
-         iLen = gen::str::utf8_char(psz).length();
+         iLen = ::ca::str::utf8_char(psz).length();
          iRange++;
          i += iLen;
-         psz = gen::str::utf8_inc(psz);
+         psz = ::ca::str::utf8_inc(psz);
          if(psz == NULL)
             break;
          if(*psz == '\0')
@@ -4390,7 +4390,7 @@ namespace metrowin
 
       //single_lock slGdiplus(&System.m_mutexGdiplus, TRUE);
 
-      //wstring wstr = gen::international::utf8_to_unicode(lpszString, nCount);
+      //wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
 
       //Gdiplus::RectF box;
 
@@ -4410,7 +4410,7 @@ namespace metrowin
       return size(0, 0);
       SIZE size;
       string str(lpszString, nCount);
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
       if(!::GetTextExtentPoint32W(get_handle2(), wstr, (int)wstr.get_length(), &size))
       {
       return class size(0, 0);
@@ -4423,7 +4423,7 @@ namespace metrowin
       /*      if(get_handle2() == NULL)
       return size(0, 0);
       SIZE size;
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
       if(!::GetTextExtentPoint32W(get_handle2(), wstr, (int)wstr.get_length(), &size))
       {
       return class size(0, 0);
@@ -4477,7 +4477,7 @@ namespace metrowin
       //if(m_pdc == NULL)
       //   return size(0, 0);
 
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
 
       //Gdiplus::RectF box;
 
@@ -4508,7 +4508,7 @@ namespace metrowin
       //ASSERT(get_handle1() != NULL);
       //SIZE size;
       //string str(lpszString, nCount);
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
       //VERIFY(::GetTextExtentPoint32W(get_handle1(), wstr, (int)wstr.get_length(), &size));
       //return size;
    }
@@ -4520,7 +4520,7 @@ namespace metrowin
 
       //ASSERT(get_handle1() != NULL);
       //SIZE size;
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
       //VERIFY(::GetTextExtentPoint32W(get_handle1(), wstr, (int)wstr.get_length(), &size));
       //return size;
    }
@@ -4585,7 +4585,7 @@ namespace metrowin
       if(iIndex < 0)
          return false;
 
-      wstring wstr = gen::international::utf8_to_unicode(lpszString, nCount);
+      wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
 
       strsize iRange = 0;
       strsize i = 0;
@@ -4593,10 +4593,10 @@ namespace metrowin
       const char * psz = lpszString;
       while(i < iIndex)
       {
-         iLen = gen::str::utf8_char(psz).length();
+         iLen = ::ca::str::utf8_char(psz).length();
          iRange++;
          i += iLen;
-         psz = gen::str::utf8_inc(psz);
+         psz = ::ca::str::utf8_inc(psz);
          if(psz == NULL)
             break;
          if(*psz == '\0')
@@ -4674,7 +4674,7 @@ namespace metrowin
 
       //single_lock slGdiplus(&System.m_mutexGdiplus, TRUE);
 
-      //wstring wstr = gen::international::utf8_to_unicode(lpszString, nCount);
+      //wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
 
       //Gdiplus::RectF box;
 
@@ -4753,7 +4753,7 @@ namespace metrowin
       //if(m_pdc == NULL)
       //   return false;
 
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
 
       //Gdiplus::RectF box;
 
@@ -4905,11 +4905,11 @@ namespace metrowin
    // IMPLEMENT_DYNAMIC(user_exception, base_exception)
    //user_exception _simpleUserException(FALSE, __IDS_USER_EXCEPTION);
 
-   // IMPLEMENT_DYNCREATE(graphics, ::radix::object)
+   // IMPLEMENT_DYNCREATE(graphics, ::ca::object)
    // IMPLEMENT_DYNAMIC(CClientDC, graphics)
    // IMPLEMENT_DYNAMIC(CWindowDC, graphics)
    // IMPLEMENT_DYNAMIC(CPaintDC, graphics)
-   // IMPLEMENT_DYNCREATE(::ca::graphics_object, ::radix::object)
+   // IMPLEMENT_DYNCREATE(::ca::graphics_object, ::ca::object)
 
    // IMPLEMENT_DYNAMIC(pen, ::ca::graphics_object)
    // IMPLEMENT_DYNAMIC(::ca::brush, ::ca::graphics_object)
@@ -4990,7 +4990,7 @@ namespace metrowin
 
       string str(lpszString, nCount);
 
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
 
 
       try
@@ -5073,7 +5073,7 @@ namespace metrowin
          double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
          double d3 = d1 * d2;
 
-         status = path.AddString(gen::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+         status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
          path.Transform(pmNew);
 
@@ -5086,7 +5086,7 @@ namespace metrowin
 
          m_pdc->SetTransform(pmNew);
 
-         status = m_pdc->DrawString(gen::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+         status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
          m_pdc->SetTransform(&m);
 
@@ -5207,7 +5207,7 @@ namespace metrowin
 
       //string str(lpszString, nCount);
 
-      //wstring wstr = gen::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca::international::utf8_to_unicode(str);
 
 
       //try
@@ -5287,7 +5287,7 @@ namespace metrowin
       //   double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
       //   double d3 = d1 * d2;
 
-      //   status = path.AddString(gen::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+      //   status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
       //   path.Transform(pmNew);
 
@@ -5300,7 +5300,7 @@ namespace metrowin
 
       //   m_pdc->SetTransform(pmNew);
 
-      //   status = m_pdc->DrawString(gen::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+      //   status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
       //   m_pdc->SetTransform(&m);
 
@@ -5313,7 +5313,7 @@ namespace metrowin
 
       string str(lpszString, nCount);
 
-      wstring wstr = gen::international::utf8_to_unicode(str);
+      wstring wstr = ::ca::international::utf8_to_unicode(str);
 
 
       try
@@ -5396,7 +5396,7 @@ namespace metrowin
          double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
          double d3 = d1 * d2;
 
-         status = path.AddString(gen::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+         status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
          path.Transform(pmNew);
 
@@ -5409,7 +5409,7 @@ namespace metrowin
 
          m_pdc->SetTransform(pmNew);
 
-         status = m_pdc->DrawString(gen::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+         status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
          m_pdc->SetTransform(&m);
 
@@ -5863,9 +5863,15 @@ namespace metrowin
    bool graphics::fill_path(::ca::graphics_path * ppath)
    {
 
+      keeper < bool > keepPreviousFill(&ppath->m_bFill, true, ppath->m_bFill, true);
+
+      ppath->m_bFill = true;
+
+      ppath->m_bUpdated = false;
+
       m_pdc->FillGeometry(METROWIN_PATH(ppath)->get_os_path(), get_os_brush());
 
-      //HRESULT hr = m_pdc->Flush();
+      HRESULT hr = m_pdc->Flush();
 
       return true;
 

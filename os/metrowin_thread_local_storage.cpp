@@ -148,7 +148,7 @@ process_local_object::~process_local_object()
 /////////////////////////////////////////////////////////////////////////////
 // Init/Term for thread/process local data
 
-/*void CLASS_DECL_metrowin gen::InitLocalData(HINSTANCE hInst)
+/*void CLASS_DECL_metrowin ::ca::InitLocalData(HINSTANCE hInst)
 {
    if (gen_ThreadData != NULL)
       gen_ThreadData->AssignInstance(hInst);

@@ -118,15 +118,15 @@ CLASS_DECL_metrowin void __try_cleanup();
 #pragma comment(lib, "Msimg32.lib") 
 #pragma comment(lib, "Psapi.lib") 
 
-CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, gen::signal_object * pobj);
+CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, ::ca::signal_object * pobj);
 CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, LPMESSAGE lpmsg);
 
-CLASS_DECL_metrowin bool __cdecl __is_idle_message(gen::signal_object * pobj);
+CLASS_DECL_metrowin bool __cdecl __is_idle_message(::ca::signal_object * pobj);
 CLASS_DECL_metrowin bool __cdecl __is_idle_message(MESSAGE * pMsg);
 
 
-CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, gen::signal_object * pobj);
-CLASS_DECL_metrowin void __cdecl __pre_translate_message(gen::signal_object * pobj);
+CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, ::ca::signal_object * pobj);
+CLASS_DECL_metrowin void __cdecl __pre_translate_message(::ca::signal_object * pobj);
 
 //#include "win_printer.h"
 

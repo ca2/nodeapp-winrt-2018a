@@ -150,7 +150,7 @@ namespace metrowin
    }
    bool bitmap::LoadBitmap(const char * lpszResourceName)
    { 
-      //   return Attach(::LoadBitmap(gen::FindResourceHandle(
+      //   return Attach(::LoadBitmap(::ca::FindResourceHandle(
       //lpszResourceName, RT_BITMAP), lpszResourceName));
       return FALSE;
 
@@ -183,7 +183,7 @@ namespace metrowin
 
    bool bitmap::LoadBitmap(UINT nIDResource)
    { 
-      //return Attach(::LoadBitmap(gen::FindResourceHandle(MAKEINTRESOURCE(nIDResource), RT_BITMAP), MAKEINTRESOURCE(nIDResource))); 
+      //return Attach(::LoadBitmap(::ca::FindResourceHandle(MAKEINTRESOURCE(nIDResource), RT_BITMAP), MAKEINTRESOURCE(nIDResource))); 
       return FALSE;
    }
    bool bitmap::LoadOEMBitmap(UINT nIDBitmap)

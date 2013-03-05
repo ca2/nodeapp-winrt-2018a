@@ -3,7 +3,7 @@
 #if FALSE
 
 class CLASS_DECL_metrowin WinResource :
-   virtual public ex1::resource
+   virtual public ::ca::resource
 {
 public:
 
@@ -12,7 +12,7 @@ public:
    virtual ~WinResource();
    
    bool ReadResource(string & str, HINSTANCE hinst, UINT nID, const char * lpcszType);
-   bool ReadResource(ex1::file & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
+   bool ReadResource(::ca::file & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
 
 
 };

@@ -548,9 +548,9 @@ namespace metrowin
          try
          {
 
-            strCommand = gen::str::consume_quoted_value(psz);
-            gen::str::consume_spaces(psz);
-            gen::str::consume(psz, "\"%L\"");
+            strCommand = ::ca::str::consume_quoted_value(psz);
+            ::ca::str::consume_spaces(psz);
+            ::ca::str::consume(psz, "\"%L\"");
             strParam = psz;
 
          }
@@ -858,7 +858,7 @@ namespace metrowin
 
       ::count c;
 
-      ::radix::thread * pthread;
+      ::ca::thread * pthread;
 
       c = ::metrowin::thread::s_threadptra.get_size();
 
@@ -874,7 +874,7 @@ namespace metrowin
          
             try
             {
-               pthread = dynamic_cast < ::radix::thread * >(::metrowin::thread::s_threadptra[i]);
+               pthread = dynamic_cast < ::ca::thread * >(::metrowin::thread::s_threadptra[i]);
                pthread->m_bRun = false;
                pthread->m_p->m_bRun = false;
             }

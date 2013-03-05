@@ -15,7 +15,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin ip_enum :
-      virtual public ::ca4::ip_enum
+      virtual public ::ca::ip_enum
    {
    public:
 

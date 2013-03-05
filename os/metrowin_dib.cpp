@@ -208,11 +208,11 @@ namespace metrowin
       }
 
       if(m_spbitmap.is_set())
-         gen::release(m_spbitmap.m_p);
+         ::ca::release(m_spbitmap.m_p);
 
       
       if(m_spgraphics.is_set())
-         gen::release(m_spgraphics.m_p);
+         ::ca::release(m_spgraphics.m_p);
  
       cx             = 0;
 

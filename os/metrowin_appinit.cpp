@@ -15,21 +15,21 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
-/*bool CLASS_DECL_metrowin gen::WinInit(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+/*bool CLASS_DECL_metrowin ::ca::WinInit(HINSTANCE hInstance, HINSTANCE hPrevInstance,
    __in LPTSTR lpCmdLine, int nCmdShow)
 {
 }*/
 
 
 /////////////////////////////////////////////////////////////////////////////
-// ex1::filesp implementation helpers
+// ::ca::filesp implementation helpers
 
-//#ifdef gen::GetFileName
-//#undef gen::GetFileName
+//#ifdef ::ca::GetFileName
+//#undef ::ca::GetFileName
 //#endif
 
 
-/*UINT CLASS_DECL_metrowin gen::GetFileName(const char * lpszPathName, __out_ecount_opt(nMax) LPTSTR lpszTitle, UINT nMax)
+/*UINT CLASS_DECL_metrowin ::ca::GetFileName(const char * lpszPathName, __out_ecount_opt(nMax) LPTSTR lpszTitle, UINT nMax)
 {
    ASSERT(lpszTitle == NULL ||
       __is_valid_address(lpszTitle, nMax));
@@ -45,7 +45,7 @@
       return lstrlen(lpszTemp)+1;
 
    // otherwise copy it into the buffer provided
-   ::gen::strncpy_s(lpszTitle, nMax, lpszTemp, _TRUNCATE);
+   ::ca::strncpy_s(lpszTitle, nMax, lpszTemp, _TRUNCATE);
    return 0;
 }
 

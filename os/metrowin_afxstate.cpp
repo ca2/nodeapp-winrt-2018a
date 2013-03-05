@@ -356,7 +356,7 @@ bool CLASS_DECL_metrowin __is_module_dll()
 
 bool CLASS_DECL_metrowin __init_current_state_app()
 {
-   ::radix::application* pApp = __get_module_state()->m_pCurrentWinApp;
+   ::ca::application* pApp = __get_module_state()->m_pCurrentWinApp;
    if (pApp != NULL && !pApp->initialize_instance())
    {
       // Init Failed

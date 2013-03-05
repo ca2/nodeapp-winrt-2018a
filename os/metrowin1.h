@@ -72,7 +72,7 @@ CLASS_DECL_metrowin WNDPROC __get_window_procedure();
 /*typedef void (__MSG_CALL ::ca::window::*__PMSGW)();
    // like '__PMSG' but for ::ca::window derived classes only
 
-typedef void (__MSG_CALL ::radix::thread::*__PMSGT)();
+typedef void (__MSG_CALL ::ca::thread::*__PMSGT)();
    // like '__PMSG' but for thread-derived classes only*/
 #endif
 
@@ -87,13 +87,13 @@ CLASS_DECL_metrowin LONG delete_registry_tree_helper(HKEY hParentKey, const stri
 
 
 CLASS_DECL_metrowin ::metrowin::thread * __get_thread();
-CLASS_DECL_metrowin void __set_thread(::radix::thread * pthread);
+CLASS_DECL_metrowin void __set_thread(::ca::thread * pthread);
 CLASS_DECL_metrowin MSG* __get_current_message();
 
-CLASS_DECL_metrowin void __end_thread(::radix::application * papp, UINT nExitCode, bool bDelete = TRUE);
+CLASS_DECL_metrowin void __end_thread(::ca::application * papp, UINT nExitCode, bool bDelete = TRUE);
 
 CLASS_DECL_metrowin void __init_thread();
-CLASS_DECL_metrowin void __term_thread(::radix::application * papp, HINSTANCE hInstTerm = NULL);
+CLASS_DECL_metrowin void __term_thread(::ca::application * papp, HINSTANCE hInstTerm = NULL);
 
 /////////////////////////////////////////////////////////////////////////////
 // Global functions for access to the one and only application
@@ -108,11 +108,11 @@ CLASS_DECL_metrowin void __term_thread(::radix::application * papp, HINSTANCE hI
 
 
 // Advanced initialization: for overriding default WinMain
-//CLASS_DECL_metrowin bool gen::WinInit(__in HINSTANCE hInstance, __in HINSTANCE hPrevInstance,
+//CLASS_DECL_metrowin bool ::ca::WinInit(__in HINSTANCE hInstance, __in HINSTANCE hPrevInstance,
   // __in_z LPTSTR lpCmdLine, __in int nCmdShow);
 CLASS_DECL_metrowin void __win_term();
 
-CLASS_DECL_metrowin ::radix::application* __get_app();
+CLASS_DECL_metrowin ::ca::application* __get_app();
 CLASS_DECL_metrowin ::user::interaction* __get_main_window();
 //CLASS_DECL_metrowin HINSTANCE CLASS_DECL_metrowin System.m_hInstance;
 CLASS_DECL_metrowin HINSTANCE __get_resource_handle();

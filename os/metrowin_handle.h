@@ -123,16 +123,16 @@ namespace metrowin
 } // namespace metrowin
 
 
-#include "ca/radix/radix_fixed_alloc.h"
+#include "ca/ca/ca_fixed_alloc.h"
 
 template<class TYPE>
 struct ConstructDestruct
 {
-   static void Construct(::radix::object* pObject)
+   static void Construct(::ca::object* pObject)
    { 
       new (pObject) TYPE; 
    }
-   static void Destruct(::radix::object* pObject)
+   static void Destruct(::ca::object* pObject)
    {
       TYPE* p = dynamic_cast < TYPE * > (pObject);
       p->~TYPE();
@@ -183,7 +183,7 @@ public:
    CT * lookup_permanent(HANDLE h);
    CT * lookup_temporary(HANDLE h);
 
-   friend class ::radix::thread;
+   friend class ::ca::thread;
 };
 
 /*class CLASS_DECL_metrowin hwnd_map :
@@ -308,7 +308,7 @@ CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca::app
    //__enable_memory_tracking(bEnable);
 
    // now set the handle in the object
-   HANDLE* ph = pTemp->m_handlea;  // after ::radix::object
+   HANDLE* ph = pTemp->m_handlea;  // after ::ca::object
    ph[0] = h;
    if (HT::s_iHandleCount == 2)
       ph[1] = h;
@@ -380,7 +380,7 @@ void handle_map < HT, CT >::delete_temp()
 
       // zero out the handles
       ASSERT(HT::s_iHandleCount == 1 || HT::s_iHandleCount == 2);
-      HANDLE* ph = pTemp->m_handlea;  // after ::radix::object
+      HANDLE* ph = pTemp->m_handlea;  // after ::ca::object
       ASSERT(ph[0] == h || ph[0] == NULL);
       ph[0] = NULL;
       if (HT::s_iHandleCount == 2)

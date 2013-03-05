@@ -48,7 +48,7 @@ namespace metrowin
       virtual ~window_draw();
 
 
-      virtual bool start();
+      //virtual bool start();
 
       bool UpdateBuffer(LPCRECT lpcrect);
       //void OnPaint(oswindow hwnd, CPaintDC & spgraphics);
@@ -134,7 +134,7 @@ namespace metrowin
       void get_wnda(user::interaction_ptr_array & wndpa);
       void get_wnda(user::oswindow_array & hwnda);
       
-      static UINT c_cdecl ThreadProcRedraw(LPVOID lpv);
+      virtual int32_t run();
 
       virtual UINT RedrawProc();
 
@@ -143,7 +143,7 @@ namespace metrowin
       virtual void synch_redraw();
       virtual void _synch_redraw();
 
-      virtual void message_window_message_handler(gen::signal_object * pobj);
+      virtual void message_window_message_handler(::ca::signal_object * pobj);
 
    };
 

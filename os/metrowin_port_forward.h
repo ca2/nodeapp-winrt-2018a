@@ -11,7 +11,7 @@ namespace metrowin
 
 
    class port_forward :
-      virtual public ::ca4::port_forward
+      virtual public ::ca::port_forward
    {
    public:
 	
@@ -26,7 +26,7 @@ namespace metrowin
 
 /*	   interface IDerivedNATExternalIPAddressCallback : public INATExternalIPAddressCallback
 	   {
-		   IDerivedNATExternalIPAddressCallback( ::ca4::port_forward_change_callbacks* p ) : m_pointer( p ), m_dwRef( 0 ) { };
+		   IDerivedNATExternalIPAddressCallback( ::ca::port_forward_change_callbacks* p ) : m_pointer( p ), m_dwRef( 0 ) { };
 		
 		   HRESULT STDMETHODCALLTYPE NewExternalIPAddress( BSTR bstrNewExternalIPAddress )
 		   {
@@ -48,12 +48,12 @@ namespace metrowin
 		   }
 		
 		   DWORD		m_dwRef;
-		   ::ca4::port_forward_change_callbacks*	m_pointer;
+		   ::ca::port_forward_change_callbacks*	m_pointer;
 	   };
 	
 	   interface IDerivedNATNumberOfEntriesCallback : public INATNumberOfEntriesCallback
 	   {
-		   IDerivedNATNumberOfEntriesCallback( ::ca4::port_forward_change_callbacks* p ) : m_pointer( p ), m_dwRef( 0 ) { };
+		   IDerivedNATNumberOfEntriesCallback( ::ca::port_forward_change_callbacks* p ) : m_pointer( p ), m_dwRef( 0 ) { };
 		
 		   HRESULT STDMETHODCALLTYPE NewNumberOfEntries( long lNewNumberOfEntries )
 		   {
@@ -74,7 +74,7 @@ namespace metrowin
 		   }
 		
 		   DWORD		m_dwRef;
-		   ::ca4::port_forward_change_callbacks*	m_pointer;
+		   ::ca::port_forward_change_callbacks*	m_pointer;
 	   };
 	
 	   // public functions -- there are only a few
@@ -82,7 +82,7 @@ namespace metrowin
 	   port_forward(::ca::application * papp);
 	   virtual ~port_forward();
 	
-	  /* virtual HRESULT ListenForUpnpChanges(::ca4::port_forward_change_callbacks *pCallbacks = NULL);  // NULL==default object; if you provide your own pointer to a port_forward_change_callbacks-derived object it is deleted for you automatically
+	  /* virtual HRESULT ListenForUpnpChanges(::ca::port_forward_change_callbacks *pCallbacks = NULL);  // NULL==default object; if you provide your own pointer to a port_forward_change_callbacks-derived object it is deleted for you automatically
 	   virtual HRESULT StopListeningForUpnpChanges( );  // Stops listenting for UPnP change events on the router and deletes any port_forward_change_callbacks-derived objects
 	
 	   virtual bool GetDeviceInformationUsingThread( oswindow hWnd );  // starts a thread that will get IGD (router) device information; the thread posts a UWM_PORT_FORWARD_ENGINE_THREAD_NOTIFICATION message to hWnd when it's done
@@ -105,7 +105,7 @@ namespace metrowin
 	   void DeinitializeCom();
 	   HRESULT PopulateDeviceInfoContainer( IUPnPDevice* piDevice, device & deviceInfo, oswindow hWnd=NULL );
 	   HRESULT GetNextMapping( IEnumVARIANT* piEnumerator, port_map & mappingContainer );
-	   HRESULT SetChangeEventCallbackPointer(::ca4::port_forward_change_callbacks *pCallbacks);
+	   HRESULT SetChangeEventCallbackPointer(::ca::port_forward_change_callbacks *pCallbacks);
 	
 	   static UINT ThreadForPortRetrieval( LPVOID pVoid );
 	   static UINT ThreadForDeviceInformationRetrieval( LPVOID pVoid );
@@ -124,7 +124,7 @@ namespace metrowin
 	   IDerivedNATNumberOfEntriesCallback*		m_piNumberOfEntriesCallback;
 	
 	   INATEventManager*						m_piEventManager;
-	   ::ca4::port_forward_change_callbacks*			m_pChangeCallbackFunctions;
+	   ::ca::port_forward_change_callbacks*			m_pChangeCallbackFunctions;
 	
 	   bool m_bListeningForUpnpChanges;
 	

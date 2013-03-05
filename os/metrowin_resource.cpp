@@ -16,12 +16,12 @@ WinResource::~WinResource()
 
 
 /*bool WinResource::ReadResource(
-   ex1::filesp & file, 
+   ::ca::filesp & file, 
    UINT nID, 
    const char * lpcszType)
 {
 
-   HINSTANCE hinst = ::gen::FindResourceHandle(MAKEINTRESOURCE(nID), lpcszType);
+   HINSTANCE hinst = ::ca::FindResourceHandle(MAKEINTRESOURCE(nID), lpcszType);
    if(hinst == NULL)
       return false;
    return ReadResource(hinst, file, nID, lpcszType);
@@ -29,7 +29,7 @@ WinResource::~WinResource()
 
 /*bool WinResource::ReadResource(
    HINSTANCE hinst,
-   ex1::filesp & file, 
+   ::ca::filesp & file, 
    UINT nID, 
    const char * lpcszType)
 {
@@ -51,13 +51,13 @@ WinResource::~WinResource()
         try
         {
            // create the .mdb file
-//           ex1::filesp f(lpcszFilePath, ::ex1::file::mode_create | ::ex1::file::mode_write );
+//           ::ca::filesp f(lpcszFilePath, ::ca::file::mode_create | ::ca::file::mode_write );
 
            // write the ::fontopus::user-defined resource to the .mdb file
            spfile->write(lpnRes, dwResSize);
            spfile->Flush();
         }
-        catch(ex1::file_exception_sp * pe)
+        catch(::ca::file_exception_sp * pe)
         {
       #ifdef DEBUG
          g_dumpcontext << "File could not be opened " << e->m_cause << "\n";
@@ -78,7 +78,7 @@ WinResource::~WinResource()
 
 bool WinResource::ReadResource(string & str, HINSTANCE hinst,  UINT nID, const char * lpcszType)
 {
-   gen::memory_file file(get_app());
+   ::primitive::memory_file file(get_app());
    if(!ReadResource(file, hinst, nID, lpcszType))
       return false;
    file.allocate_add_up(1);
@@ -89,7 +89,7 @@ bool WinResource::ReadResource(string & str, HINSTANCE hinst,  UINT nID, const c
 
 
 
-bool WinResource::ReadResource(ex1::file & spfile, HINSTANCE hinst, UINT nID,  const char * lpcszType)
+bool WinResource::ReadResource(::ca::file & spfile, HINSTANCE hinst, UINT nID,  const char * lpcszType)
 {
 
    HRSRC hrsrc = ::FindResource(

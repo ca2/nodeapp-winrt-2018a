@@ -662,9 +662,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::key * pkey = new  ::gen::message::key(get_app());
+      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
 
       spbase = pkey;
 
@@ -691,9 +691,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::key * pkey = new  ::gen::message::key(get_app());
+      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
 
       spbase = pkey;
 
@@ -722,9 +722,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::key * pkey = new  ::gen::message::key(get_app());
+      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
 
       spbase = pkey;
 
@@ -756,9 +756,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -789,9 +789,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -854,9 +854,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::gen::message::base > spbase;
+      ::ca::smart_pointer < ::ca::message::base > spbase;
 
-      gen::message::mouse * pmouse = new  ::gen::message::mouse(get_app());
+      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 
       spbase = pmouse;
 

@@ -151,7 +151,7 @@ namespace metrowin
       memset(&logFont, 0, sizeof(LOGFONT));
       logFont.lfCharSet = DEFAULT_CHARSET;
       logFont.lfHeight = nPointSize;
-      ::gen::strncpy_s(logFont.lfFaceName, _countof(logFont.lfFaceName), lpszFaceName, _TRUNCATE);
+      ::ca::strncpy_s(logFont.lfFaceName, _countof(logFont.lfFaceName), lpszFaceName, _TRUNCATE);
 
       return CreatePointFontIndirect(&logFont, pgraphics);
    }

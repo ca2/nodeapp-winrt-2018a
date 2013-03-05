@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin copydesk : 
-      virtual public ::ca4::copydesk,
+      virtual public ::ca::copydesk,
       virtual public ::ca::window_sp
    {
    public:

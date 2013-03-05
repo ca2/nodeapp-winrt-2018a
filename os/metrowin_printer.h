@@ -10,7 +10,7 @@ namespace metrowin
 
 
       class CLASS_DECL_VMSWIN document_properties :
-         virtual public ::radix::object
+         virtual public ::ca::object
       {
       public:
 

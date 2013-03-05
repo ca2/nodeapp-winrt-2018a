@@ -26,6 +26,7 @@ namespace metrowin
 
    window_draw::window_draw(::ca::application * papp) : 
       ca(papp),
+      ::ca::thread(papp),
       ::ca::window_draw(papp),
       message_window_simple_callback(papp),
       m_mutexRender(papp),
@@ -50,11 +51,12 @@ namespace metrowin
    }
 
 
-   bool window_draw::start()
+/*   bool window_draw::start()
    {
       __begin_thread(get_app(), &window_draw::ThreadProcRedraw, (LPVOID) this);
       return true;
    }
+   */
 
    /*
    void window_draw::OnPaint(oswindow hwnd, CPaintDC & spgraphics)
@@ -64,9 +66,9 @@ namespace metrowin
    }
    */
 
-   void window_draw::message_window_message_handler(gen::signal_object * pobj)
+   void window_draw::message_window_message_handler(::ca::signal_object * pobj)
    {
-      SCAST_PTR(::gen::message::base, pbase, pobj);
+      SCAST_PTR(::ca::message::base, pbase, pobj);
       if(pbase->m_uiMessage == (WM_USER + 1984 + 1977))
       {
          _synch_redraw();
@@ -168,29 +170,29 @@ namespace metrowin
                TRACE("window_draw::_synch_redraw :: during prodevian Performance Analysis Time Frame - %d milliseconds -,", iTimeFrame);
                TRACE("window_draw::_synch_redraw :: failure count has exceeded the maximum count - %d", iMaxFailureCount);
                TRACE("window_draw::_synch_redraw :: Going to try to save some resource that may favor drawing perfomance");
-               if(!System.savings().is_trying_to_save(gen::resource_blur_background))
+               if(!System.savings().is_trying_to_save(::ca::resource_blur_background))
                {
                   TRACE("window_draw::_synch_redraw :: System is not trying to save \"blur background\" resource");
                   TRACE("window_draw::_synch_redraw :: Going to try to save \"blur background\" resource");
-                  System.savings().try_to_save(gen::resource_blur_background);
+                  System.savings().try_to_save(::ca::resource_blur_background);
                }
-               else if(!System.savings().is_trying_to_save(gen::resource_blurred_text_embossing))
+               else if(!System.savings().is_trying_to_save(::ca::resource_blurred_text_embossing))
                {
                   TRACE("window_draw::_synch_redraw :: System is not trying to save \"blurred text embossing\" resource");
                   TRACE("window_draw::_synch_redraw :: Going to try to save \"blurred text embossing\" resource");
-                  System.savings().try_to_save(gen::resource_blurred_text_embossing);
+                  System.savings().try_to_save(::ca::resource_blurred_text_embossing);
                }
-               else if(!System.savings().is_warning(gen::resource_processing))
+               else if(!System.savings().is_warning(::ca::resource_processing))
                {
                   TRACE("window_draw::_synch_redraw :: System is not warning to save \"processing\" resource");
                   TRACE("window_draw::_synch_redraw :: Going to warn to save \"processing\" resource");
-                  System.savings().warn(gen::resource_processing);
+                  System.savings().warn(::ca::resource_processing);
                }
-               else if(!System.savings().is_trying_to_save(gen::resource_processing))
+               else if(!System.savings().is_trying_to_save(::ca::resource_processing))
                {
                   TRACE("window_draw::_synch_redraw :: System is not trying to save \"processing\" resource");
                   TRACE("window_draw::_synch_redraw :: Going to try to save \"processing\" resource");
-                  System.savings().try_to_save(gen::resource_blur_background);
+                  System.savings().try_to_save(::ca::resource_blur_background);
                }
             }
             s_iFrameFailureCount = 0;
@@ -343,6 +345,7 @@ namespace metrowin
 //      ::AttachThreadInput(::GetCurrentThreadId(), WIN_THREAD(System.::ca::thread_sp::m_p)->m_nThreadID, TRUE);
 //      MSG msg;
       s_bRunning = true;
+      m_bRun = true;
       while(m_bRun)
       {
          try
@@ -378,10 +381,9 @@ namespace metrowin
       return 0;
    }
 
-   UINT c_cdecl window_draw::ThreadProcRedraw(LPVOID lpv)
+   int32_t window_draw::run()
    {
-      window_draw * pdraw = (window_draw *) lpv;
-      return pdraw->RedrawProc();
+      return RedrawProc();
    }
 
 
@@ -790,7 +792,7 @@ namespace metrowin
 
       oswindow hwnd = hwndtree.m_oswindow;
 
-      ::user::window_interface * ptwi = System.window_map().get((int_ptr) (void *) hwnd);
+      ::user::window_interface * ptwi = System.user().window_map().get((int_ptr) (void *) hwnd);
 
 #ifdef WINDOWSEX
       if(!::IsWindowVisible(hwnd))

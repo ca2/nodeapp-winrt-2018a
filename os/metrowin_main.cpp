@@ -22,7 +22,7 @@ void __cdecl _null_se_translator(unsigned int uiCode, EXCEPTION_POINTERS * ppoin
 //UINT c_cdecl          win_application_thread_proc(LPVOID);
 /////////////////////////////////////////////////////////////////////////////
 // Standard WinMain implementation
-//  Can be replaced as long as 'gen::WinInit' is called first
+//  Can be replaced as long as '::ca::WinInit' is called first
 
 
 int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ args)
@@ -58,7 +58,7 @@ int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ ar
 
    //pinitmaindata->m_hInstance             = hInstance;
    //pinitmaindata->m_hPrevInstance         = hPrevInstance;
-   //pinitmaindata->m_vssCommandLine        = gen::international::unicode_to_utf8(::GetCommandLineW());
+   //pinitmaindata->m_vssCommandLine        = ::ca::international::unicode_to_utf8(::GetCommandLineW());
    //pinitmaindata->m_nCmdShow              = nCmdShow;
 
    

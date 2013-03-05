@@ -6,7 +6,7 @@ namespace metrowin
 
 #ifdef WINDOWSEX
 
-   class CLASS_DECL_metrowin file_find : public ::radix::object
+   class CLASS_DECL_metrowin file_find : public ::ca::object
    {
    public:
 

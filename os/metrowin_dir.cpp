@@ -156,13 +156,13 @@ namespace metrowin
    string dir::relpath(const char * lpcszSource, const char * lpcszRelative, const char * psz2)
    {
       const char * pszRequest;
-      if(::ca2::is_url(lpcszSource, &pszRequest))
+      if(::ca::is_url(lpcszSource, &pszRequest))
       {
-         if(gen::str::begins(lpcszRelative, "/"))
+         if(::ca::str::begins(lpcszRelative, "/"))
          {
             return path((const char *) string(lpcszSource, pszRequest - lpcszSource), lpcszRelative);
          }
-         else if(*pszRequest == '\0' || gen::str::ends(lpcszSource, "/"))
+         else if(*pszRequest == '\0' || ::ca::str::ends(lpcszSource, "/"))
          {
             return path(lpcszSource, lpcszRelative, psz2);
          }
@@ -173,7 +173,7 @@ namespace metrowin
       }
       else
       {
-         if(gen::str::ends(lpcszSource, "\\") || gen::str::ends(lpcszSource, "/"))
+         if(::ca::str::ends(lpcszSource, "\\") || ::ca::str::ends(lpcszSource, "/"))
          {
             return path(lpcszSource, lpcszRelative, psz2);
          }
@@ -545,7 +545,7 @@ namespace metrowin
       string strPath(lpcszPath);
       if(strPath.get_length() >= MAX_PATH)
       {
-         if(gen::str::begins(strPath, "\\\\"))
+         if(::ca::str::begins(strPath, "\\\\"))
          {
             strPath = "\\\\?\\UNC" + strPath.Mid(1);
          }
@@ -556,7 +556,7 @@ namespace metrowin
       }
       /*
       uint32_t dwAttrib;
-      dwAttrib = GetFileAttributesW(gen::international::utf8_to_unicode(strPath));
+      dwAttrib = GetFileAttributesW(::ca::international::utf8_to_unicode(strPath));
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
          dwAttrib = GetFileAttributes(lpcszPath);
@@ -591,18 +591,18 @@ namespace metrowin
 
       wstring wstrPath;
       
-      //strsize iLen = ::gen::international::utf8_to_unicode_count(strPath);
+      //strsize iLen = ::ca::international::utf8_to_unicode_count(strPath);
       //wstrPath.alloc(iLen + 32);
-      wstrPath = ::gen::international::utf8_to_unicode(strPath);
+      wstrPath = ::ca::international::utf8_to_unicode(strPath);
       if(wstrPath.get_length() >= MAX_PATH)
       {
-         if(::gen::str::begins(wstrPath, L"\\\\"))
+         if(::ca::str::begins(wstrPath, L"\\\\"))
          {
-            ::gen::str::begin(wstrPath, L"\\\\?\\UNC");
+            ::ca::str::begin(wstrPath, L"\\\\?\\UNC");
          }
          else
          {
-            ::gen::str::begin(wstrPath, L"\\\\?\\");
+            ::ca::str::begin(wstrPath, L"\\\\?\\");
          }
       }
 //      uint32_t dwAttrib;
@@ -668,7 +668,7 @@ namespace metrowin
          return true;
       }
       
-      strsize iFind = gen::str::find_ci(".zip:", str);
+      strsize iFind = ::ca::str::find_ci(".zip:", str);
 
       if(papp->m_bZipIsDir && iFind >= 0 && iFind < iLast)
       {
@@ -684,23 +684,23 @@ namespace metrowin
 
       wstring wstrPath;
       
-      //strsize iLen = ::gen::international::utf8_to_unicode_count(str, iLast + 1);
+      //strsize iLen = ::ca::international::utf8_to_unicode_count(str, iLast + 1);
 
       //wstrPath.alloc(iLen + 32);
 
-      wstrPath = ::gen::international::utf8_to_unicode(str, iLast + 1);
+      wstrPath = ::ca::international::utf8_to_unicode(str, iLast + 1);
 
       //OutputDebugStringW(wstrPath);
 
       if(wstrPath.get_length() >= MAX_PATH)
       {
-         if(::gen::str::begins(wstrPath, L"\\\\"))
+         if(::ca::str::begins(wstrPath, L"\\\\"))
          {
-            ::gen::str::begin(wstrPath, L"\\\\?\\UNC");
+            ::ca::str::begin(wstrPath, L"\\\\?\\UNC");
          }
          else
          {
-            ::gen::str::begin(wstrPath, L"\\\\?\\");
+            ::ca::str::begin(wstrPath, L"\\\\?\\");
          }
       }
 //      uint32_t dwAttrib;
@@ -712,7 +712,7 @@ namespace metrowin
       
    //   bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 
-      bIsDir = ::dir::is(gen::international::unicode_to_utf8(wstrPath));
+      bIsDir = ::dir::is(::ca::international::unicode_to_utf8(wstrPath));
       
       m_isdirmap.set(str.Left(iLast + 1), bIsDir, ::GetLastError());
 
@@ -840,7 +840,7 @@ namespace metrowin
          if(!is(stra[i], papp) && ::GetLastError() != ERROR_ACCESS_DENIED)
          {
             
-            if(!::CreateDirectoryW(gen::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
+            if(!::CreateDirectoryW(::ca::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
             {
                uint32_t dwError = ::GetLastError();
                if(dwError == ERROR_ALREADY_EXISTS)
@@ -864,7 +864,7 @@ namespace metrowin
                   catch(...)
                   {
                   }
-                  if(::CreateDirectoryW(gen::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
+                  if(::CreateDirectoryW(::ca::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
                   {
                      m_isdirmap.set(stra[i], true, 0);
                      goto try1;
@@ -909,11 +909,11 @@ namespace metrowin
             }
             else
             {
-               ::DeleteFileW(gen::international::utf8_to_unicode(straPath[i]));
+               ::DeleteFileW(::ca::international::utf8_to_unicode(straPath[i]));
             }
          }
       }
-      return RemoveDirectoryW(gen::international::utf8_to_unicode(psz)) != FALSE;
+      return RemoveDirectoryW(::ca::international::utf8_to_unicode(psz)) != FALSE;
    }
 
 
@@ -1193,7 +1193,7 @@ namespace metrowin
 #else
       return "CurrentUser";
 #endif
-      //return gen::international::unicode_to_utf8(buf);
+      //return ::ca::international::unicode_to_utf8(buf);
    }
 
    string dir::default_userappdata(::ca::application * papp, const char * lpcszPrefix, const char * lpcszLogin, const char * pszRelativePath)
@@ -1267,7 +1267,7 @@ throw todo(get_app());
 
    bool dir::is_inside(const char * pszDir, const char * pszPath, ::ca::application * papp)
    {
-      return gen::str::begins_ci(pszDir, pszPath);
+      return ::ca::str::begins_ci(pszDir, pszPath);
    }
 
    bool dir::has_subdir(::ca::application * papp, const char * pszDir)

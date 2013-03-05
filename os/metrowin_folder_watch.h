@@ -4,8 +4,8 @@ namespace metrowin
 {
 
    class CLASS_DECL_metrowin folder_watch :
-      virtual public ::ex2::folder_watch,
-      virtual public ::radix::thread
+      virtual public ::ca::folder_watch,
+      virtual public ::ca::thread
    {
    public:
       

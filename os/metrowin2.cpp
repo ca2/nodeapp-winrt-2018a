@@ -1,8 +1,8 @@
 #include "framework.h"
 
 // Global helper functions
- CLASS_DECL_metrowin ::radix::application * __get_app()
-{ return dynamic_cast < ::radix::application * > (afxCurrentWinApp); }
+ CLASS_DECL_metrowin ::ca::application * __get_app()
+{ return dynamic_cast < ::ca::application * > (afxCurrentWinApp); }
 
  CLASS_DECL_metrowin HINSTANCE __get_instance_handle()
    { ASSERT(afxCurrentInstanceHandle != NULL);
@@ -16,7 +16,7 @@
    { ASSERT(afxCurrentAppName != NULL); return afxCurrentAppName; }
  CLASS_DECL_metrowin ::user::interaction * __get_main_window()
 {
-      ::radix::thread* pThread = dynamic_cast < ::radix::thread * > (::metrowin::get_thread());
+      ::ca::thread* pThread = dynamic_cast < ::ca::thread * > (::metrowin::get_thread());
       return pThread != NULL ? pThread->GetMainWnd() : NULL; 
  }
 

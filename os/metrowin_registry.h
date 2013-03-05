@@ -6,7 +6,7 @@ namespace metrowin
 
 #if FALSE
    class CLASS_DECL_metrowin registry :
-      virtual public ::radix::object
+      virtual public ::ca::object
    {
    public:
 

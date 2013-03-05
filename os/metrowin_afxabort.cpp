@@ -5,7 +5,7 @@
 
 void CLASS_DECL_metrowin __abort()
 {
-//   TRACE(::radix::trace::category_AppMsg, 0, "__abort called.\n");
+//   TRACE(::ca::trace::category_AppMsg, 0, "__abort called.\n");
 
    __win_term();
    abort();

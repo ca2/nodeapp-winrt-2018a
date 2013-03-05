@@ -6,8 +6,8 @@
 
 
 // Temporary ::collection::map management (locks temp ::collection::map on current thread)
-//CLASS_DECL_metrowin void gen::LockTempMaps(::radix::application * papp);
-//CLASS_DECL_metrowin bool gen::UnlockTempMaps(::radix::application * papp, bool bDeleteTemps = TRUE);
+//CLASS_DECL_metrowin void ::ca::LockTempMaps(::ca::application * papp);
+//CLASS_DECL_metrowin bool ::ca::UnlockTempMaps(::ca::application * papp, bool bDeleteTemps = TRUE);
 
 
 

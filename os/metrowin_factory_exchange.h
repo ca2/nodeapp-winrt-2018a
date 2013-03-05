@@ -4,7 +4,7 @@ namespace metrowin
 {
 
    class CLASS_DECL_metrowin factory_exchange :
-      virtual public ::radix::object
+      virtual public ::ca::object
    {
    public:
       factory_exchange(::ca::application * papp);

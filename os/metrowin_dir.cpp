@@ -299,13 +299,11 @@ namespace metrowin
    void dir::rls_pattern(::ca::application * papp, const char * lpcsz, const char * lpszPattern, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative, base_array < bool, bool > * pbaIsDir, base_array < int64_t, int64_t > * piaSize, e_extract eextract)
    {
 
-#ifdef WINDOWSEX
-
-      stringa straDir;
-      ls_dir(papp, lpcsz, &straDir);
-      for(int i = 0; i < straDir.get_count(); i++)
+      stringa stra;
+      ls_dir(papp, lpcsz, &stra);
+      for(int i = 0; i < stra.get_count(); i++)
       {
-         string strDir = straDir[i];
+         string strDir = stra[i];
          if(strDir == lpcsz)
             continue;
          index iStart = 0;
@@ -323,61 +321,35 @@ namespace metrowin
          }
       }
 
-      file_find filefind;
-      bool bWorking = filefind.FindFile(System.dir().path(lpcsz, lpszPattern)) != FALSE;
-      if(bWorking)
+      stra.remove_all();
+      ls_file(papp, lpcsz, &stra);
+      for(int i = 0; i < stra.get_count(); i++)
       {
-         while(bWorking)
+         string strPath = stra[i];
+         string strName = System.file().name_(strPath);
+         if(!matches_wildcard_criteria(lpszPattern, strName))
+            continue;
+         if(pstraPath != NULL)
          {
-            bWorking = filefind.FindNextFileA() != FALSE;
-            if(!filefind.IsDots() && filefind.GetFilePath() != lpcsz)
-            {
-               if(pstraPath != NULL)
-               {
-                  pstraPath->add(filefind.GetFilePath());
-               }
-               if(pstraTitle != NULL)
-               {
-                  pstraTitle->add(filefind.GetFileName());
-               }
-               if(pstraRelative != NULL)
-               {
-                  pstraRelative->add(filefind.GetFileName());
-               }
-               if(pbaIsDir != NULL)
-               {
-                  pbaIsDir->add(filefind.IsDirectory() != FALSE);
-               }
-               if(piaSize != NULL)
-               {
-                  piaSize->add(filefind.get_length());
-               }
-               /*if(filefind.IsDirectory())
-               {
-                  int iStart = 0;
-                  if(pstraRelative != NULL)
-                  {
-                     iStart = pstraRelative->get_size();
-                  }
-                  rls_pattern(filefind.GetFilePath(), lpszPattern, pstraPath, pstraTitle, pstraRelative, pbaIsDir, piaSize);
-                  if(pstraRelative != NULL)
-                  {
-                     for(int i = iStart; i < pstraRelative->get_size(); i++)
-                     {
-                        pstraRelative->element_at(i) = System.dir().path(filefind.GetFileName(), pstraRelative->element_at(i));
-                     }
-                  }
-               }*/
-            }
+            pstraPath->add(strPath);
+         }
+         if(pstraTitle != NULL)
+         {
+            pstraTitle->add(strName);
+         }
+         if(pstraRelative != NULL)
+         {
+            pstraRelative->add(strName);
+         }
+         if(pbaIsDir != NULL)
+         {
+            pbaIsDir->add(false);
+         }
+         if(piaSize != NULL)
+         {
+            piaSize->add(System.file().length(strPath));
          }
       }
-      else
-      {
-         ::ca::dir::system::rls(papp, lpcsz, pstraPath, pstraTitle, pstraRelative, eextract == extract_all ? extract_all : extract_none);
-      }
-#else
-      throw todo(get_app());
-#endif
    }
 
    void dir::rls_dir(::ca::application * papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative)

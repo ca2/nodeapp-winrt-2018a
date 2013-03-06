@@ -318,13 +318,33 @@ namespace metrowin
 
       nReturnCode = m_psystem->main_start();
 
-      string strLibrary = m_psystem->command().m_varTopicQuery["app"];
+      stringa straLibrary = m_psystem->command().m_varTopicQuery["app"];
 
-      strLibrary.replace("\\", "_");
-      strLibrary.replace("/", "_");
-      strLibrary.replace("-", "_");
+      for(int i = 0; i < m_psystem->command().m_varTopicQuery["app"].get_count(); i++)
+      {
+         string strApp = m_psystem->command().m_varTopicQuery["app"][i];
+      }
 
-      m_psystem->m_mapAppLibrary[m_psystem->command().m_varTopicQuery["app"]] = strLibrary;
+      straLibrary.replace("\\", "_");
+      straLibrary.replace("-", "_");
+
+      for(int i = 0; i < straLibrary.get_count(); i++)
+      {
+         string strLibrary = straLibrary[i];
+         int iFind = strLibrary.find("/");
+         if(iFind >= 0)
+            strLibrary = strLibrary.Left(iFind) + '_' + strLibrary.Mid(iFind + 1);
+         iFind = strLibrary.find("/", iFind + 1);
+         if(iFind >= 0)
+            strLibrary.Truncate(iFind);
+         m_psystem->m_mapAppLibrary[m_psystem->command().m_varTopicQuery["app"][i]] = strLibrary;
+      }
+
+      for(int i = 0; i < m_psystem->command().m_varTopicQuery["app"].get_count(); i++)
+      {
+         string strApp = m_psystem->command().m_varTopicQuery["app"][i];
+      }
+
       m_psystem->m_mapAppLibrary["app/ca2/cube"] = "ca2";
       m_psystem->m_mapAppLibrary["app/ca2/bergedge"] = "ca2";
 

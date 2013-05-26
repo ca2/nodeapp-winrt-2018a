@@ -268,7 +268,7 @@ namespace metrowin
    ID2D1Geometry * region::get_polygon()
    {
 
-      ::ca::graphics_path_sp path(get_app());
+      ::ca::graphics_path_sp path(allocer());
 
       /*point_array pa;
 
@@ -299,7 +299,7 @@ namespace metrowin
    ID2D1Geometry * region::get_poly_polygon()
    {
 
-      ::ca::graphics_path_sp path(get_app());
+      ::ca::graphics_path_sp path(allocer());
 
       point_array pa;
 

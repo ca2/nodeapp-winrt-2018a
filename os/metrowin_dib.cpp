@@ -207,12 +207,9 @@ namespace metrowin
          unmap();
       }
 
-      if(m_spbitmap.is_set())
-         ::ca::release(m_spbitmap.m_p);
+      m_spbitmap.release();
 
-      
-      if(m_spgraphics.is_set())
-         ::ca::release(m_spgraphics.m_p);
+      m_spgraphics.release();
  
       cx             = 0;
 
@@ -1788,7 +1785,7 @@ namespace metrowin
 #endif
     
       // Black blend dib
-      ::ca::dib_sp spdib2(get_app());
+      ::ca::dib_sp spdib2(allocer());
       spdib2->create(cx, cy);
       spdib2->Fill(0, 0, 0, 0);
 
@@ -2843,7 +2840,7 @@ namespace metrowin
 
       if(pbitmap->m_pbitmap == NULL)
       {
-         m_spgraphics.destroy();
+         m_spgraphics.release();
          return false;
       }
 
@@ -2895,7 +2892,7 @@ namespace metrowin
 
       HRESULT hr = METROWIN_BITMAP(m_spbitmapMap.m_p)->m_pbitmap->CopyFromBitmap(&p, METROWIN_BITMAP(m_spbitmap.m_p)->m_pbitmap, &srcRect);
 
-      m_spgraphics.destroy();
+      m_spgraphics.release();
       
       return true;
 

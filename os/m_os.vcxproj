@@ -259,6 +259,7 @@
     <ClInclude Include="..\operational_system\version_dll.h" />
     <ClInclude Include="..\operational_system\version_windows.h" />
     <ClInclude Include="..\operational_system\_.h" />
+    <ClInclude Include="factory_exchange.h" />
     <ClInclude Include="metrowin_application.h" />
     <ClInclude Include="metrowin_bitmap.h" />
     <ClInclude Include="metrowin_brush.h" />
@@ -273,7 +274,6 @@
     <ClInclude Include="metrowin_folder_watch.h" />
     <ClInclude Include="metrowin_font.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="aaa_gen_1_want_to_remove.h" />
     <ClInclude Include="metrowin_graphics.h" />
     <ClInclude Include="metrowin_graphics_object.h" />
     <ClInclude Include="metrowin_graphics_path.h" />
@@ -362,6 +362,7 @@
     <ClCompile Include="metrowin_uac_tools.cpp" />
     <ClCompile Include="metrowin_util.cpp" />
     <ClCompile Include="metrowin_file_find.cpp" />
+    <ClCompile Include="metrowin_printer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="os.def" />

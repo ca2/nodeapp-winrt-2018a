@@ -265,7 +265,7 @@ namespace metrowin
 
 
    directx_application::directx_application(::Platform::String ^ strId) :
-      m_mutex(NULL)
+      m_mutex(::null())
    {
 
       m_ptLastCursor.X = 0;
@@ -318,11 +318,11 @@ namespace metrowin
 
       nReturnCode = m_psystem->main_start();
 
-      stringa straLibrary = m_psystem->command().m_varTopicQuery["app"];
+      stringa straLibrary = m_psystem->command()->m_varTopicQuery["app"];
 
-      for(int i = 0; i < m_psystem->command().m_varTopicQuery["app"].get_count(); i++)
+      for(int i = 0; i < m_psystem->command()->m_varTopicQuery["app"].get_count(); i++)
       {
-         string strApp = m_psystem->command().m_varTopicQuery["app"][i];
+         string strApp = m_psystem->command()->m_varTopicQuery["app"][i];
       }
 
       straLibrary.replace("\\", "_");
@@ -337,12 +337,12 @@ namespace metrowin
          iFind = strLibrary.find("/", iFind + 1);
          if(iFind >= 0)
             strLibrary.Truncate(iFind);
-         m_psystem->m_mapAppLibrary[m_psystem->command().m_varTopicQuery["app"][i]] = strLibrary;
+         m_psystem->m_mapAppLibrary[m_psystem->command()->m_varTopicQuery["app"][i]] = strLibrary;
       }
 
-      for(int i = 0; i < m_psystem->command().m_varTopicQuery["app"].get_count(); i++)
+      for(int i = 0; i < m_psystem->command()->m_varTopicQuery["app"].get_count(); i++)
       {
-         string strApp = m_psystem->command().m_varTopicQuery["app"][i];
+         string strApp = m_psystem->command()->m_varTopicQuery["app"][i];
       }
 
       m_psystem->m_mapAppLibrary["app/ca2/cube"] = "ca2";
@@ -592,7 +592,7 @@ namespace metrowin
 
       m_psystem->defer_initialize_twf();
 
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
+      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
       pdraw->m_directx->Initialize(window, DisplayProperties::LogicalDpi);
 
@@ -618,7 +618,7 @@ namespace metrowin
 
    void directx_application::OnWindowSizeChanged(CoreWindow ^ sender, WindowSizeChangedEventArgs ^ args)
    {
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
+      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
 
       m_rectLastWindowRect = m_window->Bounds;
@@ -636,7 +636,7 @@ namespace metrowin
 
    void directx_application::OnLogicalDpiChanged(Platform::Object ^ sender)
    {
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
+      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
       m_rectLastWindowRect = m_window->Bounds;
 
@@ -648,7 +648,7 @@ namespace metrowin
    void directx_application::OnDisplayContentsInvalidated(Platform::Object ^ sender)
    {
       // Ensure the D3D Device is available for rendering.
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf());
+      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
       pdraw->m_directx->ValidateDevice();
       /*ValidateDevice();
@@ -682,9 +682,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
-      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
+      ::ca::message::key * pkey = canew(::ca::message::key(get_app()));
 
       spbase = pkey;
 
@@ -711,9 +711,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
-      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
+      ::ca::message::key * pkey = canew(::ca::message::key(get_app()));
 
       spbase = pkey;
 
@@ -742,7 +742,7 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
       ::ca::message::key * pkey = new  ::ca::message::key(get_app());
 
@@ -776,7 +776,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
       ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 
@@ -809,7 +809,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
       ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 
@@ -874,7 +874,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
       ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
 

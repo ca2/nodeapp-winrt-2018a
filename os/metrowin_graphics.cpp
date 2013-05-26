@@ -17,7 +17,7 @@ namespace metrowin
       ca(papp)
    {
 
-      m_sppen.create(papp);
+      m_sppen.create(allocer());
 
       m_pdc       = NULL;
 
@@ -675,7 +675,7 @@ namespace metrowin
    bool graphics::Arc(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
    { 
 
-      ::ca::graphics_path_sp path(get_app());
+      ::ca::graphics_path_sp path(allocer());
 
       double pi = 3.1415927f;
 
@@ -1037,7 +1037,7 @@ namespace metrowin
    bool graphics::Polygon(const POINT* lpPoints, int nCount)
    {
 
-      ::ca::graphics_path_sp path(get_app());
+      ::ca::graphics_path_sp path(allocer());
 
       path->begin_figure(get_os_brush() != NULL, ::ca::fill_mode_winding);
 
@@ -1401,21 +1401,21 @@ namespace metrowin
             rect rectText(point(x, y), GetTextExtent(str));
             if(rectIntersect.intersect(rectIntersect, rectText))
             {
-               ::ca::dib_sp dib0(get_app());
+               ::ca::dib_sp dib0(allocer());
                dib0->create(rectText.size());
                dib0->get_graphics()->SetTextColor(RGB(255, 255, 255));
                dib0->get_graphics()->SelectObject(&GetCurrentFont());
                dib0->get_graphics()->SetBkMode(TRANSPARENT);
                dib0->get_graphics()->TextOut(0, 0, str);
                dib0->ToAlpha(0);
-               ::ca::dib_sp dib1(get_app());
+               ::ca::dib_sp dib1(allocer());
                dib1->create(rectText.size());
                dib1->get_graphics()->SetTextColor(GetTextColor());
                dib1->get_graphics()->SelectObject(&GetCurrentFont());
                dib1->get_graphics()->SetBkMode(TRANSPARENT);
                dib1->get_graphics()->TextOut(0, 0, str);
                dib1->channel_from(visual::rgba::channel_alpha, dib0);
-               ::ca::dib_sp dib2(get_app());
+               ::ca::dib_sp dib2(allocer());
                dib2->create(rectText.size());
                dib2->Fill(255, 0, 0, 0);
                dib2->from(point(max(0, m_ptAlphaBlend.x - x), max(0, m_ptAlphaBlend.y - y)),
@@ -1457,21 +1457,21 @@ namespace metrowin
             rect rectText(point((int64_t) x, (int64_t) y), GetTextExtent(str));
             if(rectIntersect.intersect(rectIntersect, rectText))
             {
-               ::ca::dib_sp dib0(get_app());
+               ::ca::dib_sp dib0(allocer());
                dib0->create(rectText.size());
                dib0->get_graphics()->SetTextColor(RGB(255, 255, 255));
                dib0->get_graphics()->SelectObject(&GetCurrentFont());
                dib0->get_graphics()->SetBkMode(TRANSPARENT);
                dib0->get_graphics()->TextOut(0, 0, str);
                dib0->ToAlpha(0);
-               ::ca::dib_sp dib1(get_app());
+               ::ca::dib_sp dib1(allocer());
                dib1->create(rectText.size());
                dib1->get_graphics()->SetTextColor(GetTextColor());
                dib1->get_graphics()->SelectObject(&GetCurrentFont());
                dib1->get_graphics()->SetBkMode(TRANSPARENT);
                dib1->get_graphics()->TextOut(0, 0, str);
                dib1->channel_from(visual::rgba::channel_alpha, dib0);
-               ::ca::dib_sp dib2(get_app());
+               ::ca::dib_sp dib2(allocer());
                dib2->create(rectText.size());
                dib2->Fill(255, 0, 0, 0);
                dib2->from(point((int64_t) max(0, m_ptAlphaBlend.x - x), (int64_t) max(0, m_ptAlphaBlend.y - y)),
@@ -3432,7 +3432,7 @@ namespace metrowin
 
       point point = GetViewportOrg();
 
-      point.Offset(nWidth, nHeight);
+      point.offset(nWidth, nHeight);
 
       return SetViewportOrg(point.x, point.y);
 

@@ -34,6 +34,9 @@ namespace metrowin
       System.factory().creatable_small < copydesk              >  (System.template type_info < ::ca::copydesk          > (), 1);
       System.factory().creatable_small < crypt                 >  (System.template type_info < ::ca::crypt             > (), 1);
       System.factory().creatable_small < ip_enum               >  (System.template type_info < ::ca::ip_enum           > ());
+      System.factory().creatable < printer                     >  (System.template type_info < ::user::printer          > (), 1);
+      
+
       ::metrowin::dib::s_initialize();
    }
 

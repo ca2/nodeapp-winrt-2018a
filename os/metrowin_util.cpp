@@ -188,7 +188,7 @@ int c_cdecl __critical_new_handler(size_t nSize)
    }
 
 //   TRACE(::ca::trace::category_Memory, 0, "ERROR: Critical primitive::memory allocation from safety pool failed!\n");
-   throw memory_exception(NULL);      // oops
+   throw memory_exception(::null());      // oops
 }
 #endif // !___PORTABLE
 

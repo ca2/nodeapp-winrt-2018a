@@ -1,18 +1,25 @@
 #include "framework.h"
 
+
 extern thread_local_storage * gen_ThreadData;
+
 
 namespace metrowin
 {
 
+
    application::application(::ca::application * papp) :
       ca(papp)
    {
-      ::ca::smart_pointer < ::ca::application_base >::set_app(papp);
-      ::ca::thread_sp::create(papp);
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_pAppThread = this;
 
-      m_pfilemanager = NULL;
+      ::ca::thread::m_p.create(allocer());
+      ::ca::thread::m_p->m_p = this;
+
+      WIN_THREAD(::ca::thread::m_p.m_p)->m_pAppThread = this;
+
+      m_psystem = papp->m_psystem;
+
+      m_pfilemanager = ::null();
 
 
 
@@ -23,13 +30,13 @@ namespace metrowin
       m_pszProfileName = NULL;
       m_pszRegistryKey = NULL;
 //      m_pRecentFileList = NULL;
-      m_pdocmanager = NULL;
+//      m_pdocmanager = NULL;
       m_atomApp = m_atomSystemTopic = NULL;
       //m_lpCmdLine = NULL;
 //      m_pCmdInfo = NULL;
 
       // initialize wait cursor state
-      m_nWaitCursorCount = 0;
+//      m_nWaitCursorCount = 0;
       m_hcurWaitCursorRestore = NULL;
 
       // initialize current printer state
@@ -53,12 +60,12 @@ namespace metrowin
 
    void application::_001OnFileNew()
    {
-      ::ca::smart_pointer<::ca::application_base>::m_p->_001OnFileNew(NULL);
+      ::ca::application_base::m_p->_001OnFileNew(NULL);
    }
 
-   ::user::document_interface * application::_001OpenDocumentFile(var varFile)
+   sp(::user::document_interface) application::_001OpenDocumentFile(var varFile)
    {
-      return ::ca::smart_pointer<::ca::application_base>::m_p->_001OpenDocumentFile(varFile);
+      return ::ca::application_base::m_p->_001OpenDocumentFile(varFile);
    }
 
    void application::_001EnableShellOpen()
@@ -199,12 +206,12 @@ namespace metrowin
 
    void application::LockTempMaps()
    {
-      WIN_THREAD(::ca::smart_pointer < ::ca::thread >::m_p)->LockTempMaps();
+      WIN_THREAD(::ca::thread::m_p.m_p)->LockTempMaps();
    }
 
    bool application::UnlockTempMaps(bool bDeleteTemp)
    {
-      return WIN_THREAD(::ca::smart_pointer < ::ca::thread >::m_p)->UnlockTempMaps(bDeleteTemp);
+      return WIN_THREAD(::ca::thread::m_p.m_p)->UnlockTempMaps(bDeleteTemp);
    }
 
 
@@ -220,8 +227,8 @@ namespace metrowin
                __get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock);
          }
    #endif
-         ::ca::LockTempMaps(::ca::smart_pointer < ::ca::application_base >::m_p);
-         ::ca::UnlockTempMaps(::ca::smart_pointer < ::ca::application_base >::m_p, -1);
+         ::ca::LockTempMaps(::ca::application_base::m_p);
+         ::ca::UnlockTempMaps(::ca::application_base::m_p, -1);
       }
       catch( base_exception* e )
       {
@@ -428,7 +435,7 @@ namespace metrowin
 */
    bool application::process_initialize()
    {
-      if(::ca::smart_pointer < ::ca::application_base > ::m_p->is_system())
+      if(::ca::application_base::m_p->is_system())
       {
          if(__get_module_state()->m_pmapHWND == NULL)
          {
@@ -455,14 +462,11 @@ namespace metrowin
 
    bool application::initialize1()
    {
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_ptimera = new ::user::interaction::timer_array(this);
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_puiptra = new user::interaction_ptr_array;
 
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_ptimera->m_papp = dynamic_cast < ::plane::application * >  (::ca::smart_pointer < ::ca::application_base >::m_p);
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->m_puiptra->m_papp = dynamic_cast < ::plane::application * >  (::ca::smart_pointer < ::ca::application_base >::m_p);
+      WIN_THREAD(::ca::thread::m_p.m_p)->set_run();
 
-      WIN_THREAD(smart_pointer < ::ca::thread >::m_p)->set_run();
       return true;
+
    }
 
    bool application::initialize2()
@@ -481,14 +485,14 @@ namespace metrowin
 
       // avoid calling CloseHandle() on our own thread handle
       // during the thread destructor
-      ::ca::thread_sp::m_p->set_os_data(NULL);
+      ::ca::thread::m_p.m_p->set_os_data(NULL);
 
-      WIN_THREAD(::ca::thread_sp::m_p)->m_bRun = false;
-      WIN_THREAD(::ca::smart_pointer<::ca::application_base>::m_p->::ca::thread_sp::m_p)->m_bRun = false;
+      WIN_THREAD(::ca::thread::m_p.m_p)->m_bRun = false;
+      WIN_THREAD(::ca::application_base::m_p.m_p->::ca::thread::m_p.m_p)->m_bRun = false;
 
       int iRet = ::ca::application::exit_instance();
 
-      //::ca::smart_pointer<::ca::application>::destroy();
+      //::c::smart_pointer<::ca::application>::destroy();
 
 
 
@@ -548,12 +552,12 @@ namespace metrowin
       return ::metrowin::graphics::from_handle((HDC) pdata);
    }*/
 #ifdef METROWIN
-   ::user::interaction * application::window_from_os_data(void * pdata)
+   sp(::user::interaction) application::window_from_os_data(void * pdata)
    {
       return ((oswindow) pdata).window();
    }
 
-   ::user::interaction * application::window_from_os_data_permanent(void * pdata)
+   sp(::user::interaction) application::window_from_os_data_permanent(void * pdata)
    {
       return ((oswindow) pdata).window();
    }
@@ -585,7 +589,7 @@ namespace metrowin
       if(__get_thread() == NULL)
          return NULL;
       else
-         return dynamic_cast < ::ca::thread * > (__get_thread()->m_p);
+         return dynamic_cast < ::ca::thread * > (__get_thread()->m_p.m_p);
    }
 
    void application::set_thread(::ca::thread * pthread)
@@ -644,7 +648,7 @@ namespace metrowin
          __MODULE_THREAD_STATE* pThreadState = pModuleState->m_thread;
          ENSURE(pThreadState);
 //         ASSERT(System.GetThread() == NULL);
-         pThreadState->m_pCurrentWinThread = dynamic_cast < class ::metrowin::thread * > (::ca::thread_sp::m_p);
+         pThreadState->m_pCurrentWinThread = dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p);
   //       ASSERT(System.GetThread() == this);
 
          // initialize application state
@@ -656,18 +660,18 @@ namespace metrowin
 
 //      dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca::application >::m_p->::ca::thread_sp::m_p))->m_hThread = __get_thread()->m_hThread;
   //    dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca::application >::m_p->::ca::thread_sp::m_p))->m_nThreadID = __get_thread()->m_nThreadID;
-      dynamic_cast < class ::metrowin::thread * > (::ca::thread_sp::m_p)->m_hThread      =  ::GetCurrentThread();
-      dynamic_cast < class ::metrowin::thread * > (::ca::thread_sp::m_p)->m_nThreadID    =  ::GetCurrentThreadId();
+      dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p)->m_hThread      =  ::GetCurrentThread();
+      dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p)->m_nThreadID    =  ::GetCurrentThreadId();
       
 
    }
 
-   ::ca::window * application::FindWindow(const char * lpszClassName, const char * lpszWindowName)
+   sp(::ca::window) application::FindWindow(const char * lpszClassName, const char * lpszWindowName)
    {
       return window::FindWindow(lpszClassName, lpszWindowName);
    }
 
-   ::ca::window * application::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
+   sp(::ca::window) application::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
    {
       return window::FindWindowEx(hwndParent, hwndChildAfter, lpszClass, lpszWindow);
    }
@@ -726,7 +730,7 @@ namespace metrowin
 
       m_pmaininitdata = (::metrowin::main_init_data *) pdata;
 
-      if(m_pmaininitdata != NULL && ::ca::smart_pointer < ::ca::application_base >::m_p->is_system())
+      if(m_pmaininitdata != NULL && ::ca::application_base::m_p->is_system())
       {
          if(!win_init(m_pmaininitdata))
             return false;
@@ -757,7 +761,7 @@ namespace metrowin
          // fill in the initial state for the application
          // Windows specific initialization (not done if no application)
          m_hInstance = hInstance;
-         (dynamic_cast < ::ca::application * >(m_papp))->m_hInstance = hInstance;
+         (dynamic_cast < ::ca::application * >(m_papp.m_p))->m_hInstance = hInstance;
          //hPrevInstance; // Obsolete.
          m_strCmdLine = strCmdLine;
          m_nCmdShow = nCmdShow;
@@ -779,6 +783,16 @@ namespace metrowin
 
    }
 
+   ::user::printer * application::get_printer(const char * pszDeviceName)
+   {
+      ::metrowin::printer * pprinter = new ::metrowin::printer(get_app());
+      if(!pprinter->open(pszDeviceName))
+      {
+         delete pprinter;
+         return NULL;
+      }
+      return pprinter;
+   }
 
 
 } // namespace metrowin

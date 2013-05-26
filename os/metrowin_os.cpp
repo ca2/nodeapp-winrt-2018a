@@ -624,7 +624,7 @@ namespace metrowin
 
    }
 
-   bool os::create_service(::planebase::application * papp)
+   bool os::create_service(::plane::application * papp)
    {
 
 #ifdef WINDOWSEX
@@ -680,7 +680,7 @@ namespace metrowin
    }
    
 
-   bool os::remove_service(::planebase::application * papp)
+   bool os::remove_service(::plane::application * papp)
    {
 
 #ifdef WINDOWSEX
@@ -726,7 +726,7 @@ namespace metrowin
 
    }
 
-   bool os::start_service(::planebase::application * papp)
+   bool os::start_service(::plane::application * papp)
    {
 
       bool bOk = false;
@@ -773,7 +773,7 @@ namespace metrowin
       return bOk != FALSE;
    }
 
-   bool os::stop_service(::planebase::application * papp)
+   bool os::stop_service(::plane::application * papp)
    {
 
       bool bOk = false;

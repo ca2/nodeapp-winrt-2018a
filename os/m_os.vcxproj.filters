@@ -189,6 +189,9 @@
     <ClCompile Include="metrowin_directx_application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="metrowin_printer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -247,9 +250,6 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\version_windows.h">
       <Filter>Header Files\operational_system</Filter>
-    </ClInclude>
-    <ClInclude Include="aaa_gen_1_want_to_remove.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\operational_system\oswindow.h">
       <Filter>Header Files\operational_system</Filter>
@@ -385,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\standard_integer.h">
       <Filter>Header Files\operational_system</Filter>
+    </ClInclude>
+    <ClInclude Include="factory_exchange.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

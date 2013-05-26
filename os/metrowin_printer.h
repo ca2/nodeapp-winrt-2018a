@@ -3,13 +3,13 @@
 namespace metrowin
 {
    
-   class CLASS_DECL_VMSWIN printer :
+   class CLASS_DECL_metrowin printer :
       virtual public ::user::printer
    {
    public:
 
 
-      class CLASS_DECL_VMSWIN document_properties :
+      class CLASS_DECL_metrowin document_properties :
          virtual public ::ca::object
       {
       public:
@@ -46,4 +46,9 @@ namespace metrowin
 
 
    };
+
+
+
 } // namespace user
+
+

@@ -56,8 +56,6 @@ class hmenu_map;
 class himagelist_map;
 class frame_window;
 class CToolTipCtrl;
-class ::userbase::control_bar;
-class ::user::interaction;
 namespace ca
 {
    
@@ -102,7 +100,7 @@ public:
    int_ptr m_nLastHit;         // last hittest code
 //   TOOLINFO* m_pLastInfo;    // last TOOLINFO structure
    int_ptr m_nLastStatus;      // last flyby status message
-   ::userbase::control_bar* m_pLastStatus; // last flyby status control bar
+   ::user::control_bar* m_pLastStatus; // last flyby status control bar
 };
 
 // forward references required for __MODULE_STATE definition
@@ -168,7 +166,7 @@ public:
    // define thread local portions of module state
    thread_local<__MODULE_THREAD_STATE, slot___MODULE_THREAD_STATE> m_thread;
 
-   //Fusion: declare pointer to base_array of pointers to isolation aware dll wrappers (ex: comctl32).
+   //Fusion: declare pointer to array of pointers to isolation aware dll wrappers (ex: comctl32).
    CDllIsolationWrapperBase** m_pDllIsolationWrappers;
    //Defaults to TRUE. When FALSE - ca2 API will not activate context in __MAINTAIN_STATE2 (used by __MANAGE_STATE).
    bool   m_bSetAmbientActCtx;
@@ -221,7 +219,6 @@ protected:
 // forward references required for ___THREAD_STATE definition
 class view;
 class CToolTipCtrl;
-class ::userbase::control_bar;
 class push_routing_frame;
 class CPushRoutingView;
 

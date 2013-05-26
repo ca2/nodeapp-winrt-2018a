@@ -49,7 +49,7 @@ namespace metrowin
 
    }
 
-   ::ca::file * file::Duplicate() const
+   sp(::ca::file) file::Duplicate() const
    {
       ASSERT_VALID(this);
       ASSERT(m_hFile != (UINT)hFileNull);

@@ -55,7 +55,7 @@ typedef int (__cdecl * _PNH)( size_t );
 
 _PNH CLASS_DECL_metrowin __get_new_handler();
 _PNH CLASS_DECL_metrowin __set_new_handler(_PNH pfnNewHandler);
-CLASS_DECL_ca int c_cdecl __new_handler(size_t nSize);
+CLASS_DECL_c int c_cdecl __new_handler(size_t nSize);
 
 void CLASS_DECL_metrowin __abort();
 
@@ -113,7 +113,7 @@ CLASS_DECL_metrowin void __term_thread(::ca::application * papp, HINSTANCE hInst
 CLASS_DECL_metrowin void __win_term();
 
 CLASS_DECL_metrowin ::ca::application* __get_app();
-CLASS_DECL_metrowin ::user::interaction* __get_main_window();
+CLASS_DECL_metrowin sp(::user::interaction) __get_main_window();
 //CLASS_DECL_metrowin HINSTANCE CLASS_DECL_metrowin System.m_hInstance;
 CLASS_DECL_metrowin HINSTANCE __get_resource_handle();
 CLASS_DECL_metrowin void __set_resource_handle(HINSTANCE hInstResource);

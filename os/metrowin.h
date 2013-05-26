@@ -128,7 +128,7 @@ CLASS_DECL_metrowin bool __cdecl __is_idle_message(MESSAGE * pMsg);
 CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, ::ca::signal_object * pobj);
 CLASS_DECL_metrowin void __cdecl __pre_translate_message(::ca::signal_object * pobj);
 
-//#include "win_printer.h"
+#include "metrowin_printer.h"
 
 #include "metrowin_application.h"
 

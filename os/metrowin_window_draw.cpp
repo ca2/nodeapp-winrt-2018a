@@ -32,12 +32,13 @@ namespace metrowin
       m_mutexRender(papp),
       m_mutexRendering(papp),
       m_mutexRgnUpdate(papp),
-      m_semaphoreBuffer(papp)
+      m_semaphoreBuffer(papp),
+      m_wndpaOut(papp)
    {
       m_dwLastRedrawRequest = ::get_tick_count();
       m_bRender = false;
       m_pbuffer = new user::buffer(papp);
-      m_pbuffer->m_spdib.create(papp);
+      m_pbuffer->m_spdib.create(allocer());
       m_dwLastUpdate = false;
       m_directx = ref new directx_base(papp);
    }
@@ -95,7 +96,7 @@ namespace metrowin
    {
       if(!m_bProDevianMode)
       {
-         m_spwindowMessage->PostMessage(WM_USER + 1984 + 1977);
+         m_spuiMessage->PostMessage(WM_USER + 1984 + 1977);
       }
    }
 
@@ -434,7 +435,7 @@ namespace metrowin
 
       get_wnda(hwnda);
 
-      user::interaction_ptr_array wndpa;
+      user::interaction_ptr_array wndpa(get_app());
 
       
 
@@ -670,7 +671,7 @@ namespace metrowin
 
       for(int i = 0; i < m_wndpaOut.get_count(); i++)
       {
-         ::user::interaction* pwnd = m_wndpaOut[i];
+         sp(::user::interaction) pwnd = m_wndpaOut(i);
 
          ScreenOutput(m_pbuffer, pwnd);
       
@@ -686,7 +687,7 @@ namespace metrowin
       return &m_semaphoreBuffer;
    }
 
-   // The first ::ca::window handle in the base_array must belong
+   // The first ::ca::window handle in the array must belong
    // to the higher z order ::ca::window.
    // The rectangle must contain all update region.
    // It must be in screen coordinates.
@@ -792,7 +793,7 @@ namespace metrowin
 
       oswindow hwnd = hwndtree.m_oswindow;
 
-      ::user::window_interface * ptwi = System.user().window_map().get((int_ptr) (void *) hwnd);
+      ::user::window_interface * ptwi = System.user()->window_map().get((int_ptr) (void *) hwnd);
 
 #ifdef WINDOWSEX
       if(!::IsWindowVisible(hwnd))
@@ -876,7 +877,7 @@ namespace metrowin
    bool window_draw::TwfGetTopWindow(
       oswindow hwnd,
       user::oswindow_array & hwnda,
-      base_array < HRGN, HRGN > & hrgna,
+      array < HRGN, HRGN > & hrgna,
       user::oswindow_tree::Array & hwndtreea,
       HRGN hrgn)
    {
@@ -900,7 +901,7 @@ namespace metrowin
    bool window_draw::TwfGetTopWindow(
       oswindow hwndParam,
       user::oswindow_array & hwnda,
-      base_array < HRGN, HRGN > & hrgna,
+      array < HRGN, HRGN > & hrgna,
       user::oswindow_tree & hwndtree,
       HRGN hrgn)
    {
@@ -1006,7 +1007,7 @@ namespace metrowin
    void window_draw::TwfGetTopWindow(
       oswindow hwnd,
       user::oswindow_array & hwnda,
-      base_array < HRGN, HRGN > & hrgna,
+      array < HRGN, HRGN > & hrgna,
       user::oswindow_tree::Array & hwndtreea,
       LPCRECT lpcrect)
    {
@@ -1027,7 +1028,7 @@ namespace metrowin
    void window_draw::TwfGetTopWindowOptimizeOpaque(
       oswindow hwndOpaque,
       user::oswindow_array & hwnda,
-      base_array < HRGN, HRGN > & hrgna)
+      array < HRGN, HRGN > & hrgna)
    {
 #ifdef WINDOWSEX
       rect rectWindow;
@@ -1356,7 +1357,7 @@ throw todo(get_app());
 
 
 
-   // The first ::ca::window handle in the base_array must belong
+   // The first ::ca::window handle in the array must belong
    // to the higher z order ::ca::window.
    // The rectangle must contain all update region.
    // It must be in screen coordinates.

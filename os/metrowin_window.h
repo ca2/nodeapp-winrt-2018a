@@ -17,7 +17,7 @@ namespace metrowin
    public:
 
 
-      pha(::user::interaction)      m_guieptraMouseHover;
+      spa(::user::interaction)      m_guieptraMouseHover;
       ::ca::window_callback *       m_pcallback;
       string                        m_strWindowText;
       //visual::dib_sp                m_spdib;
@@ -34,7 +34,7 @@ namespace metrowin
 
       //virtual oswindow get_handle() const;
 
-      virtual ::user::interaction * get_wnd() const;
+      virtual sp(::user::interaction) get_wnd() const;
 
       virtual void mouse_hover_add(::user::interaction* pinterface);
       virtual void mouse_hover_remove(::user::interaction* pinterface);
@@ -136,30 +136,29 @@ namespace metrowin
       //      using ::user::interaction::GetDlgItem;
       void GetDlgItem(id id, oswindow* phWnd) const;
       // as above, but returns oswindow
-      using ::user::interaction::GetDescendantWindow;
-      ::user::interaction * GetDescendantWindow(id id);
+      sp(::user::interaction) GetDescendantWindow(id id);
       // like GetDlgItem but recursive
       void SendMessageToDescendants(UINT message, WPARAM wParam = 0,
          LPARAM lParam = 0, bool bDeep = TRUE, bool bOnlyPerm = FALSE);
-      frame_window* GetParentFrame();
-      frame_window* EnsureParentFrame();
-      ::user::interaction* GetTopLevelParent();
-      ::user::interaction* EnsureTopLevelParent();
-      ::user::interaction* GetTopLevelOwner();
-      ::user::interaction* GetParentOwner();
-      frame_window* GetTopLevelFrame();
+      sp(::user::frame_window) GetParentFrame();
+      sp(::user::frame_window) EnsureParentFrame();
+      sp(::user::interaction) GetTopLevelParent();
+      sp(::user::interaction) EnsureTopLevelParent();
+      sp(::user::interaction) GetTopLevelOwner();
+      sp(::user::interaction) GetParentOwner();
+      sp(::user::frame_window) GetTopLevelFrame();
       //static ::ca::window * GetSafeOwner(::ca::window * pParent = NULL, oswindow* pWndTop = NULL);
 
       virtual bool IsWindow();
 
 #if(WINVER >= 0x0500)
 
-      ::ca::window * GetAncestor(UINT gaFlags) const;
+      sp(::ca::window) GetAncestor(UINT gaFlags) const;
 
 #endif   // WINVER >= 0x0500
 
-      LRESULT send_message(UINT message, WPARAM wParam = 0, LPARAM lParam = 0);
-      bool PostMessage(UINT message, WPARAM wParam = 0, LPARAM lParam = 0);
+      LRESULT send_message(UINT message, WPARAM wParam = 0, lparam lParam = ::null());
+      bool PostMessage(UINT message, WPARAM wParam = 0, lparam lParam = ::null());
 
       bool SendNotifyMessage(UINT message, WPARAM wParam, LPARAM lParam);
       bool SendChildNotifyLastMsg(LRESULT* pResult = NULL);
@@ -285,12 +284,12 @@ namespace metrowin
       virtual bool EnableWindow(bool bEnable = TRUE);
 
       // the active ::ca::window applies only to top-level (frame windows)
-      virtual ::user::interaction * GetActiveWindow();
-      virtual ::user::interaction * SetActiveWindow();
+      virtual sp(::user::interaction) GetActiveWindow();
+      virtual sp(::user::interaction) SetActiveWindow();
 
       // the foreground ::ca::window applies only to top-level windows (frame windows)
       virtual bool SetForegroundWindow();
-      static ::ca::window * GetForegroundWindow();
+      static sp(::ca::window) GetForegroundWindow();
 
       virtual id SetDlgCtrlId(id id);
       virtual id GetDlgCtrlId();
@@ -298,14 +297,14 @@ namespace metrowin
 
 
       // capture and focus apply to all windows
-      static ::user::interaction * GetCapture();
-      virtual ::user::interaction * set_capture(::user::interaction * pinterface = NULL);
-      virtual ::user::interaction * release_capture();
-      virtual ::user::interaction * get_capture();
-      static ::user::interaction * GetFocus();
-      ::user::interaction * SetFocus() override;
+      static sp(::user::interaction) GetCapture();
+      virtual sp(::user::interaction) set_capture(sp(::user::interaction) pinterface = ::null());
+      virtual sp(::user::interaction) release_capture();
+      virtual sp(::user::interaction) get_capture();
+      static sp(::user::interaction) GetFocus();
+      virtual sp(::user::interaction) SetFocus() override;
 
-      static ::user::interaction * GetDesktopWindow();
+      static sp(::user::interaction) GetDesktopWindow();
 
       // Obsolete and non-portable APIs - not recommended for new code
       virtual void CloseWindow();
@@ -363,22 +362,22 @@ namespace metrowin
       //#endif   // WINVER >= 0x0500
 
       // Window Access Functions
-      virtual ::ca::window * ChildWindowFromPoint(POINT point);
-      virtual ::ca::window * ChildWindowFromPoint(POINT point, UINT nFlags);
-      static ::ca::window * FindWindow(const char * lpszClassName, const char * lpszWindowName);
-      static ::ca::window * FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
+      virtual sp(::user::interaction) ChildWindowFromPoint(POINT point);
+      virtual sp(::user::interaction) ChildWindowFromPoint(POINT point, UINT nFlags);
+      static sp(::ca::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
+      static sp(::ca::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
 
       //      virtual ::user::interaction * GetNextWindow(UINT nFlag = GW_HWNDNEXT);
-      virtual ::user::interaction * GetTopWindow();
+      virtual sp(::user::interaction) GetTopWindow();
 
-      virtual ::user::interaction * GetWindow(UINT nCmd);
-      virtual ::user::interaction * GetLastActivePopup();
+      virtual sp(::user::interaction) GetWindow(UINT nCmd);
+      virtual sp(::user::interaction) GetLastActivePopup();
 
-      virtual bool IsChild(::user::interaction *  pWnd);
-      virtual ::user::interaction * GetParent();
+      virtual bool IsChild(sp(::user::interaction)  pWnd);
+      virtual sp(::user::interaction) GetParent();
       using ::user::interaction::set_parent;
-      ::ca::window * set_parent(::ca::window * pWndNewParent);
-      static ::ca::window * WindowFromPoint(POINT point);
+      sp(::user::interaction) set_parent(sp(::user::interaction) pWndNewParent);
+      static sp(::ca::window) WindowFromPoint(POINT point);
 
       // Alert Functions
 
@@ -478,7 +477,7 @@ namespace metrowin
       //    bool OnHelpInfo(HELPINFO* lpHelpInfo);
       void OnIconEraseBkgnd(::ca::graphics * pgraphics);
       void OnKillFocus(::ca::window * pNewWnd);
-      LRESULT OnMenuChar(UINT nChar, UINT nFlags, ::userbase::menu* pMenu);
+      LRESULT OnMenuChar(UINT nChar, UINT nFlags, ::user::menu* pMenu);
       void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
       void OnMove(int x, int y);
       DECL_GEN_SIGNAL(_001OnPaint)
@@ -560,8 +559,8 @@ namespace metrowin
          void OnTimer(uint_ptr nIDEvent);
 
       // Initialization message handler member functions
-      void OnInitMenu(::userbase::menu* pMenu);
-      void OnInitMenuPopup(::userbase::menu* pPopupMenu, UINT nIndex, bool bSysMenu);
+      void OnInitMenu(::user::menu* pMenu);
+      void OnInitMenuPopup(::user::menu* pPopupMenu, UINT nIndex, bool bSysMenu);
 
       // Clipboard message handler member functions
       void OnAskCbFormatName(__in UINT nMaxCount, __out_ecount_z(nMaxCount) char * lpszString);
@@ -647,7 +646,7 @@ namespace metrowin
       static ::user::interaction * GetDescendantWindow(::user::interaction * hWnd, id id);
       static void SendMessageToDescendants(oswindow hWnd, UINT message,
          WPARAM wParam, LPARAM lParam, bool bDeep, bool bOnlyPerm);
-      virtual bool IsFrameWnd(); // is_kind_of(System.template type_info < frame_window > ()))
+      virtual bool is_frame_window(); // is_kind_of(System.template type_info < frame_window > ()))
       virtual void on_final_release();
       static bool ModifyStyle(oswindow hWnd, uint32_t dwRemove, uint32_t dwAdd,
          UINT nFlags);

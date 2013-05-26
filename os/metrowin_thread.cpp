@@ -110,7 +110,7 @@ uint32_t __thread_entry(void * pParam)
          //         threadWnd.Detach();
          pStartup->bError = TRUE;
          VERIFY(::SetEvent(pStartup->hEvent));
-         __end_thread(dynamic_cast < ::ca::application * > (pThread->m_papp), (UINT)-1, FALSE);
+         __end_thread(dynamic_cast < ::ca::application * > (pThread->m_papp.m_p), (UINT)-1, FALSE);
          ASSERT(FALSE);  // unreachable
       }
 
@@ -167,7 +167,7 @@ CLASS_DECL_metrowin void __set_thread(::ca::thread * pthread)
    // check for current thread in module thread state
    //__MODULE_THREAD_STATE* pState = __get_module_thread_state();
    ___THREAD_STATE* pState =  __get_thread_state();
-   pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::ca::thread_sp::m_p);
+   pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::ca::thread::m_p.m_p);
 }
 
 
@@ -240,7 +240,7 @@ void __internal_pre_translate_message(::ca::signal_object * pobj)
                {
                   try
                   {
-                     ::user::interaction * pui = pthread->m_papp->m_psession->frames()[i];
+                     sp(::user::interaction) pui = pthread->m_papp->m_psession->frames()(i);
                      if(pui != NULL)
                      {
                         if(pui->m_pguie != NULL)
@@ -505,7 +505,7 @@ namespace metrowin
       ca(papp),
       message_window_simple_callback(papp),//,
       //m_evFinish(FALSE, TRUE)
-      ::ca::thread(NULL),
+      ::ca::thread(::null()),
       m_evFinish(papp),
       m_mutexUiPtra(papp)
    {
@@ -520,10 +520,6 @@ namespace metrowin
    void thread::CommonConstruct()
    {
 
-      m_ptimera      = NULL; 
-      m_puiptra      = NULL;
-      m_puiMain      = NULL;
-      m_puiActive    = NULL;
 
 
       m_nDisablePumpCount  = 0;
@@ -540,15 +536,16 @@ namespace metrowin
       // most threads are deleted when not needed
       m_bAutoDelete  = TRUE;
 
-      m_frameList.Construct(offsetof(frame_window, m_pNextFrameWnd));
-      m_ptimera = new ::user::interaction::timer_array(get_app());
-      m_puiptra = new user::interaction_ptr_array;
+      m_frameList.Construct(offsetof(::user::frame_window, m_pNextFrameWnd));
+      m_ptimera = canew(::user::interaction::timer_array(get_app()));
+      m_puiptra = canew(::user::interaction_ptr_array(get_app()));
 
    }
 
 
    thread::~thread()
    {
+      /*
       if(m_puiptra != NULL)
       {
          single_lock sl(&m_mutexUiPtra, TRUE);
@@ -588,14 +585,14 @@ namespace metrowin
          }
          sl.unlock();
       }
-
+      */
       __MODULE_THREAD_STATE* pState = __get_module_thread_state();
       /*      // clean up temp objects
       pState->m_pmapHGDIOBJ->delete_temp();
       pState->m_pmapHDC->delete_temp();
       pState->m_pmapHWND->delete_temp();*/
 
-      for(int i = 0; i < m_captraDeletePool.get_count(); i++)
+/*      for(int i = 0; i < m_captraDeletePool.get_count(); i++)
       {
          try
          {
@@ -609,7 +606,7 @@ namespace metrowin
          {
          }
       }
-
+      */
       // free thread object
       if (m_hThread != NULL)
          CloseHandle(m_hThread);
@@ -678,7 +675,7 @@ namespace metrowin
       return puiPrevious;
    }
 
-   void thread::add(::user::interaction * pui)
+   void thread::add(sp(::user::interaction) pui)
    {
       single_lock sl(&m_mutexUiPtra, TRUE);
       if(m_puiptra != NULL)
@@ -687,7 +684,7 @@ namespace metrowin
       }
    }
 
-   void thread::remove(::user::interaction * pui)
+   void thread::remove(sp(::user::interaction) pui)
    {
       if(pui == NULL)
          return;
@@ -754,7 +751,7 @@ namespace metrowin
       return m_puiptra->get_count();
    }
 
-   ::user::interaction * thread::get_ui(index iIndex)
+   sp(::user::interaction) thread::get_ui(index iIndex)
    {
       single_lock sl(&m_mutexUiPtra, TRUE);
       return m_puiptra->element_at(iIndex);
@@ -762,7 +759,7 @@ namespace metrowin
 
    void thread::set_timer(::user::interaction * pui, uint_ptr nIDEvent, UINT nEllapse)
    {
-      if(m_spwindowMessage.is_null())
+      if(m_spuiMessage.is_null())
       {
          return;
       }
@@ -771,9 +768,9 @@ namespace metrowin
       int iMin = 100;
       for(int i = 0; i < m_ptimera->m_timera.get_count(); i++)
       {
-         if(m_ptimera->m_timera.element_at(i).m_uiElapse < natural(iMin))
+         if(m_ptimera->m_timera.element_at(i)->m_uiElapse < natural(iMin))
          {
-            iMin = m_ptimera->m_timera.element_at(i).m_uiElapse;
+            iMin = m_ptimera->m_timera.element_at(i)->m_uiElapse;
          }
       }
       sl.unlock();
@@ -815,12 +812,12 @@ namespace metrowin
       return m_pAppThread;
    }
 
-   ::user::interaction * thread::get_active_ui()
+   sp(::user::interaction) thread::get_active_ui()
    {
       return m_puiActive;
    }
 
-   ::user::interaction * thread::set_active_ui(::user::interaction * pui)
+   sp(::user::interaction) thread::set_active_ui(sp(::user::interaction) pui)
    {
       ::user::interaction * puiPrevious = m_puiActive;
       m_puiActive = pui;
@@ -927,7 +924,7 @@ namespace metrowin
       {
          if(m_p != NULL)
          {
-            ::ca::thread * pthread = dynamic_cast < ::ca::thread * > (m_p);
+            ::ca::thread * pthread = dynamic_cast < ::ca::thread * > (m_p.m_p);
             if(pthread != NULL && pthread->m_pbReady != NULL)
             {
                *pthread->m_pbReady = true;
@@ -958,8 +955,8 @@ namespace metrowin
       if(m_bAutoDelete)
       {
          // delete thread if it is auto-deleting
-         //pthread->::ca::smart_pointer < ::ca::thread >::m_p = NULL;
-         ::ca::release(m_p);
+         //pthread->::c::smart_pointer < ::ca::thread >::m_p = NULL;
+         m_p.release();
          // delete_this();
       }
       else
@@ -992,7 +989,7 @@ namespace metrowin
       bool bIdle = TRUE;
       LONG lIdleCount = 0;
       ::ca::application * pappThis1 = dynamic_cast < ::ca::application * > (this);
-      ::ca::application * pappThis2 = dynamic_cast < ::ca::application * > (m_p);
+      ::ca::application * pappThis2 = dynamic_cast < ::ca::application * > (m_p.m_p);
 
       // acquire and dispatch messages until a WM_QUIT message is received.
       MESSAGE msg;
@@ -1116,15 +1113,15 @@ stop_run:
          {
             single_lock sl(&m_mutexUiPtra, TRUE);
             ::user::interaction_ptr_array * puiptra = m_puiptra;
-            m_puiptra = NULL;
+//            m_puiptra = NULL;
             for(int i = 0; i < puiptra->get_size(); i++)
             {
                ::user::interaction * pui = puiptra->element_at(i);
                if(pui->m_pthread != NULL)
                {
                   if(WIN_THREAD(pui->m_pthread) == this 
-                     || WIN_THREAD(pui->m_pthread->m_pthread->m_p) == WIN_THREAD(m_p)
-                     || WIN_THREAD(pui->m_pthread) == WIN_THREAD(m_p))
+                     || WIN_THREAD(pui->m_pthread->m_pthread->m_p.m_p) == WIN_THREAD(m_p.m_p)
+                     )
                   {
                      pui->m_pthread = NULL;
                   }
@@ -1141,7 +1138,7 @@ stop_run:
       try
       {
          ::user::interaction::timer_array * ptimera = m_ptimera;
-         m_ptimera = NULL;
+//         m_ptimera = NULL;
          delete ptimera;
       }
       catch(...)
@@ -1260,7 +1257,7 @@ stop_run:
       SCAST_PTR(::ca::message::base, pbase, pobj);
       if(!pbase->m_bRet && pbase->m_uiMessage == WM_APP + 1984 && pbase->m_wparam == 77)
       {
-         ::ca::scoped_ptr < ::user::message > spmessage(pbase->m_lparam);
+         ::c::smart_pointer < ::user::message > spmessage(pbase->m_lparam);
          spmessage->send();
          pbase->m_uiMessage   = 0;    // ssshhhh.... - self-healing - sh...
          pbase->m_wparam      = 0;    // ssshhhh.... - self-healing - sh...
@@ -1427,7 +1424,7 @@ stop_run:
    /////////////////////////////////////////////////////////////////////////////
    // Access to GetMainWnd() & m_pActiveWnd
 
-   ::user::interaction* thread::GetMainWnd()
+   sp(::user::interaction) thread::GetMainWnd()
    {
       if (m_puiActive != NULL)
          return m_puiActive;    // probably in-place active
@@ -1467,9 +1464,9 @@ stop_run:
          if(msg.message != WM_KICKIDLE)
          {
             {
-               ::ca::smart_pointer < ::ca::message::base > spbase;
+               ::c::smart_pointer < ::ca::message::base > spbase;
 
-               spbase(get_base(&msg));
+               spbase = get_base(&msg);
 
                try
                {
@@ -1495,18 +1492,6 @@ stop_run:
                            m_papp->m_psystem->pre_translate_message(spbase);
                            if(spbase->m_bRet)
                               return TRUE;
-                           try
-                           {
-                              if(m_papp->m_psystem->m_pcube != NULL)
-                              {
-                                 m_papp->m_psystem->m_pcubeInterface->pre_translate_message(spbase);
-                                 if(spbase->m_bRet)
-                                    return TRUE;
-                              }
-                           }
-                           catch(...)
-                           {
-                           }
                         }
                      }
                      catch(...)
@@ -1523,18 +1508,6 @@ stop_run:
                         catch(...)
                         {
                         }
-                        try
-                        {
-                           if(m_papp->m_psession->m_pbergedge != NULL)
-                           {
-                              m_papp->m_psession->m_pbergedgeInterface->pre_translate_message(spbase);
-                              if(spbase->m_bRet)
-                                 return TRUE;
-                           }
-                        }
-                        catch(...)
-                        {
-                        }
                      }
                   }
                }
@@ -1543,7 +1516,7 @@ stop_run:
                }
                try
                {
-                  if(!m_papp->is_system() && m_papp->is_bergedge())
+                  if(!m_papp->is_system())
                   {
                      m_papp->pre_translate_message(spbase);
                      if(spbase->m_bRet)
@@ -1559,7 +1532,7 @@ stop_run:
                if(spbase->m_bRet)
                   return TRUE;
 
-               spbase.destroy();
+               //spbase.destroy();
             }
             {
 //               ::TranslateMessage(&msg);
@@ -1610,7 +1583,7 @@ stop_run:
       dumpcontext << "\nm_nDisablePumpCount = " << pState->m_nDisablePumpCount;
 #endif
       if (__get_thread() == this)
-         dumpcontext << "\nm_pMainWnd = " << m_puiMain;
+         dumpcontext << "\nm_pMainWnd = " << m_puiMain.m_p;
 
       dumpcontext << "\nm_msgCur = {";
       dumpcontext << "\n\thwnd = " << (void *)pState->m_msgCur.hwnd;
@@ -1654,12 +1627,12 @@ stop_run:
    {
       SCAST_PTR(::ca::message::base, pbase, pobj);
       // special message which identifies the window as using __window_procedure
-      if(pbase->m_uiMessage == WM_QUERYAFXWNDPROC)
+/*      if(pbase->m_uiMessage == WM_QUERYAFXWNDPROC)
       {
          pbase->set_lresult(0);
          return;
       }
-
+*/
       // all other messages route through message ::map
       ::user::interaction * pwindow = pbase->m_pwnd->get_wnd();
 
@@ -1763,7 +1736,7 @@ run:
       */
    }
 
-   bool thread::post_thread_message(UINT message, WPARAM wParam, LPARAM lParam)
+   bool thread::post_thread_message(UINT message, WPARAM wParam, lparam lParam)
    {
 
       ASSERT(m_hThread != NULL);
@@ -1820,7 +1793,7 @@ run:
 
 
 #ifndef ___PORTABLE
-         ::ca::application * papp = dynamic_cast < ::ca::application * > (get_app());
+         ::ca::application * papp = dynamic_cast < ::ca::application * > (get_app().m_p);
          ___THREAD_STATE* pThreadState = gen_ThreadState.GetDataNA();
          if( pThreadState != NULL )
          {
@@ -1888,11 +1861,11 @@ run:
 
 //      ::ca::window threadWnd;
 
-      m_ptimera            = new ::user::interaction::timer_array(get_app());
-      m_puiptra            = new user::interaction_ptr_array;
+//      m_ptimera            = new ::user::interaction::timer_array(get_app());
+  //    m_puiptra            = new user::interaction_ptr_array(get_app());
 
-      m_ptimera->m_papp    = m_papp;
-      m_puiptra->m_papp    = m_papp;
+      //m_ptimera->m_papp    = m_papp;
+      //m_puiptra->m_papp    = m_papp;
 
 
 
@@ -1992,7 +1965,7 @@ run:
       {
          // cleanup and shutdown the thread
          //         threadWnd.Detach();
-         __end_thread(dynamic_cast < ::ca::application * > (m_papp), nResult);
+         __end_thread(dynamic_cast < ::ca::application * > (m_papp.m_p), nResult);
       }
       catch(...)
       {
@@ -2644,7 +2617,7 @@ LRESULT CALLBACK __message_filter_hook(int code, WPARAM wParam, LPARAM lParam)
       return ::CallNextHookEx(gen_ThreadState->m_hHookOldMsgFilter, code, wParam, lParam);
    }
    ASSERT(pthread != NULL);
-   ::ca::smart_pointer < ::ca::message::base > spbase;
+   ::c::smart_pointer < ::ca::message::base > spbase;
    spbase(pthread->get_base((LPMSG)lParam));
    pthread->ProcessMessageFilter(code, spbase);
    LRESULT lresult = spbase->m_bRet ? 1 : 0;

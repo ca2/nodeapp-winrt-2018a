@@ -102,28 +102,28 @@ namespace metrowin
       void TwfGetTopWindow(
          oswindow hwnd,
          user::oswindow_array & hwnda,
-         base_array < HRGN, HRGN > & hrgna,
+         array < HRGN, HRGN > & hrgna,
          user::oswindow_tree::Array & hwndtreea,
          LPCRECT lpcrect);
 
       bool TwfGetTopWindow(
          oswindow hwnd,
          user::oswindow_array & hwnda,
-         base_array < HRGN, HRGN > & hrgna,
+         array < HRGN, HRGN > & hrgna,
          user::oswindow_tree::Array & hwndtreea,
          HRGN hrgn);
 
       bool TwfGetTopWindow(
          oswindow hwnd,
          user::oswindow_array & hwnda,
-         base_array < HRGN, HRGN > & hrgna,
+         array < HRGN, HRGN > & hrgna,
          user::oswindow_tree & hwndtree,
          HRGN hrgn);
 
       void TwfGetTopWindowOptimizeOpaque(
          oswindow hwndOpaque,
          user::oswindow_array & hwnda,
-         base_array < HRGN, HRGN > & hrgna);
+         array < HRGN, HRGN > & hrgna);
 
 
       EOptimize TwfOptimizeRenderRemoveNextProper(

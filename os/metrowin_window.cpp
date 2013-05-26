@@ -15,7 +15,7 @@ namespace metrowin
       m_pcallback = NULL;
       m_pguie = this;
 //      set_handle(::ca::null());
-      m_pguieOwner = NULL;
+      //m_pguieOwner = ::;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
       m_nModalResult = 0;
@@ -45,7 +45,7 @@ namespace metrowin
       m_pcallback = NULL;
       m_pguie = this;
 //      set_handle(::ca::null());
-      m_pguieOwner = NULL;
+//      m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
       m_nModalResult = 0;
@@ -429,9 +429,9 @@ namespace metrowin
    window::~window()
    {
 
-      if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).user().m_pwindowmap != NULL)
+      if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).user()->m_pwindowmap != NULL)
       {
-         Sys(m_papp).user().m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
+         Sys(m_papp).user()->m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
       single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_pthread->m_mutex, TRUE);
@@ -532,7 +532,7 @@ namespace metrowin
    {
       UNREFERENCED_PARAMETER(pobj);
       Default();
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (System.get_twf());
+      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (System.get_twf().m_p);
       if(pdraw != NULL)
       {
          retry_single_lock sl(&pdraw->m_eventFree, millis(84), millis(84));
@@ -564,10 +564,10 @@ namespace metrowin
                if (pThread != &System)
                   __post_quit_message(0);
             }
-            pThread->SetMainWnd(NULL);
+            pThread->SetMainWnd(::null());
          }
          if (pThread->get_active_ui() == this)
-            pThread->set_active_ui(NULL);
+            pThread->set_active_ui(::null());
       }
 
       // cleanup tooltip support
@@ -957,7 +957,7 @@ namespace metrowin
 
 #endif
 
-   ::ca::window * window::GetAncestor(UINT gaFlags) const
+   sp(::ca::window) window::GetAncestor(UINT gaFlags) const
    {
    
 #ifdef WINDOWSEX
@@ -1128,10 +1128,10 @@ namespace metrowin
 
    void window::PrepareForHelp()
    {
-      if (IsFrameWnd())
+      if (is_frame_window())
       {
          // frame_window windows should be allowed to exit help mode first
-         frame_window* pFrameWnd = dynamic_cast < frame_window * >(this);
+         sp(::user::frame_window) pFrameWnd = this;
          pFrameWnd->ExitHelpMode();
       }
 
@@ -1252,10 +1252,10 @@ namespace metrowin
          for(int i = 0; i < m_guieptraMouseHover.get_size(); i++)
          {
             if(m_guieptraMouseHover[i] == this 
-               || m_guieptraMouseHover[i]->m_pimpl == this 
-               || m_guieptraMouseHover[i]->m_pguie == this)
+               || m_guieptraMouseHover[i].m_pimpl == this 
+               || m_guieptraMouseHover[i].m_pguie == this)
                continue;
-            m_guieptraMouseHover[i]->send_message(WM_MOUSELEAVE);
+            m_guieptraMouseHover[i].send_message(WM_MOUSELEAVE);
          }
          m_guieptraMouseHover.remove_all();
       }
@@ -1275,11 +1275,11 @@ namespace metrowin
             || pbase->m_uiMessage == WM_MBUTTONDOWN
             || pbase->m_uiMessage == WM_MOUSEMOVE)
          {
-            if(Application.m_puser != NULL && m_papp->m_psession != NULL && m_papp->m_psession->m_pbergedge != NULL)
+            if(Application.fontopus()->m_puser != NULL && m_papp->m_psession != NULL)
             {
                try
                {
-                  if(Session.fontopus().m_puser != NULL && Session.fontopus().m_pthreadCreatingUser == NULL)
+                  if(Session.fontopus()->m_puser != NULL && Session.fontopus()->m_pthreadCreatingUser == NULL)
                   {
                      if(&ApplicationUser != NULL)
                      {
@@ -1307,10 +1307,6 @@ namespace metrowin
          if(m_papp->m_psession != NULL)
          {
             Session.m_ptCursor = pmouse->m_pt;
-            if(m_papp->m_psession->m_pbergedgeInterface != NULL)
-            {
-               m_papp->m_psession->m_pbergedgeInterface->m_ptCursor = pmouse->m_pt;
-            }
          }
          if(m_pguie != NULL && m_pguie != this && m_pguie->m_papp->m_psession != NULL && m_pguie->m_papp->m_psession != m_papp->m_psession)
          {
@@ -1371,9 +1367,9 @@ namespace metrowin
 restart_mouse_hover_check:
          for(int i = 0; i < m_guieptraMouseHover.get_size(); i++)
          {
-            if(!m_guieptraMouseHover[i]->_001IsPointInside(pmouse->m_pt))
+            if(!m_guieptraMouseHover[i]._001IsPointInside(pmouse->m_pt))
             {
-               ::user::interaction * pui = m_guieptraMouseHover[i];
+               ::user::interaction * pui = m_guieptraMouseHover(i);
                pui->send_message(WM_MOUSELEAVE);
                m_guieptraMouseHover.remove(pui);
                goto restart_mouse_hover_check;
@@ -1416,13 +1412,13 @@ restart_mouse_hover_check:
          }
          for(int i = 0; i < m_pguie->m_uiptraChild.get_size(); i++)
          {
-            ::user::interaction * pguie = m_pguie->m_uiptraChild[i];
+/*            ::user::interaction * pguie = m_pguie->m_uiptraChild[i];
             if(pguie != NULL && pguie->m_pguie != NULL)
             {
                pguie->m_pguie->_000OnMouse(pmouse);
                if(pmouse->m_bRet)
                   return;
-            }
+            }*/
          }
          pbase->set_lresult(DefWindowProc(pbase->m_uiMessage, pbase->m_wparam, pbase->m_lparam));
          return;
@@ -1436,7 +1432,7 @@ restart_mouse_hover_check:
          {
             try
             {
-               Application.set_key_pressed((int) pbase->m_wparam, true);
+               Application.set_key_pressed((::user::e_key) pbase->m_wparam, true);
             }
             catch(...)
             {
@@ -1446,7 +1442,7 @@ restart_mouse_hover_check:
          {
             try
             {
-               Application.set_key_pressed((int) pbase->m_wparam, false);
+               Application.set_key_pressed((::user::e_key) pbase->m_wparam, false);
             }
             catch(...)
             {
@@ -1454,7 +1450,7 @@ restart_mouse_hover_check:
          }
 
          ::ca::message::key * pkey = (::ca::message::key *) pbase;
-         ::user::interaction * puiFocus = dynamic_cast < ::user::interaction * > (Application.user().get_keyboard_focus());
+         ::user::interaction * puiFocus = dynamic_cast < ::user::interaction * > (Application.user()->get_keyboard_focus().m_p);
          if(puiFocus != NULL 
             && puiFocus->IsWindow()
             && puiFocus->GetTopLevelParent() != NULL)
@@ -2023,11 +2019,11 @@ restart_mouse_hover_check:
    /////////////////////////////////////////////////////////////////////////////
    // window extensions
 
-   frame_window* window::GetParentFrame()
+   sp(::user::frame_window) window::GetParentFrame()
    {
       if (get_handle() == NULL) // no Window attached
       {
-         return NULL;
+         return ::null();
       }
 
       ASSERT_VALID(this);
@@ -2035,13 +2031,13 @@ restart_mouse_hover_check:
       ::user::interaction * pParentWnd = GetParent();  // start with one parent up
       while (pParentWnd != NULL)
       {
-         if (pParentWnd->IsFrameWnd())
+         if (pParentWnd->is_frame_window())
          {
-            return dynamic_cast < frame_window * > (pParentWnd);
+            return dynamic_cast < ::user::frame_window * > (pParentWnd);
          }
          pParentWnd = pParentWnd->get_parent();
       }
-      return NULL;
+      return ::null();
    }
 
    /* trans oswindow CLASS_DECL_metrowin __get_parent_owner(::user::interaction * hWnd)
@@ -2057,10 +2053,10 @@ restart_mouse_hover_check:
    }*/
 
 
-   ::user::interaction * window::GetTopLevelParent()
+   sp(::user::interaction) window::GetTopLevelParent()
    {
       if (get_handle() == NULL) // no Window attached
-         return NULL;
+         return ::null();
 
       ASSERT_VALID(this);
 
@@ -2072,7 +2068,7 @@ restart_mouse_hover_check:
       return hWndParent;
    }
 
-   ::user::interaction * window::GetTopLevelOwner()
+   sp(::user::interaction) window::GetTopLevelOwner()
    {
       
       throw todo(get_app());
@@ -2091,7 +2087,7 @@ restart_mouse_hover_check:
       //return ::metrowin::window::from_handle(hWndOwner);
    }
 
-   ::user::interaction * window::GetParentOwner()
+   sp(::user::interaction) window::GetParentOwner()
    {
       
       throw todo(get_app());
@@ -2137,24 +2133,24 @@ restart_mouse_hover_check:
       //}
    }
 
-   frame_window* window::GetTopLevelFrame()
+   sp(::user::frame_window) window::GetTopLevelFrame()
    {
       if (get_handle() == NULL) // no Window attached
-         return NULL;
+         return ::null();
 
       ASSERT_VALID(this);
 
-      frame_window* pFrameWnd = NULL;
+      ::user::frame_window* pFrameWnd = NULL;
       if(m_pguie != this)
-         pFrameWnd = dynamic_cast < frame_window * > (m_pguie);
+         pFrameWnd = dynamic_cast < ::user::frame_window * > (m_pguie.m_p);
       else
-         pFrameWnd = dynamic_cast < frame_window * > (this);
-      if (pFrameWnd == NULL || !pFrameWnd->IsFrameWnd())
+         pFrameWnd = dynamic_cast < ::user::frame_window * > (this);
+      if (pFrameWnd == NULL || !pFrameWnd->is_frame_window())
          pFrameWnd = GetParentFrame();
 
       if (pFrameWnd != NULL)
       {
-         frame_window* pTemp;
+        ::user:: frame_window* pTemp;
          while ((pTemp = pFrameWnd->GetParentFrame()) != NULL)
             pFrameWnd = pTemp;
       }
@@ -3819,7 +3815,7 @@ restart_mouse_hover_check:
       m_iModalCount++;
 
       m_iaModalThread.add(::GetCurrentThreadId());
-      ::ca::application * pappThis1 = dynamic_cast < ::ca::application * > (m_pthread->m_pthread->m_p);
+      ::ca::application * pappThis1 = dynamic_cast < ::ca::application * > (m_pthread->m_pthread->m_p.m_p);
       ::ca::application * pappThis2 = dynamic_cast < ::ca::application * > (m_pthread->m_pthread);
       // acquire and dispatch messages until the modal state is done
       MESSAGE msg;
@@ -3985,13 +3981,13 @@ ExitModal:
          int iLevel = m_iModalCount - 1;
          m_iModalCount = 0;
          PostMessage(WM_NULL);
-         System.GetThread()->post_thread_message(WM_NULL, 0, 0);
+         System.GetThread()->post_thread_message(WM_NULL);
          for(int i = iLevel; i >= 0; i--)
          {
             ::ca::thread * pthread = oprop(string("RunModalLoop.thread(") + ::ca::str::from(i) + ")").ca < ::ca::thread > ();
             try
             {
-               pthread->post_thread_message(WM_NULL, 0, 0);
+               pthread->post_thread_message(WM_NULL);
             }
             catch(...)
             {
@@ -4004,7 +4000,7 @@ ExitModal:
    /////////////////////////////////////////////////////////////////////////////
    // frame_window (here for library granularity)
 
-   bool window::IsFrameWnd()
+   bool window::is_frame_window()
    {
       return FALSE;
    }
@@ -4092,7 +4088,7 @@ ExitModal:
 
 
 
-   bool window::IsChild(::user::interaction * pWnd)
+   bool window::IsChild(sp(::user::interaction) pWnd)
    {
             
       throw todo(get_app());
@@ -4165,11 +4161,11 @@ ExitModal:
       {
          if(rectWindowOld.top_left() != m_rectParentClient.top_left())
          {
-            send_message(WM_MOVE, 0, 0);
+            send_message(WM_MOVE);
          }
          if(rectWindowOld.size() != m_rectParentClient.size())
          {
-            send_message(WM_SIZE, 0, 0);
+            send_message(WM_SIZE);
          }
 
       }
@@ -4489,7 +4485,7 @@ throw todo(get_app());
    }
 
 
-   ::user::interaction * window::GetParent()
+   sp(::user::interaction) window::GetParent()
    {
 
       throw todo(get_app());
@@ -4518,12 +4514,12 @@ throw todo(get_app());
    }
 
 
-   ::user::interaction * window::release_capture()
+   sp(::user::interaction) window::release_capture()
    {
 
       oswindow hwndCapture = ::GetCapture();
       if(hwndCapture == NULL)
-         return NULL;
+         return ::null();
       if(hwndCapture == get_handle())
       {
          ::user::interaction * puieCapture = get_capture();
@@ -4534,7 +4530,7 @@ throw todo(get_app());
          }
          else
          {
-            return NULL;
+            return ::null();
          }
       }
       else
@@ -4544,7 +4540,7 @@ throw todo(get_app());
 
    }
 
-   ::user::interaction * window::get_capture()
+   sp(::user::interaction) window::get_capture()
    {
 
       throw todo(get_app());
@@ -4639,12 +4635,12 @@ throw todo(get_app());
       m_pguieOwner = pOwnerWnd; 
    }
 
-   LRESULT window::send_message(UINT uiMessage, WPARAM wparam, LPARAM lparam)
+   LRESULT window::send_message(UINT uiMessage, WPARAM wparam, lparam lparam)
    {
 
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
-      spbase(get_base(m_pguie, uiMessage, wparam, lparam));
+      spbase = get_base(m_pguie, uiMessage, wparam, lparam);
 
 /*      try
       {
@@ -4683,7 +4679,7 @@ throw todo(get_app());
       //return ::SendMessage(get_handle(), message, wParam, lParam);
    }
 
-   bool window::PostMessage(UINT message, WPARAM wParam, LPARAM lParam)
+   bool window::PostMessage(UINT message, WPARAM wParam, lparam lParam)
    { 
 
 //      throw todo(get_app());
@@ -4746,14 +4742,14 @@ throw todo(get_app());
       //::DragAcceptFiles(get_handle(), bAccept); 
    }
 
-   frame_window * window::EnsureParentFrame()
+   sp(::user::frame_window) window::EnsureParentFrame()
    {
-      frame_window * pFrameWnd=GetParentFrame();
+      ::user::frame_window * pFrameWnd=GetParentFrame();
       ENSURE_VALID(pFrameWnd);
       return pFrameWnd;
    }
 
-   ::user::interaction* window::EnsureTopLevelParent()
+   sp(::user::interaction) window::EnsureTopLevelParent()
    {
       ::user::interaction *pWnd=GetTopLevelParent();
       ENSURE_VALID(pWnd);
@@ -5030,7 +5026,7 @@ throw todo(get_app());
       }
    }
 
-   ::user::interaction * window::GetDescendantWindow(id id)
+   sp(::user::interaction) window::GetDescendantWindow(id id)
    {
       ASSERT(::IsWindow(get_handle())); 
       return window::GetDescendantWindow(this, id); 
@@ -5172,7 +5168,7 @@ throw todo(get_app());
    
    }
 
-   ::user::interaction * window::GetActiveWindow()
+   sp(::user::interaction) window::GetActiveWindow()
    {
 
       throw todo(get_app());
@@ -5181,7 +5177,7 @@ throw todo(get_app());
    
    }
    
-   ::user::interaction* window::SetActiveWindow()
+   sp(::user::interaction) window::SetActiveWindow()
    {
 
       throw todo(get_app());
@@ -5192,7 +5188,7 @@ throw todo(get_app());
    
    }
    
-   ::user::interaction * window::GetCapture()
+   sp(::user::interaction) window::GetCapture()
    {
 
       //throw todo(::ca::get_thread_app());
@@ -5201,7 +5197,7 @@ throw todo(get_app());
    
    }
 
-   ::user::interaction * window::set_capture(::user::interaction* pinterface)
+   sp(::user::interaction) window::set_capture(sp(::user::interaction) pinterface)
    { 
 
       //throw todo(get_app());
@@ -5215,25 +5211,25 @@ throw todo(get_app());
 
    }
 
-   ::user::interaction * window::GetFocus()
+   sp(::user::interaction) window::GetFocus()
    { 
 
       return ::GetFocus().window();
 
    }
 
-   ::user::interaction * window::SetFocus()
+   sp(::user::interaction) window::SetFocus()
    { 
 
       //ASSERT(::IsWindow(get_handle()));
-      return ::SetFocus(m_pguie).window();
+      return ::SetFocus(m_pguie->get_handle());
    
    }
 
-   ::user::interaction * window::GetDesktopWindow()
+   sp(::user::interaction) window::GetDesktopWindow()
    {
 
-      return NULL;
+      return ::null();
 
       //return System.m_pui;
 
@@ -5441,7 +5437,7 @@ throw todo(get_app());
    
    }
 
-   ::ca::window * window::ChildWindowFromPoint(POINT point)
+   sp(::user::interaction) window::ChildWindowFromPoint(POINT point)
    {
 
       throw todo(get_app());
@@ -5452,7 +5448,7 @@ throw todo(get_app());
    
    }
 
-   ::ca::window * window::ChildWindowFromPoint(POINT point, UINT nFlags)
+   sp(::user::interaction) window::ChildWindowFromPoint(POINT point, UINT nFlags)
    {
 
       throw todo(get_app());
@@ -5464,7 +5460,7 @@ throw todo(get_app());
    }
 
 
-   ::ca::window * window::FindWindow(const char * lpszClassName, const char * lpszWindowName)
+   sp(::ca::window) window::FindWindow(const char * lpszClassName, const char * lpszWindowName)
    {
 
       throw todo(::ca::get_thread_app());
@@ -5472,7 +5468,8 @@ throw todo(get_app());
       //return ::metrowin::window::from_handle(::FindWindow(lpszClassName, lpszWindowName)); 
    
    }
-   ::ca::window * window::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
+   
+   sp(::ca::window) window::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
    {
 
       throw todo(::ca::get_thread_app());
@@ -5496,7 +5493,7 @@ throw todo(get_app());
 #endif
 
 
-   ::user::interaction* window::GetTopWindow()
+   sp(::user::interaction) window::GetTopWindow()
    {
 
       throw todo(get_app());
@@ -5506,7 +5503,9 @@ throw todo(get_app());
       //return ::metrowin::window::from_handle(::GetTopWindow(get_handle()));
    
    }
-   ::user::interaction* window::GetWindow(UINT nCmd)
+   
+   
+   sp(::user::interaction) window::GetWindow(UINT nCmd)
    {
 
       throw todo(get_app());
@@ -5517,7 +5516,7 @@ throw todo(get_app());
    
    }
 
-   ::user::interaction* window::GetLastActivePopup()
+   sp(::user::interaction) window::GetLastActivePopup()
    {
 
       throw todo(get_app());
@@ -5528,7 +5527,7 @@ throw todo(get_app());
    
    }
 
-   ::ca::window * window::set_parent(::ca::window * pWndNewParent)
+   sp(::user::interaction) window::set_parent(sp(::user::interaction) pWndNewParent)
    {
 
       throw todo(get_app());
@@ -5537,7 +5536,7 @@ throw todo(get_app());
       //return ::metrowin::window::from_handle(::SetParent(get_handle(), (oswindow) pWndNewParent->get_os_data())); 
    }
 
-   ::ca::window * window::WindowFromPoint(POINT point)
+   sp(::ca::window) window::WindowFromPoint(POINT point)
    { 
 
       throw todo(::ca::get_thread_app());
@@ -5697,7 +5696,7 @@ throw todo(get_app());
 
    }
 
-   ::ca::window * window::GetForegroundWindow()
+   sp(::ca::window) window::GetForegroundWindow()
    {
 
       throw todo(::ca::get_thread_app());
@@ -5826,7 +5825,7 @@ throw todo(get_app());
    { Default(); }
    void window::OnKillFocus(::ca::window *)
    { Default(); }
-   LRESULT window::OnMenuChar(UINT, UINT, ::userbase::menu*)
+   LRESULT window::OnMenuChar(UINT, UINT, ::user::menu*)
    { return Default(); }
    void window::OnMenuSelect(UINT, UINT, HMENU)
    { Default(); }
@@ -6004,9 +6003,9 @@ throw todo(get_app());
    { Default(); }
    void window::OnTimer(uint_ptr)
    { Default(); }
-   void window::OnInitMenu(::userbase::menu*)
+   void window::OnInitMenu(::user::menu*)
    { Default(); }
-   void window::OnInitMenuPopup(::userbase::menu*, UINT, bool)
+   void window::OnInitMenuPopup(::user::menu*, UINT, bool)
    { Default(); }
 
 #ifdef WINDOWSEX
@@ -6220,7 +6219,7 @@ throw todo(get_app());
 
       // Catch exceptions thrown outside the scope of a callback
       // in debug builds and warn the ::fontopus::user.
-      ::ca::smart_pointer < ::ca::message::base > spbase;
+      ::c::smart_pointer < ::ca::message::base > spbase;
 
       spbase(pinteraction->get_base(pinteraction, nMsg, wParam, lParam));
 
@@ -6444,8 +6443,10 @@ lCallNextHook:
 
    void window::_001BaseWndInterfaceMap()
    {
-      System.user().window_map().set((int_ptr)(void *) get_handle(), this);
+      System.user()->window_map().set((int_ptr)(void *) get_handle(), this);
+
    }
+ 
 
 
    void window::_001OnTriggerMouseInside()
@@ -6466,7 +6467,7 @@ lCallNextHook:
 } // namespace metrowin
 
 
-CTestCmdUI::CTestCmdUI(::ca::application * papp) :
+CTestCmdUI::CTestCmdUI(sp(::ca::application) papp) :
    ca(papp),
    cmd_ui(papp)
 {
@@ -7183,7 +7184,7 @@ namespace metrowin
    }
 
 
-   ::user::interaction * window::get_wnd() const
+   sp(::user::interaction) window::get_wnd() const
    {
 
       return (::user::interaction *) this;

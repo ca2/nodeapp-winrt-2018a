@@ -1,7 +1,9 @@
 #include "framework.h"
 #include "sal.h"
 
-CLASS_DECL_ca int ca2_main();
+
+CLASS_DECL_metrowin int ca2_main();
+
 
 //CLASS_DECL_ca extern fixed_alloc_array * g_pfixedallocaWstring;
 

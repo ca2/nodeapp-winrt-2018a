@@ -145,7 +145,7 @@ namespace metrowin
    //window * window::from_handle(oswindow hWnd)
    //{
 /*      single_lock sl(afxMutexHwnd(), TRUE);
-      hwnd_map* pMap = afxMapHWND(TRUE); //create ::collection::map if not exist
+      hwnd_map* pMap = afxMapHWND(TRUE); //create ::map if not exist
       try
       {
          ASSERT(pMap != NULL);
@@ -173,7 +173,7 @@ namespace metrowin
       window * pWnd = NULL;
       if (pMap != NULL)
       {
-         // only look in the permanent ::collection::map - does no allocations
+         // only look in the permanent ::map - does no allocations
          pWnd = pMap->lookup_permanent(hWnd);
          if(pWnd != NULL && WIN_WINDOW(pWnd)->get_handle() != hWnd)
             return NULL;
@@ -185,12 +185,12 @@ namespace metrowin
    {
       ASSERT(get_handle() == NULL);     // only attach once, detach on destroy
       ASSERT(FromHandlePermanent(hWndNew) == NULL);
-      // must not already be in permanent ::collection::map
+      // must not already be in permanent ::map
 
       if (hWndNew == NULL)
          return FALSE;
       single_lock sl(afxMutexHwnd(), TRUE);
-      hwnd_map * pMap = afxMapHWND(TRUE); // create ::collection::map if not exist
+      hwnd_map * pMap = afxMapHWND(TRUE); // create ::map if not exist
       ASSERT(pMap != NULL);
 
       pMap->set_permanent(set_handle(hWndNew), this);
@@ -579,7 +579,7 @@ namespace metrowin
       }
 
 #ifdef WINDOWSEX
-      // call default, unsubclass, and detach from the ::collection::map
+      // call default, unsubclass, and detach from the ::map
       WNDPROC pfnWndProc = WNDPROC(GetWindowLongPtr(get_handle(), GWLP_WNDPROC));
       Default();
       if (WNDPROC(GetWindowLongPtr(get_handle(), GWLP_WNDPROC)) == pfnWndProc)
@@ -643,7 +643,7 @@ namespace metrowin
          throw todo(get_app());
 #endif
 
-         // should also be in the permanent or temporary handle ::collection::map
+         // should also be in the permanent or temporary handle ::map
          single_lock sl(afxMutexHwnd(), TRUE);
          hwnd_map * pMap = afxMapHWND();
          if(pMap == NULL) // inside thread not having windows
@@ -2755,13 +2755,13 @@ restart_mouse_hover_check:
 
    bool window::ReflectLastMsg(oswindow hWndChild, LRESULT* pResult)
    {
-      // get the ::collection::map, and if no ::collection::map, then this message does not need reflection
+      // get the ::map, and if no ::map, then this message does not need reflection
       single_lock sl(afxMutexHwnd(), TRUE);
       hwnd_map * pMap = afxMapHWND();
       if (pMap == NULL)
          return FALSE;
 
-      // check if in permanent ::collection::map, if it is reflect it (could be OLE control)
+      // check if in permanent ::map, if it is reflect it (could be OLE control)
       ::user::interaction * pWnd = hWndChild.window();
       if (pWnd == NULL)
       {
@@ -2798,14 +2798,14 @@ restart_mouse_hover_check:
       case WM_VKEYTOITEM:
       case WM_CHARTOITEM:
       case WM_COMPAREITEM:
-         // reflect the message through the message ::collection::map as WM_REFLECT_BASE+uMsg
+         // reflect the message through the message ::map as WM_REFLECT_BASE+uMsg
          //return window::OnWndMsg(WM_REFLECT_BASE+uMsg, wParam, lParam, pResult);
          return FALSE;
 
          // special case for WM_COMMAND
       case WM_COMMAND:
          {
-            // reflect the message through the message ::collection::map as OCM_COMMAND
+            // reflect the message through the message ::map as OCM_COMMAND
             /* xxx         int nCode = HIWORD(wParam);
             if (window::_001OnCommand(0, MAKELONG(nCode, WM_REFLECT_BASE+WM_COMMAND), NULL, NULL))
             {
@@ -2819,7 +2819,7 @@ restart_mouse_hover_check:
          // special case for WM_NOTIFY
       case WM_NOTIFY:
          {
-            // reflect the message through the message ::collection::map as OCM_NOTIFY
+            // reflect the message through the message ::map as OCM_NOTIFY
             NMHDR* pNMHDR = (NMHDR*)lParam;
             //            int nCode = pNMHDR->code;
             //            __NOTIFY notify;
@@ -2839,7 +2839,7 @@ restart_mouse_hover_check:
             //ASSERT(ctl.nCtlType >= CTLCOLOR_MSGBOX);
             ASSERT(ctl.nCtlType <= CTLCOLOR_STATIC);
 
-            // reflect the message through the message ::collection::map as OCM_CTLCOLOR
+            // reflect the message through the message ::map as OCM_CTLCOLOR
             bool bResult = window::OnWndMsg(WM_REFLECT_BASE+WM_CTLCOLOR, 0, (LPARAM)&ctl, pResult);
             if ((HBRUSH)*pResult == NULL)
             bResult = FALSE;
@@ -3621,7 +3621,7 @@ restart_mouse_hover_check:
       ////else if (yTop + rcDlg.height() > rcArea.bottom)
       ////   yTop = rcArea.bottom - rcDlg.height();
 
-      ////// ::collection::map screen coordinates to child coordinates
+      ////// ::map screen coordinates to child coordinates
       ////SetWindowPos(NULL, xLeft, yTop, -1, -1,
       ////   SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
    }
@@ -5777,7 +5777,7 @@ throw todo(get_app());
    }
 
 
-   // Default message ::collection::map implementations
+   // Default message ::map implementations
    void window::OnActivateApp(bool, uint32_t)
    { Default(); }
    void window::OnActivate(UINT, ::ca::window *, bool)
@@ -6348,7 +6348,7 @@ run:
          WNDPROC oldWndProc;
          if (pWndInit != NULL)
          {
-            // the window should not be in the permanent ::collection::map at this time
+            // the window should not be in the permanent ::map at this time
             ASSERT(::metrowin::window::FromHandlePermanent(hWnd) == NULL);
 
             pWndInit->m_pthread = dynamic_cast < ::ca::thread * > (::metrowin::get_thread());
@@ -6543,7 +6543,7 @@ LRESULT CALLBACK __window_procedure(oswindow hWnd, UINT nMsg, WPARAM wParam, LPA
    if (nMsg == WM_QUERYAFXWNDPROC)
       return 1;
 
-   // all other messages route through message ::collection::map
+   // all other messages route through message ::map
    ::ca::window * pWnd = ::metrowin::window::FromHandlePermanent(hWnd);
    //ASSERT(pWnd != NULL);               
    //ASSERT(pWnd==NULL || WIN_WINDOW(pWnd)->get_handle() == hWnd);

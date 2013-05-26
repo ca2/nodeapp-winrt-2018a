@@ -45,7 +45,7 @@ namespace metrowin
       static comparable_array < ::ca::thread * >   s_threadptra;
       // list of frame_window objects for thread
       simple_list < frame_window * >               m_frameList;
-      // temporary/permanent ::collection::map state
+      // temporary/permanent ::map state
       uint32_t                                     m_nTempMapLock;           // if not 0, temp maps locked
       LPVOID                                       m_pThreadParams; // generic parameters passed to starting function
       __THREADPROC                                 m_pfnThreadProc;

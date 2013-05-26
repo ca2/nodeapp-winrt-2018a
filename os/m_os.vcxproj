@@ -368,9 +368,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
-      <Project>{99892e42-0f2f-4b0f-ac18-5abbc3968407}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\appseed\ca\m_ca.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\c\m_c.vcxproj">

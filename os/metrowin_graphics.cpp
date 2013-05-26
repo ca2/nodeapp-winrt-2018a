@@ -2771,14 +2771,14 @@ namespace metrowin
       if (this != NULL && (nMapMode = GetMapMode()) < MM_ISOTROPIC &&
          nMapMode != MM_TEXT)
       {
-         // when using a constrained ::collection::map mode, ::collection::map against physical inch
+         // when using a constrained ::map mode, ::map against physical inch
          ((::ca::graphics *)this)->SetMapMode(MM_HIMETRIC);
          DPtoLP(lpSize);
          ((::ca::graphics *)this)->SetMapMode(nMapMode);
       }
       else
       {
-         // ::collection::map against logical inch for non-constrained mapping modes
+         // ::map against logical inch for non-constrained mapping modes
          int cxPerInch, cyPerInch;
          if (this != NULL)
          {
@@ -2808,14 +2808,14 @@ namespace metrowin
       if (this != NULL && (nMapMode = GetMapMode()) < MM_ISOTROPIC &&
          nMapMode != MM_TEXT)
       {
-         // when using a constrained ::collection::map mode, ::collection::map against physical inch
+         // when using a constrained ::map mode, ::map against physical inch
          ((::ca::graphics *)this)->SetMapMode(MM_HIMETRIC);
          LPtoDP(lpSize);
          ((::ca::graphics *)this)->SetMapMode(nMapMode);
       }
       else
       {
-         // ::collection::map against logical inch for non-constrained mapping modes
+         // ::map against logical inch for non-constrained mapping modes
          int cxPerInch, cyPerInch;
          if (this != NULL)
          {
@@ -2998,7 +2998,7 @@ namespace metrowin
 
    //::ca::graphics * ::metrowin::graphics::from_handle(HDC hDC)
    //{
-   //hdc_map* pMap = afxMapHDC(TRUE); //create ::collection::map if not exist
+   //hdc_map* pMap = afxMapHDC(TRUE); //create ::map if not exist
    //ASSERT(pMap != NULL);
    //      ::ca::graphics * pgraphics = (::ca::graphics *)pMap->from_handle(hDC);
    //    ASSERT(pgraphics == NULL || (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1() == hDC);
@@ -3042,7 +3042,7 @@ namespace metrowin
       }
       // remember early to avoid leak
       set_handle1(hDC);
-      hdc_map* pMap = afxMapHDC(TRUE); // create ::collection::map if not exist
+      hdc_map* pMap = afxMapHDC(TRUE); // create ::map if not exist
       ASSERT(pMap != NULL);
       pMap->set_permanent(get_handle1(), this);
 

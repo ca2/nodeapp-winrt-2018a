@@ -216,7 +216,7 @@ namespace metrowin
          // check for missing ::ca::LockTempMap calls
          if (__get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock != 0)
          {
-            TRACE(::ca::trace::category_AppMsg, 0, "Warning: Temp ::collection::map lock count non-zero (%ld).\n",
+            TRACE(::ca::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n",
                __get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock);
          }
    #endif
@@ -692,7 +692,7 @@ namespace metrowin
    {
    #if (defined(SOLARIS8) || defined(SOLARIS))
       {
-         static std::collection::map<string, char *> vmap;
+         static std::map<string, char *> vmap;
          if (vmap.find(var) != vmap.end())
          {
             delete[] vmap[var];

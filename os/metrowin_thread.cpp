@@ -1099,7 +1099,7 @@ stop_run:
          // Check for missing LockTempMap calls
          if(m_nTempMapLock != 0)
          {
-            TRACE(::ca::trace::category_AppMsg, 0, "Warning: Temp ::collection::map lock count non-zero (%ld).\n", m_nTempMapLock);
+            TRACE(::ca::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n", m_nTempMapLock);
          }
          LockTempMaps();
          UnlockTempMaps(true);
@@ -1660,7 +1660,7 @@ stop_run:
          return;
       }
 
-      // all other messages route through message ::collection::map
+      // all other messages route through message ::map
       ::user::interaction * pwindow = pbase->m_pwnd->get_wnd();
 
       ASSERT(pwindow == NULL || pwindow == pbase->m_pwnd->m_pimpl);

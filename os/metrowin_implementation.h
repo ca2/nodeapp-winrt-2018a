@@ -5,7 +5,7 @@
 //CLASS_DECL_metrowin bool __end_defer_register_class(LONG fToRegister, const char ** ppszClass);
 
 
-// Temporary ::collection::map management (locks temp ::collection::map on current thread)
+// Temporary ::map management (locks temp ::map on current thread)
 //CLASS_DECL_metrowin void ::ca::LockTempMaps(::ca::application * papp);
 //CLASS_DECL_metrowin bool ::ca::UnlockTempMaps(::ca::application * papp, bool bDeleteTemps = TRUE);
 

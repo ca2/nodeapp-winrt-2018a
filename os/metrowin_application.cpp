@@ -485,18 +485,16 @@ namespace metrowin
 
       // avoid calling CloseHandle() on our own thread handle
       // during the thread destructor
-      ::ca::thread::m_p.m_p->set_os_data(NULL);
+      ::ca::thread::m_p->set_os_data(::null());
 
       WIN_THREAD(::ca::thread::m_p.m_p)->m_bRun = false;
-      WIN_THREAD(::ca::application_base::m_p.m_p->::ca::thread::m_p.m_p)->m_bRun = false;
 
-      int iRet = ::ca::application::exit_instance();
+      int32_t iRet = ::ca::application::exit_instance();
 
-      //::c::smart_pointer<::ca::application>::destroy();
-
-
+      //::c::smart_pointer < application_base >::destroy();
 
       return iRet;
+
    }
 /*
    // Advanced: exception handling

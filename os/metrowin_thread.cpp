@@ -11,8 +11,8 @@ bool CLASS_DECL_metrowin __internal_pump_message();
 LRESULT CLASS_DECL_metrowin __internal_process_wnd_proc_exception(base_exception*, const MSG* pMsg);
 bool __internal_pre_translate_message(MSG* pMsg);
 bool __internal_is_idle_message(MSG* pMsg);
-//__STATIC void CLASS_DECL_metrowin __pre_init_dialog(::user::interaction * pWnd, LPRECT lpRectOld, uint32_t* pdwStyleOld);
-//__STATIC void CLASS_DECL_metrowin __post_init_dialog(::user::interaction * pWnd, const RECT& rectOld, uint32_t dwStyleOld);
+//__STATIC void CLASS_DECL_metrowin __pre_init_dialog(sp(::user::interaction) pWnd, LPRECT lpRectOld, uint32_t* pdwStyleOld);
+//__STATIC void CLASS_DECL_metrowin __post_init_dialog(sp(::user::interaction) pWnd, const RECT& rectOld, uint32_t dwStyleOld);
 
 namespace ca
 {
@@ -228,7 +228,7 @@ void __internal_pre_translate_message(::ca::signal_object * pobj)
          }
       }
 
-      ::user::interaction * puiTopic = pbase->m_pwnd->m_pguie;
+      sp(::user::interaction) puiTopic = pbase->m_pwnd->m_pguie;
 
       try
       {
@@ -553,7 +553,7 @@ namespace metrowin
          m_puiptra = NULL;
          for(int i = 0; i < puiptra->get_size(); i++)
          {
-            ::user::interaction * pui = puiptra->element_at(i);
+            sp(::user::interaction) pui = puiptra->element_at(i);
             if(pui->m_pthread != NULL)
             {
                try
@@ -570,7 +570,7 @@ namespace metrowin
                }
                try
                {
-                  ::user::interaction * puie = pui->m_pguie;
+                  sp(::user::interaction) puie = pui->m_pguie;
                   if(WIN_THREAD(puie->m_pthread->m_pthread) == this 
                      || WIN_THREAD(puie->m_pthread->m_pthread->m_p) == WIN_THREAD(m_p)
                      || WIN_THREAD(puie->m_pthread->m_pthread) == WIN_THREAD(m_p))
@@ -668,9 +668,9 @@ namespace metrowin
 
 
 
-   ::user::interaction * thread::SetMainWnd(::user::interaction * pui)
+   sp(::user::interaction) thread::SetMainWnd(sp(::user::interaction) pui)
    {
-      ::user::interaction * puiPrevious = m_puiMain;
+      sp(::user::interaction) puiPrevious = m_puiMain;
       m_puiMain  = pui;
       return puiPrevious;
    }
@@ -690,7 +690,7 @@ namespace metrowin
          return;
       if(GetMainWnd() == pui)
       {
-         SetMainWnd(NULL);
+         SetMainWnd(::null());
       }
       single_lock sl(&m_mutexUiPtra, TRUE);
       if(m_puiptra != NULL)
@@ -757,7 +757,7 @@ namespace metrowin
       return m_puiptra->element_at(iIndex);
    }
 
-   void thread::set_timer(::user::interaction * pui, uint_ptr nIDEvent, UINT nEllapse)
+   void thread::set_timer(sp(::user::interaction) pui, uint_ptr nIDEvent, UINT nEllapse)
    {
       if(m_spuiMessage.is_null())
       {
@@ -782,7 +782,7 @@ namespace metrowin
 #endif
    }
 
-   void thread::unset_timer(::user::interaction * pui, uint_ptr nIDEvent)
+   void thread::unset_timer(sp(::user::interaction) pui, uint_ptr nIDEvent)
    {
       m_ptimera->unset(pui, nIDEvent);
    }
@@ -819,7 +819,7 @@ namespace metrowin
 
    sp(::user::interaction) thread::set_active_ui(sp(::user::interaction) pui)
    {
-      ::user::interaction * puiPrevious = m_puiActive;
+      sp(::user::interaction) puiPrevious = m_puiActive;
       m_puiActive = pui;
       return puiPrevious;
    }
@@ -1116,7 +1116,7 @@ stop_run:
 //            m_puiptra = NULL;
             for(int i = 0; i < puiptra->get_size(); i++)
             {
-               ::user::interaction * pui = puiptra->element_at(i);
+               sp(::user::interaction) pui = puiptra->element_at(i);
                if(pui->m_pthread != NULL)
                {
                   if(WIN_THREAD(pui->m_pthread) == this 
@@ -1603,7 +1603,7 @@ stop_run:
    }
 
 
-   bool thread::post_message(::user::interaction * pguie, UINT uiMessage, WPARAM wparam, LPARAM lparam)
+   bool thread::post_message(sp(::user::interaction) pguie, UINT uiMessage, WPARAM wparam, lparam lparam)
    {
       if(m_hThread == NULL)
          return false;
@@ -1634,7 +1634,7 @@ stop_run:
       }
 */
       // all other messages route through message ::map
-      ::user::interaction * pwindow = pbase->m_pwnd->get_wnd();
+      sp(::user::interaction) pwindow = pbase->m_pwnd->get_wnd();
 
       ASSERT(pwindow == NULL || pwindow == pbase->m_pwnd->m_pimpl);
 
@@ -2782,7 +2782,7 @@ dumpcontext << "\n";
 }
 
 
-bool thread::post_message(::user::interaction * pguie, UINT uiMessage, WPARAM wparam, LPARAM lparam)
+bool thread::post_message(sp(::user::interaction) pguie, UINT uiMessage, WPARAM wparam, LPARAM lparam)
 {
 metrowin::message * pmessage = new metrowin::message;
 pmessage->m_pguie       = pguie;
@@ -2814,7 +2814,7 @@ delete pmessage;
 return 0;
 }
 
-void message::post(::user::interaction * puie, UINT uiMessage, WPARAM wparam, LPARAM lparam, int nPriority)
+void message::post(sp(::user::interaction) puie, UINT uiMessage, WPARAM wparam, LPARAM lparam, int nPriority)
 {
 message * pmessage = new message;
 pmessage->m_pguie = puie;

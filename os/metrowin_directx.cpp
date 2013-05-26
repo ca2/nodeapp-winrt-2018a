@@ -771,7 +771,7 @@ namespace metrowin
 
 
 
-      ::ca::graphics_sp dc(get_app());
+      ::ca::graphics_sp dc(get_app()->allocer());
 
       dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
 

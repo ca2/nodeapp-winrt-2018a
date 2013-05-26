@@ -77,7 +77,7 @@ namespace metrowin
       virtual bool create_thread(::ca::e_thread_priority epriority = ::get_thread_priority_normal(), uint32_t uiCreateFlags = 0, uint_ptr nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
 
-      virtual ::user::interaction * SetMainWnd(::user::interaction * pui);
+      virtual sp(::user::interaction) SetMainWnd(sp(::user::interaction) pui);
 
       virtual int thread_entry(::ca::thread_startup * pstartup);
       virtual int main();
@@ -88,8 +88,8 @@ namespace metrowin
       virtual void remove(sp(::user::interaction) pui);
       virtual ::count get_ui_count();
       virtual sp(::user::interaction) get_ui(::index iIndex);
-      virtual void set_timer(::user::interaction * pui, uint_ptr nIDEvent, UINT nEllapse);
-      virtual void unset_timer(::user::interaction * pui, uint_ptr nIDEvent);
+      virtual void set_timer(sp(::user::interaction) pui, uint_ptr nIDEvent, UINT nEllapse);
+      virtual void unset_timer(sp(::user::interaction) pui, uint_ptr nIDEvent);
       virtual void set_auto_delete(bool bAutoDelete = true);
       virtual void set_run(bool bRun = true);
       virtual event & get_finish_event();
@@ -118,7 +118,7 @@ namespace metrowin
       uint32_t SuspendThread();
       uint32_t ResumeThread();
       bool post_thread_message(UINT message, WPARAM wParam = 0, lparam lParam = ::null()) override;
-      bool post_message(::user::interaction * pguie, UINT message, WPARAM wParam, LPARAM lParam);
+      bool post_message(sp(::user::interaction) pguie, UINT message, WPARAM wParam = 0, lparam lParam = ::null());
 
       virtual bool PreInitInstance();
 

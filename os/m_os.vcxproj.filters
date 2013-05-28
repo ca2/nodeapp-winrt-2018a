@@ -389,6 +389,9 @@
     <ClInclude Include="factory_exchange.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\operational_system\cross\windows\win_common_controls.h">
+      <Filter>Header Files\operational_system\cross\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="os.def">

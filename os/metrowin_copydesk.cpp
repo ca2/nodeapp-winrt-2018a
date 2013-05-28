@@ -1,7 +1,6 @@
 #include "framework.h"
 #include <shlobj.h>
 
-
 namespace metrowin
 {
 
@@ -19,52 +18,66 @@ namespace metrowin
 
    int copydesk::get_file_count()
    {
+      
+      int iFileCount = 0;
 
-      ::Windows::ApplicationModel::DataTransfer::DataPackageView ^ view = ::Windows::ApplicationModel::DataTransfer::Clipboard::GetContent();
-
-      if(view == nullptr)
-         return 0;
-
-      if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::Uri))
+      ::wait(
+         System.m_window->Dispatcher->RunAsync(
+         ::Windows::UI::Core::CoreDispatcherPriority::Normal,
+         ref new Windows::UI::Core::DispatchedHandler([&iFileCount, this]()
       {
-         return 1;
-      }
-      else if(view->Contains("FileDrop"))
-      {
+         ::Windows::ApplicationModel::DataTransfer::DataPackageView ^ view = ::Windows::ApplicationModel::DataTransfer::Clipboard::GetContent();
+
+         if(view == nullptr)
+         {
+            iFileCount = 0;
+            return;
+         }
+
+         if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::Uri))
+         {
+            iFileCount = 1;
+         }
+         else if(view->Contains("FileDrop"))
+         {
          
-         HGLOBAL hglobal;
+            HGLOBAL hglobal;
 
-         ::Windows::Storage::Streams::IInputStream ^ stream = (::Windows::Storage::Streams::IInputStream ^):: wait(view->GetDataAsync("FileDrop"));
+            ::Windows::Storage::Streams::IInputStream ^ stream = (::Windows::Storage::Streams::IInputStream ^):: wait(view->GetDataAsync("FileDrop"));
 
-         ::Windows::Storage::Streams::IBuffer ^ buffer = ref new ::Windows::Storage::Streams::Buffer(sizeof(HGLOBAL));
+            ::Windows::Storage::Streams::IBuffer ^ buffer = ref new ::Windows::Storage::Streams::Buffer(sizeof(HGLOBAL));
 
-         stream->ReadAsync(buffer, sizeof(HGLOBAL), ::Windows::Storage::Streams::InputStreamOptions::None);
+            stream->ReadAsync(buffer, sizeof(HGLOBAL), ::Windows::Storage::Streams::InputStreamOptions::None);
 
-         primitive::memory memory(get_app());
+            primitive::memory memory(get_app());
 
-         memory.set_os_buffer(buffer);
+            memory.set_os_buffer(buffer);
 
-         memcpy(&hglobal, memory.get_data(), sizeof(HGLOBAL));
+            memcpy(&hglobal, memory.get_data(), sizeof(HGLOBAL));
 
-         //iCount = ::DragQueryFile(hglobal , 0xFFFFFFFF, NULL, 0);
+            //iCount = ::DragQueryFile(hglobal , 0xFFFFFFFF, NULL, 0);
 
-         throw todo(get_app());
+            throw todo(get_app());
 
-      }
-      else if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::StorageItems))
-      {
+         }
+         else if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::StorageItems))
+         {
          
-         ::Windows::Foundation::Collections::IVectorView < ::Windows::Storage::IStorageItem ^ > ^ items = ::wait(view->GetStorageItemsAsync());
+            ::Windows::Foundation::Collections::IVectorView < ::Windows::Storage::IStorageItem ^ > ^ items = ::wait(view->GetStorageItemsAsync());
 
-         return items->Size;
+            iFileCount = items->Size;
 
-      }
-      else
-      {
+         }
+         else
+         {
 
-         return 0;
+            iFileCount = 0;
 
-      }
+         }
+
+      })));
+
+      return iFileCount;
 
 
    }

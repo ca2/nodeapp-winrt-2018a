@@ -38,10 +38,10 @@ namespace metrowin
 
 
       // only valid while running
-      HANDLE                                       m_hThread;       // this thread's HANDLE
+      HTHREAD                                       m_hThread;       // this thread's HANDLE
       uint32_t                                     m_nThreadID;      // this thread's ID
 
-      static comparable_array < HANDLE >           s_haThread;
+      static comparable_array < HTHREAD >          s_haThread;
       static comparable_array < ::ca::thread * >   s_threadptra;
       // list of frame_window objects for thread
       simple_list < frame_window * >               m_frameList;

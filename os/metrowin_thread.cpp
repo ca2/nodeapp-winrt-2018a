@@ -87,6 +87,7 @@ uint32_t __thread_entry(void * pParam)
          __MODULE_STATE* pModuleState = __get_module_state();
          __MODULE_THREAD_STATE* pState = pModuleState->m_thread;
          pState->m_pCurrentWinThread = pThread;
+         ::get_current_thread()->m_pthread = pThread->m_p.m_p;
 
          // forced initialization of the thread
          __init_thread();
@@ -115,7 +116,7 @@ uint32_t __thread_entry(void * pParam)
       }
 
 
-      ::metrowin::thread::s_haThread.add(::GetCurrentThread());
+      ::metrowin::thread::s_haThread.add(::get_current_thread());
       ::metrowin::thread::s_threadptra.add(pThread);
 
       pThread->thread_entry(pStartup);
@@ -168,6 +169,7 @@ CLASS_DECL_metrowin void __set_thread(::ca::thread * pthread)
    //__MODULE_THREAD_STATE* pState = __get_module_thread_state();
    ___THREAD_STATE* pState =  __get_thread_state();
    pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::ca::thread::m_p.m_p);
+   ::get_current_thread()->m_pthread = pthread;
 }
 
 
@@ -401,7 +403,7 @@ void CLASS_DECL_metrowin __end_thread(::ca::application * papp, UINT nExitCode, 
       pState->m_pCurrentWinThread = NULL;
    }
 
-   ::metrowin::thread::s_haThread.remove(::GetCurrentThread());
+   ::metrowin::thread::s_haThread.remove(::get_current_thread());
    ::metrowin::thread::s_threadptra.remove(pThread);
 
    // allow cleanup of any thread local objects
@@ -471,7 +473,7 @@ namespace metrowin
 {
 
 
-   comparable_array < HANDLE > thread::s_haThread;
+   comparable_array < HTHREAD > thread::s_haThread;
    comparable_array < ::ca::thread * > thread::s_threadptra;
 
 
@@ -643,7 +645,7 @@ namespace metrowin
 
    HANDLE thread::item() const
    {
-      return m_hThread;
+      return m_hThread == NULL ? NULL : (m_hThread->m_pevent == NULL ? NULL : m_hThread->m_pevent->m_hEvent);
    }
 
    bool thread::begin(::ca::e_thread_priority epriority, UINT nStackSize, uint32_t dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
@@ -759,10 +761,10 @@ namespace metrowin
 
    void thread::set_timer(sp(::user::interaction) pui, uint_ptr nIDEvent, UINT nEllapse)
    {
-      if(m_spuiMessage.is_null())
-      {
-         return;
-      }
+//      if(m_spuiMessage.is_null())
+  //    {
+    //     return;
+      //}
       m_ptimera->set(pui, nIDEvent, nEllapse);
       single_lock sl(&m_ptimera->m_mutex, TRUE);
       int iMin = 100;
@@ -1175,7 +1177,7 @@ stop_run:
                {
                   /*__call_window_procedure(pMainWnd, pMainWnd->get_handle(),
                   WM_IDLEUPDATECMDUI, (WPARAM)TRUE, 0);*/
-                  pui->send_message(WM_IDLEUPDATECMDUI, (WPARAM)TRUE, 0);
+                  pui->send_message(WM_IDLEUPDATECMDUI, (WPARAM)TRUE);
                   /*   pui->SendMessageToDescendants(WM_IDLEUPDATECMDUI,
                   (WPARAM)TRUE, 0, TRUE, TRUE);*/
                }
@@ -1747,7 +1749,7 @@ run:
 
    void thread::set_os_data(void * pvoidOsData)
    {
-      m_hThread = (HANDLE) pvoidOsData;
+      m_hThread = (HTHREAD) pvoidOsData;
    }
 
    void thread::set_os_int(int_ptr iData)
@@ -1869,8 +1871,8 @@ run:
 
 
 
-      if(!initialize_message_window(get_app(), ""))
-         return -1;
+      //if(!initialize_message_window(get_app(), ""))
+        // return -1;
 
 
       return 0;   // not reached
@@ -1983,7 +1985,7 @@ run:
    ///  \brief		starts thread on first call
    void thread::start()
    {
-      ::ResumeThread(item());
+      ::ResumeThread(m_hThread);
    }
 
 
@@ -2005,7 +2007,7 @@ run:
    ///  \param		new priority
    void thread::set_priority(int priority)
    {
-      if ( ::SetThreadPriority(item(), priority) == 0)
+      if ( ::SetThreadPriority(m_hThread, priority) == 0)
          throw runtime_error(get_app(), "Thread::set_priority: Couldn't set thread priority.");
    }
 
@@ -2013,7 +2015,7 @@ run:
    ///  \param		priority
    int thread::priority()
    { 
-      return ::GetThreadPriority(item());
+      return ::GetThreadPriority(m_hThread);
    }
 
 

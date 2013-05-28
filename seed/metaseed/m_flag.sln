@@ -13,14 +13,24 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ca2", "..\..\..\app\appseed\ca2\m_ca2.vcxproj", "{99892E42-0F2F-4B0F-AC18-5ABBC3968407}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_uinteraction", "..\..\..\app-core\appseed\uinteraction\m_uinteraction.vcxproj", "{7A455B6F-E8D8-4ACF-BC1A-EE58C5D851B4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{99892E42-0F2F-4B0F-AC18-5ABBC3968407} = {99892E42-0F2F-4B0F-AC18-5ABBC3968407}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_flag", "..\..\..\app-core\appseed\flag\m_flag.vcxproj", "{1DC17004-A99D-40CA-80F4-537FFED13D2A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_flag", "..\..\..\app-core\appseed\flag\winmetro_flag.vcxproj", "{FF3F2FBF-CBBE-4CDF-AE27-D74E64FC9725}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCED5042-9A2D-4E71-8022-129E8E5DA36E} = {FCED5042-9A2D-4E71-8022-129E8E5DA36E}
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD} = {EC95B149-A498-4C6C-92A0-BA563D88B8BD}
+		{84FBAD70-591C-44FA-93C4-EE232B3A4B87} = {84FBAD70-591C-44FA-93C4-EE232B3A4B87}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_freeimage", "..\..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj", "{FCED5042-9A2D-4E71-8022-129E8E5DA36E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2freeimage", "..\..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj", "{FCED5042-9A2D-4E71-8022-129E8E5DA36E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2zlib", "..\..\..\app\thirdparty\appseed\zlib\_m_ca2zlib.vcxproj", "{84FBAD70-591C-44FA-93C4-EE232B3A4B87}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2freetype", "..\..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj", "{EC95B149-A498-4C6C-92A0-BA563D88B8BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -380,6 +390,42 @@ Global
 		{84FBAD70-591C-44FA-93C4-EE232B3A4B87}.Release|Win32.Build.0 = basis|Win32
 		{84FBAD70-591C-44FA-93C4-EE232B3A4B87}.Release|x64.ActiveCfg = basis|x64
 		{84FBAD70-591C-44FA-93C4-EE232B3A4B87}.Release|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.basis|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.codeanalysis|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Debug|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.memdleak|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|x64.Build.0 = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|ARM.ActiveCfg = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|ARM.Build.0 = basis|ARM
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|Win32.ActiveCfg = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|Win32.Build.0 = basis|Win32
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|x64.ActiveCfg = basis|x64
+		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.Release|x64.Build.0 = basis|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -924,7 +924,7 @@ namespace metrowin
          try
          {
             repeat:
-            if(::PostThreadMessage(::GetThreadId(::metrowin::thread::s_haThread[i]), message, wparam, lparam))
+            if(::PostThreadMessage(::get_thread_id(::metrowin::thread::s_haThread[i]), message, wparam, lparam))
             {
                if(message == WM_QUIT)
                {

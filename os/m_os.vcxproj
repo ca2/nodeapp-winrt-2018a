@@ -247,6 +247,7 @@
     <ClInclude Include="..\operational_system\cross\linux\linux_datetime.h" />
     <ClInclude Include="..\operational_system\cross\linux\linux_file.h" />
     <ClInclude Include="..\operational_system\cross\windows\win.h" />
+    <ClInclude Include="..\operational_system\cross\windows\win_common_controls.h" />
     <ClInclude Include="..\operational_system\cross\windows\win_thread.h" />
     <ClInclude Include="..\operational_system\get_platform.h" />
     <ClInclude Include="..\operational_system\integer_type.h" />
@@ -369,7 +370,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
-      <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
+      <Project>{99892e42-0f2f-4b0f-ac18-5abbc3968407}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\c\m_c.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900ebb72}</Project>

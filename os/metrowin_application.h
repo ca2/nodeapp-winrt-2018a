@@ -208,6 +208,9 @@ namespace metrowin
    
       ::user::printer * get_printer(const char * pszDeviceName);
 
+
+      void ShowWaitCursor(bool bShow);
+
    };
 
 

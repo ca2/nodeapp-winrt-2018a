@@ -338,11 +338,11 @@ namespace metrowin
 
    UINT window_draw::RedrawProc()
    {
-      if(!initialize_message_window("ca2::twf - ca2 Transparent Window Framework"))
+      /*if(!initialize_message_window("ca2::twf - ca2 Transparent Window Framework"))
       {
          TRACE("Could not initialize ca2::twf - ca2 Transparent Window Framework!");
          return 0;
-      }
+      }*/
 //      ::AttachThreadInput(::GetCurrentThreadId(), WIN_THREAD(System.::ca::thread_sp::m_p)->m_nThreadID, TRUE);
 //      MSG msg;
       s_bRunning = true;

@@ -644,8 +644,11 @@ namespace metrowin
    {
       if(dRate < 0)
          return;
+      map();
       register int64_t size = area();
       LPBYTE lpb = (LPBYTE) get_data();
+      if(lpb == NULL)
+         return;
       lpb += ((int)echannel) % 4;
       register int iDiv = 256 * 256;
       register int iMul = (int) (dRate * ((double) iDiv));

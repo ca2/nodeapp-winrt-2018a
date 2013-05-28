@@ -34,10 +34,14 @@
 #define CREATE_SUSPENDED 0x00000004
 #endif
 
-CLASS_DECL_c HANDLE WINAPI CreateThread(LPSECURITY_ATTRIBUTES unusedThreadAttributes, uint_ptr unusedStackSize,  uint32_t (* pfn)(void *), void * pv, uint32_t dwCreationFlags, uint32_t * puiId);
-CLASS_DECL_c DWORD WINAPI ResumeThread(HANDLE hThread);
-CLASS_DECL_c BOOL WINAPI SetThreadPriority(HANDLE hThread, int nPriority);
-CLASS_DECL_c int WINAPI GetThreadPriority(HANDLE hThread);
+class hthread;
+
+#define HTHREAD hthread *
+
+CLASS_DECL_c HTHREAD WINAPI CreateThread(LPSECURITY_ATTRIBUTES unusedThreadAttributes, uint_ptr unusedStackSize,  uint32_t (* pfn)(void *), void * pv, uint32_t dwCreationFlags, uint32_t * puiId);
+CLASS_DECL_c DWORD WINAPI ResumeThread(HTHREAD hThread);
+CLASS_DECL_c BOOL WINAPI SetThreadPriority(HTHREAD hThread, int nPriority);
+CLASS_DECL_c int WINAPI GetThreadPriority(HTHREAD hThread);
 
 CLASS_DECL_c VOID WINAPI Sleep(_In_ DWORD dwMilliseconds);
 

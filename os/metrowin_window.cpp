@@ -109,12 +109,12 @@ namespace metrowin
    }
 
 
-   void window::mouse_hover_add(::user::interaction* pinterface)
+   void window::mouse_hover_add(sp(::user::interaction) pinterface)
    {
       m_guieptraMouseHover.add_unique(pinterface);
    }
 
-   void window::mouse_hover_remove(::user::interaction* pinterface)
+   void window::mouse_hover_remove(sp(::user::interaction) pinterface)
    {
       m_guieptraMouseHover.remove(pinterface); 
    }
@@ -246,6 +246,14 @@ namespace metrowin
       ASSERT(lpszClassName == NULL || __is_valid_string(lpszClassName));
       ENSURE_ARG(lpszWindowName == NULL || __is_valid_string(lpszWindowName));
 
+      ::rect rect;
+
+      rect.left = x;
+      rect.top = y;
+      rect.right = x + nWidth;
+      rect.bottom = y + nHeight;
+
+
       // allow modification of several common create parameters
       CREATESTRUCT cs;
       cs.dwExStyle = dwExStyle;
@@ -270,6 +278,102 @@ namespace metrowin
       cs.hInstance = System.m_hInstance;
       cs.lpCreateParams = lpParam;
 
+
+   if(IsWindow())
+   {
+      DestroyWindow();
+   }
+
+//   if(!create_message_window())
+  //    return FALSE;
+   m_bVisible = (dwStyle & WS_VISIBLE) != 0;
+
+   m_pthread = get_app();
+   m_pthread->m_pthread->add(this);
+   m_pguie->m_pthread = m_pthread;
+   m_pguie->m_pthread->m_pthread->add(m_pguie);
+
+
+   //m_pguie = this;
+//   m_oswindow = pparent->get_handle();
+   /*sp(::ca::window) pwndThis = (this);
+   if(pwndThis != ::null())
+   {
+      pwndThis->set_handle(m_oswindow);
+   }*/
+#ifndef METROWIN
+   if(dynamic_cast < ::ca::message::dispatch * > (pparent->get_guie().m_p) == ::null())
+      return false;
+#endif
+   //m_pimpl = new ::ca::window(get_app());
+   //m_pimpl->m_pguie = m_pguie;
+   //m_pimpl->CreateEx(dwExStyle, lpszClassName, lpszWindowName, dwStyle, rect, pparent, iId, lpParam);
+   ASSERT_VALID(this);
+
+   /*sp(interaction) oswindow_Parent = pparent;
+   sp(interaction) oswindow_T = oswindow_Parent;
+   do
+   {
+      if(oswindow_T->m_pwnd != ::null())
+         break;
+      oswindow_Parent = oswindow_T;
+   }
+   while ((oswindow_T = ::user::get_parent_owner(oswindow_Parent)) != ::null());*/
+
+//   m_pwnd = ::null();
+  // m_pguie->m_pwnd = ::null();
+
+   //::user::interaction * pparent = (::user::interaction *) (void *) hWndParent;
+
+   m_pguie->m_pimpl = this;
+   /*if(pparent != this
+   && pparent != m_pguie
+   && pparent != m_pimpl)
+   {
+      pparent->m_uiptraChild.add_unique(m_pguie);
+      m_pparent   = pparent;
+   }*/
+   m_id      = id;
+   m_pguie->m_id      = id;
+
+//   CREATESTRUCT cs;
+
+   cs.dwExStyle   = dwExStyle;
+   cs.style       = dwStyle;
+   cs.x           = rect.left;
+   cs.y           = rect.top;
+   cs.cx          = rect.right - rect.left;
+   cs.cy          = rect.bottom - rect.top;
+
+#ifdef WINDOWSEX
+
+   cs.lpszClass = lpszClassName;
+   cs.lpszName = lpszWindowName;
+   cs.hwndParent = pparent->get_handle();
+
+#else
+
+   cs.lpszClass         = ::null();
+   cs.lpszName          = ::null();
+   cs.hwndParent        = ::ca::null();
+
+#endif
+
+   //cs.hMenu = pparent->get_handle() == ::null() ? ::null() : (HMENU) iId;
+   cs.hMenu = ::null();
+
+#ifdef WINDOWS
+
+   cs.hInstance = System.m_hInstance;
+
+#else
+
+   cs.hInstance = ::null();
+
+#endif
+
+   cs.lpCreateParams = lpParam;
+
       if(m_pguie != NULL && m_pguie != this)
       {
          if(!m_pguie->pre_create_window(cs))
@@ -286,6 +390,18 @@ namespace metrowin
             return FALSE;
          }
       }
+
+   //m_pguie->install_message_handling(dynamic_cast < ::ca::message::dispatch * > (this));
+
+   send_message(WM_CREATE, 0, (LPARAM) &cs);
+
+   m_pguie->SetWindowPos(0, rect.left, rect.top, cs.cx, cs.cy, 0);
+
+   send_message(WM_SIZE);
+
+//   on_set_parent(pparent);
+
+   return true;
 
 #ifdef WINDOWSEX
       if(cs.hwndParent == NULL)
@@ -1412,13 +1528,13 @@ restart_mouse_hover_check:
          }
          for(int i = 0; i < m_pguie->m_uiptraChild.get_size(); i++)
          {
-/*            ::user::interaction * pguie = m_pguie->m_uiptraChild[i];
+            ::user::interaction * pguie = m_pguie->m_uiptraChild(i);
             if(pguie != NULL && pguie->m_pguie != NULL)
             {
                pguie->m_pguie->_000OnMouse(pmouse);
                if(pmouse->m_bRet)
                   return;
-            }*/
+            }
          }
          pbase->set_lresult(DefWindowProc(pbase->m_uiMessage, pbase->m_wparam, pbase->m_lparam));
          return;
@@ -4546,40 +4662,38 @@ throw todo(get_app());
    sp(::user::interaction) window::get_capture()
    {
 
-      throw todo(get_app());
-
-      //oswindow hwndCapture = ::GetCapture();
-      //if(hwndCapture == NULL)
-      //   return NULL;
-      //if(hwndCapture == get_handle())
-      //{
-      //   if(m_pguieCapture != NULL)
-      //   {
-      //      return m_pguieCapture;
-      //   }
-      //   else
-      //   {
-      //      if(m_pguie != NULL)
-      //      {
-      //         if(m_pguie->get_wnd() != NULL && WIN_WINDOW(m_pguie->get_wnd())->m_pguieCapture != NULL)
-      //         {
-      //            return WIN_WINDOW(m_pguie->get_wnd())->m_pguieCapture;
-      //         }
-      //         else
-      //         {
-      //            return m_pguie;
-      //         }
-      //      }
-      //      else
-      //      {
-      //         return this;
-      //      }
-      //   }
-      //}
-      //else
-      //{
-      //   return window::GetCapture()->get_capture();
-      //}
+      oswindow hwndCapture = ::GetCapture();
+      if(hwndCapture == NULL)
+         return ::null();
+      if(hwndCapture == get_handle())
+      {
+         if(m_pguieCapture != NULL)
+         {
+            return m_pguieCapture;
+         }
+         else
+         {
+            if(m_pguie != NULL)
+            {
+               if(m_pguie->get_wnd() != NULL && WIN_WINDOW(m_pguie->get_wnd().m_p)->m_pguieCapture != NULL)
+               {
+                  return WIN_WINDOW(m_pguie->get_wnd().m_p)->m_pguieCapture;
+               }
+               else
+               {
+                  return m_pguie;
+               }
+            }
+            else
+            {
+               return this;
+            }
+         }
+      }
+      else
+      {
+         return window::GetCapture()->get_capture();
+      }
    }
 
 
@@ -5073,7 +5187,7 @@ throw todo(get_app());
    bool window::RedrawWindow(LPCRECT lpRectUpdate, ::ca::region* prgnUpdate, UINT flags)
    { 
 
-      throw todo(get_app());
+      //throw todo(get_app());
 
       //if(System.get_twf() == NULL)
       //   return false;
@@ -5084,6 +5198,8 @@ throw todo(get_app());
       //ASSERT(::IsWindow(get_handle())); 
 
       //return ::RedrawWindow(get_handle(), lpRectUpdate, prgnUpdate == NULL ? NULL : (HRGN)prgnUpdate->get_os_data(), flags) != FALSE;
+
+      return true;
 
    }
 
@@ -5210,7 +5326,7 @@ throw todo(get_app());
       if(pinterface != NULL) 
          m_pguieCapture = pinterface; 
       
-      return ::SetCapture(this).window(); 
+      return ::SetCapture((::user::interaction *) this).window(); 
 
    }
 
@@ -5225,7 +5341,7 @@ throw todo(get_app());
    { 
 
       //ASSERT(::IsWindow(get_handle()));
-      return ::SetFocus(m_pguie->get_handle());
+      return ::SetFocus(m_pguie->get_handle()).window();
    
    }
 

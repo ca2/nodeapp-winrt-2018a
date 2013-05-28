@@ -658,7 +658,7 @@ namespace metrowin
 
 //      dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca::application >::m_p->::ca::thread_sp::m_p))->m_hThread = __get_thread()->m_hThread;
   //    dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca::application >::m_p->::ca::thread_sp::m_p))->m_nThreadID = __get_thread()->m_nThreadID;
-      dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p)->m_hThread      =  ::GetCurrentThread();
+      dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p)->m_hThread      =  ::get_current_thread();
       dynamic_cast < class ::metrowin::thread * > (::ca::thread::m_p.m_p)->m_nThreadID    =  ::GetCurrentThreadId();
       
 
@@ -793,4 +793,13 @@ namespace metrowin
    }
 
 
+   void application::ShowWaitCursor(bool bShow)
+   {
+   }
+
+
 } // namespace metrowin
+
+
+
+

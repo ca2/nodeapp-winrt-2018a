@@ -122,6 +122,112 @@ uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
    return (int)e;
 }
 
+
+::user::e_key virtualkey_to_userkey(::Windows::System::VirtualKey e)
+{
+   switch(e)
+   {
+   case ::Windows::System::VirtualKey::Number0:
+      return ::user::key_0;
+   case ::Windows::System::VirtualKey::Number1:
+      return ::user::key_1;
+   case ::Windows::System::VirtualKey::Number2:
+      return ::user::key_2;
+   case ::Windows::System::VirtualKey::Number3:
+      return ::user::key_3;
+   case ::Windows::System::VirtualKey::Number4:
+      return ::user::key_4;
+   case ::Windows::System::VirtualKey::Number5:
+      return ::user::key_5;
+   case ::Windows::System::VirtualKey::Number6:
+      return ::user::key_6;
+   case ::Windows::System::VirtualKey::Number7:
+      return ::user::key_7;
+   case ::Windows::System::VirtualKey::Number8:
+      return ::user::key_8;
+   case ::Windows::System::VirtualKey::Number9:
+      return ::user::key_9;
+   case ::Windows::System::VirtualKey::A:
+      return ::user::key_a;
+   case ::Windows::System::VirtualKey::B:
+      return ::user::key_b;
+   case ::Windows::System::VirtualKey::C:
+      return ::user::key_c;
+   case ::Windows::System::VirtualKey::D:
+      return ::user::key_d;
+   case ::Windows::System::VirtualKey::E:
+      return ::user::key_e;
+   case ::Windows::System::VirtualKey::F:
+      return ::user::key_f;
+   case ::Windows::System::VirtualKey::G:
+      return ::user::key_g;
+   case ::Windows::System::VirtualKey::H:
+      return ::user::key_h;
+   case ::Windows::System::VirtualKey::I:
+      return ::user::key_i;
+   case ::Windows::System::VirtualKey::J:
+      return ::user::key_j;
+   case ::Windows::System::VirtualKey::K:
+      return ::user::key_k;
+   case ::Windows::System::VirtualKey::L:
+      return ::user::key_l;
+   case ::Windows::System::VirtualKey::M:
+      return ::user::key_m;
+   case ::Windows::System::VirtualKey::N:
+      return ::user::key_n;
+   case ::Windows::System::VirtualKey::O:
+      return ::user::key_o;
+   case ::Windows::System::VirtualKey::P:
+      return ::user::key_p;
+   case ::Windows::System::VirtualKey::Q:
+      return ::user::key_q;
+   case ::Windows::System::VirtualKey::R:
+      return ::user::key_r;
+   case ::Windows::System::VirtualKey::S:
+      return ::user::key_s;
+   case ::Windows::System::VirtualKey::T:
+      return ::user::key_t;
+   case ::Windows::System::VirtualKey::U:
+      return ::user::key_u;
+   case ::Windows::System::VirtualKey::V:
+      return ::user::key_v;
+   case ::Windows::System::VirtualKey::W:
+      return ::user::key_w;
+   case ::Windows::System::VirtualKey::X:
+      return ::user::key_x;
+   case ::Windows::System::VirtualKey::Y:
+      return ::user::key_y;
+   case ::Windows::System::VirtualKey::Z:
+      return ::user::key_z;
+   case ::Windows::System::VirtualKey::Shift:
+      return ::user::key_shift;
+   case ::Windows::System::VirtualKey::LeftShift:
+      return ::user::key_lshift;
+   case ::Windows::System::VirtualKey::RightShift:
+      return ::user::key_rshift;
+   case ::Windows::System::VirtualKey::Control:
+      return ::user::key_control;
+   case ::Windows::System::VirtualKey::LeftControl:
+      return ::user::key_lcontrol;
+   case ::Windows::System::VirtualKey::RightControl:
+      return ::user::key_rcontrol;
+   case ::Windows::System::VirtualKey::Menu:
+      return ::user::key_alt;
+   case ::Windows::System::VirtualKey::LeftMenu:
+      return ::user::key_lalt;
+   case ::Windows::System::VirtualKey::RightMenu:
+      return ::user::key_ralt;
+   case ::Windows::System::VirtualKey::Tab:
+      return ::user::key_tab;
+   case ::Windows::System::VirtualKey::Enter:
+      return ::user::key_return;
+   case 190:
+      return ::user::key_dot;
+   default:;
+   }
+   return (::user::e_key) e;
+}
+
 uint_ptr virtualkey_to_code(::Windows::System::VirtualKey e)
 {
    switch(e)
@@ -720,6 +826,7 @@ namespace metrowin
       pkey->m_uiMessage          = WM_KEYDOWN;
       pkey->m_pwnd               = m_psystem->m_pui;
       pkey->m_nChar              = virtualkey_to_char(args->VirtualKey);
+      pkey->m_ekey               = virtualkey_to_userkey(args->VirtualKey);
       pkey->m_wparam             = pkey->m_nChar;
       pkey->m_nFlags             = virtualkey_to_code(args->VirtualKey);
       pkey->m_lparam             = pkey->m_nFlags << 16;
@@ -751,6 +858,7 @@ namespace metrowin
       pkey->m_uiMessage       = WM_KEYUP;
       pkey->m_pwnd            = m_psystem->m_pui;
       pkey->m_nChar           = virtualkey_to_char(args->VirtualKey);
+      pkey->m_ekey               = virtualkey_to_userkey(args->VirtualKey);
       pkey->m_wparam          = pkey->m_nChar;
 //      pkey->m_key = args;
 

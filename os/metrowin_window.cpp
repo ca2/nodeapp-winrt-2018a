@@ -1428,11 +1428,15 @@ restart_mouse_hover_check:
          pbase->m_uiMessage == WM_CHAR)
       {
 
+         ::ca::message::key * pkey = (::ca::message::key *) pbase;
+
+//         Application.user()->keyboard().translate_os_key_message(pkey);
+
          if(pbase->m_uiMessage == WM_KEYDOWN)
          {
             try
             {
-               Application.set_key_pressed((::user::e_key) pbase->m_wparam, true);
+               Application.set_key_pressed(pkey->m_ekey, true);
             }
             catch(...)
             {
@@ -1442,14 +1446,13 @@ restart_mouse_hover_check:
          {
             try
             {
-               Application.set_key_pressed((::user::e_key) pbase->m_wparam, false);
+               Application.set_key_pressed(pkey->m_ekey, false);
             }
             catch(...)
             {
             }
          }
 
-         ::ca::message::key * pkey = (::ca::message::key *) pbase;
          ::user::interaction * puiFocus = dynamic_cast < ::user::interaction * > (Application.user()->get_keyboard_focus().m_p);
          if(puiFocus != NULL 
             && puiFocus->IsWindow()

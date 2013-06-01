@@ -138,8 +138,7 @@ namespace metrowin
       // as above, but returns oswindow
       sp(::user::interaction) GetDescendantWindow(id id);
       // like GetDlgItem but recursive
-      void SendMessageToDescendants(UINT message, WPARAM wParam = 0,
-         LPARAM lParam = 0, bool bDeep = TRUE, bool bOnlyPerm = FALSE);
+      void SendMessageToDescendants(UINT message, WPARAM wParam = 0, lparam lParam = 0, bool bDeep = TRUE, bool bOnlyPerm = FALSE);
       sp(::user::frame_window) GetParentFrame();
       sp(::user::frame_window) EnsureParentFrame();
       sp(::user::interaction) GetTopLevelParent();
@@ -157,8 +156,8 @@ namespace metrowin
 
 #endif   // WINVER >= 0x0500
 
-      LRESULT send_message(UINT message, WPARAM wParam = 0, lparam lParam = ::null());
-      bool PostMessage(UINT message, WPARAM wParam = 0, lparam lParam = ::null());
+      LRESULT send_message(UINT message, WPARAM wParam = 0, lparam lParam = NULL);
+      bool PostMessage(UINT message, WPARAM wParam = 0, lparam lParam = NULL);
 
       bool SendNotifyMessage(UINT message, WPARAM wParam, LPARAM lParam);
       bool SendChildNotifyLastMsg(LRESULT* pResult = NULL);
@@ -298,7 +297,7 @@ namespace metrowin
 
       // capture and focus apply to all windows
       static sp(::user::interaction) GetCapture();
-      virtual sp(::user::interaction) set_capture(sp(::user::interaction) pinterface = ::null());
+      virtual sp(::user::interaction) set_capture(sp(::user::interaction) pinterface = NULL);
       virtual sp(::user::interaction) release_capture();
       virtual sp(::user::interaction) get_capture();
       static sp(::user::interaction) GetFocus();
@@ -618,7 +617,7 @@ namespace metrowin
 
       // for handling default processing
       LRESULT Default();
-      virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+      virtual LRESULT DefWindowProc(UINT message, WPARAM wParam, lparam lParam);
 
       // for custom cleanup after WM_NCDESTROY
       virtual void PostNcDestroy();

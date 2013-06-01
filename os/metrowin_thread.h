@@ -117,8 +117,8 @@ namespace metrowin
    // Operations
       uint32_t SuspendThread();
       uint32_t ResumeThread();
-      bool post_thread_message(UINT message, WPARAM wParam = 0, lparam lParam = ::null()) override;
-      bool post_message(sp(::user::interaction) pguie, UINT message, WPARAM wParam = 0, lparam lParam = ::null());
+      bool post_thread_message(UINT message, WPARAM wParam = 0, lparam lParam = NULL) override;
+      bool post_message(sp(::user::interaction) pguie, UINT message, WPARAM wParam = 0, lparam lParam = NULL);
 
       virtual bool PreInitInstance();
 

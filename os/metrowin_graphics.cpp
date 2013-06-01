@@ -5538,7 +5538,7 @@ namespace metrowin
       p2.x = (FLOAT) x;
       p2.y = (FLOAT) y;
 
-      m_pdc->DrawLine(p1, p2, METROWIN_PEN(m_sppen.m_p)->m_pimagebrush, (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
+      m_pdc->DrawLine(p1, p2, get_os_pen_brush(), (FLOAT) METROWIN_PEN(m_sppen.m_p)->m_dWidth);
 
       m_x = x;
       m_y = y;

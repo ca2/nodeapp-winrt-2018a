@@ -121,15 +121,15 @@ hwnd
    [in] Window handle to any message boxes that the system might produce while executing this function.
 
 pszPath
-   [in] Address of a null-terminated string that specifies the name of the executable file that 
+   [in] Address of a NULL-terminated string that specifies the name of the executable file that 
       should be used to start the process.
 
 pszParameters
-   [in] [optional] Address of a null-terminated string that contains the command-line parameters for the process. 
+   [in] [optional] Address of a NULL-terminated string that contains the command-line parameters for the process. 
       If NULL, no parameters are passed to the process.
 
 pszDirectory
-   [in] [optional] Address of a null-terminated string that specifies the name of the working directory. 
+   [in] [optional] Address of a NULL-terminated string that specifies the name of the working directory. 
       If NULL, the current directory is used as the working directory. .
 
 phProcess
@@ -173,15 +173,15 @@ hwnd
    [in] Window handle to any message boxes that the system might produce while executing this function.
 
 pszPath
-   [in] Address of a null-terminated string that specifies the executable file that 
+   [in] Address of a NULL-terminated string that specifies the executable file that 
       should be used to start the process.
 
 pszParameters
-   [in] [optional] Address of a null-terminated string that contains the command-line parameters for 
+   [in] [optional] Address of a NULL-terminated string that contains the command-line parameters for 
       the process. If NULL, no parameters are passed to the process.
 
 pszDirectory
-   [in] [optional] Address of a null-terminated string that specifies the name of the working directory. 
+   [in] [optional] Address of a NULL-terminated string that specifies the name of the working directory. 
       If NULL, the current directory is used as the working directory. .
 
 phProcess

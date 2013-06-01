@@ -109,7 +109,7 @@ namespace metrowin
       ASSERT(m_pStream != NULL);
 
       if (nCount == 0)
-         return 0;   // avoid Win32 "null-read"
+         return 0;   // avoid Win32 "NULL-read"
 
       ASSERT(__is_valid_address(lpBuf, nCount));
 
@@ -296,7 +296,7 @@ namespace metrowin
       ASSERT(m_pStream != NULL);
 
       throw not_supported_exception(get_app());
-      return ::null();
+      return NULL;
    }
 
    void stdio_file::LockRange(file_position /* dwPos */, file_size /* dwCount */)

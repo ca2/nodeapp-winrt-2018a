@@ -19,7 +19,7 @@ namespace metrowin
 
       m_psystem = papp->m_psystem;
 
-      m_pfilemanager = ::null();
+      m_pfilemanager = NULL;
 
 
 
@@ -485,7 +485,7 @@ namespace metrowin
 
       // avoid calling CloseHandle() on our own thread handle
       // during the thread destructor
-      ::ca::thread::m_p->set_os_data(::null());
+      ::ca::thread::m_p->set_os_data(NULL);
 
       WIN_THREAD(::ca::thread::m_p.m_p)->m_bRun = false;
 
@@ -552,12 +552,12 @@ namespace metrowin
 #ifdef METROWIN
    sp(::user::interaction) application::window_from_os_data(void * pdata)
    {
-      return ((oswindow) pdata).window();
+      return ((oswindow) pdata)->window();
    }
 
    sp(::user::interaction) application::window_from_os_data_permanent(void * pdata)
    {
-      return ((oswindow) pdata).window();
+      return ((oswindow) pdata)->window();
    }
 #else
    ::ca::window * application::window_from_os_data(void * pdata)

@@ -243,7 +243,7 @@ namespace metrowin
       ASSERT(m_hFile != (UINT)hFileNull);
 
       if (nCount == 0)
-         return 0;   // avoid Win32 "null-read"
+         return 0;   // avoid Win32 "NULL-read"
 
       ASSERT(lpBuf != NULL);
       ASSERT(__is_valid_address(lpBuf, nCount));
@@ -261,7 +261,7 @@ namespace metrowin
       ASSERT(m_hFile != (UINT)hFileNull);
 
       if (nCount == 0)
-         return;     // avoid Win32 "null-write" option
+         return;     // avoid Win32 "NULL-write" option
 
       ASSERT(lpBuf != NULL);
       ASSERT(__is_valid_address(lpBuf, nCount, FALSE));

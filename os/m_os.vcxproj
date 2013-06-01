@@ -370,13 +370,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
-      <Project>{99892e42-0f2f-4b0f-ac18-5abbc3968407}</Project>
+      <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\c\m_c.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900ebb72}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj">
       <Project>{fced5042-9a2d-4e71-8022-129e8e5da36e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj">
+      <Project>{ec95b149-a498-4c6c-92a0-ba563d88b8bd}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

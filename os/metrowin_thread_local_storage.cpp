@@ -26,7 +26,7 @@ void * no_track_object::operator new(size_t nSize)
    void * p = ::malloc(nSize);
    zero(p, nSize);
    if (p == NULL)
-      throw memory_exception(::null());
+      throw memory_exception(NULL);
    return p;
 }
 #define new DEBUG_NEW
@@ -59,7 +59,7 @@ thread_local_storage::thread_local_storage()
 {
    m_tlsIndex = TlsAlloc();
    if (m_tlsIndex == (DWORD)-1)
-      throw memory_exception(::null());
+      throw memory_exception(NULL);
 }
 
 

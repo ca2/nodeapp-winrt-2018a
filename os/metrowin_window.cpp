@@ -14,7 +14,7 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-//      set_handle(::ca::null());
+//      set_handle(NULL);
       //m_pguieOwner = ::;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
@@ -44,7 +44,7 @@ namespace metrowin
    {
       m_pcallback = NULL;
       m_pguie = this;
-//      set_handle(::ca::null());
+//      set_handle(NULL);
 //      m_pguieOwner = NULL;
       m_pguie->m_nFlags = 0;
 //      m_pfnSuper = NULL;
@@ -211,7 +211,7 @@ namespace metrowin
          hwnd_map * pMap = afxMapHWND(); // don't create if not exist
          if (pMap != NULL)
             pMap->remove_handle(get_handle());
-         set_handle(::ca::null());
+         set_handle(NULL);
       }
 
       return hWnd;
@@ -297,12 +297,12 @@ namespace metrowin
    //m_pguie = this;
 //   m_oswindow = pparent->get_handle();
    /*sp(::ca::window) pwndThis = (this);
-   if(pwndThis != ::null())
+   if(pwndThis != NULL)
    {
       pwndThis->set_handle(m_oswindow);
    }*/
 #ifndef METROWIN
-   if(dynamic_cast < ::ca::message::dispatch * > (pparent->get_guie().m_p) == ::null())
+   if(dynamic_cast < ::ca::message::dispatch * > (pparent->get_guie().m_p) == NULL)
       return false;
 #endif
    //m_pimpl = new ::ca::window(get_app());
@@ -314,14 +314,14 @@ namespace metrowin
    sp(interaction) oswindow_T = oswindow_Parent;
    do
    {
-      if(oswindow_T->m_pwnd != ::null())
+      if(oswindow_T->m_pwnd != NULL)
          break;
       oswindow_Parent = oswindow_T;
    }
-   while ((oswindow_T = ::user::get_parent_owner(oswindow_Parent)) != ::null());*/
+   while ((oswindow_T = ::user::get_parent_owner(oswindow_Parent)) != NULL);*/
 
-//   m_pwnd = ::null();
-  // m_pguie->m_pwnd = ::null();
+//   m_pwnd = NULL;
+  // m_pguie->m_pwnd = NULL;
 
    //::user::interaction * pparent = (::user::interaction *) (void *) hWndParent;
 
@@ -353,14 +353,14 @@ namespace metrowin
 
 #else
 
-   cs.lpszClass         = ::null();
-   cs.lpszName          = ::null();
-   cs.hwndParent        = ::ca::null();
+   cs.lpszClass         = NULL;
+   cs.lpszName          = NULL;
+   cs.hwndParent        = NULL;
 
 #endif
 
-   //cs.hMenu = pparent->get_handle() == ::null() ? ::null() : (HMENU) iId;
-   cs.hMenu = ::null();
+   //cs.hMenu = pparent->get_handle() == NULL ? NULL : (HMENU) iId;
+   cs.hMenu = NULL;
 
 #ifdef WINDOWS
 
@@ -368,7 +368,7 @@ namespace metrowin
 
 #else
 
-   cs.hInstance = ::null();
+   cs.hInstance = NULL;
 
 #endif
 
@@ -533,7 +533,7 @@ namespace metrowin
       else
       {
          string strName = "ca2::fontopus::message_wnd::winservice_1";
-         if(!CreateEx(0, NULL, pszName, WS_CHILD, 0, 0, 0, 0, HWND_MESSAGE, NULL, NULL))
+         if(!CreateEx(0, NULL, pszName, WS_CHILD, 0, 0, 0, 0, (oswindow) HWND_MESSAGE, NULL, NULL))
          {
             return false;
          }
@@ -680,10 +680,10 @@ namespace metrowin
                if (pThread != &System)
                   __post_quit_message(0);
             }
-            pThread->SetMainWnd(::null());
+            pThread->SetMainWnd(NULL);
          }
          if (pThread->get_active_ui() == this)
-            pThread->set_active_ui(::null());
+            pThread->set_active_ui(NULL);
       }
 
       // cleanup tooltip support
@@ -720,7 +720,7 @@ namespace metrowin
 
    void window::PostNcDestroy()
    {
-//      set_handle(::ca::null());
+//      set_handle(NULL);
       // default to nothing
    }
 
@@ -735,7 +735,7 @@ namespace metrowin
    void window::assert_valid() const
    {
       if (get_handle() == NULL)
-         return;     // null (unattached) windows are valid
+         return;     // NULL (unattached) windows are valid
 
       // check for special wnd??? values
       ASSERT(HWND_TOP == NULL);       // same as desktop
@@ -861,7 +861,7 @@ namespace metrowin
       bResult = FALSE;
       pMap = NULL;
       pWnd = NULL;
-      hWndOrig = ::ca::null();
+      hWndOrig = NULL;
 /*      if (get_handle() != NULL)
       {
          single_lock sl(afxMutexHwnd(), TRUE);
@@ -914,7 +914,7 @@ namespace metrowin
    // Default window implementation
 
 
-   LRESULT window::DefWindowProc(UINT nMsg, WPARAM wParam, LPARAM lParam)
+   LRESULT window::DefWindowProc(UINT nMsg, WPARAM wParam, lparam lParam)
    {
       return 0;
 
@@ -1574,7 +1574,7 @@ restart_mouse_hover_check:
             && puiFocus->IsWindow()
             && puiFocus->GetTopLevelParent() != NULL)
          {
-            puiFocus->send_message(pkey);
+            puiFocus->send(pkey);
             if(pbase->m_bRet)
                return;
          }
@@ -2112,7 +2112,7 @@ restart_mouse_hover_check:
    {
       ASSERT(pResult != NULL);
       NMHDR* pNMHDR = (NMHDR*)lParam;
-      oswindow hWndCtrl = pNMHDR->hwndFrom;
+      oswindow hWndCtrl = (oswindow) pNMHDR->hwndFrom;
 
       // get the child ID from the window itself
       //      uint_ptr nID = __get_dialog_control_id(hWndCtrl);
@@ -2142,7 +2142,7 @@ restart_mouse_hover_check:
    {
       if (get_handle() == NULL) // no Window attached
       {
-         return ::null();
+         return NULL;
       }
 
       ASSERT_VALID(this);
@@ -2156,7 +2156,7 @@ restart_mouse_hover_check:
          }
          pParentWnd = pParentWnd->get_parent();
       }
-      return ::null();
+      return NULL;
    }
 
    /* trans oswindow CLASS_DECL_metrowin __get_parent_owner(::user::interaction * hWnd)
@@ -2175,7 +2175,7 @@ restart_mouse_hover_check:
    sp(::user::interaction) window::GetTopLevelParent()
    {
       if (get_handle() == NULL) // no Window attached
-         return ::null();
+         return NULL;
 
       ASSERT_VALID(this);
 
@@ -2255,7 +2255,7 @@ restart_mouse_hover_check:
    sp(::user::frame_window) window::GetTopLevelFrame()
    {
       if (get_handle() == NULL) // no Window attached
-         return ::null();
+         return NULL;
 
       ASSERT_VALID(this);
 
@@ -2877,7 +2877,7 @@ restart_mouse_hover_check:
          return FALSE;
 
       // check if in permanent ::map, if it is reflect it (could be OLE control)
-      ::user::interaction * pWnd = hWndChild.window();
+      ::user::interaction * pWnd = hWndChild->window();
       if (pWnd == NULL)
       {
          return false;
@@ -3927,7 +3927,7 @@ restart_mouse_hover_check:
       bool bIdle = TRUE;
       LONG lIdleCount = 0;
       bool bShowIdle = (dwFlags & MLF_SHOWONIDLE) && !(GetStyle() & WS_VISIBLE);
-      oswindow hWndParent = get_parent();
+      oswindow hWndParent = oswindow_get(get_parent());
       m_iModal = m_iModalCount;
       int iLevel = m_iModal;
       oprop(string("RunModalLoop.thread(") + ::ca::str::from(iLevel) + ")") = System.GetThread();
@@ -3943,7 +3943,7 @@ restart_mouse_hover_check:
          ASSERT(ContinueModal(iLevel));
 
          // phase1: check to see if we can do idle work
-         while (bIdle && !::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE))
+         while (bIdle && !::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
          {
             ASSERT(ContinueModal(iLevel));
 
@@ -4037,7 +4037,7 @@ restart_mouse_hover_check:
             }*/
 
          } 
-         while (::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE);
+         while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE);
 
 
          if(m_pguie->m_pthread != NULL)
@@ -4638,7 +4638,7 @@ throw todo(get_app());
 
       oswindow hwndCapture = ::GetCapture();
       if(hwndCapture == NULL)
-         return ::null();
+         return NULL;
       if(hwndCapture == get_handle())
       {
          ::user::interaction * puieCapture = get_capture();
@@ -4649,7 +4649,7 @@ throw todo(get_app());
          }
          else
          {
-            return ::null();
+            return NULL;
          }
       }
       else
@@ -4664,7 +4664,7 @@ throw todo(get_app());
 
       oswindow hwndCapture = ::GetCapture();
       if(hwndCapture == NULL)
-         return ::null();
+         return NULL;
       if(hwndCapture == get_handle())
       {
          if(m_pguieCapture != NULL)
@@ -5104,7 +5104,7 @@ throw todo(get_app());
    
    }
 
-   void window::SendMessageToDescendants(UINT message, WPARAM wParam, LPARAM lParam, bool bDeep, bool bOnlyPerm)
+   void window::SendMessageToDescendants(UINT message, WPARAM wParam, lparam lParam, bool bDeep, bool bOnlyPerm)
    { 
       ASSERT(::IsWindow(get_handle())); 
       //window::SendMessageToDescendants(get_handle(), message, wParam, lParam, bDeep, bOnlyPerm); 
@@ -5243,22 +5243,27 @@ throw todo(get_app());
    uint_ptr window::SetTimer(uint_ptr nIDEvent, UINT nElapse, void (CALLBACK* lpfnTimer)(oswindow, UINT, uint_ptr, uint32_t))
    { 
 
-      throw todo(get_app());
-
-      //ASSERT(::IsWindow(get_handle())); 
-      //
-      //return ::SetTimer(get_handle(), nIDEvent, nElapse, lpfnTimer); 
+      UNREFERENCED_PARAMETER(lpfnTimer);
+      m_pguie->m_pthread->m_pthread->set_timer(m_pguie, nIDEvent, nElapse);
+      return nIDEvent;
    
    }
 
    bool window::KillTimer(uint_ptr nIDEvent)
    {
 
-      throw todo(get_app());
+      if(!IsWindow())
+         return false;
 
-      //ASSERT(::IsWindow(get_handle()));
-      //
-      //return ::KillTimer(get_handle(), nIDEvent)  != FALSE;
+      if(m_pguie->m_pthread == NULL)
+         return false;
+
+      if(m_pguie->m_pthread->m_pthread == NULL)
+         return false;
+
+      m_pguie->m_pthread->m_pthread->unset_timer(m_pguie, nIDEvent);
+
+      return TRUE;
    
    }
 
@@ -5312,7 +5317,7 @@ throw todo(get_app());
 
       //throw todo(::ca::get_thread_app());
 
-      return ::GetCapture().window();
+      return ::GetCapture()->window();
    
    }
 
@@ -5326,14 +5331,14 @@ throw todo(get_app());
       if(pinterface != NULL) 
          m_pguieCapture = pinterface; 
       
-      return ::SetCapture((::user::interaction *) this).window(); 
+      return ::SetCapture(oswindow_get(this))->window(); 
 
    }
 
    sp(::user::interaction) window::GetFocus()
    { 
 
-      return ::GetFocus().window();
+      return ::GetFocus()->window();
 
    }
 
@@ -5341,14 +5346,14 @@ throw todo(get_app());
    { 
 
       //ASSERT(::IsWindow(get_handle()));
-      return ::SetFocus(m_pguie->get_handle()).window();
+      return ::SetFocus(m_pguie->get_handle())->window();
    
    }
 
    sp(::user::interaction) window::GetDesktopWindow()
    {
 
-      return ::null();
+      return NULL;
 
       //return System.m_pui;
 
@@ -5859,7 +5864,7 @@ throw todo(get_app());
 
       ASSERT(::IsWindow(get_handle()));
 
-      const_cast < window * > (this)->send_message(WM_PRINT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), dwFlags);
+      const_cast < window * > (this)->send_message(WM_PRINT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
 
    }
 
@@ -5868,7 +5873,7 @@ throw todo(get_app());
 
       ASSERT(::IsWindow(get_handle()));
 
-      const_cast < window * > (this)->send_message(WM_PRINTCLIENT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), dwFlags);
+      const_cast < window * > (this)->send_message(WM_PRINTCLIENT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
 
    }
 

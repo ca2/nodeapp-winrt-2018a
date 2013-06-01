@@ -17,7 +17,7 @@
  CLASS_DECL_metrowin sp(::user::interaction) __get_main_window()
 {
       ::ca::thread* pThread = dynamic_cast < ::ca::thread * > (::metrowin::get_thread());
-      return pThread != NULL ? pThread->GetMainWnd() : ::null(); 
+      return pThread != NULL ? pThread->GetMainWnd() : NULL; 
  }
 
  CLASS_DECL_metrowin bool __gen_get_ambient_act_ctx()

@@ -221,6 +221,26 @@ uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
       return ::user::key_tab;
    case ::Windows::System::VirtualKey::Enter:
       return ::user::key_return;
+   case ::Windows::System::VirtualKey::Delete:
+      return ::user::key_delete;
+   case ::Windows::System::VirtualKey::Back:
+      return ::user::key_back;
+   case ::Windows::System::VirtualKey::Left:
+      return ::user::key_left;
+   case ::Windows::System::VirtualKey::Right:
+      return ::user::key_right;
+   case ::Windows::System::VirtualKey::Up:
+      return ::user::key_up;
+   case ::Windows::System::VirtualKey::Down:
+      return ::user::key_down;
+   case ::Windows::System::VirtualKey::PageUp:
+      return ::user::key_up;
+   case ::Windows::System::VirtualKey::PageDown:
+      return ::user::key_down;
+   case ::Windows::System::VirtualKey::Home:
+      return ::user::key_home;
+   case ::Windows::System::VirtualKey::End:
+      return ::user::key_end;
    case 190:
       return ::user::key_dot;
    default:;
@@ -371,7 +391,7 @@ namespace metrowin
 
 
    directx_application::directx_application(::Platform::String ^ strId) :
-      m_mutex(::null())
+      m_mutex(NULL)
    {
 
       m_ptLastCursor.X = 0;

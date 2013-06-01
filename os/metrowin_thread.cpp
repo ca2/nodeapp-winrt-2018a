@@ -507,7 +507,7 @@ namespace metrowin
       ca(papp),
       message_window_simple_callback(papp),//,
       //m_evFinish(FALSE, TRUE)
-      ::ca::thread(::null()),
+      ::ca::thread(NULL),
       m_evFinish(papp),
       m_mutexUiPtra(papp)
    {
@@ -692,7 +692,7 @@ namespace metrowin
          return;
       if(GetMainWnd() == pui)
       {
-         SetMainWnd(::null());
+         SetMainWnd(NULL);
       }
       single_lock sl(&m_mutexUiPtra, TRUE);
       if(m_puiptra != NULL)
@@ -998,7 +998,7 @@ namespace metrowin
       while(m_bRun)
       {
          // phase1: check to see if we can do idle work
-         while (bIdle && !::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE))
+         while (bIdle && !::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE))
          {
             // call on_idle while in bIdle state
             if (!on_idle(lIdleCount++))
@@ -1060,7 +1060,7 @@ namespace metrowin
                pappThis2->m_dwAlive = m_dwAlive;
             }
          }
-         while (::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE);
+         while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE);
 
       }
 stop_run:
@@ -1445,8 +1445,12 @@ stop_run:
    {
       try
       {
+         
          MESSAGE msg;
-         if(!::GetMessage(&msg, ::ca::null(), NULL, NULL))
+
+         ZERO(msg);
+
+         if(!::GetMessage(&msg, NULL, NULL, NULL))
          {
             TRACE(::ca::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
             m_nDisablePumpCount++; // application must die
@@ -1539,7 +1543,7 @@ stop_run:
             {
 //               ::TranslateMessage(&msg);
   //             ::DispatchMessage(&msg);
-               msg.oswindow.window()->send_message(msg.message, msg.wParam, msg.lParam);
+               msg.oswindow->window()->send_message(msg.message, msg.wParam, msg.lParam);
             }
          }
          return TRUE;
@@ -2023,7 +2027,7 @@ run:
    {
       ASSERT(GetCurrentThreadId() == m_nThreadID);
       MESSAGE msg;
-      return ::PeekMessage(&msg, ::ca::null(), NULL, NULL, PM_NOREMOVE) != FALSE;
+      return ::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE;
    }
 
 

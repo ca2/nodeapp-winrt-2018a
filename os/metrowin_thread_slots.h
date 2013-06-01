@@ -147,7 +147,7 @@ public:
 
 // Implementation
    no_track_object* volatile m_pObject;
-   process_local_object() : m_mutex(::null()) {};
+   process_local_object() : m_mutex(NULL) {};
    ~process_local_object();
 };
 

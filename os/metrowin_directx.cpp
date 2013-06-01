@@ -778,6 +778,10 @@ namespace metrowin
 
       System.m_pui->_000OnDraw(dc);
 
+
+      
+
+
       /*
       for(int i = 0; i < uiptra.get_count(); i++)
       {

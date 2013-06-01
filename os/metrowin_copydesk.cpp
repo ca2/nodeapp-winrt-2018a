@@ -143,7 +143,7 @@ namespace metrowin
          lpwstrCopy += (stra[i].get_length() + 1);
       }
       ASSERT(m_p->IsWindow());
-      *lpwstrCopy = '\0';    // null character
+      *lpwstrCopy = '\0';    // NULL character
       ASSERT(m_p->IsWindow());
       ::GlobalUnlock(hglbCopy);
       ASSERT(m_p->IsWindow());

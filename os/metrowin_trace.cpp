@@ -315,7 +315,7 @@ void __trace_message(const char * lpszPrefix, ::ca::signal_object * pobj)
    {
       // a system windows message
       const __MAP_MESSAGE* pMapMsg = allMessages;
-      for (/*null*/; pMapMsg->lpszMsg != NULL; pMapMsg++)
+      for (/*NULL*/; pMapMsg->lpszMsg != NULL; pMapMsg++)
       {
          if (pMapMsg->nMsg == pbase->m_uiMessage)
          {
@@ -397,7 +397,7 @@ void __trace_message(const char * lpszPrefix, LPMESSAGE lpmsg)
    {
       // a system windows message
       const __MAP_MESSAGE* pMapMsg = allMessages;
-      for (/*null*/; pMapMsg->lpszMsg != NULL; pMapMsg++)
+      for (/*NULL*/; pMapMsg->lpszMsg != NULL; pMapMsg++)
       {
          if (pMapMsg->nMsg == lpmsg->message)
          {

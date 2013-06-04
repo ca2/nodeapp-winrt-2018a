@@ -5627,8 +5627,8 @@ throw todo(get_app());
       //return ::metrowin::window::from_handle(::GetTopWindow(get_handle()));
    
    }
-   
-   
+
+
    sp(::user::interaction) window::GetWindow(UINT nCmd)
    {
 

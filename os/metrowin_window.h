@@ -16,7 +16,7 @@ namespace metrowin
    {
    public:
 
-
+      
       spa(::user::interaction)      m_guieptraMouseHover;
       ::ca::window_callback *       m_pcallback;
       string                        m_strWindowText;

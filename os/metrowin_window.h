@@ -157,7 +157,7 @@ namespace metrowin
 #endif   // WINVER >= 0x0500
 
       LRESULT send_message(UINT message, WPARAM wParam = 0, lparam lParam = NULL);
-      bool PostMessage(UINT message, WPARAM wParam = 0, lparam lParam = NULL);
+      bool post_message(UINT message, WPARAM wParam = 0, lparam lParam = NULL);
 
       bool SendNotifyMessage(UINT message, WPARAM wParam, LPARAM lParam);
       bool SendChildNotifyLastMsg(LRESULT* pResult = NULL);

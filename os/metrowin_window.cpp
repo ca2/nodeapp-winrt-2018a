@@ -4796,7 +4796,7 @@ throw todo(get_app());
       //return ::SendMessage(get_handle(), message, wParam, lParam);
    }
 
-   bool window::PostMessage(UINT message, WPARAM wParam, lparam lParam)
+   bool window::post_message(UINT message, WPARAM wParam, lparam lParam)
    { 
 
 //      throw todo(get_app());

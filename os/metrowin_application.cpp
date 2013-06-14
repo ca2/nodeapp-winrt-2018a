@@ -781,6 +781,17 @@ namespace metrowin
 
    }
 
+
+   bool application::update_module_paths()
+   {
+
+      m_strModuleFolder = "";
+      m_strCa2ModuleFolder = "";
+
+      return true;
+
+   }
+
    ::user::printer * application::get_printer(const char * pszDeviceName)
    {
       ::metrowin::printer * pprinter = new ::metrowin::printer(get_app());

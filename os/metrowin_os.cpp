@@ -12,9 +12,9 @@ namespace metrowin
 {
 
 
-   os::os(::ca::application * papp) :
-      ca(papp),
-      ::ca::os(papp)
+   os::os(::ca2::application * papp) :
+      ca2(papp),
+      ::ca2::os(papp)
    {
    }
 
@@ -548,9 +548,9 @@ namespace metrowin
          try
          {
 
-            strCommand = ::ca::str::consume_quoted_value(psz);
-            ::ca::str::consume_spaces(psz);
-            ::ca::str::consume(psz, "\"%L\"");
+            strCommand = ::ca2::str::consume_quoted_value(psz);
+            ::ca2::str::consume_spaces(psz);
+            ::ca2::str::consume(psz, "\"%L\"");
             strParam = psz;
 
          }
@@ -856,25 +856,25 @@ namespace metrowin
    void os::post_to_all_threads(UINT message, WPARAM wparam, LPARAM lparam)
    {
 
-      ::count c;
+      ::count ca;
 
-      ::ca::thread * pthread;
+      ::ca2::thread * pthread;
 
-      c = ::metrowin::thread::s_threadptra.get_size();
+      ca = ::metrowin::thread::s_threadptra.get_size();
 
       bool bOk;
 
       if(message == WM_QUIT)
       {
 
-         for(index i = 0; i < c; )
+         for(index i = 0; i < ca; )
          {
 
             bOk = true;
          
             try
             {
-               pthread = dynamic_cast < ::ca::thread * >(::metrowin::thread::s_threadptra[i]);
+               pthread = dynamic_cast < ::ca2::thread * >(::metrowin::thread::s_threadptra[i]);
                pthread->m_bRun = false;
                pthread->m_p->m_bRun = false;
             }
@@ -890,16 +890,16 @@ namespace metrowin
                if(bOk)
                {
 
-                  if(c == ::metrowin::thread::s_haThread.get_size())
+                  if(ca == ::metrowin::thread::s_haThread.get_size())
                      i++;
                   else
-                     c = ::metrowin::thread::s_haThread.get_size();
+                     ca = ::metrowin::thread::s_haThread.get_size();
 
                }
                else
                {
 
-                  c = ::metrowin::thread::s_haThread.get_size();
+                  ca = ::metrowin::thread::s_haThread.get_size();
 
                }
 
@@ -913,10 +913,10 @@ namespace metrowin
       }
 
 
-      c = ::metrowin::thread::s_haThread.get_size();
+      ca = ::metrowin::thread::s_haThread.get_size();
 
 
-      for(index i = 0; i < c; )
+      for(index i = 0; i < ca; )
       {
 
          bOk = true;
@@ -946,16 +946,16 @@ namespace metrowin
             if(bOk)
             {
 
-               if(c == ::metrowin::thread::s_haThread.get_size())
+               if(ca == ::metrowin::thread::s_haThread.get_size())
                   i++;
                else
-                  c = ::metrowin::thread::s_haThread.get_size();
+                  ca = ::metrowin::thread::s_haThread.get_size();
 
             }
             else
             {
 
-               c = ::metrowin::thread::s_haThread.get_size();
+               ca = ::metrowin::thread::s_haThread.get_size();
 
             }
 

@@ -107,7 +107,7 @@ void preview_dc::SetOutputDC(HDC hDC)
 {
    ASSERT(hDC != NULL);
    m_nSaveDCIndex = ::SaveDC(hDC); // restore in ReleaseOutputDC()
-   ::ca::graphics_sp::SetOutputDC(hDC);
+   ::ca2::graphics_sp::SetOutputDC(hDC);
 
    if (get_handle2() != NULL)
    {
@@ -125,13 +125,13 @@ void preview_dc::ReleaseOutputDC()
 {
    ASSERT(get_os_data() != NULL);
    ::RestoreDC(get_os_data(), m_nSaveDCIndex); // Saved in SetOutputDC()
-   ::ca::graphics_sp::ReleaseOutputDC();
+   ::ca2::graphics_sp::ReleaseOutputDC();
 }
 
 void preview_dc::SetAttribDC(HDC hDC)
 {
    ASSERT(hDC != NULL);
-   ::ca::graphics_sp::SetAttribDC(hDC);
+   ::ca2::graphics_sp::SetAttribDC(hDC);
 
    MirrorMappingMode(TRUE);
    MirrorFont();
@@ -159,13 +159,13 @@ void preview_dc::SetScaleRatio(int nNumerator, int nDenominator)
 
 void preview_dc::assert_valid() const
 {
-   ::ca::graphics_sp::assert_valid();
+   ::ca2::graphics_sp::assert_valid();
 }
 
 
 void preview_dc::dump(dump_context & dumpcontext) const
 {
-   ::ca::graphics_sp::dump(dumpcontext);
+   ::ca2::graphics_sp::dump(dumpcontext);
 
    dumpcontext << "Scale Factor: " << m_nScaleNum << "/" << m_nScaleDen;
    dumpcontext << "\n";
@@ -238,7 +238,7 @@ void preview_dc::MirrorAttributes()
    }
 }
 
-::ca::graphics_object* preview_dc::SelectStockObject(int nIndex)
+::ca2::graphics_object* preview_dc::SelectStockObject(int nIndex)
 {
    ASSERT(get_handle2() != NULL);
 
@@ -255,7 +255,7 @@ void preview_dc::MirrorAttributes()
    case DEFAULT_GUI_FONT:
       // Handle the stock fonts correctly
       {
-         ::ca::graphics_object* pObject = ::metrowin::graphics_object::from_handle(
+         ::ca2::graphics_object* pObject = ::metrowin::graphics_object::from_handle(
                      ::SelectObject(get_handle2(), hObj));
 
          // Don't re-mirror screen font if this is the same font.
@@ -367,7 +367,7 @@ void preview_dc::MirrorFont()
    m_hFont = hNewFont;         // save the new one
 }
 
-::ca::font* preview_dc::SelectObject(::ca::font* pFont)
+::ca2::font* preview_dc::SelectObject(::ca2::font* pFont)
 {
    if (pFont == NULL)
       return NULL;
@@ -375,7 +375,7 @@ void preview_dc::MirrorFont()
    ASSERT(get_handle2() != NULL);
    ASSERT_VALID(pFont);
 
-   ::ca::font* pOldFont = (::ca::font*) ::metrowin::graphics_object::from_handle(
+   ::ca2::font* pOldFont = (::ca2::font*) ::metrowin::graphics_object::from_handle(
             ::SelectObject(get_handle2(), pFont->get_handle()));
 
    // If same as already selected, don't re-mirror screen font
@@ -786,11 +786,11 @@ int preview_dc::DrawTextEx(__in_ecount(nCount) LPTSTR lpszString, int nCount, LP
    return retVal;
 }
 
-bool preview_dc::GrayString(::ca::brush*,
+bool preview_dc::GrayString(::ca2::brush*,
             bool (CALLBACK *)(HDC, LPARAM, int),
                LPARAM lpData, int nCount, int x, int y, int, int)
 {
-   TRACE(::ca::trace::category_AppMsg, 0, "TextOut() substituted for GrayString() in Print Preview.\n");
+   TRACE(::ca2::trace::category_AppMsg, 0, "TextOut() substituted for GrayString() in Print Preview.\n");
    return TextOut(x, y, (const char *)lpData, nCount);
 }
 
@@ -985,9 +985,9 @@ void preview_dc::PrinterDPtoScreenDP(LPPOINT lpPoint) const
 }
 
 ////////////////////////////////////////////////////////////////////////////
-// ::ca::CreateDC
+// ::ca2::CreateDC
 
-HDC CLASS_DECL_metrowin ::ca::CreateDC(HGLOBAL hDevNames, HGLOBAL hDevMode)
+HDC CLASS_DECL_metrowin ::ca2::CreateDC(HGLOBAL hDevNames, HGLOBAL hDevMode)
 {
    if (hDevNames == NULL)
       return NULL;
@@ -1011,7 +1011,7 @@ HDC CLASS_DECL_metrowin ::ca::CreateDC(HGLOBAL hDevNames, HGLOBAL hDevMode)
 }
 
 
-// IMPLEMENT_DYNAMIC(preview_dc, ::ca::graphics_sp)
+// IMPLEMENT_DYNAMIC(preview_dc, ::ca2::graphics_sp)
 
 /////////////////////////////////////////////////////////////////////////////
 */

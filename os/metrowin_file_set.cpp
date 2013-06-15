@@ -5,8 +5,8 @@ namespace metrowin
 {
 
 
-   file_set::file_set(::ca::application * papp) :
-      ca(papp)
+   file_set::file_set(::ca2::application * papp) :
+      ca2(papp)
    {
    }
 

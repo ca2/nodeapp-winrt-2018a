@@ -8,8 +8,8 @@ namespace metrowin
 {
 
 
-   font::font(::ca::application * papp) :
-      ca(papp)
+   font::font(::ca2::application * papp) :
+      ca2(papp)
    {
 
       m_pformat     = NULL;
@@ -33,7 +33,7 @@ namespace metrowin
    // {
    //  return (HFONT)(this == NULL ? NULL : get_handle()); 
    //}
-   //font* font::from_handle(::ca::application * papp, HFONT hFont)
+   //font* font::from_handle(::ca2::application * papp, HFONT hFont)
    //{
    // return dynamic_cast < font * > (::metrowin::graphics_object::from_handle(papp, hFont)); 
    //}
@@ -45,7 +45,7 @@ namespace metrowin
          m_dFontSize = (int) abs(lpLogFont->lfHeight);
       else
          m_dFontSize = lpLogFont->lfHeight / 10.0;
-      m_eunitFontSize = ::ca::unit_point;
+      m_eunitFontSize = ::ca2::unit_point;
       m_bBold = lpLogFont->lfWeight >= 500;
       m_bItalic = lpLogFont->lfItalic != FALSE;
       m_bStrikeout = lpLogFont->lfStrikeOut != FALSE;
@@ -77,7 +77,7 @@ namespace metrowin
    */
    /////////////////////////////////////////////////////////////////////////////
 
-   /*void font::construct(const ::ca::font & fontParam)
+   /*void font::construct(const ::ca2::font & fontParam)
    {
       class font & font = const_cast < ::metrowin::font & > (dynamic_cast < const ::metrowin::font & > (fontParam));
       if(font.m_pfont == NULL)
@@ -106,7 +106,7 @@ namespace metrowin
 
    void font::dump(dump_context & dumpcontext) const
    {
-      ::ca::graphics_object::dump(dumpcontext);
+      ::ca2::graphics_object::dump(dumpcontext);
 
       /*         if (get_handle() == NULL)
       return;
@@ -140,10 +140,10 @@ namespace metrowin
 
 
    /////////////////////////////////////////////////////////////////////////////
-   // out-of-line ::ca::brush, font, etc. helpers
+   // out-of-line ::ca2::brush, font, etc. helpers
 
    // nPointSize is actually scaled 10x
-/*   bool font::CreatePointFont(int nPointSize, const char * lpszFaceName, ::ca::graphics * pgraphics)
+/*   bool font::CreatePointFont(int nPointSize, const char * lpszFaceName, ::ca2::graphics * pgraphics)
    {
       ASSERT(__is_valid_string(lpszFaceName));
 
@@ -151,15 +151,15 @@ namespace metrowin
       memset(&logFont, 0, sizeof(LOGFONT));
       logFont.lfCharSet = DEFAULT_CHARSET;
       logFont.lfHeight = nPointSize;
-      ::ca::strncpy_s(logFont.lfFaceName, _countof(logFont.lfFaceName), lpszFaceName, _TRUNCATE);
+      ::ca2::strncpy_s(logFont.lfFaceName, _countof(logFont.lfFaceName), lpszFaceName, _TRUNCATE);
 
       return CreatePointFontIndirect(&logFont, pgraphics);
    }
 
    // pLogFont->nHeight is interpreted as PointSize * 10
-   bool font::CreatePointFontIndirect(const LOGFONT* lpLogFont, ::ca::graphics * pgraphics)
+   bool font::CreatePointFontIndirect(const LOGFONT* lpLogFont, ::ca2::graphics * pgraphics)
    {
-      return ::ca::font::CreatePointFontIndirect(lpLogFont, pgraphics);
+      return ::ca2::font::CreatePointFontIndirect(lpLogFont, pgraphics);
       /* ASSERT(__is_valid_address(lpLogFont, sizeof(LOGFONT), FALSE));
       HDC hDC;
       if (pgraphics != NULL)
@@ -223,7 +223,7 @@ namespace metrowin
             (DWRITE_FONT_WEIGHT) m_iFontWeight,
             style,
             stretch,
-            (float) (m_eunitFontSize == ::ca::unit_point ? point_dpi((float) m_dFontSize) : dpiy((float) m_dFontSize)),
+            (float) (m_eunitFontSize == ::ca2::unit_point ? point_dpi((float) m_dFontSize) : dpiy((float) m_dFontSize)),
             L"",
             &((font *)  this)->m_pformat);
 

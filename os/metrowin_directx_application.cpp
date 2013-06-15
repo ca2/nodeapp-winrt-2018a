@@ -50,7 +50,7 @@ uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
    case ::Windows::System::VirtualKey::B:
       return 'b';
    case ::Windows::System::VirtualKey::C:
-      return 'c';
+      return 'ca';
    case ::Windows::System::VirtualKey::D:
       return 'd';
    case ::Windows::System::VirtualKey::E:
@@ -279,7 +279,7 @@ uint_ptr virtualkey_to_code(::Windows::System::VirtualKey e)
    case ::Windows::System::VirtualKey::B:
       return 'b';
    case ::Windows::System::VirtualKey::C:
-      return 'c';
+      return 'ca';
    case ::Windows::System::VirtualKey::D:
       return 'd';
    case ::Windows::System::VirtualKey::E:
@@ -609,11 +609,11 @@ namespace metrowin
    m_d2dContext->Clear(cr);
 
 
-   ::ca::graphics_sp dc(::ca::get_thread_app());
+   ::ca2::graphics_sp dc(::ca2::get_thread_app());
 
    dc->attach((ID2D1DeviceContext * ) m_d2dContext);
 
-   Sys(::ca::get_thread_app())._001OnDraw(&dc);
+   Sys(::ca2::get_thread_app())._001OnDraw(&dc);
 
    dc->detach();
 
@@ -808,9 +808,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::key * pkey = canew(::ca::message::key(get_app()));
+      ::ca2::message::key * pkey = canew(::ca2::message::key(get_app()));
 
       spbase = pkey;
 
@@ -837,9 +837,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::key * pkey = canew(::ca::message::key(get_app()));
+      ::ca2::message::key * pkey = canew(::ca2::message::key(get_app()));
 
       spbase = pkey;
 
@@ -869,9 +869,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::key * pkey = new  ::ca::message::key(get_app());
+      ::ca2::message::key * pkey = new  ::ca2::message::key(get_app());
 
       spbase = pkey;
 
@@ -904,9 +904,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
+      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -937,9 +937,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
+      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -1002,9 +1002,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::c::smart_pointer < ::ca::message::base > spbase;
+      ::ca::smart_pointer < ::ca2::message::base > spbase;
 
-      ::ca::message::mouse * pmouse = new  ::ca::message::mouse(get_app());
+      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
 
       spbase = pmouse;
 

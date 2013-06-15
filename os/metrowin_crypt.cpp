@@ -5,9 +5,9 @@ namespace metrowin
 {
 
 
-   crypt::crypt(::ca::application * papp) :
-      ca(papp),
-      ::ca::crypt(papp)
+   crypt::crypt(::ca2::application * papp) :
+      ca2(papp),
+      ::ca2::crypt(papp)
    {
    }
 

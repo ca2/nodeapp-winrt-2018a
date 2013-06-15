@@ -6,7 +6,7 @@ namespace metrowin
 
 #if FALSE
    class CLASS_DECL_metrowin registry :
-      virtual public ::ca::object
+      virtual public ::ca2::object
    {
    public:
 

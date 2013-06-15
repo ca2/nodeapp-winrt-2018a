@@ -7,4 +7,4 @@
 #include "metrowin.h"
 #include "metrowin_internal.h"
 
-CLASS_DECL_metrowin void vfxThrowFileException(::ca::application * papp, int cause, LONG lOsError, const char * lpszFileName = NULL);
+CLASS_DECL_metrowin void vfxThrowFileException(::ca2::application * papp, int cause, LONG lOsError, const char * lpszFileName = NULL);

@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{425C510B-8C9C-4260-AAF9-FB1F6DB15C4D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "c", "..\..\..\app\appseed\c\m_c.vcxproj", "{5487686F-8A2F-401A-A38E-FDA8900EBB72}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_c", "..\..\..\app\appseed\c\m_c.vcxproj", "{5487686F-8A2F-401A-A38E-FDA8900EBB72}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "..\..\os\m_os.vcxproj", "{FCCDD981-5C10-4487-BECF-EB3A7D4A1380}"
 EndProject
@@ -19,11 +19,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_hellomult
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2zlib", "..\..\..\app\thirdparty\appseed\zlib\_m_ca2zlib.vcxproj", "{84FBAD70-591C-44FA-93C4-EE232B3A4B87}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_freeimage", "..\..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj", "{FCED5042-9A2D-4E71-8022-129E8E5DA36E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2freeimage", "..\..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj", "{FCED5042-9A2D-4E71-8022-129E8E5DA36E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ca2", "..\..\..\app\appseed\ca2\m_ca2.vcxproj", "{420D7AEB-CFCA-45DE-BB6E-95055DF28B9B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ca2freetype", "..\..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj", "{EC95B149-A498-4C6C-92A0-BA563D88B8BD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ca", "..\..\..\app\appseed\ca\m_ca.vcxproj", "{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -327,6 +329,34 @@ Global
 		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|Win32.Build.0 = basis|Win32
 		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|x64.ActiveCfg = basis|x64
 		{EC95B149-A498-4C6C-92A0-BA563D88B8BD}.profiler|x64.Build.0 = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|Android.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|ARM.ActiveCfg = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|ARM.Build.0 = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|Win32.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|Win32.Build.0 = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|x64.ActiveCfg = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.basis|x64.Build.0 = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|Android.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|ARM.ActiveCfg = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|ARM.Build.0 = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|Win32.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|Win32.Build.0 = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|x64.ActiveCfg = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.codeanalysis|x64.Build.0 = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|Android.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|ARM.ActiveCfg = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|ARM.Build.0 = basis|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|Win32.ActiveCfg = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|Win32.Build.0 = basis|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|x64.ActiveCfg = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.memdleak|x64.Build.0 = basis|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|Android.ActiveCfg = profiler|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|ARM.ActiveCfg = profiler|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|ARM.Build.0 = profiler|ARM
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|Win32.ActiveCfg = profiler|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|Win32.Build.0 = profiler|Win32
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|x64.ActiveCfg = profiler|x64
+		{5FD926E7-E8B9-4451-BAAC-81EFA94D9D67}.profiler|x64.Build.0 = profiler|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

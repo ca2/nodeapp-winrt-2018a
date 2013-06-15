@@ -3,7 +3,7 @@
 //// THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
 //// PARTICULAR PURPOSE.
 ////
-//// Copyright (c) Microsoft Corporation. All rights reserved
+//// Copyright (ca) Microsoft Corporation. All rights reserved
 
 #include "framework.h"
 
@@ -17,7 +17,7 @@ namespace metrowin
 {
 
    // Constructor.
-   directx_base::directx_base(::ca::application * papp) :
+   directx_base::directx_base(::ca2::application * papp) :
       m_papp(papp),
       m_windowSizeChangeInProgress(false),
       m_dpi(-1.0f),
@@ -771,7 +771,7 @@ namespace metrowin
 
 
 
-      ::ca::graphics_sp dc(get_app()->allocer());
+      ::ca2::graphics_sp dc(get_app()->allocer());
 
       dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
 

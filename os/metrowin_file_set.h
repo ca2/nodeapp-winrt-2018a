@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin file_set : 
-      public ::ca::file_set
+      public ::ca2::file_set
    {
    public:
 
@@ -17,7 +17,7 @@ namespace metrowin
       stringa        m_straFile;
 
 
-      file_set(::ca::application * papp);
+      file_set(::ca2::application * papp);
       virtual ~file_set();
 
 

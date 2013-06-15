@@ -4,7 +4,7 @@
 bool __internal_pre_translate_message(MSG* pMsg);
 
 
-namespace ca
+namespace ca2
 {
 
 
@@ -12,7 +12,7 @@ namespace ca
    {
 
 
-      ::ca::thread *          m_pthread;    // thread for new thread
+      ::ca2::thread *          m_pthread;    // thread for new thread
       HANDLE hEvent;          // event triggered after success/non-success
       HANDLE hEvent2;         // event triggered after thread is resumed
 
@@ -23,7 +23,7 @@ namespace ca
    };
 
 
-} // namespace ca
+} // namespace ca2
 
 
 namespace metrowin
@@ -31,8 +31,8 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin thread :
-      virtual public ::ca::thread,
-      virtual public ::ca::message_window_simple_callback
+      virtual public ::ca2::thread,
+      virtual public ::ca2::message_window_simple_callback
    {
    public:
 
@@ -42,7 +42,7 @@ namespace metrowin
       uint32_t                                     m_nThreadID;      // this thread's ID
 
       static comparable_array < HTHREAD >          s_haThread;
-      static comparable_array < ::ca::thread * >   s_threadptra;
+      static comparable_array < ::ca2::thread * >   s_threadptra;
       // list of frame_window objects for thread
       simple_list < frame_window * >               m_frameList;
       // temporary/permanent ::map state
@@ -52,11 +52,11 @@ namespace metrowin
       event                                        m_evFinish;
       UINT                                         m_nDisablePumpCount;
       mutex                                        m_mutexUiPtra;
-      ::ca::thread *                               m_pAppThread;
+      ::ca2::thread *                               m_pAppThread;
       UINT                                         m_dwFinishTimeout;
 
 
-      thread(::ca::application * papp);
+      thread(::ca2::application * papp);
 
 
       operator HANDLE() const;
@@ -67,19 +67,19 @@ namespace metrowin
       void set_os_data(void * pvoidOsData);
       void set_os_int(int_ptr iData);
 
-      virtual void set_p(::ca::thread * p);
+      virtual void set_p(::ca2::thread * p);
 
 
       virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
-      virtual bool begin(::ca::e_thread_priority epriority = ::get_thread_priority_normal(), uint_ptr nStackSize = 0, uint32_t uiCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
+      virtual bool begin(::ca2::e_thread_priority epriority = ::get_thread_priority_normal(), uint_ptr nStackSize = 0, uint32_t uiCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
-      virtual bool create_thread(::ca::e_thread_priority epriority = ::get_thread_priority_normal(), uint32_t uiCreateFlags = 0, uint_ptr nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
+      virtual bool create_thread(::ca2::e_thread_priority epriority = ::get_thread_priority_normal(), uint32_t uiCreateFlags = 0, uint_ptr nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
 
       virtual sp(::user::interaction) SetMainWnd(sp(::user::interaction) pui);
 
-      virtual int thread_entry(::ca::thread_startup * pstartup);
+      virtual int thread_entry(::ca2::thread_startup * pstartup);
       virtual int main();
       virtual int thread_term(int nResult);
 
@@ -94,7 +94,7 @@ namespace metrowin
       virtual void set_run(bool bRun = true);
       virtual event & get_finish_event();
       virtual bool get_run();
-      virtual ::ca::thread * get_app_thread();
+      virtual ::ca2::thread * get_app_thread();
       virtual sp(::user::interaction) get_active_ui();
       virtual sp(::user::interaction) set_active_ui(sp(::user::interaction) pui);
       virtual void step_timer();
@@ -106,7 +106,7 @@ namespace metrowin
 * \author	Thomas Nass
 */
 
-      virtual void on_delete(::ca::ca * poc);
+      virtual void on_delete(::ca2::ca2 * poc);
 
 
       virtual void start();
@@ -124,31 +124,31 @@ namespace metrowin
 
       // called when occurs an standard_exception exception in run
       // return true to call run again
-      virtual bool on_run_exception(::ca::exception & e);
+      virtual bool on_run_exception(::ca2::exception & e);
 
    // Overridables
       // thread initialization
       virtual bool initialize_instance();
 
-      virtual ::ca::message::e_prototype thread::GetMessagePrototype(UINT uiMessage, UINT uiCode); 
+      virtual ::ca2::message::e_prototype thread::GetMessagePrototype(UINT uiMessage, UINT uiCode); 
 
       // running and idle processing
       virtual int run();
-      virtual void pre_translate_message(::ca::signal_object * pobj);
+      virtual void pre_translate_message(::ca2::signal_object * pobj);
       virtual bool pump_message();     // low level message pump
       virtual bool on_idle(LONG lCount); // return TRUE if more idle processing
-      virtual bool is_idle_message(::ca::signal_object * pobj);  // checks for special messages
+      virtual bool is_idle_message(::ca2::signal_object * pobj);  // checks for special messages
       virtual bool is_idle_message(LPMESSAGE lpmsg);  // checks for special messages
-      virtual void message_handler(::ca::signal_object * pobj);
+      virtual void message_handler(::ca2::signal_object * pobj);
 
       // thread termination
       virtual int exit_instance(); // default will 'delete this'
 
       // Advanced: exception handling
-      virtual void ProcessWndProcException(base_exception * e, ::ca::signal_object * pMsg);
+      virtual void ProcessWndProcException(base_exception * e, ::ca2::signal_object * pMsg);
 
       // Advanced: handling messages sent to message filter hook
-      virtual void ProcessMessageFilter(int code, ::ca::signal_object * pobj);
+      virtual void ProcessMessageFilter(int code, ::ca2::signal_object * pobj);
 
       // Advanced: virtual access to GetMainWnd()
       virtual sp(::user::interaction) GetMainWnd();
@@ -164,8 +164,8 @@ namespace metrowin
 
 
 
-      virtual void DispatchThreadMessageEx(::ca::signal_object * pobj);  // helper
-      virtual void message_window_message_handler(::ca::signal_object * pobj);
+      virtual void DispatchThreadMessageEx(::ca2::signal_object * pobj);  // helper
+      virtual void message_window_message_handler(::ca2::signal_object * pobj);
 
       virtual void delete_temp();
 
@@ -200,8 +200,8 @@ namespace metrowin
    };
 
 
-   CLASS_DECL_metrowin ::ca::thread * get_thread();
-   CLASS_DECL_metrowin ::ca::thread_state * get_thread_state();
+   CLASS_DECL_metrowin ::ca2::thread * get_thread();
+   CLASS_DECL_metrowin ::ca2::thread_state * get_thread_state();
 
 
 } // namespace metrowin

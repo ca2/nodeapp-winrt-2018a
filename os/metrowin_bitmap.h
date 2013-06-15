@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin bitmap : 
-      virtual public ::ca::bitmap
+      virtual public ::ca2::bitmap
    {
    public:
 
@@ -18,7 +18,7 @@ namespace metrowin
       //    void *               m_pdata;
 
 
-      bitmap(::ca::application * papp);
+      bitmap(::ca2::application * papp);
       virtual ~bitmap();
 
       virtual void * get_os_data() const;
@@ -33,12 +33,12 @@ namespace metrowin
       //       LPCOLORMAP lpColorMap = NULL, int nMapSize = 0);
 #endif
 
-      virtual bool CreateBitmap(::ca::graphics * pdc, int nWidth, int nHeight, UINT nPlanes, UINT nBitcount, const void * lpBits, int stride);
-      virtual bool CreateBitmapIndirect(::ca::graphics * pdc, LPBITMAP lpBitmap);
-      virtual bool CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      virtual bool CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight);
-      virtual bool CreateDIBSection(::ca::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, int * stride, HANDLE hSection, uint32_t offset);
-      virtual bool CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
+      virtual bool CreateBitmap(::ca2::graphics * pdc, int nWidth, int nHeight, UINT nPlanes, UINT nBitcount, const void * lpBits, int stride);
+      virtual bool CreateBitmapIndirect(::ca2::graphics * pdc, LPBITMAP lpBitmap);
+      virtual bool CreateCompatibleBitmap(::ca2::graphics * pgraphics, int nWidth, int nHeight);
+      virtual bool CreateDiscardableBitmap(::ca2::graphics * pgraphics, int nWidth, int nHeight);
+      virtual bool CreateDIBSection(::ca2::graphics * pdc, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, int * stride, HANDLE hSection, uint32_t offset);
+      virtual bool CreateDIBitmap(::ca2::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage);
 
       virtual bool attach(void * posdata);
       virtual void * detach();

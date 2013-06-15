@@ -4,8 +4,8 @@
 namespace metrowin
 {
 
-   file_system::file_system(::ca::application * papp) :
-      ca(papp)
+   file_system::file_system(::ca2::application * papp) :
+      ca2(papp)
    {
 
    }
@@ -18,25 +18,25 @@ namespace metrowin
 
    bool file_system::FullPath(string &str, const char * lpszFileIn)
    {
-      /*      if(::ca::file_system::FullPath(str, lpszFileIn))
+      /*      if(::ca2::file_system::FullPath(str, lpszFileIn))
       return true;*/
-      if(::ca::str::begins_ci(lpszFileIn, "http://"))
+      if(::ca2::str::begins_ci(lpszFileIn, "http://"))
       {
          str = lpszFileIn;
          return true;
       }
-      else if(::ca::str::begins_ci(lpszFileIn, "https://"))
+      else if(::ca2::str::begins_ci(lpszFileIn, "https://"))
       {
          str = lpszFileIn;
          return true;
       }
       wstring wstrFileIn;
-      wstrFileIn = ::ca::international::utf8_to_unicode(lpszFileIn);
+      wstrFileIn = ::ca2::international::utf8_to_unicode(lpszFileIn);
       wstring wstrFileOut;
       //      bool b = vfxFullPath(wstrFileOut.alloc(MAX_PATH * 8), wstrFileIn) != FALSE;
       /*      if(b)
       {
-      ::ca::international::unicode_to_utf8(str, wstrFileOut);
+      ::ca2::international::unicode_to_utf8(str, wstrFileOut);
       }
       return b;*/
 
@@ -46,15 +46,15 @@ namespace metrowin
    bool file_system::FullPath(wstring & wstrFullPath, const wstring & wstrPath)
    {
 
-      //if(::ca::file_system::FullPath(wstrFullPath, wstrPath))
+      //if(::ca2::file_system::FullPath(wstrFullPath, wstrPath))
       // return true;
 
-      if(::ca::str::begins_ci(wstrPath, L"http://"))
+      if(::ca2::str::begins_ci(wstrPath, L"http://"))
       {
          wstrFullPath = wstrPath;
          return true;
       }
-      else if(::ca::str::begins_ci(wstrPath, L"https://"))
+      else if(::ca2::str::begins_ci(wstrPath, L"https://"))
       {
          wstrFullPath = wstrPath;
          return true;
@@ -70,10 +70,10 @@ namespace metrowin
    {
       int nMax = MAX_PATH * 8;
       wstring wstrPathName;
-      wstrPathName = ::ca::international::utf8_to_unicode(lpszPathName);
+      wstrPathName = ::ca2::international::utf8_to_unicode(lpszPathName);
       wstring wstrTitle;
       //UINT user = vfxGetFileName(wstrPathName, wstrTitle.alloc(nMax), nMax);
-      str = ::ca::international::unicode_to_utf8(wstrTitle);
+      str = ::ca2::international::unicode_to_utf8(wstrTitle);
       //return user;
       return 0;
    }
@@ -91,7 +91,7 @@ namespace metrowin
 
       WIN32_FILE_ATTRIBUTE_DATA data;
 
-      if(!GetFileAttributesExW(::ca::international::utf8_to_unicode(pszPath), GetFileExInfoStandard, &data))
+      if(!GetFileAttributesExW(::ca2::international::utf8_to_unicode(pszPath), GetFileExInfoStandard, &data))
       {
          varRet.set_type(var::type_null);
       }

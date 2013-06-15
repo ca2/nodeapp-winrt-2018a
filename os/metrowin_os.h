@@ -9,12 +9,12 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin os :
-      public ::ca::os
+      public ::ca2::os
    {
    public:
    
       
-      os(::ca::application * papp);
+      os(::ca2::application * papp);
       virtual ~os();
 
 

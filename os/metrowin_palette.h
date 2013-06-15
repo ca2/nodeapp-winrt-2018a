@@ -5,14 +5,14 @@ namespace metrowin
 
    class CLASS_DECL_metrowin palette : 
       virtual public ::metrowin::graphics_object,
-      virtual public ::ca::palette
+      virtual public ::ca2::palette
    {
    public:
-      static palette* from_handle(::ca::application * papp, HPALETTE hPalette);
+      static palette* from_handle(::ca2::application * papp, HPALETTE hPalette);
 
-      palette(::ca::application * papp);
+      palette(::ca2::application * papp);
       bool CreatePalette(LPLOGPALETTE lpLogPalette);
-      bool CreateHalftonePalette(::ca::graphics * pgraphics);
+      bool CreateHalftonePalette(::ca2::graphics * pgraphics);
 
    // Attributes
       operator HPALETTE() const;

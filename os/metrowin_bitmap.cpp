@@ -8,8 +8,8 @@ namespace metrowin
 {
 
 
-   bitmap::bitmap(::ca::application * papp) :
-      ca(papp)
+   bitmap::bitmap(::ca2::application * papp) :
+      ca2(papp)
    { 
 
       m_pbitmap   = NULL;
@@ -30,7 +30,7 @@ namespace metrowin
 
    }
 
-   bool bitmap::CreateBitmap(::ca::graphics * pgraphics, int cx, int cy, UINT nPlanes, UINT nBitcount, const void * lpBits, int stride)
+   bool bitmap::CreateBitmap(::ca2::graphics * pgraphics, int cx, int cy, UINT nPlanes, UINT nBitcount, const void * lpBits, int stride)
    { 
 
       if(m_pbitmap != NULL)
@@ -78,13 +78,13 @@ namespace metrowin
 
    }
 
-   bool bitmap::CreateBitmapIndirect(::ca::graphics * pgraphics, LPBITMAP lpBitmap)
+   bool bitmap::CreateBitmapIndirect(::ca2::graphics * pgraphics, LPBITMAP lpBitmap)
    { 
       return FALSE;
    }
 
 
-   bool bitmap::CreateDIBSection(::ca::graphics * pgraphics, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, int * stride, HANDLE hSection, uint32_t offset)
+   bool bitmap::CreateDIBSection(::ca2::graphics * pgraphics, const BITMAPINFO * lpbmi, UINT usage, void **ppvBits, int * stride, HANDLE hSection, uint32_t offset)
    { 
 
       if(m_pbitmap != NULL)
@@ -130,7 +130,7 @@ namespace metrowin
    }
 
 
-   bool bitmap::CreateDIBitmap(::ca::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage)
+   bool bitmap::CreateDIBitmap(::ca2::graphics * pdc, const BITMAPINFOHEADER *pbmih, uint32_t flInit, const void *pjBits, const BITMAPINFO *pbmi, UINT iUsage)
    { 
       return FALSE;
    }
@@ -150,7 +150,7 @@ namespace metrowin
    }
    bool bitmap::LoadBitmap(const char * lpszResourceName)
    { 
-      //   return Attach(::LoadBitmap(::ca::FindResourceHandle(
+      //   return Attach(::LoadBitmap(::ca2::FindResourceHandle(
       //lpszResourceName, RT_BITMAP), lpszResourceName));
       return FALSE;
 
@@ -183,7 +183,7 @@ namespace metrowin
 
    bool bitmap::LoadBitmap(UINT nIDResource)
    { 
-      //return Attach(::LoadBitmap(::ca::FindResourceHandle(MAKEINTRESOURCE(nIDResource), RT_BITMAP), MAKEINTRESOURCE(nIDResource))); 
+      //return Attach(::LoadBitmap(::ca2::FindResourceHandle(MAKEINTRESOURCE(nIDResource), RT_BITMAP), MAKEINTRESOURCE(nIDResource))); 
       return FALSE;
    }
    bool bitmap::LoadOEMBitmap(UINT nIDBitmap)
@@ -191,7 +191,7 @@ namespace metrowin
       //return Attach(::LoadBitmap(NULL, MAKEINTRESOURCE(nIDBitmap))); 
       return FALSE;
    }
-   bool bitmap::CreateCompatibleBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight)
+   bool bitmap::CreateCompatibleBitmap(::ca2::graphics * pgraphics, int nWidth, int nHeight)
    {
 
 
@@ -250,7 +250,7 @@ namespace metrowin
       return TRUE;*/
 
    }
-   bool bitmap::CreateDiscardableBitmap(::ca::graphics * pgraphics, int nWidth, int nHeight)
+   bool bitmap::CreateDiscardableBitmap(::ca2::graphics * pgraphics, int nWidth, int nHeight)
    { 
 
 
@@ -307,7 +307,7 @@ namespace metrowin
 
    void bitmap::dump(dump_context & dumpcontext) const
    {
-      ::ca::graphics_object::dump(dumpcontext);
+      ::ca2::graphics_object::dump(dumpcontext);
 
       /*         if (get_handle() == NULL)
       return;

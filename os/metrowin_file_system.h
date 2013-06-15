@@ -13,12 +13,12 @@ namespace metrowin
 
 
    class file_system :
-      virtual public ::ca::file_system
+      virtual public ::ca2::file_system
    {
    public:
       
       
-      file_system(::ca::application * papp);
+      file_system(::ca2::application * papp);
       virtual ~file_system();
 
 

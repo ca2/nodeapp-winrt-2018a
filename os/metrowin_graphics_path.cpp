@@ -9,8 +9,8 @@ namespace metrowin
 
    
 
-   graphics_path::graphics_path(::ca::application * papp) :
-      ca(papp)
+   graphics_path::graphics_path(::ca2::application * papp) :
+      ca2(papp)
    {
 
       m_ppath = NULL;
@@ -23,20 +23,11 @@ namespace metrowin
    graphics_path::~graphics_path() 
    {
 
-      if(m_ppath != NULL)
-      {
-
-         m_ppath->Release();
-
-         m_ppath = NULL;
-
-      }
-
 
    }
 
 
-   bool graphics_path::internal_begin_figure(bool bFill, ::ca::e_fill_mode efillmode)
+   bool graphics_path::internal_begin_figure(bool bFill, ::ca2::e_fill_mode efillmode)
    {
 
       if(m_psink != NULL)
@@ -141,13 +132,13 @@ namespace metrowin
 
          m_psink->BeginFigure(pt, m_bFill ? D2D1_FIGURE_BEGIN_FILLED : D2D1_FIGURE_BEGIN_HOLLOW);
 
-         if(m_efillmode == ::ca::fill_mode_winding)
+         if(m_efillmode == ::ca2::fill_mode_winding)
          {
 
             m_psink->SetFillMode(D2D1_FILL_MODE_WINDING);
 
          }
-         else if(m_efillmode == ::ca::fill_mode_alternate)
+         else if(m_efillmode == ::ca2::fill_mode_alternate)
          {
 
             m_psink->SetFillMode(D2D1_FILL_MODE_ALTERNATE);
@@ -242,8 +233,32 @@ namespace metrowin
 
    }
 
+   bool graphics_path::destroy()
+   {
 
-   bool graphics_path::update()
+      if(m_psink != NULL)
+      {
+
+         m_psink->Release();
+
+         m_psink = NULL;
+
+      }
+
+      if(m_ppath != NULL)
+      {
+
+         m_ppath->Release();
+
+         m_ppath = NULL;
+
+      }
+
+      return true;
+   
+   }
+
+   bool graphics_path::create()
    {
 
       if(m_ppath != NULL)
@@ -275,21 +290,21 @@ namespace metrowin
 
    }
 
-   bool graphics_path::set(const ::ca::graphics_path::element & e)
+   bool graphics_path::set(const ::ca2::graphics_path::element & e)
    {
 
       switch(e.m_etype)
       {
-      case ::ca::graphics_path::element::type_move:
+      case ::ca2::graphics_path::element::type_move:
          set(e.m_move);
          break;
-      case ::ca::graphics_path::element::type_arc:
+      case ::ca2::graphics_path::element::type_arc:
          set(e.m_arc);
          break;
-      case ::ca::graphics_path::element::type_line:
+      case ::ca2::graphics_path::element::type_line:
          set(e.m_line);
          break;
-      case ::ca::graphics_path::element::type_end:
+      case ::ca2::graphics_path::element::type_end:
          internal_end_figure(e.m_end.m_bClose);
          break;
       default:
@@ -300,7 +315,7 @@ namespace metrowin
 
    }
 
-   bool graphics_path::set(const ::ca::graphics_path::arc & arc)
+   bool graphics_path::set(const ::ca2::graphics_path::arc & arc)
    {
       rect rect;
       rect.left = arc.m_xCenter - arc.m_dRadiusX;
@@ -309,11 +324,11 @@ namespace metrowin
       rect.bottom = arc.m_yCenter + arc.m_dRadiusY;
       return internal_add_arc(rect, arc.m_dAngle1, arc.m_dAngle2);
    }
-   bool graphics_path::set(const ::ca::graphics_path::move & move)
+   bool graphics_path::set(const ::ca2::graphics_path::move & move)
    {
       return internal_add_move(move.m_x, move.m_y);
    }
-   bool graphics_path::set(const ::ca::graphics_path::line & line)
+   bool graphics_path::set(const ::ca2::graphics_path::line & line)
    {
       return internal_add_line(line.m_x, line.m_y);
    }

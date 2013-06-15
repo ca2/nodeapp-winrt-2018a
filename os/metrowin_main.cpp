@@ -11,20 +11,20 @@ CLASS_DECL_metrowin int ca2_main();
 
 void CLASS_DECL_metrowin __cdecl _ca2_purecall()
 {
-    throw simple_exception(::ca::get_thread_app());
+    throw simple_exception(::ca2::get_thread_app());
 }
 
 
 void __cdecl _null_se_translator(unsigned int uiCode, EXCEPTION_POINTERS * ppointers);
 
 
-//::ca::application *     win_application_create(::ca::application * pappSystem, const char * pszId);
-//::ca::application *     win_instantiate_application(::ca::application * pappSystem, const char * pszId);
-//int                     win_application_procedure(::ca::application * pappSystem)
+//::ca2::application *     win_application_create(::ca2::application * pappSystem, const char * pszId);
+//::ca2::application *     win_instantiate_application(::ca2::application * pappSystem, const char * pszId);
+//int                     win_application_procedure(::ca2::application * pappSystem)
 //UINT c_cdecl          win_application_thread_proc(LPVOID);
 /////////////////////////////////////////////////////////////////////////////
 // Standard WinMain implementation
-//  Can be replaced as long as '::ca::WinInit' is called first
+//  Can be replaced as long as '::ca2::WinInit' is called first
 
 
 int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ args)
@@ -60,7 +60,7 @@ int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ ar
 
    //pinitmaindata->m_hInstance             = hInstance;
    //pinitmaindata->m_hPrevInstance         = hPrevInstance;
-   //pinitmaindata->m_vssCommandLine        = ::ca::international::unicode_to_utf8(::GetCommandLineW());
+   //pinitmaindata->m_vssCommandLine        = ::ca2::international::unicode_to_utf8(::GetCommandLineW());
    //pinitmaindata->m_nCmdShow              = nCmdShow;
 
    

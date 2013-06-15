@@ -3,16 +3,16 @@
 #if FALSE
 
 class CLASS_DECL_metrowin WinResource :
-   virtual public ::ca::resource
+   virtual public ::ca2::resource
 {
 public:
 
 
-   WinResource(::ca::application * papp);
+   WinResource(::ca2::application * papp);
    virtual ~WinResource();
    
    bool ReadResource(string & str, HINSTANCE hinst, UINT nID, const char * lpcszType);
-   bool ReadResource(::ca::file & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
+   bool ReadResource(::ca2::file & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
 
 
 };

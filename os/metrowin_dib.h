@@ -12,7 +12,7 @@ namespace metrowin
    //////////////////////////////////////////////////////////////////////
 
    class CLASS_DECL_metrowin dib :
-      virtual public ::ca::dib
+      virtual public ::ca2::dib
    {
    public:
 
@@ -26,34 +26,34 @@ namespace metrowin
 
       COLORREF *           m_pcolorref;
       BITMAPINFO           m_info;
-      ::ca::bitmap_sp      m_spbitmap;
-      ::ca::bitmap_sp      m_spbitmapMap;
-      ::ca::graphics_sp    m_spgraphics;
-      ::ca::graphics_sp    m_spgraphicsMap;
+      ::ca2::bitmap_sp      m_spbitmap;
+      ::ca2::bitmap_sp      m_spbitmapMap;
+      ::ca2::graphics_sp    m_spgraphics;
+      ::ca2::graphics_sp    m_spgraphicsMap;
       //class size           m_size;
       bool                 m_bMapped;
       //HBITMAP              m_hbitmapOriginal;
 
-      virtual ::ca::graphics * get_graphics();
-      virtual ::ca::bitmap_sp get_bitmap();
-      virtual ::ca::bitmap_sp detach_bitmap();
+      virtual ::ca2::graphics * get_graphics();
+      virtual ::ca2::bitmap_sp get_bitmap();
+      virtual ::ca2::bitmap_sp detach_bitmap();
 
 
       virtual COLORREF * get_data();
 
-      dib(::ca::application * papp);
+      dib(::ca2::application * papp);
       virtual void construct(int cx, int cy);
       virtual ~dib();
 
       static void s_initialize();
-      void stretch_dib(::ca::dib * pdib);
+      void stretch_dib(::ca2::dib * pdib);
 
       bool dc_select(bool bSelect = true);
 
       COLORREF GetAverageColor();
-      bool Blend(::ca::dib *pdib, ::ca::dib * pdibA, int A);
+      bool Blend(::ca2::dib *pdib, ::ca2::dib * pdibA, int A);
       bool color_blend(COLORREF cr, BYTE bAlpha);
-      void BitBlt(::ca::dib * pdib, int op);
+      void BitBlt(::ca2::dib * pdib, int op);
       int cos(int i, int iAngle);
       int sin(int i, int iAngle);
       int cos10(int i, int iAngle);
@@ -64,19 +64,19 @@ namespace metrowin
       virtual void unmap(); // some implementations may require to unmap from m_pcolorref to update *os* bitmap
 
       bool is_rgb_black();
-      void xor(::ca::dib * pdib);
+      void xor(::ca2::dib * pdib);
 
       void ToAlpha(int i);
       void ToAlphaAndFill(int i, COLORREF cr);
       void GrayToARGB(COLORREF cr);
 
       void from_alpha();
-      void mult_alpha(::ca::dib * pdibWork, bool bPreserveAlpha = true);
+      void mult_alpha(::ca2::dib * pdibWork, bool bPreserveAlpha = true);
       void set_rgb(int R, int G, int B);
 
-      void rotate(::ca::dib * pdib, LPCRECT lpcrect, double dAngle, double dScale);
-      void rotate(::ca::dib * pdib, double dAngle, double dScale);
-      void Rotate034(::ca::dib * pdib, double dAngle, double dScale);
+      void rotate(::ca2::dib * pdib, LPCRECT lpcrect, double dAngle, double dScale);
+      void rotate(::ca2::dib * pdib, double dAngle, double dScale);
+      void Rotate034(::ca2::dib * pdib, double dAngle, double dScale);
 
 
       void SetIconMask(::visual::icon * picon, int cx, int cy);
@@ -94,23 +94,23 @@ namespace metrowin
 
       bool create(class size size);
       bool create(int iWidth, int iHeight);
-      bool create(::ca::graphics * pdc);
+      bool create(::ca2::graphics * pdc);
       bool Destroy();
 
-      virtual bool realize(::ca::graphics * pdc);
+      virtual bool realize(::ca2::graphics * pdc);
       virtual bool unrealize();
       virtual bool is_realized();
-      virtual bool defer_realize(::ca::graphics * pdc);
+      virtual bool defer_realize(::ca2::graphics * pdc);
 
 
       void DivideRGB(int iDivide);
       void DivideARGB(int iDivide);
       void DivideA(int iDivide);
 
-      bool from(::ca::graphics * pdc);
-      bool from(point ptDest, ::ca::graphics * pdc, point pt, class size sz);
+      bool from(::ca2::graphics * pdc);
+      bool from(point ptDest, ::ca2::graphics * pdc, point pt, class size sz);
 
-      bool to(::ca::graphics * pgraphics, point pt, class size size, point ptSrc);
+      bool to(::ca2::graphics * pgraphics, point pt, class size size, point ptSrc);
       
       virtual void fill_channel(int C, visual::rgba::echannel echannel);
       void Fill (int A, int R, int G, int B );
@@ -123,29 +123,29 @@ namespace metrowin
 
       void Map (int ToRgb, int FromRgb );
 
-      void copy( ::ca::dib *dib );
-      void Paste ( ::ca::dib *dib );
+      void copy( ::ca2::dib *dib );
+      void Paste ( ::ca2::dib *dib );
 
-      void Blend ( ::ca::dib *dib, int A );
-      void Darken ( ::ca::dib *dib );
-      void Difference ( ::ca::dib *dib );
-      void Lighten ( ::ca::dib *dib );
-      void Multiply ( ::ca::dib *dib );
-      void Screen ( ::ca::dib *dib );
+      void Blend ( ::ca2::dib *dib, int A );
+      void Darken ( ::ca2::dib *dib );
+      void Difference ( ::ca2::dib *dib );
+      void Lighten ( ::ca2::dib *dib );
+      void Multiply ( ::ca2::dib *dib );
+      void Screen ( ::ca2::dib *dib );
 
-      void copy ( ::ca::dib *dib, int x, int y );
-      void PasteRect ( ::ca::dib *dib, int x, int y );
+      void copy ( ::ca2::dib *dib, int x, int y );
+      void PasteRect ( ::ca2::dib *dib, int x, int y );
 
       void FillRect ( int x, int y, int w, int h, int R, int G, int B );
       void FillGlassRect ( int x, int y, int w, int h, int R, int G, int B, int A );
       void FillStippledGlassRect ( int x, int y, int w, int h, int R, int G, int B );
       
-      void BlendRect ( ::ca::dib *dib, int x, int y, int A );
-      void DarkenRect ( ::ca::dib *dib, int x, int y );
-      void DifferenceRect ( ::ca::dib *dib, int x, int y );
-      void LightenRect ( ::ca::dib *dib, int x, int y );
-      void MultiplyRect ( ::ca::dib *dib, int x, int y );
-      void ScreenRect ( ::ca::dib *dib, int x, int y );
+      void BlendRect ( ::ca2::dib *dib, int x, int y, int A );
+      void DarkenRect ( ::ca2::dib *dib, int x, int y );
+      void DifferenceRect ( ::ca2::dib *dib, int x, int y );
+      void LightenRect ( ::ca2::dib *dib, int x, int y );
+      void MultiplyRect ( ::ca2::dib *dib, int x, int y );
+      void ScreenRect ( ::ca2::dib *dib, int x, int y );
 
       void Line ( int x1, int y1, int x2, int y2, int R, int G, int B );
       void LineGlass ( int x1, int y1, int x2, int y2, int R, int G, int B, int A );
@@ -161,7 +161,7 @@ namespace metrowin
       //int height();
       double pi();
 
-      virtual bool from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI);
+      virtual bool from(::ca2::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI);
 
 
    };

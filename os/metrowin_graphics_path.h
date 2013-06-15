@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin graphics_path :
-      virtual public ::ca::graphics_path,
+      virtual public ::ca2::graphics_path,
       virtual public graphics_object
    {
    public:
@@ -17,11 +17,11 @@ namespace metrowin
       bool                       m_bFigureEnded;
 
 
-      graphics_path(::ca::application * papp);
+      graphics_path(::ca2::application * papp);
       virtual ~graphics_path();
 
 
-      virtual bool internal_begin_figure(bool bFill, ::ca::e_fill_mode efillmode);
+      virtual bool internal_begin_figure(bool bFill, ::ca2::e_fill_mode efillmode);
       virtual bool internal_end_figure(bool bClose);
 
 
@@ -47,11 +47,12 @@ namespace metrowin
 
       ID2D1PathGeometry * get_os_path();
 
-      bool update();
-      bool set(const ::ca::graphics_path::element & e);
-      bool set(const ::ca::graphics_path::arc & arc);
-      bool set(const ::ca::graphics_path::move & move);
-      bool set(const ::ca::graphics_path::line & line);
+      virtual bool create();
+      virtual bool destroy();
+      bool set(const ::ca2::graphics_path::element & e);
+      bool set(const ::ca2::graphics_path::arc & arc);
+      bool set(const ::ca2::graphics_path::move & move);
+      bool set(const ::ca2::graphics_path::line & line);
 
 
 

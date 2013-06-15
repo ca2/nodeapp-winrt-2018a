@@ -22,8 +22,8 @@ namespace metrowin
 
    double dib::dPi;
 
-   dib::dib(::ca::application * papp) :
-      ca(papp),
+   dib::dib(::ca2::application * papp) :
+      ca2(papp),
       m_spbitmap(allocer()),
       m_spgraphics(allocer())
    {
@@ -38,12 +38,12 @@ namespace metrowin
    {
       return m_pcolorref;
    }
-   ::ca::bitmap_sp dib::get_bitmap()
+   ::ca2::bitmap_sp dib::get_bitmap()
    {
       return m_spbitmap;
    }
 
-   ::ca::bitmap_sp dib::detach_bitmap()
+   ::ca2::bitmap_sp dib::detach_bitmap()
    {
       return m_spbitmap.detach();
    }
@@ -118,10 +118,10 @@ namespace metrowin
       m_info.bmiHeader.biCompression   = BI_RGB;
       m_info.bmiHeader.biSizeImage     = width * height * 4;
 
-      m_spbitmap.create(get_app());
-      m_spbitmapMap.create(get_app());
-      m_spgraphics.create(get_app());
-      m_spgraphicsMap.create(get_app());
+      m_spbitmap.create(allocer());
+      m_spbitmapMap.create(allocer());
+      m_spgraphics.create(allocer());
+      m_spgraphicsMap.create(allocer());
 
       if(m_spbitmap.m_p == NULL || m_spbitmapMap.is_null() || m_spgraphics.is_null() || m_spgraphicsMap.is_null())
       {
@@ -185,9 +185,9 @@ namespace metrowin
       return true;
    }
 
-   bool dib::create(::ca::graphics * pdc)
+   bool dib::create(::ca2::graphics * pdc)
    {
-      ::ca::bitmap * pbitmap = &(dynamic_cast<::metrowin::graphics * >(pdc))->GetCurrentBitmap();
+      ::ca2::bitmap * pbitmap = &(dynamic_cast<::metrowin::graphics * >(pdc))->GetCurrentBitmap();
       if(pbitmap == NULL)
          return FALSE;
       class size size = pbitmap->get_size();
@@ -220,7 +220,7 @@ namespace metrowin
       return TRUE;
    }
 
-   bool dib::to(::ca::graphics * pgraphics, point pt, class size size, point ptSrc)
+   bool dib::to(::ca2::graphics * pgraphics, point pt, class size size, point ptSrc)
    {
 
       return pgraphics->BitBlt(pt.x, pt.y, size.cx, size.cy, get_graphics(), ptSrc.x, ptSrc.y, SRCCOPY) != FALSE;
@@ -235,12 +235,12 @@ namespace metrowin
 
    }
 
-   bool dib::from(::ca::graphics * pdc)
+   bool dib::from(::ca2::graphics * pdc)
    {
       bool bOk = false;
-      ::ca::bitmap_sp bitmap(get_app());
+      ::ca2::bitmap_sp bitmap(get_app());
       bitmap->CreateCompatibleBitmap(pdc, 1, 1);
-      ::ca::bitmap * pbitmap = METROWIN_DC(pdc)->SelectObject(bitmap);
+      ::ca2::bitmap * pbitmap = METROWIN_DC(pdc)->SelectObject(bitmap);
       if(pbitmap == NULL)
          return false;
       class size size = pbitmap->get_size();
@@ -256,7 +256,7 @@ namespace metrowin
    }
 
 
-   bool dib::from(point ptDest, ::ca::graphics * pdc, point pt, class size sz)
+   bool dib::from(point ptDest, ::ca2::graphics * pdc, point pt, class size sz)
    {
 
       return m_spgraphics->BitBlt(ptDest.x, ptDest.y, sz.cx, sz.cy, pdc, pt.x, pt.y, SRCCOPY) != FALSE;
@@ -358,16 +358,16 @@ namespace metrowin
 
    //DIB = DIB * SRC_ALPHA
 
-   void dib::mult_alpha(::ca::dib * pdibWork, bool bPreserveAlpha)
+   void dib::mult_alpha(::ca2::dib * pdibWork, bool bPreserveAlpha)
    {
-      ::ca::dib::mult_alpha(pdibWork, bPreserveAlpha);
+      ::ca2::dib::mult_alpha(pdibWork, bPreserveAlpha);
       return ;
       /*
       if(area() <= 0)
          return;
 
-      //return ::ca::dib::mult_alpha(NULL, true);
-      ::ca::dib_sp dibWork;
+      //return ::ca2::dib::mult_alpha(NULL, true);
+      ::ca2::dib_sp dibWork;
 
       if(pdibWork == NULL)
       {
@@ -469,7 +469,7 @@ namespace metrowin
    }
 
 
-   void dib::BitBlt(::ca::dib *pdib, int op)
+   void dib::BitBlt(::ca2::dib *pdib, int op)
    {
       if(op == 123) // zero dest RGB, invert alpha, and OR src RGB
       {
@@ -695,7 +695,7 @@ namespace metrowin
       }
    }
 
-   void dib::copy(::ca::dib * pdib)
+   void dib::copy(::ca2::dib * pdib)
    {
       // If DibSize Wrong Re-create dib
       if ( (WIN_DIB(pdib)->cx!=cx) || (WIN_DIB(pdib)->cy!=cy) )
@@ -705,7 +705,7 @@ namespace metrowin
    }
 
 
-   void dib::Paste ( ::ca::dib * pdib )
+   void dib::Paste ( ::ca2::dib * pdib )
    {
       // If DibSize Wrong Re-create dib
       if ( (cx!=WIN_DIB(pdib)->cx) || (cy!=WIN_DIB(pdib)->cy) )
@@ -745,7 +745,7 @@ namespace metrowin
    }
 
 
-   void dib::Blend (::ca::dib * pdib, int A )
+   void dib::Blend (::ca2::dib * pdib, int A )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -764,7 +764,7 @@ namespace metrowin
       }
    }
 
-   bool dib::Blend(::ca::dib *pdib, ::ca::dib *pdibA, int A)
+   bool dib::Blend(::ca2::dib *pdib, ::ca2::dib *pdibA, int A)
    {
       if(size() != WIN_DIB(pdib)->size() ||
          size() != WIN_DIB(pdibA)->size())
@@ -790,7 +790,7 @@ namespace metrowin
       return true;
    }
 
-   void dib::Darken (::ca::dib * pdib )
+   void dib::Darken (::ca2::dib * pdib )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -809,7 +809,7 @@ namespace metrowin
       }
    }
 
-   void dib::Difference (::ca::dib * pdib )
+   void dib::Difference (::ca2::dib * pdib )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -832,7 +832,7 @@ namespace metrowin
       }
    }
 
-   void dib::Lighten (::ca::dib * pdib )
+   void dib::Lighten (::ca2::dib * pdib )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -852,7 +852,7 @@ namespace metrowin
    }
 
 
-   void dib::Multiply (::ca::dib * pdib )
+   void dib::Multiply (::ca2::dib * pdib )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -871,7 +871,7 @@ namespace metrowin
       }
    }
 
-   void dib::Screen (::ca::dib * pdib )
+   void dib::Screen (::ca2::dib * pdib )
    {
       if ( size()!=WIN_DIB(pdib)->size() )
          return;
@@ -894,7 +894,7 @@ namespace metrowin
    // Rectangle Functions
    //////////////////////////////////////////////////////////////////////
 
-   void dib::copy (::ca::dib * pdib, int x, int y )
+   void dib::copy (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -925,7 +925,7 @@ namespace metrowin
       }
    }
 
-   void dib::PasteRect (::ca::dib * pdib, int x, int y )
+   void dib::PasteRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1042,7 +1042,7 @@ namespace metrowin
       }
    }
 
-   void dib::BlendRect (::ca::dib * pdib, int x, int y, int A )
+   void dib::BlendRect (::ca2::dib * pdib, int x, int y, int A )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1076,7 +1076,7 @@ namespace metrowin
       }
    }
 
-   void dib::DarkenRect (::ca::dib * pdib, int x, int y )
+   void dib::DarkenRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1110,7 +1110,7 @@ namespace metrowin
       }
    }
 
-   void dib::DifferenceRect (::ca::dib * pdib, int x, int y )
+   void dib::DifferenceRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1148,7 +1148,7 @@ namespace metrowin
       }
    }
 
-   void dib::LightenRect (::ca::dib * pdib, int x, int y )
+   void dib::LightenRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1182,7 +1182,7 @@ namespace metrowin
       }
    }
 
-   void dib::MultiplyRect (::ca::dib * pdib, int x, int y )
+   void dib::MultiplyRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1216,7 +1216,7 @@ namespace metrowin
       }
    }
 
-   void dib::ScreenRect (::ca::dib * pdib, int x, int y )
+   void dib::ScreenRect (::ca2::dib * pdib, int x, int y )
    {
       // Clip Rect
       int px=(x>=0) ? x : 0;
@@ -1788,7 +1788,7 @@ namespace metrowin
 #endif
     
       // Black blend dib
-      ::ca::dib_sp spdib2(allocer());
+      ::ca2::dib_sp spdib2(allocer());
       spdib2->create(cx, cy);
       spdib2->Fill(0, 0, 0, 0);
 
@@ -1861,9 +1861,9 @@ namespace metrowin
     
    }
 
-   void dib::rotate(::ca::dib * pdib, double dAngle, double dScale)
+   void dib::rotate(::ca2::dib * pdib, double dAngle, double dScale)
    {
-     // ::ca::dib_sp spdib(get_app());
+     // ::ca2::dib_sp spdib(get_app());
    //   spdib->Paste(this);
 
 /*      int cx = cx;
@@ -1948,7 +1948,7 @@ namespace metrowin
    }
 
 
-   void dib::Rotate034(::ca::dib * pdib, double dAngle, double dScale)
+   void dib::Rotate034(::ca2::dib * pdib, double dAngle, double dScale)
    {
      
 /*      int cx = cx;
@@ -2018,9 +2018,9 @@ namespace metrowin
       }
    }
 
-   void dib::rotate(::ca::dib * pdib, LPCRECT lpcrect, double dAngle, double dScale)
+   void dib::rotate(::ca2::dib * pdib, LPCRECT lpcrect, double dAngle, double dScale)
    {
-     // ::ca::dib_sp spdib(get_app());
+     // ::ca2::dib_sp spdib(get_app());
    //   spdib->Paste(this);
 
 
@@ -2217,7 +2217,7 @@ namespace metrowin
    }
 
 
-   void dib::xor(::ca::dib * pdib)
+   void dib::xor(::ca2::dib * pdib)
    {
       if(cx != WIN_DIB(pdib)->cx
       || cy != WIN_DIB(pdib)->cy)
@@ -2443,7 +2443,7 @@ namespace metrowin
    }
 
 
-   void dib::stretch_dib(::ca::dib * pdib)
+   void dib::stretch_dib(::ca2::dib * pdib)
    {
 
       D2D1_RECT_F rectDest = D2D1::RectF(0, 0, (FLOAT) cx, (FLOAT) cy);
@@ -2466,7 +2466,7 @@ namespace metrowin
 
    }
 
-   ::ca::graphics * dib::get_graphics()
+   ::ca2::graphics * dib::get_graphics()
    {
       unmap();
       return m_spgraphics;
@@ -2691,7 +2691,7 @@ namespace metrowin
 
 #undef new
 
-   bool dib::from(::ca::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI)
+   bool dib::from(::ca2::graphics * pgraphics, FIBITMAP *pfibitmap, bool bUnloadFI)
    {
 
       if(pfibitmap == NULL)
@@ -2774,7 +2774,7 @@ namespace metrowin
 
 #define new DEBUG_NEW
 
-   bool dib::defer_realize(::ca::graphics * pdc)
+   bool dib::defer_realize(::ca2::graphics * pdc)
    {
       
       if(is_realized())
@@ -2787,7 +2787,7 @@ namespace metrowin
 
    }
 
-   bool dib::realize(::ca::graphics * pdc)
+   bool dib::realize(::ca2::graphics * pdc)
    {
 
       if(is_realized())
@@ -2796,8 +2796,8 @@ namespace metrowin
       if(is_realized())
          return false;
       
-      m_spbitmap.create(get_app());
-      m_spgraphics.create(get_app());
+      m_spbitmap.create(allocer());
+      m_spgraphics.create(allocer());
 
       if(m_spbitmap.is_null() || m_spbitmapMap.is_null() || m_spgraphics.is_null() || m_spgraphicsMap.is_null())
       {
@@ -2848,7 +2848,7 @@ namespace metrowin
       }
 
       if(pgraphics->m_bitmap.is_null())
-         pgraphics->m_bitmap.create(get_app());
+         pgraphics->m_bitmap.create(allocer());
 
       METROWIN_BITMAP(pgraphics->m_bitmap.m_p)->m_pbitmap = pbitmap->m_pbitmap;
 

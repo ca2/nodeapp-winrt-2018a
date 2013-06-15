@@ -3,8 +3,8 @@
 namespace metrowin
 {
 
-   palette::palette(::ca::application * papp) :
-      ca(papp)
+   palette::palette(::ca2::application * papp) :
+      ca2(papp)
    { }
    palette::~palette()
    { }
@@ -13,7 +13,7 @@ namespace metrowin
    { 
       return (HPALETTE)(this == NULL ? NULL : get_os_data()); 
    }
-   palette* palette::from_handle(::ca::application * papp, HPALETTE hPalette)
+   palette* palette::from_handle(::ca2::application * papp, HPALETTE hPalette)
    { 
       //return dynamic_cast < palette * > (::metrowin::graphics_object::from_handle(papp, hPalette)); 
       return NULL;
@@ -23,7 +23,7 @@ namespace metrowin
       //return Attach(::CreatePalette(lpLogPalette)); 
       return FALSE;
    }
-   bool palette::CreateHalftonePalette(::ca::graphics * pgraphics)
+   bool palette::CreateHalftonePalette(::ca2::graphics * pgraphics)
    {
       //ASSERT(pgraphics != NULL && (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1() != NULL); 
       //return Attach(::CreateHalftonePalette((dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1())); 

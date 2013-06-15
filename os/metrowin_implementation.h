@@ -6,8 +6,8 @@
 
 
 // Temporary ::map management (locks temp ::map on current thread)
-//CLASS_DECL_metrowin void ::ca::LockTempMaps(::ca::application * papp);
-//CLASS_DECL_metrowin bool ::ca::UnlockTempMaps(::ca::application * papp, bool bDeleteTemps = TRUE);
+//CLASS_DECL_metrowin void ::ca2::LockTempMaps(::ca2::application * papp);
+//CLASS_DECL_metrowin bool ::ca2::UnlockTempMaps(::ca2::application * papp, bool bDeleteTemps = TRUE);
 
 
 

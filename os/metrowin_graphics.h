@@ -12,7 +12,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin graphics : 
-      virtual public ::ca::graphics
+      virtual public ::ca2::graphics
    {
    public:
 
@@ -43,7 +43,7 @@ namespace metrowin
 
 
       graphics();
-      graphics(::ca::application * papp);
+      graphics(::ca2::application * papp);
       virtual ~graphics();
 
 
@@ -52,9 +52,9 @@ namespace metrowin
          return *m_pd;
       }
 
-      ::ca::window * GetWindow() const;
+      ::ca2::window * GetWindow() const;
 
-      //static ::ca::graphics * from_handle(HDC hDC);
+      //static ::ca2::graphics * from_handle(HDC hDC);
       //static void DeleteTempMap();
       //bool Attach(HDC hdc);   // Attach/Detach affects only the Output DC
       //HDC Detach();
@@ -66,11 +66,11 @@ namespace metrowin
 
       bool IsPrinting() const;            // TRUE if being used for printing
 
-      ::ca::pen & GetCurrentPen() const;
-      ::ca::brush & GetCurrentBrush() const;
-      ::ca::palette & GetCurrentPalette() const;
-      ::ca::font & GetCurrentFont() const;
-      ::ca::bitmap & GetCurrentBitmap() const;
+      ::ca2::pen & GetCurrentPen() const;
+      ::ca2::brush & GetCurrentBrush() const;
+      ::ca2::palette & GetCurrentPalette() const;
+      ::ca2::font & GetCurrentFont() const;
+      ::ca2::bitmap & GetCurrentBitmap() const;
 
 
       /*
@@ -91,7 +91,7 @@ namespace metrowin
          const char * lpszOutput, const void * lpInitData);
       bool CreateIC(const char * lpszDriverName, const char * lpszDeviceName,
          const char * lpszOutput, const void * lpInitData);
-      bool CreateCompatibleDC(::ca::graphics * pgraphics);
+      bool CreateCompatibleDC(::ca2::graphics * pgraphics);
 
       bool DeleteDC();
 
@@ -112,18 +112,18 @@ namespace metrowin
 
    // Type-safe selection helpers
    public:
-      virtual ::ca::graphics_object* SelectStockObject(int nIndex);
-      ::ca::pen* SelectObject(::ca::pen* pPen);
-      ::ca::brush* SelectObject(::ca::brush* pBrush);
-      virtual ::ca::font* SelectObject(::ca::font* pFont);
-      ::ca::bitmap* SelectObject(::ca::bitmap* pBitmap);
-      int SelectObject(::ca::region* pRgn);       // special return for regions
-      ::ca::graphics_object* SelectObject(::ca::graphics_object* pObject);
-         // ::ca::graphics_object* provided so compiler doesn't use SelectObject(HGDIOBJ)
+      virtual ::ca2::graphics_object* SelectStockObject(int nIndex);
+      ::ca2::pen* SelectObject(::ca2::pen* pPen);
+      ::ca2::brush* SelectObject(::ca2::brush* pBrush);
+      virtual ::ca2::font* SelectObject(::ca2::font* pFont);
+      ::ca2::bitmap* SelectObject(::ca2::bitmap* pBitmap);
+      int SelectObject(::ca2::region* pRgn);       // special return for regions
+      ::ca2::graphics_object* SelectObject(::ca2::graphics_object* pObject);
+         // ::ca2::graphics_object* provided so compiler doesn't use SelectObject(HGDIOBJ)
 
    // color and color Palette Functions
       COLORREF GetNearestColor(COLORREF crColor) const;
-      ::ca::palette* SelectPalette(::ca::palette* pPalette, bool bForceBackground);
+      ::ca2::palette* SelectPalette(::ca2::palette* pPalette, bool bForceBackground);
       UINT RealizePalette();
       void UpdateColors();
 
@@ -161,9 +161,9 @@ namespace metrowin
       int GetGraphicsMode() const;
 
 
-      virtual bool draw_path(::ca::graphics_path * ppath);
-      virtual bool fill_path(::ca::graphics_path * ppath);
-      virtual bool path(::ca::graphics_path * ppath);
+      virtual bool draw_path(::ca2::graphics_path * ppath);
+      virtual bool fill_path(::ca2::graphics_path * ppath);
+      virtual bool path(::ca2::graphics_path * ppath);
 
 
       // World transform
@@ -213,25 +213,25 @@ namespace metrowin
       void HIMETRICtoLP(LPSIZE lpSize) const;
 
    // Region Functions
-      bool FillRgn(::ca::region* pRgn, ::ca::brush* pBrush);
-      bool FrameRgn(::ca::region* pRgn, ::ca::brush* pBrush, int nWidth, int nHeight);
-      bool InvertRgn(::ca::region* pRgn);
-      bool PaintRgn(::ca::region* pRgn);
+      bool FillRgn(::ca2::region* pRgn, ::ca2::brush* pBrush);
+      bool FrameRgn(::ca2::region* pRgn, ::ca2::brush* pBrush, int nWidth, int nHeight);
+      bool InvertRgn(::ca2::region* pRgn);
+      bool PaintRgn(::ca2::region* pRgn);
 
    // Clipping Functions
       virtual int GetClipBox(LPRECT lpRect) const;
       virtual bool PtVisible(int x, int y) const;
             bool PtVisible(POINT point) const;
       virtual bool RectVisible(LPCRECT lpRect) const;
-            int SelectClipRgn(::ca::region* pRgn);
+            int SelectClipRgn(::ca2::region* pRgn);
             int ExcludeClipRect(int x1, int y1, int x2, int y2);
             int ExcludeClipRect(LPCRECT lpRect);
-            int ExcludeUpdateRgn(::ca::window * pWnd);
+            int ExcludeUpdateRgn(::ca2::window * pWnd);
             int IntersectClipRect(int x1, int y1, int x2, int y2);
             int IntersectClipRect(LPCRECT lpRect);
             int OffsetClipRgn(int x, int y);
             int OffsetClipRgn(SIZE size);
-      int SelectClipRgn(::ca::region* pRgn, int nMode);
+      int SelectClipRgn(::ca2::region* pRgn, int nMode);
 
    // Line-Output Functions
       point GetCurrentPosition() const;
@@ -258,28 +258,28 @@ namespace metrowin
       bool PolyBezierTo(const POINT* lpPoints, int nCount);
 
    // Simple Drawing Functions
-      void FillRect(LPCRECT lpRect, ::ca::brush* pBrush);
-      void FrameRect(LPCRECT lpRect, ::ca::brush* pBrush);
+      void FillRect(LPCRECT lpRect, ::ca2::brush* pBrush);
+      void FrameRect(LPCRECT lpRect, ::ca2::brush* pBrush);
       void InvertRect(LPCRECT lpRect);
       bool DrawIcon(int x, int y, ::visual::icon * picon);
       bool DrawIcon(POINT point, ::visual::icon * picon);
       bool DrawIcon(int x, int y, ::visual::icon * picon, int cx, int cy, UINT istepIfAniCur, HBRUSH hbrFlickerFreeDraw, UINT diFlags);
       bool DrawState(point pt, size size, HBITMAP hBitmap, UINT nFlags,
          HBRUSH hBrush = NULL);
-      bool DrawState(point pt, size size, ::ca::bitmap* pBitmap, UINT nFlags,
-         ::ca::brush* pBrush = NULL);
+      bool DrawState(point pt, size size, ::ca2::bitmap* pBitmap, UINT nFlags,
+         ::ca2::brush* pBrush = NULL);
       bool DrawState(point pt, size size, HICON hIcon, UINT nFlags,
          HBRUSH hBrush = NULL);
       bool DrawState(point pt, size size, HICON hIcon, UINT nFlags,
-         ::ca::brush* pBrush = NULL);
+         ::ca2::brush* pBrush = NULL);
       bool DrawState(point pt, size size, const char * lpszText, UINT nFlags,
          bool bPrefixText = TRUE, int nTextLen = 0, HBRUSH hBrush = NULL);
       bool DrawState(point pt, size size, const char * lpszText, UINT nFlags,
-         bool bPrefixText = TRUE, int nTextLen = 0, ::ca::brush* pBrush = NULL);
+         bool bPrefixText = TRUE, int nTextLen = 0, ::ca2::brush* pBrush = NULL);
 //      bool DrawState(point pt, size size, DRAWSTATEPROC lpDrawProc,
   //       LPARAM lData, UINT nFlags, HBRUSH hBrush = NULL);
     //  bool DrawState(point pt, size size, DRAWSTATEPROC lpDrawProc,
-      //   LPARAM lData, UINT nFlags, ::ca::brush* pBrush = NULL);
+      //   LPARAM lData, UINT nFlags, ::ca2::brush* pBrush = NULL);
 
    // Ellipse and Polygon Functions
       bool Chord(int x1, int y1, int x2, int y2, int x3, int y3,
@@ -305,9 +305,9 @@ namespace metrowin
 
    // Bitmap Functions
       bool PatBlt(int x, int y, int nWidth, int nHeight, uint32_t dwRop);
-      bool BitBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
+      bool BitBlt(int x, int y, int nWidth, int nHeight, ::ca2::graphics * pgraphicsSrc,
          int xSrc, int ySrc, uint32_t dwRop);
-      bool StretchBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
+      bool StretchBlt(int x, int y, int nWidth, int nHeight, ::ca2::graphics * pgraphicsSrc,
          int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, uint32_t dwRop);
       COLORREF GetPixel(int x, int y) const;
       COLORREF GetPixel(POINT point) const;
@@ -315,23 +315,23 @@ namespace metrowin
       COLORREF SetPixel(POINT point, COLORREF crColor);
       bool FloodFill(int x, int y, COLORREF crColor);
       bool ExtFloodFill(int x, int y, COLORREF crColor, UINT nFillType);
-      bool MaskBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc,
-         int xSrc, int ySrc, ::ca::bitmap& maskBitmap, int xMask, int yMask,
+      bool MaskBlt(int x, int y, int nWidth, int nHeight, ::ca2::graphics * pgraphicsSrc,
+         int xSrc, int ySrc, ::ca2::bitmap& maskBitmap, int xMask, int yMask,
          uint32_t dwRop);
-      bool PlgBlt(LPPOINT lpPoint, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc,
-         int nWidth, int nHeight, ::ca::bitmap& maskBitmap, int xMask, int yMask);
+      bool PlgBlt(LPPOINT lpPoint, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc,
+         int nWidth, int nHeight, ::ca2::bitmap& maskBitmap, int xMask, int yMask);
       bool SetPixelV(int x, int y, COLORREF crColor);
       bool SetPixelV(POINT point, COLORREF crColor);
       bool GradientFill(TRIVERTEX* pVertices, ULONG nVertices, 
         void * pMesh, ULONG nMeshElements, uint32_t dwMode);
       bool TransparentBlt(int xDest, int yDest, int nDestWidth, int nDestHeight,
-        ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, 
+        ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, 
         UINT clrTransparent);
 
-      virtual bool alpha_blend(int xDest, int yDest, int nDestWidth, int nDestHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, double dOpacity);
+      virtual bool alpha_blend(int xDest, int yDest, int nDestWidth, int nDestHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, double dOpacity);
 
       /*bool alpha_blend(int xDest, int yDest, int nDestWidth, int nDestHeight,
-        ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, 
+        ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, 
         BLENDFUNCTION blend);*/
 
    // Text Functions
@@ -366,7 +366,7 @@ namespace metrowin
       size GetTabbedTextExtent(const string & str, int nTabPositions, LPINT lpnTabStopPositions) const;
       size GetOutputTabbedTextExtent(const char * lpszString, strsize nCount, int nTabPositions, LPINT lpnTabStopPositions) const;
       size GetOutputTabbedTextExtent(const string & str, int nTabPositions, LPINT lpnTabStopPositions) const;
-      virtual bool GrayString(::ca::brush* pBrush,
+      virtual bool GrayString(::ca2::brush* pBrush,
          bool (CALLBACK* lpfnOutput)(HDC, LPARAM, int), LPARAM lpData,
             int nCount, int x, int y, int nWidth, int nHeight);
       UINT GetTextAlign() const;
@@ -397,7 +397,7 @@ namespace metrowin
 
    // Scrolling Functions
       bool ScrollDC(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip,
-         ::ca::region* pRgnUpdate, LPRECT lpRectUpdate);
+         ::ca2::region* pRgnUpdate, LPRECT lpRectUpdate);
 
    // font Functions
       bool GetCharWidth(UINT nFirstChar, UINT nLastChar, LPINT lpBuffer) const;
@@ -464,10 +464,10 @@ namespace metrowin
       bool SelectClipPath(int nMode);
 
    // Misc Helper Functions
-      static ::ca::brush* GetHalftoneBrush(::ca::application * papp);
+      static ::ca2::brush* GetHalftoneBrush(::ca2::application * papp);
       void DrawDragRect(LPCRECT lpRect, SIZE size,
          LPCRECT lpRectLast, SIZE sizeLast,
-         ::ca::brush* pBrush = NULL, ::ca::brush* pBrushLast = NULL);
+         ::ca2::brush* pBrush = NULL, ::ca2::brush* pBrushLast = NULL);
       void FillSolidRect(const __rect64 * lpRect, COLORREF clr);
       void FillSolidRect(LPCRECT lpRect, COLORREF clr);
       void FillSolidRect(int x, int y, int cx, int cy, COLORREF clr);
@@ -485,9 +485,9 @@ namespace metrowin
 
       //HGDIOBJ SelectObject(HGDIOBJ);      // do not use for regions
 
-      virtual void set_alpha_mode(::ca::e_alpha_mode ealphamode);
+      virtual void set_alpha_mode(::ca2::e_alpha_mode ealphamode);
 
-      virtual void set_text_rendering(::ca::e_text_rendering etextrendering);
+      virtual void set_text_rendering(::ca2::e_text_rendering etextrendering);
 
       virtual void * get_os_data() const;
       virtual HDC get_handle() const;
@@ -511,7 +511,7 @@ namespace metrowin
 
    //protected:
       // used for implementation of non-virtual SelectObject calls
-      //static ::ca::graphics_object* SelectGdiObject(::ca::application * papp, HDC hDC, HGDIOBJ h);
+      //static ::ca2::graphics_object* SelectGdiObject(::ca2::application * papp, HDC hDC, HGDIOBJ h);
    };
 
 } // namespace metrowin

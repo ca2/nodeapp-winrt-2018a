@@ -6,8 +6,8 @@ namespace metrowin
 {
 
 
-   printer::printer(::ca::application * papp) :
-      ca(papp),
+   printer::printer(::ca2::application * papp) :
+      ca2(papp),
       ::user::printer(papp),
       m_documentproperties(papp)
    {
@@ -30,7 +30,7 @@ namespace metrowin
       return m_hPrinter != NULL;
    }
 
-   ::ca::graphics * printer::create_graphics()
+   ::ca2::graphics * printer::create_graphics()
    {
       if(!m_documentproperties.initialize(this))
          return NULL;
@@ -51,8 +51,8 @@ namespace metrowin
    }
 
 
-   printer::document_properties::document_properties(::ca::application * papp) :
-      ca(papp)
+   printer::document_properties::document_properties(::ca2::application * papp) :
+      ca2(papp)
    {
       m_hdc = NULL;
       m_pdevmode = NULL;
@@ -99,7 +99,7 @@ namespace metrowin
 
 
 
-   ::ca::graphics * printer::document_properties::create_graphics()
+   ::ca2::graphics * printer::document_properties::create_graphics()
    {
       throw todo(get_app());
       //if(m_pdevmode == NULL)
@@ -107,7 +107,7 @@ namespace metrowin
       //if(m_hdc != NULL)
       //   return NULL;
       //m_hdc = ::CreateDC("WINSPOOL", (LPCSTR) m_pdevmode->dmDeviceName, NULL, m_pdevmode);
-      //::ca::graphics_sp g(get_app());
+      //::ca2::graphics_sp g(get_app());
       //g->Attach(m_hdc);
       //return g.detach();
    }

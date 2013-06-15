@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin graphics_object :
-      virtual public ::ca::graphics_object
+      virtual public ::ca2::graphics_object
    {
    public:
 
@@ -22,8 +22,8 @@ namespace metrowin
       UINT GetObjectType() const;
       bool CreateStockObject(int nIndex);
       bool UnrealizeObject();
-      bool operator==(const ::ca::graphics_object& obj) const;
-      bool operator!=(const ::ca::graphics_object& obj) const;
+      bool operator==(const ::ca2::graphics_object& obj) const;
+      bool operator!=(const ::ca2::graphics_object& obj) const;
 
       virtual void dump(dump_context & dumpcontext) const;
       virtual void assert_valid() const;
@@ -31,4 +31,4 @@ namespace metrowin
    };
 
 
-} // namespace ca
+} // namespace ca2

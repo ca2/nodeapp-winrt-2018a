@@ -12,13 +12,13 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin window : 
-      virtual public ::ca::window
+      virtual public ::ca2::window
    {
    public:
 
       
       spa(::user::interaction)      m_guieptraMouseHover;
-      ::ca::window_callback *       m_pcallback;
+      ::ca2::window_callback *       m_pcallback;
       string                        m_strWindowText;
       //visual::dib_sp                m_spdib;
       //visual::dib_sp                m_spdibMultAlphaWork;
@@ -27,10 +27,10 @@ namespace metrowin
 
 
       window();
-      window(::ca::application * papp);
+      window(::ca2::application * papp);
       virtual void construct(oswindow hwnd);
 
-      virtual void on_delete(::ca::ca * poc);
+      virtual void on_delete(::ca2::ca2 * poc);
 
       //virtual oswindow get_handle() const;
 
@@ -39,17 +39,17 @@ namespace metrowin
       virtual void mouse_hover_add(sp(::user::interaction) pinterface);
       virtual void mouse_hover_remove(sp(::user::interaction) pinterface);
 
-      bool create_message_window(const char * pszName, ::ca::window_callback * pcallback = NULL);
+      bool create_message_window(const char * pszName, ::ca2::window_callback * pcallback = NULL);
 
-      virtual bool initialize(Windows::UI::Core::CoreWindow ^ window, ::ca::system_window ^ pwindow) override;
+      virtual bool initialize(Windows::UI::Core::CoreWindow ^ window, ::ca2::system_window ^ pwindow) override;
 
 
       static const MSG* GetCurrentMessage();
 
-      virtual void install_message_handling(::ca::message::dispatch * pinterface);
+      virtual void install_message_handling(::ca2::message::dispatch * pinterface);
 
-      bool operator==(const ::ca::window& wnd) const;
-      bool operator!=(const ::ca::window& wnd) const;
+      bool operator==(const ::ca2::window& wnd) const;
+      bool operator!=(const ::ca2::window& wnd) const;
 
       uint32_t GetStyle();
       uint32_t GetExStyle();
@@ -65,7 +65,7 @@ namespace metrowin
 
       virtual bool BaseOnControlEvent(::user::control_event * pevent);
 
-      void _002OnDraw(::ca::graphics * pdc);
+      void _002OnDraw(::ca2::graphics * pdc);
 
       DECL_GEN_SIGNAL(_001OnEraseBkgnd)
          DECL_GEN_SIGNAL(_001OnMove)
@@ -83,7 +83,7 @@ namespace metrowin
 
 #endif   // WINVER >= 0x0500
 
-      //      virtual ::ca::window * from_os_data(void * pdata);
+      //      virtual ::ca2::window * from_os_data(void * pdata);
       //    virtual void * get_os_data() const;
 
       //      static window * from_handle(oswindow hWnd);
@@ -95,7 +95,7 @@ namespace metrowin
       // subclassing/unsubclassing functions
       virtual void pre_subclass_window();
       bool SubclassWindow(oswindow hWnd);
-      bool SubclassDlgItem(UINT nID, ::ca::window * pParent);
+      bool SubclassDlgItem(UINT nID, ::ca2::window * pParent);
       oswindow UnsubclassWindow();
 
       // handling of RT_DLGINIT resource (extension to RT_DIALOG)
@@ -108,7 +108,7 @@ namespace metrowin
          const char * lpszWindowName, uint32_t dwStyle,
          const RECT& rect,
          ::user::interaction * pParentWnd, id id,
-         ::ca::create_context* pContext = NULL);
+         ::ca2::create_context* pContext = NULL);
 
       // advanced creation (allows access to extended styles)
       virtual bool CreateEx(uint32_t dwExStyle, const char * lpszClassName,
@@ -124,7 +124,7 @@ namespace metrowin
 
       virtual bool DestroyWindow();
 
-      // special pre-creation and ::ca::window rect adjustment hooks
+      // special pre-creation and ::ca2::window rect adjustment hooks
       virtual bool pre_create_window(CREATESTRUCT& cs);
 
       // Advanced: virtual AdjustWindowRect
@@ -146,13 +146,13 @@ namespace metrowin
       sp(::user::interaction) GetTopLevelOwner();
       sp(::user::interaction) GetParentOwner();
       sp(::user::frame_window) GetTopLevelFrame();
-      //static ::ca::window * GetSafeOwner(::ca::window * pParent = NULL, oswindow* pWndTop = NULL);
+      //static ::ca2::window * GetSafeOwner(::ca2::window * pParent = NULL, oswindow* pWndTop = NULL);
 
       virtual bool IsWindow();
 
 #if(WINVER >= 0x0500)
 
-      sp(::ca::window) GetAncestor(UINT gaFlags) const;
+      sp(::ca2::window) GetAncestor(UINT gaFlags) const;
 
 #endif   // WINVER >= 0x0500
 
@@ -171,8 +171,8 @@ namespace metrowin
       strsize GetWindowText(char * lpszStringBuf, strsize nMaxCount);
       void GetWindowText(string & rString);
       strsize GetWindowTextLength();
-      void SetFont(::ca::font* pFont, bool bRedraw = TRUE);
-      ::ca::font* GetFont();
+      void SetFont(::ca2::font* pFont, bool bRedraw = TRUE);
+      ::ca2::font* GetFont();
 
 
       // Window size and position Functions
@@ -183,10 +183,10 @@ namespace metrowin
       int SetWindowRgn(HRGN hRgn, bool bRedraw);
       int GetWindowRgn(HRGN hRgn);
 
-      //static const ::ca::window wndTop; // SetWindowPos's pWndInsertAfter
-      //static const ::ca::window wndBottom; // SetWindowPos's pWndInsertAfter
-      //static const ::ca::window wndTopMost; // SetWindowPos pWndInsertAfter
-      //static const ::ca::window wndNoTopMost; // SetWindowPos pWndInsertAfter
+      //static const ::ca2::window wndTop; // SetWindowPos's pWndInsertAfter
+      //static const ::ca2::window wndBottom; // SetWindowPos's pWndInsertAfter
+      //static const ::ca2::window wndTopMost; // SetWindowPos pWndInsertAfter
+      //static const ::ca2::window wndNoTopMost; // SetWindowPos pWndInsertAfter
 
       virtual bool SetWindowPos(int z, int x, int y, int cx, int cy, UINT nFlags);
       virtual UINT ArrangeIconicWindows();
@@ -209,41 +209,41 @@ namespace metrowin
       //    virtual bool SetWindowPlacement(const WINDOWPLACEMENT* lpwndpl);
 
       // Coordinate Mapping Functions
-      virtual void MapWindowPoints(::ca::window * pwndTo, LPPOINT lpPoint, UINT nCount);
-      virtual void MapWindowPoints(::ca::window * pwndTo, LPRECT lpRect);
+      virtual void MapWindowPoints(::ca2::window * pwndTo, LPPOINT lpPoint, UINT nCount);
+      virtual void MapWindowPoints(::ca2::window * pwndTo, LPRECT lpRect);
 
       // Update/Painting Functions
-      virtual ::ca::graphics * GetDC();
-      virtual ::ca::graphics * GetWindowDC();
-      virtual bool ReleaseDC(::ca::graphics * pgraphics);
-      virtual void Print(::ca::graphics * pgraphics, uint32_t dwFlags) const;
-      virtual void PrintClient(::ca::graphics * pgraphics, uint32_t dwFlags) const;
+      virtual ::ca2::graphics * GetDC();
+      virtual ::ca2::graphics * GetWindowDC();
+      virtual bool ReleaseDC(::ca2::graphics * pgraphics);
+      virtual void Print(::ca2::graphics * pgraphics, uint32_t dwFlags) const;
+      virtual void PrintClient(::ca2::graphics * pgraphics, uint32_t dwFlags) const;
 
       virtual void UpdateWindow();
       virtual void SetRedraw(bool bRedraw = TRUE);
       virtual bool GetUpdateRect(LPRECT lpRect, bool bErase = FALSE);
-      virtual int GetUpdateRgn(::ca::region* pRgn, bool bErase = FALSE);
+      virtual int GetUpdateRgn(::ca2::region* pRgn, bool bErase = FALSE);
       virtual void Invalidate(bool bErase = TRUE);
       virtual void InvalidateRect(LPCRECT lpRect, bool bErase = TRUE);
-      virtual void InvalidateRgn(::ca::region* pRgn, bool bErase = TRUE);
+      virtual void InvalidateRgn(::ca2::region* pRgn, bool bErase = TRUE);
       virtual void ValidateRect(LPCRECT lpRect);
-      virtual void ValidateRgn(::ca::region* pRgn);
+      virtual void ValidateRgn(::ca2::region* pRgn);
       virtual bool ShowWindow(int nCmdShow);
       virtual void _001WindowMaximize();
       virtual void _001WindowRestore();
       virtual bool IsWindowVisible();
       virtual void ShowOwnedPopups(bool bShow = TRUE);
 
-      virtual ::ca::graphics * GetDCEx(::ca::region* prgnClip, uint32_t flags);
+      virtual ::ca2::graphics * GetDCEx(::ca2::region* prgnClip, uint32_t flags);
       virtual bool LockWindowUpdate();
       virtual void UnlockWindowUpdate();
       virtual bool RedrawWindow(LPCRECT lpRectUpdate = NULL,
-         ::ca::region* prgnUpdate = NULL,
+         ::ca2::region* prgnUpdate = NULL,
          UINT flags = RDW_INVALIDATE | RDW_UPDATENOW | RDW_ERASE);
       //      virtual bool EnableScrollBar(int nSBFlags, UINT nArrowFlags = ESB_ENABLE_BOTH);
 
       virtual bool DrawAnimatedRects(int idAni, CONST RECT *lprcFrom, CONST RECT *lprcTo);
-      virtual bool DrawCaption(::ca::graphics * pgraphics, LPCRECT lprc, UINT uFlags);
+      virtual bool DrawCaption(::ca2::graphics * pgraphics, LPCRECT lprc, UINT uFlags);
 
 #if(WINVER >= 0x0500)
 
@@ -253,7 +253,7 @@ namespace metrowin
 
 #if(_WIN32_WINNT >= 0x0501)
 
-      virtual bool PrintWindow(::ca::graphics * pgraphics, UINT nFlags) const;
+      virtual bool PrintWindow(::ca2::graphics * pgraphics, UINT nFlags) const;
 
 #endif   // _WIN32_WINNT >= 0x0501
 
@@ -262,8 +262,8 @@ namespace metrowin
 #if(_WIN32_WINNT >= 0x0500)
 
       virtual bool SetLayeredWindowAttributes(COLORREF crKey, BYTE bAlpha, uint32_t dwFlags);
-      virtual bool UpdateLayeredWindow(::ca::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
-         ::ca::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags);
+      virtual bool UpdateLayeredWindow(::ca2::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
+         ::ca2::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags);
 
 #endif   // _WIN32_WINNT >= 0x0500
 
@@ -282,13 +282,13 @@ namespace metrowin
       virtual bool IsWindowEnabled();
       virtual bool EnableWindow(bool bEnable = TRUE);
 
-      // the active ::ca::window applies only to top-level (frame windows)
+      // the active ::ca2::window applies only to top-level (frame windows)
       virtual sp(::user::interaction) GetActiveWindow();
       virtual sp(::user::interaction) SetActiveWindow();
 
-      // the foreground ::ca::window applies only to top-level windows (frame windows)
+      // the foreground ::ca2::window applies only to top-level windows (frame windows)
       virtual bool SetForegroundWindow();
-      static sp(::ca::window) GetForegroundWindow();
+      static sp(::ca2::window) GetForegroundWindow();
 
       virtual id SetDlgCtrlId(id id);
       virtual id GetDlgCtrlId();
@@ -325,8 +325,8 @@ namespace metrowin
       virtual UINT GetDlgItemInt(int nID, BOOL * lpTrans = NULL, bool bSigned = TRUE) const;
       //      virtual int GetDlgItemText(__in int nID, __out_ecount_part_z(nMaxCount, return + 1) char * lpStr, __in int nMaxCount) const;
       //    virtual int GetDlgItemText(int nID, string & rString) const;
-      virtual ::ca::window * GetNextDlgGroupItem(::ca::window * pWndCtl, bool bPrevious = FALSE) const;
-      virtual ::ca::window * GetNextDlgTabItem(::ca::window * pWndCtl, bool bPrevious = FALSE) const;
+      virtual ::ca2::window * GetNextDlgGroupItem(::ca2::window * pWndCtl, bool bPrevious = FALSE) const;
+      virtual ::ca2::window * GetNextDlgTabItem(::ca2::window * pWndCtl, bool bPrevious = FALSE) const;
       virtual UINT IsDlgButtonChecked(int nIDButton) const;
       virtual LRESULT SendDlgItemMessage(int nID, UINT message, WPARAM wParam = 0, LPARAM lParam = 0);
       virtual void SetDlgItemInt(int nID, UINT nValue, bool bSigned = TRUE);
@@ -348,7 +348,7 @@ namespace metrowin
 
       virtual int ScrollWindowEx(int dx, int dy,
          LPCRECT lpRectScroll, LPCRECT lpRectClip,
-         ::ca::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags);
+         ::ca2::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags);
       //      virtual bool SetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo,
       //       bool bRedraw = TRUE);
       //      virtual bool GetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL);
@@ -363,8 +363,8 @@ namespace metrowin
       // Window Access Functions
       virtual sp(::user::interaction) ChildWindowFromPoint(POINT point);
       virtual sp(::user::interaction) ChildWindowFromPoint(POINT point, UINT nFlags);
-      static sp(::ca::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
-      static sp(::ca::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
+      static sp(::ca2::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
+      static sp(::ca2::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
 
       //      virtual ::user::interaction * GetNextWindow(UINT nFlag = GW_HWNDNEXT);
       virtual sp(::user::interaction) GetTopWindow();
@@ -376,7 +376,7 @@ namespace metrowin
       virtual sp(::user::interaction) GetParent();
       using ::user::interaction::set_parent;
       sp(::user::interaction) set_parent(sp(::user::interaction) pWndNewParent);
-      static sp(::ca::window) WindowFromPoint(POINT point);
+      static sp(::ca2::window) WindowFromPoint(POINT point);
 
       // Alert Functions
 
@@ -395,12 +395,12 @@ namespace metrowin
       virtual bool ChangeClipboardChain(oswindow hWndNext);
       virtual oswindow SetClipboardViewer();
       virtual bool OpenClipboard();
-      static ::ca::window * GetClipboardOwner();
-      static ::ca::window * GetClipboardViewer();
-      static ::ca::window * GetOpenClipboardWindow();
+      static ::ca2::window * GetClipboardOwner();
+      static ::ca2::window * GetClipboardViewer();
+      static ::ca2::window * GetOpenClipboardWindow();
 
       // Caret Functions
-      virtual void CreateCaret(::ca::bitmap* pBitmap);
+      virtual void CreateCaret(::ca2::bitmap* pBitmap);
       virtual void CreateSolidCaret(int nWidth, int nHeight);
       virtual void CreateGrayCaret(int nWidth, int nHeight);
       static point GetCaretPos();
@@ -445,7 +445,7 @@ namespace metrowin
       // dialog support
       void UpdateDialogControls(command_target* pTarget, bool bDisableIfNoHndler);
       void CenterWindow(::user::interaction * pAlternateOwner = NULL);
-      virtual id   RunModalLoop(uint32_t dwFlags = 0, ::ca::live_object * pliveobject = NULL);
+      virtual id   RunModalLoop(uint32_t dwFlags = 0, ::ca2::live_object * pliveobject = NULL);
       virtual bool ContinueModal(int iLevel);
       virtual void EndModalLoop(id nResult);
       virtual void EndAllModalLoops(id nResult);
@@ -454,28 +454,28 @@ namespace metrowin
       virtual bool OnCommand(WPARAM wParam, LPARAM lParam);
       virtual bool OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-      void OnActivate(UINT nState, ::ca::window * pWndOther, bool bMinimized);
+      void OnActivate(UINT nState, ::ca2::window * pWndOther, bool bMinimized);
       void OnActivateApp(bool bActive, uint32_t dwThreadID);
       LRESULT OnActivateTopLevel(WPARAM, LPARAM);
       void OnCancelMode();
       void OnChildActivate();
       void OnClose();
-      void OnContextMenu(::ca::window * pWnd, point pos);
-      //      bool OnCopyData(::ca::window * pWnd, COPYDATASTRUCT* pCopyDataStruct);
+      void OnContextMenu(::ca2::window * pWnd, point pos);
+      //      bool OnCopyData(::ca2::window * pWnd, COPYDATASTRUCT* pCopyDataStruct);
       DECL_GEN_SIGNAL(_001OnCreate);
 
 
-      HBRUSH OnCtlColor(::ca::graphics * pgraphics, ::ca::window * pWnd, UINT nCtlColor);
+      HBRUSH OnCtlColor(::ca2::graphics * pgraphics, ::ca2::window * pWnd, UINT nCtlColor);
 
       DECL_GEN_SIGNAL(_001OnDestroy);
       void OnEnable(bool bEnable);
       void OnEndSession(bool bEnding);
-      void OnEnterIdle(UINT nWhy, ::ca::window * pWho);
-      bool OnEraseBkgnd(::ca::graphics * pgraphics);
+      void OnEnterIdle(UINT nWhy, ::ca2::window * pWho);
+      bool OnEraseBkgnd(::ca2::graphics * pgraphics);
       //      void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
       //    bool OnHelpInfo(HELPINFO* lpHelpInfo);
-      void OnIconEraseBkgnd(::ca::graphics * pgraphics);
-      void OnKillFocus(::ca::window * pNewWnd);
+      void OnIconEraseBkgnd(::ca2::graphics * pgraphics);
+      void OnKillFocus(::ca2::window * pNewWnd);
       LRESULT OnMenuChar(UINT nChar, UINT nFlags, ::user::menu* pMenu);
       void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
       void OnMove(int x, int y);
@@ -487,7 +487,7 @@ namespace metrowin
       bool OnQueryEndSession();
       bool OnQueryNewPalette();
       bool OnQueryOpen();
-      void OnSetFocus(::ca::window * pOldWnd);
+      void OnSetFocus(::ca2::window * pOldWnd);
       void OnShowWindow(bool bShow, UINT nStatus);
       void OnSize(UINT nType, int cx, int cy);
       void OnTCard(UINT idAction, uint32_t dwActionData);
@@ -518,7 +518,7 @@ namespace metrowin
 
       // System message handler member functions
       //      void OnDropFiles(HDROP hDropInfo);
-      void OnPaletteIsChanging(::ca::window * pRealizeWnd);
+      void OnPaletteIsChanging(::ca2::window * pRealizeWnd);
       void OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags);
       void OnSysCommand(UINT nID, LPARAM lParam);
       void OnSysDeadChar(UINT nChar, UINT nRepCnt, UINT nFlags);
@@ -527,7 +527,7 @@ namespace metrowin
       void OnCompacting(UINT nCpuTime);
       void OnDevModeChange(char * lpDeviceName);
       void OnFontChange();
-      void OnPaletteChanged(::ca::window * pFocusWnd);
+      void OnPaletteChanged(::ca2::window * pFocusWnd);
       void OnSpoolerStatus(UINT nStatus, UINT nJobs);
       void OnSysColorChange();
       void OnTimeChange();
@@ -547,7 +547,7 @@ namespace metrowin
       void OnMButtonDblClk(UINT nFlags, point point);
       void OnMButtonDown(UINT nFlags, point point);
       void OnMButtonUp(UINT nFlags, point point);
-      int OnMouseActivate(::ca::window * pDesktopWnd, UINT nHitTest, UINT message);
+      int OnMouseActivate(::ca2::window * pDesktopWnd, UINT nHitTest, UINT message);
       void OnMouseMove(UINT nFlags, point point);
       bool OnMouseWheel(UINT nFlags, short zDelta, point pt);
       LRESULT OnRegisteredMouseWheel(WPARAM wParam, LPARAM lParam);
@@ -566,12 +566,12 @@ namespace metrowin
       void OnChangeCbChain(oswindow hWndRemove, oswindow hWndAfter);
       void OnDestroyClipboard();
       void OnDrawClipboard();
-      void OnHScrollClipboard(::ca::window * pClipAppWnd, UINT nSBCode, UINT nPos);
-      void OnPaintClipboard(::ca::window * pClipAppWnd, HGLOBAL hPaintStruct);
+      void OnHScrollClipboard(::ca2::window * pClipAppWnd, UINT nSBCode, UINT nPos);
+      void OnPaintClipboard(::ca2::window * pClipAppWnd, HGLOBAL hPaintStruct);
       void OnRenderAllFormats();
       void OnRenderFormat(UINT nFormat);
-      void OnSizeClipboard(::ca::window * pClipAppWnd, HGLOBAL hRect);
-      void OnVScrollClipboard(::ca::window * pClipAppWnd, UINT nSBCode, UINT nPos);
+      void OnSizeClipboard(::ca2::window * pClipAppWnd, HGLOBAL hRect);
+      void OnVScrollClipboard(::ca2::window * pClipAppWnd, UINT nSBCode, UINT nPos);
 
       // control message handler member functions
       //      int OnCompareItem(int nIDCtl, LPCOMPAREITEMSTRUCT lpCompareItemStruct);
@@ -582,7 +582,7 @@ namespace metrowin
 
       // MDI message handler member functions
       void OnMDIActivate(bool bActivate,
-         ::ca::window * pActivateWnd, ::ca::window * pDeactivateWnd);
+         ::ca2::window * pActivateWnd, ::ca2::window * pDeactivateWnd);
 
       // menu loop notification messages
       void OnEnterMenuLoop(bool bIsTrackPopupMenu);
@@ -593,7 +593,7 @@ namespace metrowin
       //    void OnStyleChanging(int nStyleType, LPSTYLESTRUCT lpStyleStruct);
       void OnSizing(UINT nSide, LPRECT lpRect);
       void OnMoving(UINT nSide, LPRECT lpRect);
-      void OnCaptureChanged(::ca::window * pWnd);
+      void OnCaptureChanged(::ca2::window * pWnd);
       bool OnDeviceChange(UINT nEventType, dword_ptr dwData);
 
       // Overridables and other helpers (for implementation of derived classes)
@@ -608,11 +608,11 @@ namespace metrowin
       virtual void EndModalState();
 
       // for translating Windows messages in main message pump
-      virtual void pre_translate_message(::ca::signal_object * pobj);
+      virtual void pre_translate_message(::ca2::signal_object * pobj);
 
 
       // for processing Windows messages
-      virtual void message_handler(::ca::signal_object * pobj);
+      virtual void message_handler(::ca2::signal_object * pobj);
       //virtual bool OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
       // for handling default processing
@@ -641,7 +641,7 @@ namespace metrowin
       bool HandleFloatingSysCommand(UINT nID, LPARAM lParam);
       bool IsTopParentActive();
       void ActivateTopParent();
-      virtual void WalkPreTranslateTree(::user::interaction * puiStop, ::ca::signal_object * pobj);
+      virtual void WalkPreTranslateTree(::user::interaction * puiStop, ::ca2::signal_object * pobj);
       static ::user::interaction * GetDescendantWindow(::user::interaction * hWnd, id id);
       static void SendMessageToDescendants(oswindow hWnd, UINT message,
          WPARAM wParam, LPARAM lParam, bool bDeep, bool bOnlyPerm);
@@ -651,7 +651,7 @@ namespace metrowin
          UINT nFlags);
       static bool ModifyStyleEx(oswindow hWnd, uint32_t dwRemove, uint32_t dwAdd,
          UINT nFlags);
-      static void _FilterToolTipMessage(MSG* pMsg, ::ca::window * pWnd);
+      static void _FilterToolTipMessage(MSG* pMsg, ::ca2::window * pWnd);
       bool _EnableToolTips(bool bEnable, UINT nFlag);
       static oswindow GetSafeOwner_(oswindow hWnd, oswindow* pWndTop);
       void PrepareForHelp();
@@ -660,15 +660,15 @@ namespace metrowin
 
       //      WNDPROC m_pfnSuper; // for subclassing of controls
       static const UINT m_nMsgDragList;
-      int m_nModalResult; // for return values from ::ca::window::RunModalLoop
+      int m_nModalResult; // for return values from ::ca2::window::RunModalLoop
 
-      ::ca::font * m_pfont;
+      ::ca2::font * m_pfont;
 
       friend class frame_window;
 
       // for creating dialogs and dialog-like windows
-      bool CreateDlg(const char * lpszTemplateName, ::ca::window * pParentWnd);
-      //bool CreateDlgIndirect(LPCDLGTEMPLATE lpDialogTemplate, ::ca::window * pParentWnd,
+      bool CreateDlg(const char * lpszTemplateName, ::ca2::window * pParentWnd);
+      //bool CreateDlgIndirect(LPCDLGTEMPLATE lpDialogTemplate, ::ca2::window * pParentWnd,
       // HINSTANCE hInst);
 
 
@@ -704,7 +704,7 @@ namespace metrowin
 
          Platform::Agile<Windows::UI::Core::CoreWindow> window::get_os_window();
 
-          void set_view_port_org(::ca::graphics * pgraphics);
+          void set_view_port_org(::ca2::graphics * pgraphics);
 
           void offset_view_port_org(LPRECT lprectScreen);
 

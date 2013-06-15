@@ -5,9 +5,9 @@ namespace metrowin
 {
 
 
-   ip_enum::ip_enum(::ca::application * papp) :
-      ca(papp),
-      ::ca::ip_enum(papp)
+   ip_enum::ip_enum(::ca2::application * papp) :
+      ca2(papp),
+      ::ca2::ip_enum(papp)
    {
 
    }
@@ -23,7 +23,7 @@ namespace metrowin
    ::count ip_enum::enumerate(stringa & stra)
    {
 
-      int c = 0;
+      int ca = 0;
 
       ::Windows::Networking::Connectivity::ConnectionProfile ^ connectionProfile = ::Windows::Networking::Connectivity::NetworkInformation::GetInternetConnectionProfile();
 
@@ -55,13 +55,13 @@ namespace metrowin
 
             stra.add(name->DisplayName);
 
-            c++;
+            ca++;
 
          }
 
       }
 
-      return c;
+      return ca;
 
    }
 

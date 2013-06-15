@@ -17,7 +17,7 @@ namespace metrowin
    // File - raw unbuffered disk file I/O
 
    class CLASS_DECL_metrowin file :
-      virtual public ::ca::file
+      virtual public ::ca2::file
    {
    public:
 
@@ -42,16 +42,16 @@ namespace metrowin
       UINT           m_hFile;
 
 
-      file(::ca::application * papp);
-      file(::ca::application * papp, int hFile);
-      file(::ca::application * papp, const char * lpszFileName, UINT nOpenFlags);
+      file(::ca2::application * papp);
+      file(::ca2::application * papp, int hFile);
+      file(::ca2::application * papp, const char * lpszFileName, UINT nOpenFlags);
       virtual ~file();
 
 
       operator HFILE() const;
 
       virtual file_position get_position() const;
-      bool GetStatus(::ca::file_status & rStatus) const;
+      bool GetStatus(::ca2::file_status & rStatus) const;
       virtual string GetFileName() const;
       virtual string GetFileTitle() const;
       virtual string GetFilePath() const;
@@ -59,14 +59,14 @@ namespace metrowin
 
       virtual bool open(const char * lpszFileName, UINT nOpenFlags);
 
-      virtual bool GetStatus(const char * lpszFileName, ::ca::file_status& rStatus);
+      virtual bool GetStatus(const char * lpszFileName, ::ca2::file_status& rStatus);
 
       uint64_t ReadHuge(void * lpBuffer, uint64_t dwCount);
       void WriteHuge(const void * lpBuffer, uint64_t dwCount);
 
-      virtual sp(::ca::file) Duplicate() const;
+      virtual sp(::ca2::file) Duplicate() const;
       
-      virtual file_position seek(file_offset lOff, ::ca::e_seek nFrom);
+      virtual file_position seek(file_offset lOff, ::ca2::e_seek nFrom);
       virtual void set_length(file_size dwNewLen);
       virtual file_size get_length() const;
 
@@ -93,8 +93,8 @@ namespace metrowin
    {
       int OsErrorToException(LONG lOsError);
       int ErrnoToException(int nErrno);
-      void ThrowOsError(::ca::application * papp, LONG lOsError, const char * lpszFileName = NULL);
-      void ThrowErrno(::ca::application * papp, int nErrno, const char * lpszFileName = NULL);
+      void ThrowOsError(::ca2::application * papp, LONG lOsError, const char * lpszFileName = NULL);
+      void ThrowErrno(::ca2::application * papp, int nErrno, const char * lpszFileName = NULL);
 
    }
 

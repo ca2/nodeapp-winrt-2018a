@@ -6,8 +6,8 @@ namespace metrowin
 {
 
 
-   brush::brush(::ca::application * papp) :
-      ca(papp)
+   brush::brush(::ca2::application * papp) :
+      ca2(papp)
    { 
 
       m_pbrush = NULL;
@@ -46,7 +46,7 @@ namespace metrowin
    //return Attach(::CreateBrushIndirect(lpLogBrush)); 
    //   return FALSE;
    //}
-   //bool brush::CreatePatternBrush(::ca::bitmap* pBitmap)
+   //bool brush::CreatePatternBrush(::ca2::bitmap* pBitmap)
    //{ 
    //   //return Attach(::CreatePatternBrush((HBITMAP)pBitmap->get_os_data()));
    //   return FALSE;
@@ -82,7 +82,7 @@ namespace metrowin
    //      //   throw resource_exception();
    //   }
    //
-   //   void brush::construct(::ca::bitmap* pBitmap)
+   //   void brush::construct(::ca2::bitmap* pBitmap)
    //   {
    //      //ASSERT_VALID(pBitmap);
    //
@@ -104,7 +104,7 @@ namespace metrowin
 
    void brush::dump(dump_context & dumpcontext) const
    {
-      ::ca::graphics_object::dump(dumpcontext);
+      ::ca2::graphics_object::dump(dumpcontext);
 
       //if (get_os_data() == NULL)
       // return;
@@ -137,14 +137,14 @@ namespace metrowin
 
             }
 
-            D2D1_COLOR_F c;
+            D2D1_COLOR_F ca;
 
-            c.a = GetAValue(m_cr) / 255.0f;
-            c.r = GetRValue(m_cr) / 255.0f;
-            c.g = GetGValue(m_cr) / 255.0f;
-            c.b = GetBValue(m_cr) / 255.0f;
+            ca.a = GetAValue(m_cr) / 255.0f;
+            ca.r = GetRValue(m_cr) / 255.0f;
+            ca.g = GetGValue(m_cr) / 255.0f;
+            ca.b = GetBValue(m_cr) / 255.0f;
 
-            pdc->m_pdc->CreateSolidColorBrush(c, (ID2D1SolidColorBrush **) &m_psolidbrush);
+            pdc->m_pdc->CreateSolidColorBrush(ca, (ID2D1SolidColorBrush **) &m_psolidbrush);
 
             if(m_psolidbrush != NULL)
             {

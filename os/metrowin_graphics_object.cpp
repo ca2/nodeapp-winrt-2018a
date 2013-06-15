@@ -34,19 +34,19 @@ namespace metrowin
       //return (UINT)::GetObjectType(get_handle()); 
       return 0;
    }
-   bool graphics_object::operator==(const ::ca::graphics_object& obj) const
+   bool graphics_object::operator==(const ::ca2::graphics_object& obj) const
    { 
       //return ((HGDIOBJ) obj.get_os_data()) == get_handle(); 
       return FALSE;
    }
-   bool graphics_object::operator!=(const ::ca::graphics_object& obj) const
+   bool graphics_object::operator!=(const ::ca2::graphics_object& obj) const
    { 
       //return ((HGDIOBJ) obj.get_os_data()) != get_handle(); 
       return TRUE;
    }
 
 
-   graphics_object * graphics_object_allocator(::ca::application * papp, HANDLE h)
+   graphics_object * graphics_object_allocator(::ca2::application * papp, HANDLE h)
    {
       /*switch(::GetObjectType(h))
       {
@@ -67,7 +67,7 @@ namespace metrowin
       return NULL;
    }
 
-   /*graphics_object* graphics_object::from_handle(::ca::application * papp, HGDIOBJ h)
+   /*graphics_object* graphics_object::from_handle(::ca2::application * papp, HGDIOBJ h)
    {
       hgdiobj_map* pMap = afxMapHGDIOBJ(TRUE); //create ::map if not exist
       ASSERT(pMap != NULL);
@@ -117,12 +117,12 @@ namespace metrowin
    }
 
    /////////////////////////////////////////////////////////////////////////////
-   // ::ca::graphics_object
+   // ::ca2::graphics_object
 
 
    void graphics_object::dump(dump_context & dumpcontext) const
    {
-      ::ca::object::dump(dumpcontext);
+      ::ca2::object::dump(dumpcontext);
 
 //      dumpcontext << "get_handle() = " << get_handle();
   //    dumpcontext << "\n";
@@ -130,7 +130,7 @@ namespace metrowin
 
    void graphics_object::assert_valid() const
    {
-      ::ca::object::assert_valid();
+      ::ca2::object::assert_valid();
       //ASSERT(get_handle() == NULL ||
         // (afxData.bWin95 || ::GetObjectType(get_handle()) != 0));
    }

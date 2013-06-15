@@ -56,9 +56,9 @@ namespace metrowin
 
       if (pstrName == NULL)
          pstrName = "*.*";
-      ::ca::international::MultiByteToUnicode(CP_UTF8, ((WIN32_FIND_DATAW*) m_pNextInfo)->cFileName, MAX_PATH, pstrName);
+      ::ca2::international::MultiByteToUnicode(CP_UTF8, ((WIN32_FIND_DATAW*) m_pNextInfo)->cFileName, MAX_PATH, pstrName);
 
-      wstring wstrName = ::ca::international::utf8_to_unicode(pstrName);
+      wstring wstrName = ::ca2::international::utf8_to_unicode(pstrName);
 
       m_hContext = shell::FindFirstFile(wstrName, (WIN32_FIND_DATAW*) m_pNextInfo);
 
@@ -105,7 +105,7 @@ namespace metrowin
          }
          wstrRoot.release_buffer();
       }
-      m_strRoot = ::ca::international::unicode_to_utf8(wstrRoot);
+      m_strRoot = ::ca2::international::unicode_to_utf8(wstrRoot);
       return TRUE;
    }
 
@@ -302,7 +302,7 @@ namespace metrowin
 
       if (m_pFoundInfo != NULL)
       {
-         ::ca::international::unicode_to_utf8(ret, ((LPWIN32_FIND_DATAW) m_pFoundInfo)->cFileName);
+         ::ca2::international::unicode_to_utf8(ret, ((LPWIN32_FIND_DATAW) m_pFoundInfo)->cFileName);
       }
       return ret;
    }
@@ -322,7 +322,7 @@ namespace metrowin
 
    void file_find::dump(dump_context & dumpcontext) const
    {
-      ::ca::object::dump(dumpcontext);
+      ::ca2::object::dump(dumpcontext);
       dumpcontext << "\nm_hContext = " << (UINT) m_hContext;
    }
 

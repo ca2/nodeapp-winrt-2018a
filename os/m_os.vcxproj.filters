@@ -28,6 +28,9 @@
     <Filter Include="Header Files\NewFilter1">
       <UniqueIdentifier>{b83be8ea-ac72-44a5-bde7-fd27e1ee559b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\operational_system\NewFilter1">
+      <UniqueIdentifier>{dcaa0965-00c1-4687-9d5b-4089aec346f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework.cpp">
@@ -391,6 +394,12 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\cross\windows\win_common_controls.h">
       <Filter>Header Files\operational_system\cross\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\operational_system\_c.h">
+      <Filter>Header Files\operational_system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\operational_system\_ca.h">
+      <Filter>Header Files\operational_system</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

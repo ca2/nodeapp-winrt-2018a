@@ -240,6 +240,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\operational_system\bare_operational_system.h" />
+    <ClInclude Include="..\operational_system\_ca.h" />
     <ClInclude Include="..\operational_system\cross\cross.h" />
     <ClInclude Include="..\operational_system\cross\general\general.h" />
     <ClInclude Include="..\operational_system\cross\general\general_windows.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="..\operational_system\version_dll.h" />
     <ClInclude Include="..\operational_system\version_windows.h" />
     <ClInclude Include="..\operational_system\_.h" />
+    <ClInclude Include="..\operational_system\_c.h" />
     <ClInclude Include="factory_exchange.h" />
     <ClInclude Include="metrowin_application.h" />
     <ClInclude Include="metrowin_bitmap.h" />
@@ -371,6 +373,9 @@
   <ItemGroup>
     <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df28b9b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\appseed\ca\m_ca.vcxproj">
+      <Project>{5fd926e7-e8b9-4451-baac-81efa94d9d67}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\c\m_c.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900ebb72}</Project>

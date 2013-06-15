@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin brush : 
-      virtual public ::ca::brush
+      virtual public ::ca2::brush
    {
    public:
 
@@ -26,10 +26,10 @@ namespace metrowin
       };
 
 
-      brush(::ca::application * papp);
+      brush(::ca2::application * papp);
       //virtual void construct(COLORREF crColor);                // CreateSolidBrush
       //virtual void construct(int nIndex, COLORREF crColor);    // CreateHatchBrush
-      //virtual void construct(::ca::bitmap * pbitmap);                // CreatePatternBrush
+      //virtual void construct(::ca2::bitmap * pbitmap);                // CreatePatternBrush
 
       virtual ~brush();
 
@@ -37,7 +37,7 @@ namespace metrowin
 
       //bool CreateSolidBrush(COLORREF crColor);
       //bool CreateHatchBrush(int nIndex, COLORREF crColor);
-      //bool CreatePatternBrush(::ca::bitmap* pBitmap);
+      //bool CreatePatternBrush(::ca2::bitmap* pBitmap);
       //bool CreateDIBPatternBrush(HGLOBAL hPackedDIB, UINT nUsage);
       //bool CreateDIBPatternBrush(const void * lpPackedDIB, UINT nUsage);
       //bool CreateSysColorBrush(int nIndex);

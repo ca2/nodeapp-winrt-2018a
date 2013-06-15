@@ -56,7 +56,7 @@ class hmenu_map;
 class himagelist_map;
 class frame_window;
 class CToolTipCtrl;
-namespace ca
+namespace ca2
 {
    
    class thread;
@@ -96,7 +96,7 @@ public:
 
    // common controls thread state
    CToolTipCtrl* m_pToolTip;
-   ::ca::window * m_pLastHit;       // last ::ca::window to own tooltip
+   ::ca2::window * m_pLastHit;       // last ::ca2::window to own tooltip
    int_ptr m_nLastHit;         // last hittest code
 //   TOOLINFO* m_pLastInfo;    // last TOOLINFO structure
    int_ptr m_nLastStatus;      // last flyby status message
@@ -107,7 +107,7 @@ public:
 class application;
 
 
-class ::ca::window;
+class ::ca2::window;
 
 
 
@@ -126,7 +126,7 @@ public:
    __MODULE_STATE(bool bDLL, DWORD dwVersion, bool bSystem = FALSE);
    ~__MODULE_STATE();
 
-   ::ca::application* m_pCurrentWinApp;
+   ::ca2::application* m_pCurrentWinApp;
    HINSTANCE m_hCurrentInstanceHandle;
    HINSTANCE m_hCurrentResourceHandle;
    const char * m_lpszCurrentAppName;
@@ -134,7 +134,7 @@ public:
    bool m_bSystem; // TRUE if module is a "system" module, FALSE if not
    bool m_bReserved[2]; // padding
 
-   DWORD m_fRegisteredClasses; // flags for registered ::ca::window classes
+   DWORD m_fRegisteredClasses; // flags for registered ::ca2::window classes
 
    //mutex       m_mutexRegClassList;
 
@@ -160,7 +160,7 @@ public:
 
    // variables related to a given process in a module
    //  (used to be __MODULE_PROCESS_STATE)
-   void (*m_pfnFilterToolTipMessage)(MSG*, ::ca::window *);
+   void (*m_pfnFilterToolTipMessage)(MSG*, ::ca2::window *);
 
 
    // define thread local portions of module state
@@ -225,7 +225,7 @@ class CPushRoutingView;
 #define ___TEMP_CLASS_NAME_SIZE 96
 class CLASS_DECL_metrowin ___THREAD_STATE : 
    public no_track_object,
-   public ::ca::thread_state
+   public ::ca2::thread_state
 {
 public:
    ___THREAD_STATE();
@@ -243,9 +243,9 @@ public:
    // thread local exception context
    __EXCEPTION_CONTEXT m_exceptionContext;
 
-   // ::ca::window create, gray dialog hook, and other hook data
+   // ::ca2::window create, gray dialog hook, and other hook data
    ::user::interaction * m_pWndInit;
-   ::ca::window * m_pAlternateWndInit;      // special case commdlg hooking
+   ::ca2::window * m_pAlternateWndInit;      // special case commdlg hooking
    DWORD m_dwPropStyle;
    DWORD m_dwPropExStyle;
    oswindow m_hWndInit;
@@ -261,12 +261,12 @@ public:
       int m_nDisablePumpCount; // Diagnostic trap to detect illegal re-entrancy
 #endif
 
-   // other ::ca::window modal data
-   MSG m_lastSentMsg;              // see ::ca::window::message_handler
-   oswindow m_hTrackingWindow;         // see ::ca::window::TrackPopupMenu
+   // other ::ca2::window modal data
+   MSG m_lastSentMsg;              // see ::ca2::window::message_handler
+   oswindow m_hTrackingWindow;         // see ::ca2::window::TrackPopupMenu
    HMENU m_hTrackingMenu;
    char m_szTempClassName[___TEMP_CLASS_NAME_SIZE];    // see System.RegisterWndClass
-   oswindow m_hLockoutNotifyWindow;    // see ::ca::window::OnCommand
+   oswindow m_hLockoutNotifyWindow;    // see ::ca2::window::OnCommand
    bool m_bInMsgFilter;
 
    // other framework modal data
@@ -276,8 +276,8 @@ public:
    bool m_bWaitForDataSource;
 
    // OLE control thread-local data
-   ::ca::window * m_pWndPark;       // "parking space" ::ca::window
-   long m_nCtrlRef;        // reference count on parking ::ca::window
+   ::ca2::window * m_pWndPark;       // "parking space" ::ca2::window
+   long m_nCtrlRef;        // reference count on parking ::ca2::window
    bool m_bNeedTerm;       // TRUE if OleUninitialize needs to be called
 };
 

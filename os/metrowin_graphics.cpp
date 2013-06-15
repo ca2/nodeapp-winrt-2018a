@@ -13,8 +13,8 @@ namespace metrowin
 {
 
    
-   graphics::graphics(::ca::application * papp) :
-      ca(papp)
+   graphics::graphics(::ca2::application * papp) :
+      ca2(papp)
    {
 
       m_sppen.create(allocer());
@@ -45,7 +45,7 @@ namespace metrowin
       m_hdc             = NULL;
       m_ppath           = NULL;
       m_ppathPaint      = NULL;
-      m_etextrendering  = ::ca::text_rendering_anti_alias_grid_fit;*/
+      m_etextrendering  = ::ca2::text_rendering_anti_alias_grid_fit;*/
 
    }
 
@@ -75,7 +75,7 @@ namespace metrowin
       m_hdc             = NULL;
       m_ppath           = NULL;
       m_ppathPaint      = NULL;
-      m_etextrendering  = ::ca::text_rendering_anti_alias_grid_fit;
+      m_etextrendering  = ::ca2::text_rendering_anti_alias_grid_fit;
       ;*/
 
    }
@@ -83,12 +83,12 @@ namespace metrowin
 
    void graphics::assert_valid() const
    {
-      ::ca::object::assert_valid();
+      ::ca2::object::assert_valid();
    }
 
    void graphics::dump(dump_context & dumpcontext) const
    {
-      ::ca::object::dump(dumpcontext);
+      ::ca2::object::dump(dumpcontext);
 
       dumpcontext << "get_handle1() = " << get_handle1();
       dumpcontext << "\nm_hAttribDC = " << get_handle2();
@@ -139,7 +139,7 @@ namespace metrowin
    }
 
 
-   ::ca::window * graphics::GetWindow() const
+   ::ca2::window * graphics::GetWindow() const
    { 
 #ifdef WINDOWSEX
       ASSERT(get_handle1() != NULL); return ::metrowin::window::from_handle(::WindowFromDC(get_handle1())); 
@@ -166,7 +166,7 @@ namespace metrowin
       //return Attach(::CreateIC(lpszDriverName, lpszDeviceName, lpszOutput, (const DEVMODE*) lpInitData)); 
    }
 
-   bool graphics::CreateCompatibleDC(::ca::graphics * pgraphics)
+   bool graphics::CreateCompatibleDC(::ca2::graphics * pgraphics)
    { 
       
       single_lock sl(System.m_pmutexDc, true);
@@ -286,13 +286,15 @@ namespace metrowin
       }
 
 
-
       if(m_bitmap.is_null())
-         m_bitmap.create(get_app());
+         m_bitmap.create(allocer());
+
 
       METROWIN_BITMAP(m_bitmap.m_p)->destroy();
 
+
       hr = m_pbitmaprendertarget->GetBitmap(&METROWIN_BITMAP(m_bitmap.m_p)->m_pbitmap);
+
 
       if(FAILED(hr))
       {
@@ -308,7 +310,7 @@ namespace metrowin
 
    }
 
-   int graphics::ExcludeUpdateRgn(::ca::window * pWnd)
+   int graphics::ExcludeUpdateRgn(::ca2::window * pWnd)
    { 
       throw todo(get_app());
 
@@ -356,7 +358,7 @@ namespace metrowin
       //return ::EnumObjects(get_handle2(), nObjectType, (GOBJENUMPROC)lpfn, lpData); 
    }
 
-   ::ca::bitmap* graphics::SelectObject(::ca::bitmap* pBitmap)
+   ::ca2::bitmap* graphics::SelectObject(::ca2::bitmap* pBitmap)
    { 
 
 
@@ -370,7 +372,7 @@ namespace metrowin
       return NULL;
       if(pBitmap == NULL)
       return NULL;
-      return dynamic_cast < ::ca::bitmap* > (SelectGdiObject(get_app(), get_handle1(), pBitmap->get_os_data()));*/
+      return dynamic_cast < ::ca2::bitmap* > (SelectGdiObject(get_app(), get_handle1(), pBitmap->get_os_data()));*/
       if(m_pdc == NULL)
       {
          CreateCompatibleDC(NULL);
@@ -387,7 +389,7 @@ namespace metrowin
 
       //m_pdc = new Gdiplus::Graphics((Gdiplus::Bitmap *) pBitmap->get_os_data());
 
-      //set_text_rendering(::ca::text_rendering_anti_alias_grid_fit);
+      //set_text_rendering(::ca2::text_rendering_anti_alias_grid_fit);
 
       //m_bitmap = pBitmap;
 
@@ -395,7 +397,7 @@ namespace metrowin
    }
 
 
-   ::ca::graphics_object* graphics::SelectObject(::ca::graphics_object* pObject)
+   ::ca2::graphics_object* graphics::SelectObject(::ca2::graphics_object* pObject)
    {
       /*      ASSERT(get_handle1() != NULL); 
       if(pObject == NULL)
@@ -429,7 +431,7 @@ namespace metrowin
 
    m_pdc = new Gdiplus::Graphics((Gdiplus::Bitmap *) m_bitmap->get_os_data());
 
-   set_text_rendering(::ca::text_rendering_anti_alias_grid_fit);
+   set_text_rendering(::ca2::text_rendering_anti_alias_grid_fit);
 
    return hbitmap;
 
@@ -600,7 +602,7 @@ namespace metrowin
       //::LPtoDP(get_handle2(), (LPPOINT)lpRect, 2);
    }
 
-   bool graphics::FillRgn(::ca::region* pRgn, ::ca::brush* pBrush)
+   bool graphics::FillRgn(::ca2::region* pRgn, ::ca2::brush* pBrush)
    { 
       throw todo(get_app());
 
@@ -608,7 +610,7 @@ namespace metrowin
 
    }
 
-   bool graphics::FrameRgn(::ca::region* pRgn, ::ca::brush* pBrush, int nWidth, int nHeight)
+   bool graphics::FrameRgn(::ca2::region* pRgn, ::ca2::brush* pBrush, int nWidth, int nHeight)
    { 
       throw todo(get_app());
 
@@ -616,7 +618,7 @@ namespace metrowin
 
    }
 
-   bool graphics::InvertRgn(::ca::region* pRgn)
+   bool graphics::InvertRgn(::ca2::region* pRgn)
    {
       throw todo(get_app());
 
@@ -626,7 +628,7 @@ namespace metrowin
 
    }
 
-   bool graphics::PaintRgn(::ca::region* pRgn)
+   bool graphics::PaintRgn(::ca2::region* pRgn)
    {
 
       throw todo(get_app());
@@ -675,7 +677,7 @@ namespace metrowin
    bool graphics::Arc(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
    { 
 
-      ::ca::graphics_path_sp path(allocer());
+      ::ca2::graphics_path_sp path(allocer());
 
       double pi = 3.1415927f;
 
@@ -687,7 +689,7 @@ namespace metrowin
       double start      = atan2(y3 - centery, x3 - centerx) * 180.0 / pi;
       double end        = atan2(y4 - centery, x4 - centerx) * 180.0 / pi;
 
-      path->begin_figure(false, ::ca::fill_mode_winding);
+      path->begin_figure(false, ::ca2::fill_mode_winding);
       path->add_arc(rect, (int) start, (int) fmod(end + 360.0 - start, 360.0));
       path->end_figure(false);
 
@@ -714,13 +716,13 @@ namespace metrowin
 
    }
 
-   void graphics::FillRect(LPCRECT lpRect, ::ca::brush* pBrush)
+   void graphics::FillRect(LPCRECT lpRect, ::ca2::brush* pBrush)
    { 
       throw todo(get_app());      //ASSERT(get_handle1() != NULL); 
       //::FillRect(get_handle1(), lpRect, (HBRUSH)pBrush->get_os_data()); 
 
    }
-   void graphics::FrameRect(LPCRECT lpRect, ::ca::brush* pBrush)
+   void graphics::FrameRect(LPCRECT lpRect, ::ca2::brush* pBrush)
    { 
       throw todo(get_app());
       //ASSERT(get_handle1() != NULL); 
@@ -836,7 +838,7 @@ namespace metrowin
 
    }
 
-   bool graphics::DrawState(point pt, size size, ::ca::bitmap* pBitmap, UINT nFlags, ::ca::brush* pBrush)
+   bool graphics::DrawState(point pt, size size, ::ca2::bitmap* pBitmap, UINT nFlags, ::ca2::brush* pBrush)
    {
 
       throw todo(get_app());
@@ -858,7 +860,7 @@ namespace metrowin
    }
 
 
-   bool graphics::DrawState(point pt, size size, HICON hIcon, UINT nFlags, ::ca::brush* pBrush)
+   bool graphics::DrawState(point pt, size size, HICON hIcon, UINT nFlags, ::ca2::brush* pBrush)
    {
 
 
@@ -879,7 +881,7 @@ namespace metrowin
 
    }
 
-   bool graphics::DrawState(point pt, size size, const char * lpszText, UINT nFlags, bool bPrefixText, int nTextLen, ::ca::brush* pBrush)
+   bool graphics::DrawState(point pt, size size, const char * lpszText, UINT nFlags, bool bPrefixText, int nTextLen, ::ca2::brush* pBrush)
    {
 
       throw todo(get_app());
@@ -900,7 +902,7 @@ namespace metrowin
 
    }
 
-   bool graphics::DrawState(point pt, size size, DRAWSTATEPROC lpDrawProc, LPARAM lData, UINT nFlags, ::ca::brush* pBrush)
+   bool graphics::DrawState(point pt, size size, DRAWSTATEPROC lpDrawProc, LPARAM lData, UINT nFlags, ::ca2::brush* pBrush)
    {
 
       throw todo(get_app());
@@ -1037,9 +1039,9 @@ namespace metrowin
    bool graphics::Polygon(const POINT* lpPoints, int nCount)
    {
 
-      ::ca::graphics_path_sp path(allocer());
+      ::ca2::graphics_path_sp path(allocer());
 
-      path->begin_figure(get_os_brush() != NULL, ::ca::fill_mode_winding);
+      path->begin_figure(get_os_brush() != NULL, ::ca2::fill_mode_winding);
 
       path->add_lines(lpPoints, nCount);
 
@@ -1222,7 +1224,7 @@ namespace metrowin
    }
 
 
-   bool graphics::BitBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, uint32_t dwRop)
+   bool graphics::BitBlt(int x, int y, int nWidth, int nHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, uint32_t dwRop)
    { 
 
 
@@ -1269,7 +1271,7 @@ namespace metrowin
    }
 
 
-   bool graphics::StretchBlt(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, uint32_t dwRop)
+   bool graphics::StretchBlt(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, uint32_t dwRop)
    { 
 
       try
@@ -1401,30 +1403,30 @@ namespace metrowin
             rect rectText(point(x, y), GetTextExtent(str));
             if(rectIntersect.intersect(rectIntersect, rectText))
             {
-               ::ca::dib_sp dib0(allocer());
+               ::ca2::dib_sp dib0(allocer());
                dib0->create(rectText.size());
                dib0->get_graphics()->SetTextColor(RGB(255, 255, 255));
                dib0->get_graphics()->SelectObject(&GetCurrentFont());
                dib0->get_graphics()->SetBkMode(TRANSPARENT);
                dib0->get_graphics()->TextOut(0, 0, str);
                dib0->ToAlpha(0);
-               ::ca::dib_sp dib1(allocer());
+               ::ca2::dib_sp dib1(allocer());
                dib1->create(rectText.size());
                dib1->get_graphics()->SetTextColor(GetTextColor());
                dib1->get_graphics()->SelectObject(&GetCurrentFont());
                dib1->get_graphics()->SetBkMode(TRANSPARENT);
                dib1->get_graphics()->TextOut(0, 0, str);
                dib1->channel_from(visual::rgba::channel_alpha, dib0);
-               ::ca::dib_sp dib2(allocer());
+               ::ca2::dib_sp dib2(allocer());
                dib2->create(rectText.size());
                dib2->Fill(255, 0, 0, 0);
                dib2->from(point(max(0, m_ptAlphaBlend.x - x), max(0, m_ptAlphaBlend.y - y)),
                   m_pdibAlphaBlend->get_graphics(), point(max(0, x - m_ptAlphaBlend.x), max(0, y - m_ptAlphaBlend.y)), rectText.size());
                dib1->channel_multiply(visual::rgba::channel_alpha, dib2);
-               /*::ca::dib_sp dib3(get_app());
+               /*::ca2::dib_sp dib3(get_app());
                dib1->mult_alpha(dib3);*/
 
-               keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
+               keeper < ::ca2::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
                return System.visual().imaging().true_blend(this, point(x, y), rectText.size(), dib1->get_graphics(), null_point());
 
@@ -1441,7 +1443,7 @@ namespace metrowin
       }
 
       //ASSERT(get_handle1() != NULL); 
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
       return TextOut(x, y, str, (int) str.get_length()); 
 
    } // call virtual
@@ -1457,30 +1459,30 @@ namespace metrowin
             rect rectText(point((int64_t) x, (int64_t) y), GetTextExtent(str));
             if(rectIntersect.intersect(rectIntersect, rectText))
             {
-               ::ca::dib_sp dib0(allocer());
+               ::ca2::dib_sp dib0(allocer());
                dib0->create(rectText.size());
                dib0->get_graphics()->SetTextColor(RGB(255, 255, 255));
                dib0->get_graphics()->SelectObject(&GetCurrentFont());
                dib0->get_graphics()->SetBkMode(TRANSPARENT);
                dib0->get_graphics()->TextOut(0, 0, str);
                dib0->ToAlpha(0);
-               ::ca::dib_sp dib1(allocer());
+               ::ca2::dib_sp dib1(allocer());
                dib1->create(rectText.size());
                dib1->get_graphics()->SetTextColor(GetTextColor());
                dib1->get_graphics()->SelectObject(&GetCurrentFont());
                dib1->get_graphics()->SetBkMode(TRANSPARENT);
                dib1->get_graphics()->TextOut(0, 0, str);
                dib1->channel_from(visual::rgba::channel_alpha, dib0);
-               ::ca::dib_sp dib2(allocer());
+               ::ca2::dib_sp dib2(allocer());
                dib2->create(rectText.size());
                dib2->Fill(255, 0, 0, 0);
                dib2->from(point((int64_t) max(0, m_ptAlphaBlend.x - x), (int64_t) max(0, m_ptAlphaBlend.y - y)),
                   m_pdibAlphaBlend->get_graphics(), point((int64_t) max(0, x - m_ptAlphaBlend.x), (int64_t) max(0, y - m_ptAlphaBlend.y)), rectText.size());
                dib1->channel_multiply(visual::rgba::channel_alpha, dib2);
-               /*::ca::dib_sp dib3(get_app());
+               /*::ca2::dib_sp dib3(get_app());
                dib1->mult_alpha(dib3);*/
 
-               keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
+               keeper < ::ca2::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
                return System.visual().imaging().true_blend(this, point((int64_t) x, (int64_t) y), rectText.size(), dib1->get_graphics(), null_point());
 
@@ -1497,7 +1499,7 @@ namespace metrowin
       }
 
       //ASSERT(get_handle1() != NULL); 
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
       return TextOut(x, y, str, (int) str.get_length()); 
 
    } // call virtual
@@ -1592,7 +1594,7 @@ namespace metrowin
 
    }
 
-   bool graphics::GrayString(::ca::brush* pBrush, bool (CALLBACK* lpfnOutput)(HDC, LPARAM, int), LPARAM lpData, int nCount,int x, int y, int nWidth, int nHeight)
+   bool graphics::GrayString(::ca2::brush* pBrush, bool (CALLBACK* lpfnOutput)(HDC, LPARAM, int), LPARAM lpData, int nCount,int x, int y, int nWidth, int nHeight)
    {
 
       throw todo(get_app());
@@ -1643,7 +1645,7 @@ namespace metrowin
 
 
       if(m_spfont.is_null())
-         ((graphics *) this)->m_spfont.create(get_app());
+         ((graphics *) this)->m_spfont.create(((graphics *) this)->allocer());
 
       if(m_spfont.is_null())
          return false;
@@ -1857,7 +1859,7 @@ namespace metrowin
 
    }
 
-   bool graphics::ScrollDC(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, ::ca::region* pRgnUpdate, LPRECT lpRectUpdate)
+   bool graphics::ScrollDC(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, ::ca2::region* pRgnUpdate, LPRECT lpRectUpdate)
    {
       
       throw todo(get_app());
@@ -2049,7 +2051,7 @@ namespace metrowin
    }
 
 
-   bool graphics::MaskBlt(int x, int y, int nWidth, int nHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, ::ca::bitmap& maskBitmap, int xMask, int yMask, uint32_t dwRop)
+   bool graphics::MaskBlt(int x, int y, int nWidth, int nHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, ::ca2::bitmap& maskBitmap, int xMask, int yMask, uint32_t dwRop)
    {
       
       throw todo(get_app());
@@ -2061,7 +2063,7 @@ namespace metrowin
    }
 
 
-   bool graphics::PlgBlt(LPPOINT lpPoint, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nWidth, int nHeight, ::ca::bitmap& maskBitmap, int xMask, int yMask)
+   bool graphics::PlgBlt(LPPOINT lpPoint, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nWidth, int nHeight, ::ca2::bitmap& maskBitmap, int xMask, int yMask)
    {
       
       throw todo(get_app());
@@ -2155,35 +2157,35 @@ namespace metrowin
 
 #endif
 
-   ::ca::pen & graphics::GetCurrentPen() const
+   ::ca2::pen & graphics::GetCurrentPen() const
    {
 
       return *m_sppen.m_p;
 
    }
 
-   ::ca::brush & graphics::GetCurrentBrush() const
+   ::ca2::brush & graphics::GetCurrentBrush() const
    {
 
       return *m_spbrush.m_p;
 
    }
 
-   ::ca::palette & graphics::GetCurrentPalette() const
+   ::ca2::palette & graphics::GetCurrentPalette() const
    {
 
-      return *(::ca::palette *)NULL;
+      return *(::ca2::palette *)NULL;
 
    }
 
-   ::ca::font & graphics::GetCurrentFont() const
+   ::ca2::font & graphics::GetCurrentFont() const
    {
 
       return *m_spfont.m_p;
 
    }
 
-   ::ca::bitmap & graphics::GetCurrentBitmap() const
+   ::ca2::bitmap & graphics::GetCurrentBitmap() const
    {
 
       return *m_bitmap.m_p;
@@ -2466,7 +2468,7 @@ namespace metrowin
    // India India
    // Member
 
-   bool graphics::alpha_blend(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, double dRate)
+   bool graphics::alpha_blend(int xDst, int yDst, int nDstWidth, int nDstHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, double dRate)
    {
 
 /*      float fA = (float) dRate;
@@ -2534,7 +2536,7 @@ namespace metrowin
 
 
    /*bool graphics::alpha_blend(int xDest, int yDest, int nDestWidth, int nDestHeight,
-   ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, BLENDFUNCTION blend)
+   ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, BLENDFUNCTION blend)
    { 
 
    throw not_implemented_exception();
@@ -2549,10 +2551,10 @@ namespace metrowin
    rect rectIntersect(m_ptAlphaBlend, m_pdibAlphaBlend->size());
 
 
-   ::ca::dib * pdibWork = NULL;
-   ::ca::dib * pdibWork2 = NULL;
-   //         ::ca::dib * pdibWork3 = NULL;
-   ::ca::dib * pdibWork4 = NULL;
+   ::ca2::dib * pdibWork = NULL;
+   ::ca2::dib * pdibWork2 = NULL;
+   //         ::ca2::dib * pdibWork3 = NULL;
+   ::ca2::dib * pdibWork4 = NULL;
 
 
    class point ptSrc(xSrc, ySrc);
@@ -2561,7 +2563,7 @@ namespace metrowin
 
 
 
-   ::ca::dib_sp spdib;
+   ::ca2::dib_sp spdib;
    if(pdibWork == NULL)
    {
    spdib.create(get_app());
@@ -2577,7 +2579,7 @@ namespace metrowin
 
 
 
-   ::ca::dib_sp spdib2;
+   ::ca2::dib_sp spdib2;
    if(pdibWork2 == NULL)
    {
    spdib2.create(get_app());
@@ -2585,7 +2587,7 @@ namespace metrowin
    }
 
 
-   ::ca::dib_sp spdib4;
+   ::ca2::dib_sp spdib4;
    if(pdibWork4 == NULL)
    {
    spdib4.create(get_app());
@@ -2605,7 +2607,7 @@ namespace metrowin
    pdibWork->channel_multiply(visual::rgba::channel_alpha, pdibWork4);
 
 
-   keeper < ::ca::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
+   keeper < ::ca2::dib * > keep(&m_pdibAlphaBlend, NULL, m_pdibAlphaBlend, true);
 
 
    return Application.m_visual.imaging().true_blend(this, ptDest, size, pdibWork->get_graphics(), ptSrc); 
@@ -2619,7 +2621,7 @@ namespace metrowin
    }*/
 
 
-   bool graphics::TransparentBlt(int xDest, int yDest, int nDestWidth, int nDestHeight, ::ca::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, UINT crTransparent)
+   bool graphics::TransparentBlt(int xDest, int yDest, int nDestWidth, int nDestHeight, ::ca2::graphics * pgraphicsSrc, int xSrc, int ySrc, int nSrcWidth, int nSrcHeight, UINT crTransparent)
    {
       
       throw todo(get_app());
@@ -2772,9 +2774,9 @@ namespace metrowin
          nMapMode != MM_TEXT)
       {
          // when using a constrained ::map mode, ::map against physical inch
-         ((::ca::graphics *)this)->SetMapMode(MM_HIMETRIC);
+         ((::ca2::graphics *)this)->SetMapMode(MM_HIMETRIC);
          DPtoLP(lpSize);
-         ((::ca::graphics *)this)->SetMapMode(nMapMode);
+         ((::ca2::graphics *)this)->SetMapMode(nMapMode);
       }
       else
       {
@@ -2809,9 +2811,9 @@ namespace metrowin
          nMapMode != MM_TEXT)
       {
          // when using a constrained ::map mode, ::map against physical inch
-         ((::ca::graphics *)this)->SetMapMode(MM_HIMETRIC);
+         ((::ca2::graphics *)this)->SetMapMode(MM_HIMETRIC);
          LPtoDP(lpSize);
-         ((::ca::graphics *)this)->SetMapMode(nMapMode);
+         ((::ca2::graphics *)this)->SetMapMode(nMapMode);
       }
       else
       {
@@ -2855,9 +2857,9 @@ namespace metrowin
    /////////////////////////////////////////////////////////////////////////////
    // special graphics drawing primitives/helpers
 
-   ::ca::brush* graphics::GetHalftoneBrush(::ca::application * papp)
+   ::ca2::brush* graphics::GetHalftoneBrush(::ca2::application * papp)
    {
-      /*      ::ca::LockGlobals(CRIT_HALFTONEBRUSH);
+      /*      ::ca2::LockGlobals(CRIT_HALFTONEBRUSH);
       if (gen_HalftoneBrush == NULL)
       {
       WORD grayPattern[8];
@@ -2872,13 +2874,13 @@ namespace metrowin
       }
       if (!gen_WingdixTerm)
       gen_WingdixTerm = (char)!atexit(&__win_gdi_x_term);
-      ::ca::UnlockGlobals(CRIT_HALFTONEBRUSH);
+      ::ca2::UnlockGlobals(CRIT_HALFTONEBRUSH);
 
       //      return ::metrowin::brush::from_handle(papp, gen_HalftoneBrush);*/
       return NULL;
    }
 
-   void graphics::DrawDragRect(LPCRECT lpRect, SIZE size, LPCRECT lpRectLast, SIZE sizeLast, ::ca::brush* pBrush, ::ca::brush* pBrushLast)
+   void graphics::DrawDragRect(LPCRECT lpRect, SIZE size, LPCRECT lpRectLast, SIZE sizeLast, ::ca2::brush* pBrush, ::ca2::brush* pBrushLast)
    {
       
       throw todo(get_app());
@@ -2889,8 +2891,8 @@ namespace metrowin
       //   __is_valid_address(lpRectLast, sizeof(RECT), FALSE));
 
       //// first, determine the update region and select it
-      //::ca::region rgnNew;
-      //::ca::region rgnOutside, rgnInside;
+      //::ca2::region rgnNew;
+      //::ca2::region rgnOutside, rgnInside;
       //rgnOutside.CreateRectRgnIndirect(lpRect);
       //rect rect = *lpRect;
       //rect.inflate(-size.cx, -size.cy);
@@ -2899,7 +2901,7 @@ namespace metrowin
       //rgnNew.CreateRectRgn(0, 0, 0, 0);
       //rgnNew.CombineRgn(&rgnOutside, &rgnInside, RGN_XOR);
 
-      //::ca::brush* pBrushOld = NULL;
+      //::ca2::brush* pBrushOld = NULL;
       //if (pBrush == NULL)
       //{
       //   pBrush = graphics::GetHalftoneBrush(get_app());
@@ -2912,7 +2914,7 @@ namespace metrowin
       //   pBrushLast = pBrush;
       //}
 
-      //::ca::region rgnLast, rgnUpdate;
+      //::ca2::region rgnLast, rgnUpdate;
       //if (lpRectLast != NULL)
       //{
       //   // find difference between new region and old region
@@ -2996,11 +2998,11 @@ namespace metrowin
 
 
 
-   //::ca::graphics * ::metrowin::graphics::from_handle(HDC hDC)
+   //::ca2::graphics * ::metrowin::graphics::from_handle(HDC hDC)
    //{
    //hdc_map* pMap = afxMapHDC(TRUE); //create ::map if not exist
    //ASSERT(pMap != NULL);
-   //      ::ca::graphics * pgraphics = (::ca::graphics *)pMap->from_handle(hDC);
+   //      ::ca2::graphics * pgraphics = (::ca2::graphics *)pMap->from_handle(hDC);
    //    ASSERT(pgraphics == NULL || (dynamic_cast<::metrowin::graphics * >(pgraphics))->get_handle1() == hDC);
    //  return pgraphics;
    // return NULL;
@@ -3025,7 +3027,7 @@ namespace metrowin
 
          m_pdc = new ::Gdiplus::Graphics(hdc);
 
-         set_text_rendering(::ca::text_rendering_anti_alias_grid_fit);
+         set_text_rendering(::ca2::text_rendering_anti_alias_grid_fit);
 
          m_hdc = hdc;
 
@@ -3093,7 +3095,7 @@ namespace metrowin
       /*      hdc_map* pMap = afxMapHDC();
       if (pMap != NULL && pMap->lookup_permanent(get_handle1()) == this)
       {
-      TRACE(::ca::trace::category_AppMsg, 0, "Cannot Set Output hDC on Attached graphics.\n");
+      TRACE(::ca2::trace::category_AppMsg, 0, "Cannot Set Output hDC on Attached graphics.\n");
       ASSERT(FALSE);
       }*/
 //#endif
@@ -3111,7 +3113,7 @@ namespace metrowin
       /*      hdc_map* pMap = afxMapHDC();
       if (pMap != NULL && pMap->lookup_permanent(get_handle1()) == this)
       {
-      TRACE(::ca::trace::category_AppMsg, 0, "Cannot Release Output hDC on Attached graphics.\n");
+      TRACE(::ca2::trace::category_AppMsg, 0, "Cannot Release Output hDC on Attached graphics.\n");
       ASSERT(FALSE);
       }*/
 //#endif
@@ -3160,12 +3162,12 @@ namespace metrowin
    //
    }
 
-   //   ::ca::graphics_object* graphics::SelectGdiObject(::ca::application * papp, HDC hDC, HGDIOBJ h)
+   //   ::ca2::graphics_object* graphics::SelectGdiObject(::ca2::application * papp, HDC hDC, HGDIOBJ h)
    // {
    //      return ::metrowin::graphics_object::from_handle(papp, ::SelectObject(hDC, h));
    //}
 
-   ::ca::graphics_object* graphics::SelectStockObject(int nIndex)
+   ::ca2::graphics_object* graphics::SelectStockObject(int nIndex)
    {
       /*      HGDIOBJ hObject = ::GetStockObject(nIndex);
       HGDIOBJ hOldObj = NULL;
@@ -3179,7 +3181,7 @@ namespace metrowin
       return NULL;
    }
 
-   ::ca::pen* graphics::SelectObject(::ca::pen* pPen)
+   ::ca2::pen* graphics::SelectObject(::ca2::pen* pPen)
    {
       /*HGDIOBJ hOldObj = NULL;
       if(pPen == NULL)
@@ -3193,7 +3195,7 @@ namespace metrowin
       return &m_penxyz;
    }
 
-   ::ca::brush* graphics::SelectObject(::ca::brush* pBrush)
+   ::ca2::brush* graphics::SelectObject(::ca2::brush* pBrush)
    {
       /*      HGDIOBJ hOldObj = NULL;
       if(pBrush == NULL)
@@ -3202,13 +3204,13 @@ namespace metrowin
       hOldObj = ::SelectObject(get_handle1(), pBrush->get_os_data());
       if(get_handle2() != NULL)
       hOldObj = ::SelectObject(get_handle2(), pBrush->get_os_data());
-      return dynamic_cast < ::ca::brush * > (::metrowin::graphics_object::from_handle(get_app(), hOldObj));*/
+      return dynamic_cast < ::ca2::brush * > (::metrowin::graphics_object::from_handle(get_app(), hOldObj));*/
       m_brushxyz = *pBrush;
       return &m_brushxyz;
 
    }
 
-   ::ca::font* graphics::SelectObject(::ca::font* pfont)
+   ::ca2::font* graphics::SelectObject(::ca2::font* pfont)
    {
       /*      HGDIOBJ hOldObj = NULL;
       if(pFont == NULL)
@@ -3217,7 +3219,7 @@ namespace metrowin
       hOldObj = ::SelectObject(get_handle1(), pFont->get_os_data());
       if(get_handle2() != NULL)
       hOldObj = ::SelectObject(get_handle2(), pFont->get_os_data());
-      return dynamic_cast < ::ca::font * > (::metrowin::graphics_object::from_handle(get_app(), hOldObj));*/
+      return dynamic_cast < ::ca2::font * > (::metrowin::graphics_object::from_handle(get_app(), hOldObj));*/
 
       /*ASSERT(pFont != NULL);
 
@@ -3234,7 +3236,7 @@ namespace metrowin
 
    }
 
-   int graphics::SelectObject(::ca::region* pRgn)
+   int graphics::SelectObject(::ca2::region* pRgn)
    {
       
       throw todo(get_app());
@@ -3247,10 +3249,10 @@ namespace metrowin
       //return nRetVal;
    }
 
-   ::ca::palette* graphics::SelectPalette(::ca::palette* pPalette, bool bForceBackground)
+   ::ca2::palette* graphics::SelectPalette(::ca2::palette* pPalette, bool bForceBackground)
    {
       return NULL;
-      //      return dynamic_cast < ::ca::palette * > (::metrowin::graphics_object::from_handle(get_app(), ::SelectPalette(get_handle1(), (HPALETTE)pPalette->get_os_data(), bForceBackground)));
+      //      return dynamic_cast < ::ca2::palette * > (::metrowin::graphics_object::from_handle(get_app(), ::SelectPalette(get_handle1(), (HPALETTE)pPalette->get_os_data(), bForceBackground)));
    }
 
    COLORREF graphics::SetBkColor(COLORREF crColor)
@@ -3524,7 +3526,7 @@ namespace metrowin
       //return ::GetClipBox(get_handle1(), lpRect);
    }
 
-   int graphics::SelectClipRgn(::ca::region * pregion)
+   int graphics::SelectClipRgn(::ca2::region * pregion)
    {
       
       return 0;
@@ -3875,7 +3877,7 @@ namespace metrowin
       //   HRGN hRgn = ::CreateRectRgn(0, 0, 0, 0);
       //   if (::GetClipRgn(get_handle1(), hRgn) < 0 || !::SelectClipRgn(get_handle2(), hRgn))
       //   {
-      //      TRACE(::ca::trace::category_AppMsg, 0, "Error: unable to transfer clip region in graphics::SelectClipPath!\n");
+      //      TRACE(::ca2::trace::category_AppMsg, 0, "Error: unable to transfer clip region in graphics::SelectClipPath!\n");
       //      bResult = FALSE;
       //   }
       //   ::DeleteObject(hRgn);
@@ -3883,7 +3885,7 @@ namespace metrowin
       //return bResult;
    }
 
-   int graphics::SelectClipRgn(::ca::region* pRgn, int nMode)
+   int graphics::SelectClipRgn(::ca2::region* pRgn, int nMode)
    {
       
       throw todo(get_app());
@@ -3903,7 +3905,7 @@ namespace metrowin
    int CALLBACK __enum_meta_file_procedure(HDC hDC,
       HANDLETABLE* pHandleTable, METARECORD* pMetaRec, int nHandles, LPARAM lParam)
    {
-      ::ca::graphics * pgraphics = (::ca::graphics *)lParam;
+      ::ca2::graphics * pgraphics = (::ca2::graphics *)lParam;
       ASSERT_VALID(pgraphics);
 
       switch (pMetaRec->rdFunction)
@@ -3983,7 +3985,7 @@ namespace metrowin
             }
             else if (nObjType == OBJ_FONT)
             {
-               // play back as graphics::SelectObject(::ca::font*)
+               // play back as graphics::SelectObject(::ca2::font*)
                //               (dynamic_cast<::metrowin::graphics * >(pgraphics))->SelectObject(::metrowin::font::from_handle(pgraphics->get_app(), (HFONT)hObject));
                throw not_implemented_exception();
                break;  // don't play the default record
@@ -4048,7 +4050,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = ::ca::international::utf8_to_unicode(string(lpszString, nCount));
+      wstring wstr = ::ca2::international::utf8_to_unicode(string(lpszString, nCount));
       return ::DrawTextW(get_handle1(), wstr, (int) wcslen(wstr), lpRect, nFormat); */
 
       return draw_text(string(lpszString, nCount), lpRect, nFormat);
@@ -4063,7 +4065,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
       return ::DrawTextW(get_handle1(), (const wchar_t *)wstr, (int)wcslen(wstr), lpRect, nFormat); */
 
       try
@@ -4074,19 +4076,19 @@ namespace metrowin
 
          switch(m_etextrendering)
          {
-         case ::ca::text_rendering_anti_alias:
+         case ::ca2::text_rendering_anti_alias:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_anti_alias_grid_fit:
+         case ::ca2::text_rendering_anti_alias_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_single_bit_per_pixel:
+         case ::ca2::text_rendering_single_bit_per_pixel:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_clear_type_grid_fit:
+         case ::ca2::text_rendering_clear_type_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
@@ -4176,7 +4178,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = ::ca::international::utf8_to_unicode(string(lpszString, nCount));
+      wstring wstr = ::ca2::international::utf8_to_unicode(string(lpszString, nCount));
       return ::DrawTextExW(get_handle1(), const_cast<wchar_t *>((const wchar_t *)wstr), (int)wcslen(wstr), lpRect, nFormat, lpDTParams); 
    }
 
@@ -4186,7 +4188,7 @@ namespace metrowin
       // these flags would modify the string
       ASSERT((nFormat & (DT_END_ELLIPSIS | DT_MODIFYSTRING)) != (DT_END_ELLIPSIS | DT_MODIFYSTRING));
       ASSERT((nFormat & (DT_PATH_ELLIPSIS | DT_MODIFYSTRING)) != (DT_PATH_ELLIPSIS | DT_MODIFYSTRING));
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
       return ::DrawTextExW(get_handle1(), const_cast<wchar_t *>((const wchar_t *)wstr), (int)wcslen(wstr), lpRect, nFormat, lpDTParams); 
    }
 
@@ -4253,7 +4255,7 @@ namespace metrowin
       if(iIndex < 0)
          return size(0, 0);
 
-      wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
+      wstring wstr = ::ca2::international::utf8_to_unicode(lpszString, nCount);
 
       strsize iRange = 0;
       strsize i = 0;
@@ -4261,10 +4263,10 @@ namespace metrowin
       const char * psz = lpszString;
       while(i < iIndex)
       {
-         iLen = ::ca::str::utf8_char(psz).length();
+         iLen = ::ca2::str::utf8_char(psz).length();
          iRange++;
          i += iLen;
-         psz = ::ca::str::utf8_inc(psz);
+         psz = ::ca2::str::utf8_inc(psz);
          if(psz == NULL)
             break;
          if(*psz == '\0')
@@ -4353,7 +4355,7 @@ namespace metrowin
    IDWriteTextLayout * playout = NULL;
 
    if(m_spfont.is_null())
-      ((graphics *) this)->m_spfont.create(get_app());
+      ((graphics *) this)->m_spfont.create(((graphics *) this)->allocer());
 
    if(m_spfont.is_null())
       return size;
@@ -4390,7 +4392,7 @@ namespace metrowin
 
       //single_lock slGdiplus(&System.m_mutexGdiplus, TRUE);
 
-      //wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(lpszString, nCount);
 
       //Gdiplus::RectF box;
 
@@ -4410,7 +4412,7 @@ namespace metrowin
       return size(0, 0);
       SIZE size;
       string str(lpszString, nCount);
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
       if(!::GetTextExtentPoint32W(get_handle2(), wstr, (int)wstr.get_length(), &size))
       {
       return class size(0, 0);
@@ -4423,7 +4425,7 @@ namespace metrowin
       /*      if(get_handle2() == NULL)
       return size(0, 0);
       SIZE size;
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
       if(!::GetTextExtentPoint32W(get_handle2(), wstr, (int)wstr.get_length(), &size))
       {
       return class size(0, 0);
@@ -4477,7 +4479,7 @@ namespace metrowin
       //if(m_pdc == NULL)
       //   return size(0, 0);
 
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
 
       //Gdiplus::RectF box;
 
@@ -4508,7 +4510,7 @@ namespace metrowin
       //ASSERT(get_handle1() != NULL);
       //SIZE size;
       //string str(lpszString, nCount);
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
       //VERIFY(::GetTextExtentPoint32W(get_handle1(), wstr, (int)wstr.get_length(), &size));
       //return size;
    }
@@ -4520,7 +4522,7 @@ namespace metrowin
 
       //ASSERT(get_handle1() != NULL);
       //SIZE size;
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
       //VERIFY(::GetTextExtentPoint32W(get_handle1(), wstr, (int)wstr.get_length(), &size));
       //return size;
    }
@@ -4585,7 +4587,7 @@ namespace metrowin
       if(iIndex < 0)
          return false;
 
-      wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
+      wstring wstr = ::ca2::international::utf8_to_unicode(lpszString, nCount);
 
       strsize iRange = 0;
       strsize i = 0;
@@ -4593,10 +4595,10 @@ namespace metrowin
       const char * psz = lpszString;
       while(i < iIndex)
       {
-         iLen = ::ca::str::utf8_char(psz).length();
+         iLen = ::ca2::str::utf8_char(psz).length();
          iRange++;
          i += iLen;
-         psz = ::ca::str::utf8_inc(psz);
+         psz = ::ca2::str::utf8_inc(psz);
          if(psz == NULL)
             break;
          if(*psz == '\0')
@@ -4674,7 +4676,7 @@ namespace metrowin
 
       //single_lock slGdiplus(&System.m_mutexGdiplus, TRUE);
 
-      //wstring wstr = ::ca::international::utf8_to_unicode(lpszString, nCount);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(lpszString, nCount);
 
       //Gdiplus::RectF box;
 
@@ -4753,7 +4755,7 @@ namespace metrowin
       //if(m_pdc == NULL)
       //   return false;
 
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
 
       //Gdiplus::RectF box;
 
@@ -4905,18 +4907,18 @@ namespace metrowin
    // IMPLEMENT_DYNAMIC(user_exception, base_exception)
    //user_exception _simpleUserException(FALSE, __IDS_USER_EXCEPTION);
 
-   // IMPLEMENT_DYNCREATE(graphics, ::ca::object)
+   // IMPLEMENT_DYNCREATE(graphics, ::ca2::object)
    // IMPLEMENT_DYNAMIC(CClientDC, graphics)
    // IMPLEMENT_DYNAMIC(CWindowDC, graphics)
    // IMPLEMENT_DYNAMIC(CPaintDC, graphics)
-   // IMPLEMENT_DYNCREATE(::ca::graphics_object, ::ca::object)
+   // IMPLEMENT_DYNCREATE(::ca2::graphics_object, ::ca2::object)
 
-   // IMPLEMENT_DYNAMIC(pen, ::ca::graphics_object)
-   // IMPLEMENT_DYNAMIC(::ca::brush, ::ca::graphics_object)
-   // IMPLEMENT_DYNAMIC(::ca::font, ::ca::graphics_object)
-   // IMPLEMENT_DYNAMIC(::ca::bitmap, ::ca::graphics_object)
-   // IMPLEMENT_DYNAMIC(::ca::palette, ::ca::graphics_object)
-   // IMPLEMENT_DYNAMIC(::ca::region, ::ca::graphics_object)
+   // IMPLEMENT_DYNAMIC(pen, ::ca2::graphics_object)
+   // IMPLEMENT_DYNAMIC(::ca2::brush, ::ca2::graphics_object)
+   // IMPLEMENT_DYNAMIC(::ca2::font, ::ca2::graphics_object)
+   // IMPLEMENT_DYNAMIC(::ca2::bitmap, ::ca2::graphics_object)
+   // IMPLEMENT_DYNAMIC(::ca2::palette, ::ca2::graphics_object)
+   // IMPLEMENT_DYNAMIC(::ca2::region, ::ca2::graphics_object)
 
 
 } // namespace metrowin
@@ -4990,7 +4992,7 @@ namespace metrowin
 
       string str(lpszString, nCount);
 
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
 
 
       try
@@ -5001,19 +5003,19 @@ namespace metrowin
 
          switch(m_etextrendering)
          {
-         case ::ca::text_rendering_anti_alias:
+         case ::ca2::text_rendering_anti_alias:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
             break;
-         case ::ca::text_rendering_anti_alias_grid_fit:
+         case ::ca2::text_rendering_anti_alias_grid_fit:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
             break;
-         case ::ca::text_rendering_single_bit_per_pixel:
+         case ::ca2::text_rendering_single_bit_per_pixel:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintSingleBitPerPixel);
             break;
-         case ::ca::text_rendering_clear_type_grid_fit:
+         case ::ca2::text_rendering_clear_type_grid_fit:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit);
             break;
@@ -5073,7 +5075,7 @@ namespace metrowin
          double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
          double d3 = d1 * d2;
 
-         status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+         status = path.AddString(::ca2::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
          path.Transform(pmNew);
 
@@ -5086,7 +5088,7 @@ namespace metrowin
 
          m_pdc->SetTransform(pmNew);
 
-         status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+         status = m_pdc->DrawString(::ca2::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
          m_pdc->SetTransform(&m);
 
@@ -5104,19 +5106,19 @@ namespace metrowin
 
          switch(m_etextrendering)
          {
-         case ::ca::text_rendering_anti_alias:
+         case ::ca2::text_rendering_anti_alias:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_anti_alias_grid_fit:
+         case ::ca2::text_rendering_anti_alias_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_single_bit_per_pixel:
+         case ::ca2::text_rendering_single_bit_per_pixel:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_clear_type_grid_fit:
+         case ::ca2::text_rendering_clear_type_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
@@ -5207,7 +5209,7 @@ namespace metrowin
 
       //string str(lpszString, nCount);
 
-      //wstring wstr = ::ca::international::utf8_to_unicode(str);
+      //wstring wstr = ::ca2::international::utf8_to_unicode(str);
 
 
       //try
@@ -5218,16 +5220,16 @@ namespace metrowin
 
       //   switch(m_etextrendering)
       //   {
-      //   case ::ca::text_rendering_anti_alias:
+      //   case ::ca2::text_rendering_anti_alias:
       //      m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
       //      break;
-      //   case ::ca::text_rendering_anti_alias_grid_fit:
+      //   case ::ca2::text_rendering_anti_alias_grid_fit:
       //      m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
       //      break;
-      //   case ::ca::text_rendering_single_bit_per_pixel:
+      //   case ::ca2::text_rendering_single_bit_per_pixel:
       //      m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintSingleBitPerPixel);
       //      break;
-      //   case ::ca::text_rendering_clear_type_grid_fit:
+      //   case ::ca2::text_rendering_clear_type_grid_fit:
       //      m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
       //      m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit);
       //      break;
@@ -5287,7 +5289,7 @@ namespace metrowin
       //   double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
       //   double d3 = d1 * d2;
 
-      //   status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+      //   status = path.AddString(::ca2::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
       //   path.Transform(pmNew);
 
@@ -5300,7 +5302,7 @@ namespace metrowin
 
       //   m_pdc->SetTransform(pmNew);
 
-      //   status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+      //   status = m_pdc->DrawString(::ca2::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
       //   m_pdc->SetTransform(&m);
 
@@ -5313,7 +5315,7 @@ namespace metrowin
 
       string str(lpszString, nCount);
 
-      wstring wstr = ::ca::international::utf8_to_unicode(str);
+      wstring wstr = ::ca2::international::utf8_to_unicode(str);
 
 
       try
@@ -5324,19 +5326,19 @@ namespace metrowin
 
          switch(m_etextrendering)
          {
-         case ::ca::text_rendering_anti_alias:
+         case ::ca2::text_rendering_anti_alias:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAlias);
             break;
-         case ::ca::text_rendering_anti_alias_grid_fit:
+         case ::ca2::text_rendering_anti_alias_grid_fit:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintAntiAliasGridFit);
             break;
-         case ::ca::text_rendering_single_bit_per_pixel:
+         case ::ca2::text_rendering_single_bit_per_pixel:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintSingleBitPerPixel);
             break;
-         case ::ca::text_rendering_clear_type_grid_fit:
+         case ::ca2::text_rendering_clear_type_grid_fit:
             m_pdc->SetCompositingMode(Gdiplus::CompositingModeSourceOver);
             m_pdc->SetTextRenderingHint(Gdiplus::TextRenderingHintClearTypeGridFit);
             break;
@@ -5396,7 +5398,7 @@ namespace metrowin
          double d2 = fontfamily.GetEmHeight(gdiplus_font()->GetStyle());
          double d3 = d1 * d2;
 
-         status = path.AddString(::ca::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
+         status = path.AddString(::ca2::international::utf8_to_unicode(str), -1, &fontfamily, gdiplus_font()->GetStyle(), (Gdiplus::REAL) d1, origin, &format);
 
          path.Transform(pmNew);
 
@@ -5409,7 +5411,7 @@ namespace metrowin
 
          m_pdc->SetTransform(pmNew);
 
-         status = m_pdc->DrawString(::ca::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
+         status = m_pdc->DrawString(::ca2::international::utf8_to_unicode(str), -1, gdiplus_font(), origin, &format, gdiplus_brush());
 
          m_pdc->SetTransform(&m);
 
@@ -5427,19 +5429,19 @@ namespace metrowin
 
          switch(m_etextrendering)
          {
-         case ::ca::text_rendering_anti_alias:
+         case ::ca2::text_rendering_anti_alias:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_anti_alias_grid_fit:
+         case ::ca2::text_rendering_anti_alias_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_single_bit_per_pixel:
+         case ::ca2::text_rendering_single_bit_per_pixel:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
             break;
-         case ::ca::text_rendering_clear_type_grid_fit:
+         case ::ca2::text_rendering_clear_type_grid_fit:
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
             m_pdc->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_CLEARTYPE);
             break;
@@ -5548,7 +5550,7 @@ namespace metrowin
    }
 
 
-   void graphics::set_alpha_mode(::ca::e_alpha_mode ealphamode)
+   void graphics::set_alpha_mode(::ca2::e_alpha_mode ealphamode)
    {
 
       try
@@ -5557,12 +5559,12 @@ namespace metrowin
          if(m_pdc == NULL)
             return;
 
-         ::ca::graphics::set_alpha_mode(ealphamode);
-         if(m_ealphamode == ::ca::alpha_mode_blend)
+         ::ca2::graphics::set_alpha_mode(ealphamode);
+         if(m_ealphamode == ::ca2::alpha_mode_blend)
          {
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_SOURCE_OVER);
          }
-         else if(m_ealphamode == ::ca::alpha_mode_set)
+         else if(m_ealphamode == ::ca2::alpha_mode_set)
          {
             if(m_pdevicecontext) m_pdevicecontext->SetPrimitiveBlend(D2D1_PRIMITIVE_BLEND_COPY);
          }
@@ -5576,7 +5578,7 @@ namespace metrowin
    }
 
 
-   void graphics::set_text_rendering(::ca::e_text_rendering etextrendering)
+   void graphics::set_text_rendering(::ca2::e_text_rendering etextrendering)
    {
       m_etextrendering = etextrendering;
 
@@ -5847,7 +5849,7 @@ namespace metrowin
    }
 
 
-   bool graphics::draw_path(::ca::graphics_path * ppath)
+   bool graphics::draw_path(::ca2::graphics_path * ppath)
    {
 
       ::ID2D1Brush * pbrush = get_os_pen_brush();
@@ -5860,7 +5862,7 @@ namespace metrowin
 
    }
 
-   bool graphics::fill_path(::ca::graphics_path * ppath)
+   bool graphics::fill_path(::ca2::graphics_path * ppath)
    {
 
       keeper < bool > keepPreviousFill(&ppath->m_bFill, true, ppath->m_bFill, true);
@@ -5877,7 +5879,7 @@ namespace metrowin
 
    }
 
-   bool graphics::path(::ca::graphics_path * ppath)
+   bool graphics::path(::ca2::graphics_path * ppath)
    {
 
       bool bOk1 = fill_path(ppath);
@@ -5893,7 +5895,7 @@ namespace metrowin
    {
 
       if(m_spfont.is_null())
-         ((graphics *) this)->m_spfont.create(get_app());
+         ((graphics *) this)->m_spfont.create(((graphics *) this)->allocer());
 
       if(m_spfont.is_null())
          return NULL;
@@ -5908,7 +5910,7 @@ namespace metrowin
    {
 
       if(m_spbrush.is_null())
-         ((graphics *) this)->m_spbrush.create(get_app());
+         ((graphics *) this)->m_spbrush.create(((graphics *) this)->allocer());
 
       if(m_spbrush.is_null())
          return NULL;
@@ -5923,7 +5925,7 @@ namespace metrowin
    {
 
       if(m_sppen.is_null())
-         ((graphics *) this)->m_sppen.create(get_app());
+         ((graphics *) this)->m_sppen.create(((graphics *) this)->allocer());
 
       if(m_sppen.is_null())
          return NULL;

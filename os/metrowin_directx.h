@@ -18,7 +18,7 @@ namespace metrowin
    {
 
       if(FAILED(hr))
-         throw hresult_exception(::ca::get_thread_app(), hr);
+         throw hresult_exception(::ca2::get_thread_app(), hr);
       //if(FAILED(hr))
       // throw hr;
 
@@ -33,15 +33,15 @@ namespace metrowin
    {
    internal:
 
-      ::ca::application * m_papp;
+      ::ca2::application * m_papp;
 
       mutex    m_mutexDc;
 
       bool m_bInitialized;
 
-      directx_base(::ca::application * papp);
+      directx_base(::ca2::application * papp);
 
-      ::ca::application * get_app() const
+      ::ca2::application * get_app() const
       {
          return m_papp;
       }

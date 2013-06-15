@@ -21,7 +21,7 @@
 
 string get_error_message(DWORD dwError);
 
-//::ca::application *     win_instantiate_application(::ca::application * pappSystem, const char * pszId);
+//::ca2::application *     win_instantiate_application(::ca2::application * pappSystem, const char * pszId);
 
 /////////////////////////////////////////////////////////////////////////////
 // explicit initialization for general purpose classes
@@ -91,16 +91,16 @@ CLASS_DECL_metrowin void __try_cleanup();
 //CLASS_DECL_metrowin WNDPROC __get_window_procedure();
 #define __window_procedure (*__get_window_procedure())
 
-#define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::ca::thread * >(pthread)))
-#define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca::window * >(pwnd)))
+#define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::ca2::thread * >(pthread)))
+#define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca2::window * >(pwnd)))
 #define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (pgraphics))
 #define METROWIN_BITMAP(pbitmap) (dynamic_cast < ::metrowin::bitmap * > (pbitmap))
 #define METROWIN_PEN(ppen) (dynamic_cast < ::metrowin::pen * > (ppen))
 #define METROWIN_BRUSH(pbrush) (dynamic_cast < ::metrowin::brush * > (pbrush))
 #define METROWIN_PATH(ppath) (dynamic_cast < ::metrowin::graphics_path * > (ppath))
 #define METROWIN_FONT(pfont) (dynamic_cast < ::metrowin::font * > (pfont))
-#define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::ca::graphics * )(pgraphics)))
-#define WIN_DIB(pdib) (dynamic_cast < ::metrowin::dib * > (dynamic_cast < ::ca::dib * >(pdib)))
+#define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::ca2::graphics * )(pgraphics)))
+#define WIN_DIB(pdib) (dynamic_cast < ::metrowin::dib * > (dynamic_cast < ::ca2::dib * >(pdib)))
 
 
 #pragma comment(lib, "kernel32.lib")
@@ -118,15 +118,15 @@ CLASS_DECL_metrowin void __try_cleanup();
 #pragma comment(lib, "Msimg32.lib") 
 #pragma comment(lib, "Psapi.lib") 
 
-CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, ::ca::signal_object * pobj);
+CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, ::ca2::signal_object * pobj);
 CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, LPMESSAGE lpmsg);
 
-CLASS_DECL_metrowin bool __cdecl __is_idle_message(::ca::signal_object * pobj);
+CLASS_DECL_metrowin bool __cdecl __is_idle_message(::ca2::signal_object * pobj);
 CLASS_DECL_metrowin bool __cdecl __is_idle_message(MESSAGE * pMsg);
 
 
-CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, ::ca::signal_object * pobj);
-CLASS_DECL_metrowin void __cdecl __pre_translate_message(::ca::signal_object * pobj);
+CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, ::ca2::signal_object * pobj);
+CLASS_DECL_metrowin void __cdecl __pre_translate_message(::ca2::signal_object * pobj);
 
 #include "metrowin_printer.h"
 

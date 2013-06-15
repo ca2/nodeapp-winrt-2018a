@@ -15,8 +15,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
       ::OutputDebugString(L"::ca2:: metrowin.dll :: initializing!\n");
       
 
-      ::ca::g_pfn_get_thread = &::metrowin::get_thread;
-      ::ca::g_pfn_get_thread_state = &::metrowin::get_thread_state;
+      ::ca2::g_pfn_get_thread = &::metrowin::get_thread;
+      ::ca2::g_pfn_get_thread_state = &::metrowin::get_thread_state;
 
    }
    else if (dwReason == DLL_PROCESS_DETACH)
@@ -27,7 +27,7 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
       /*try
       {
       
-         if(::GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, "c.dll", &hmodule) != FALSE)
+         if(::GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, "ca.dll", &hmodule) != FALSE)
          {
 
             try

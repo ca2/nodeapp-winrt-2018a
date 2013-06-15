@@ -10,7 +10,7 @@ namespace metrowin
       
       /*hwnd_map* pMap = __get_module_state()->m_pmapHWND;
 
-      if(::ca::is_null(pMap))
+      if(::ca2::is_null(pMap))
          return;
 
       single_lock sl(&pMap->m_mutex, TRUE);

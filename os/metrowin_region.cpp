@@ -5,8 +5,8 @@ namespace metrowin
 {
 
    
-   region::region(::ca::application * papp) :
-      ca(papp)
+   region::region(::ca2::application * papp) :
+      ca2(papp)
    { 
       
       m_pgeometry = NULL;
@@ -50,7 +50,7 @@ namespace metrowin
    //   ::SetRectRgn((HRGN)get_os_data(), lpRect->left, lpRect->top, lpRect->right, lpRect->bottom); 
    }
 
-   int region::CombineRgn(const ::ca::region* pRgn1, const ::ca::region* pRgn2, int nCombineMode)
+   int region::CombineRgn(const ::ca2::region* pRgn1, const ::ca2::region* pRgn2, int nCombineMode)
    { 
    
       throw todo(get_app());
@@ -58,7 +58,7 @@ namespace metrowin
       //ASSERT(get_os_data() != NULL); return ::CombineRgn((HRGN)get_os_data(), (HRGN)pRgn1->get_os_data(),
    //(HRGN)pRgn2->get_os_data(), nCombineMode); 
    }
-   int region::CopyRgn(const ::ca::region* pRgnSrc)
+   int region::CopyRgn(const ::ca2::region* pRgnSrc)
    { 
    
       throw todo(get_app());
@@ -66,7 +66,7 @@ namespace metrowin
       //ASSERT(get_os_data() != NULL); return ::CombineRgn((HRGN)get_os_data(), (HRGN)pRgnSrc->get_os_data(), NULL, RGN_COPY); 
    }
 
-   bool region::EqualRgn(const ::ca::region* pRgn) const
+   bool region::EqualRgn(const ::ca2::region* pRgn) const
    {
    
       throw todo(get_app());
@@ -268,7 +268,7 @@ namespace metrowin
    ID2D1Geometry * region::get_polygon()
    {
 
-      ::ca::graphics_path_sp path(allocer());
+      ::ca2::graphics_path_sp path(allocer());
 
       /*point_array pa;
 
@@ -278,7 +278,7 @@ namespace metrowin
       }*/
 
       /*
-      if(m_efillmode == ::ca::fill_mode_alternate)
+      if(m_efillmode == ::ca2::fill_mode_alternate)
       {
          path.SetFillMode(Gdiplus::FillModeAlternate);
       }
@@ -299,11 +299,11 @@ namespace metrowin
    ID2D1Geometry * region::get_poly_polygon()
    {
 
-      ::ca::graphics_path_sp path(allocer());
+      ::ca2::graphics_path_sp path(allocer());
 
       point_array pa;
 
-      /*if(m_efillmode == ::ca::fill_mode_alternate)
+      /*if(m_efillmode == ::ca2::fill_mode_alternate)
       {
          path.SetFillMode(Gdiplus::FillModeAlternate);
       }

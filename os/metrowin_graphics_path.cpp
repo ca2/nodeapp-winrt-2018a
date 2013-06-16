@@ -315,23 +315,37 @@ namespace metrowin
 
    }
 
+
    bool graphics_path::set(const ::ca2::graphics_path::arc & arc)
    {
+      
       rect rect;
-      rect.left = arc.m_xCenter - arc.m_dRadiusX;
-      rect.right = arc.m_xCenter + arc.m_dRadiusX;
-      rect.top = arc.m_yCenter - arc.m_dRadiusY;
-      rect.bottom = arc.m_yCenter + arc.m_dRadiusY;
-      return internal_add_arc(rect, arc.m_dAngle1, arc.m_dAngle2);
+
+      rect.left      = (LONG) (arc.m_xCenter - arc.m_dRadiusX);
+      rect.right     = (LONG) (arc.m_xCenter + arc.m_dRadiusX);
+      rect.top       = (LONG) (arc.m_yCenter - arc.m_dRadiusY);
+      rect.bottom    = (LONG) (arc.m_yCenter + arc.m_dRadiusY);
+
+      return internal_add_arc(rect, (int) arc.m_dAngle1, (int) arc.m_dAngle2);
+
    }
+
+
    bool graphics_path::set(const ::ca2::graphics_path::move & move)
    {
-      return internal_add_move(move.m_x, move.m_y);
+
+      return internal_add_move((int) move.m_x, (int) move.m_y);
+
    }
+
+
    bool graphics_path::set(const ::ca2::graphics_path::line & line)
    {
-      return internal_add_line(line.m_x, line.m_y);
+
+      return internal_add_line((int) line.m_x, (int) line.m_y);
+
    }
+
 
 } // namespace metrowin
 

@@ -648,19 +648,22 @@ namespace metrowin
       return m_hThread == NULL ? NULL : (m_hThread->m_pevent == NULL ? NULL : m_hThread->m_pevent->m_hEvent);
    }
 
-   bool thread::begin(::ca2::e_thread_priority epriority, UINT nStackSize, uint32_t dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
+   bool thread::begin(int32_t iPriority, UINT nStackSize, uint32_t dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
    {
-      if (!create_thread(epriority, dwCreateFlags, nStackSize,
-         lpSecurityAttrs))
+
+      if (!create_thread(iPriority, dwCreateFlags, nStackSize, lpSecurityAttrs))
       {
          Delete();
          return false;
       }
+
 /*      if (!(dwCreateFlags & CREATE_SUSPENDED))
       {
          ENSURE(ResumeThread() != (uint32_t)-1);
       }*/
+
       return true;
+
    }
 
    void thread::on_delete(::ca2::ca2 * p)
@@ -833,7 +836,7 @@ namespace metrowin
       m_ptimera->check();
    }
 
-   bool thread::create_thread(::ca2::e_thread_priority epriority, uint32_t dwCreateFlags, UINT nStackSize, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
+   bool thread::create_thread(int32_t iPriority, uint32_t dwCreateFlags, UINT nStackSize, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
    {
       ENSURE(m_hThread == NULL);  // already created?
 
@@ -865,7 +868,7 @@ namespace metrowin
       if (m_hThread == NULL)
          return FALSE;
 
-      VERIFY(SetThreadPriority(epriority));
+      VERIFY(SetThreadPriority(iPriority));
 
       // start the thread just for ca2 API initialization
       VERIFY(ResumeThread() != (uint32_t)-1);

@@ -36,7 +36,7 @@
 
 class hthread;
 
-#define HTHREAD hthread *
+typedef hthread * HTHREAD;
 
 CLASS_DECL_ca HTHREAD WINAPI CreateThread(LPSECURITY_ATTRIBUTES unusedThreadAttributes, uint_ptr unusedStackSize,  uint32_t (* pfn)(void *), void * pv, uint32_t dwCreationFlags, uint32_t * puiId);
 CLASS_DECL_ca DWORD WINAPI ResumeThread(HTHREAD hThread);

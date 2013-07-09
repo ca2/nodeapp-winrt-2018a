@@ -72,9 +72,9 @@ namespace metrowin
 
       virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
 
-      virtual bool begin(::ca2::e_thread_priority epriority = ::get_thread_priority_normal(), uint_ptr nStackSize = 0, uint32_t uiCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
+      virtual bool begin(int32_t epriority = ::get_scheduling_priority_normal(), uint_ptr nStackSize = 0, uint32_t uiCreateFlags = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
-      virtual bool create_thread(::ca2::e_thread_priority epriority = ::get_thread_priority_normal(), uint32_t uiCreateFlags = 0, uint_ptr nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
+      virtual bool create_thread(int32_t epriority = ::get_scheduling_priority_normal(), uint32_t uiCreateFlags = 0, uint_ptr nStackSize = 0, LPSECURITY_ATTRIBUTES lpSecurityAttrs = NULL) override;
 
 
       virtual sp(::user::interaction) SetMainWnd(sp(::user::interaction) pui);

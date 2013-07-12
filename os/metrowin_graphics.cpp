@@ -1690,6 +1690,10 @@ namespace metrowin
 
       size.cy = 0;
 
+      lpMetrics->tmAveCharWidth = 0;
+      lpMetrics->tmAscent = 0;
+      lpMetrics->tmDescent = 0;
+      lpMetrics->tmHeight = 0;
    }
    else
    {
@@ -1711,6 +1715,7 @@ namespace metrowin
       lpMetrics->tmAveCharWidth = (LONG) (m.width / (double) wstr.get_length());
       lpMetrics->tmAscent = (LONG) m.height;
       lpMetrics->tmDescent = (LONG) (m2.height - m.height);
+      lpMetrics->tmHeight = (LONG) (lpMetrics->tmAscent + lpMetrics->tmDescent);
 
    }
 
@@ -4365,7 +4370,7 @@ namespace metrowin
    HRESULT hr = TlsGetWriteFactory()->CreateTextLayout(
       wstr,                // The string to be laid out and formatted.
       wstr.get_length(),   // The length of the string.
-      (IDWriteTextFormat *) m_spfont->get_os_data(),    // The text format to apply to the string (contains font information, etc).
+      (IDWriteTextFormat *) get_os_font(),    // The text format to apply to the string (contains font information, etc).
       1024.f * 1024.f,               // The width of the layout box.
       1024.f * 1024.f,        // The height of the layout box.
       &playout  // The IDWriteTextLayout interface pointer.
@@ -5185,6 +5190,10 @@ namespace metrowin
       Gdiplus::RectF rectf(0, 0, (Gdiplus::REAL) ((lpRect->right - lpRect->left) * m_fontxyz.m_dFontWidth), (Gdiplus::REAL) (lpRect->bottom - lpRect->top));
 
       m_pdc->SetTransform(pmNew);*/
+
+      TEXTMETRIC metrics;
+
+      get_text_metrics(&metrics);
 
       D2D1_RECT_F rect;
 

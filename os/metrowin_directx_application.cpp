@@ -609,7 +609,7 @@ namespace metrowin
    m_d2dContext->Clear(cr);
 
 
-   ::ca2::graphics_sp dc(::ca2::get_thread_app());
+   ::draw2d::graphics_sp dc(::ca2::get_thread_app());
 
    dc->attach((ID2D1DeviceContext * ) m_d2dContext);
 

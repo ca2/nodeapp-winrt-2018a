@@ -65,7 +65,7 @@ namespace metrowin
 
       virtual bool BaseOnControlEvent(::user::control_event * pevent);
 
-      void _002OnDraw(::ca2::graphics * pdc);
+      void _002OnDraw(::draw2d::graphics * pdc);
 
       DECL_GEN_SIGNAL(_001OnEraseBkgnd)
          DECL_GEN_SIGNAL(_001OnMove)
@@ -171,8 +171,8 @@ namespace metrowin
       strsize GetWindowText(char * lpszStringBuf, strsize nMaxCount);
       void GetWindowText(string & rString);
       strsize GetWindowTextLength();
-      void SetFont(::ca2::font* pFont, bool bRedraw = TRUE);
-      ::ca2::font* GetFont();
+      void SetFont(::draw2d::font* pFont, bool bRedraw = TRUE);
+      ::draw2d::font* GetFont();
 
 
       // Window size and position Functions
@@ -213,37 +213,37 @@ namespace metrowin
       virtual void MapWindowPoints(::ca2::window * pwndTo, LPRECT lpRect);
 
       // Update/Painting Functions
-      virtual ::ca2::graphics * GetDC();
-      virtual ::ca2::graphics * GetWindowDC();
-      virtual bool ReleaseDC(::ca2::graphics * pgraphics);
-      virtual void Print(::ca2::graphics * pgraphics, uint32_t dwFlags) const;
-      virtual void PrintClient(::ca2::graphics * pgraphics, uint32_t dwFlags) const;
+      virtual ::draw2d::graphics * GetDC();
+      virtual ::draw2d::graphics * GetWindowDC();
+      virtual bool ReleaseDC(::draw2d::graphics * pgraphics);
+      virtual void Print(::draw2d::graphics * pgraphics, uint32_t dwFlags) const;
+      virtual void PrintClient(::draw2d::graphics * pgraphics, uint32_t dwFlags) const;
 
       virtual void UpdateWindow();
       virtual void SetRedraw(bool bRedraw = TRUE);
       virtual bool GetUpdateRect(LPRECT lpRect, bool bErase = FALSE);
-      virtual int GetUpdateRgn(::ca2::region* pRgn, bool bErase = FALSE);
+      virtual int GetUpdateRgn(::draw2d::region* pRgn, bool bErase = FALSE);
       virtual void Invalidate(bool bErase = TRUE);
       virtual void InvalidateRect(LPCRECT lpRect, bool bErase = TRUE);
-      virtual void InvalidateRgn(::ca2::region* pRgn, bool bErase = TRUE);
+      virtual void InvalidateRgn(::draw2d::region* pRgn, bool bErase = TRUE);
       virtual void ValidateRect(LPCRECT lpRect);
-      virtual void ValidateRgn(::ca2::region* pRgn);
+      virtual void ValidateRgn(::draw2d::region* pRgn);
       virtual bool ShowWindow(int nCmdShow);
       virtual void _001WindowMaximize();
       virtual void _001WindowRestore();
       virtual bool IsWindowVisible();
       virtual void ShowOwnedPopups(bool bShow = TRUE);
 
-      virtual ::ca2::graphics * GetDCEx(::ca2::region* prgnClip, uint32_t flags);
+      virtual ::draw2d::graphics * GetDCEx(::draw2d::region* prgnClip, uint32_t flags);
       virtual bool LockWindowUpdate();
       virtual void UnlockWindowUpdate();
       virtual bool RedrawWindow(LPCRECT lpRectUpdate = NULL,
-         ::ca2::region* prgnUpdate = NULL,
+         ::draw2d::region* prgnUpdate = NULL,
          UINT flags = RDW_INVALIDATE | RDW_UPDATENOW | RDW_ERASE);
       //      virtual bool EnableScrollBar(int nSBFlags, UINT nArrowFlags = ESB_ENABLE_BOTH);
 
       virtual bool DrawAnimatedRects(int idAni, CONST RECT *lprcFrom, CONST RECT *lprcTo);
-      virtual bool DrawCaption(::ca2::graphics * pgraphics, LPCRECT lprc, UINT uFlags);
+      virtual bool DrawCaption(::draw2d::graphics * pgraphics, LPCRECT lprc, UINT uFlags);
 
 #if(WINVER >= 0x0500)
 
@@ -253,7 +253,7 @@ namespace metrowin
 
 #if(_WIN32_WINNT >= 0x0501)
 
-      virtual bool PrintWindow(::ca2::graphics * pgraphics, UINT nFlags) const;
+      virtual bool PrintWindow(::draw2d::graphics * pgraphics, UINT nFlags) const;
 
 #endif   // _WIN32_WINNT >= 0x0501
 
@@ -262,8 +262,8 @@ namespace metrowin
 #if(_WIN32_WINNT >= 0x0500)
 
       virtual bool SetLayeredWindowAttributes(COLORREF crKey, BYTE bAlpha, uint32_t dwFlags);
-      virtual bool UpdateLayeredWindow(::ca2::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
-         ::ca2::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags);
+      virtual bool UpdateLayeredWindow(::draw2d::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
+         ::draw2d::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags);
 
 #endif   // _WIN32_WINNT >= 0x0500
 
@@ -348,7 +348,7 @@ namespace metrowin
 
       virtual int ScrollWindowEx(int dx, int dy,
          LPCRECT lpRectScroll, LPCRECT lpRectClip,
-         ::ca2::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags);
+         ::draw2d::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags);
       //      virtual bool SetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo,
       //       bool bRedraw = TRUE);
       //      virtual bool GetScrollInfo(int nBar, LPSCROLLINFO lpScrollInfo, UINT nMask = SIF_ALL);
@@ -400,7 +400,7 @@ namespace metrowin
       static ::ca2::window * GetOpenClipboardWindow();
 
       // Caret Functions
-      virtual void CreateCaret(::ca2::bitmap* pBitmap);
+      virtual void CreateCaret(::draw2d::bitmap* pBitmap);
       virtual void CreateSolidCaret(int nWidth, int nHeight);
       virtual void CreateGrayCaret(int nWidth, int nHeight);
       static point GetCaretPos();
@@ -465,16 +465,16 @@ namespace metrowin
       DECL_GEN_SIGNAL(_001OnCreate);
 
 
-      HBRUSH OnCtlColor(::ca2::graphics * pgraphics, ::ca2::window * pWnd, UINT nCtlColor);
+      HBRUSH OnCtlColor(::draw2d::graphics * pgraphics, ::ca2::window * pWnd, UINT nCtlColor);
 
       DECL_GEN_SIGNAL(_001OnDestroy);
       void OnEnable(bool bEnable);
       void OnEndSession(bool bEnding);
       void OnEnterIdle(UINT nWhy, ::ca2::window * pWho);
-      bool OnEraseBkgnd(::ca2::graphics * pgraphics);
+      bool OnEraseBkgnd(::draw2d::graphics * pgraphics);
       //      void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
       //    bool OnHelpInfo(HELPINFO* lpHelpInfo);
-      void OnIconEraseBkgnd(::ca2::graphics * pgraphics);
+      void OnIconEraseBkgnd(::draw2d::graphics * pgraphics);
       void OnKillFocus(::ca2::window * pNewWnd);
       LRESULT OnMenuChar(UINT nChar, UINT nFlags, ::user::menu* pMenu);
       void OnMenuSelect(UINT nItemID, UINT nFlags, HMENU hSysMenu);
@@ -662,7 +662,7 @@ namespace metrowin
       static const UINT m_nMsgDragList;
       int m_nModalResult; // for return values from ::ca2::window::RunModalLoop
 
-      ::ca2::font * m_pfont;
+      ::draw2d::font * m_pfont;
 
       friend class frame_window;
 
@@ -704,7 +704,7 @@ namespace metrowin
 
          Platform::Agile<Windows::UI::Core::CoreWindow> window::get_os_window();
 
-          void set_view_port_org(::ca2::graphics * pgraphics);
+          void set_view_port_org(::draw2d::graphics * pgraphics);
 
           void offset_view_port_org(LPRECT lprectScreen);
 

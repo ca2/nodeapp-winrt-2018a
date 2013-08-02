@@ -545,7 +545,7 @@ namespace metrowin
       return ::metrowin::thread::DispatchThreadMessageEx(msg);
    }*/
 
-/*   ::ca2::graphics * application::graphics_from_os_data(void * pdata)
+/*   ::draw2d::graphics * application::graphics_from_os_data(void * pdata)
    {
       return ::metrowin::graphics::from_handle((HDC) pdata);
    }*/
@@ -806,6 +806,12 @@ namespace metrowin
 
    void application::ShowWaitCursor(bool bShow)
    {
+   }
+
+
+   string application::draw2d_get_default_library_name()
+   {
+      return "draw2d_direct2d";
    }
 
 

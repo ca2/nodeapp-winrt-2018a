@@ -190,7 +190,7 @@ namespace metrowin
 
       bool DispatchThreadMessageEx(MSG* msg);  // helper*/
 
-      //::ca2::graphics * graphics_from_os_data(void * pdata);
+      //::draw2d::graphics * graphics_from_os_data(void * pdata);
 
       
       sp(::user::interaction) window_from_os_data(void * pdata);
@@ -210,6 +210,8 @@ namespace metrowin
 
 
       void ShowWaitCursor(bool bShow);
+
+      virtual string draw2d_get_default_library_name();
 
    };
 

@@ -1137,8 +1137,8 @@ namespace metrowin
       //return ::SetLayeredWindowAttributes((oswindow)get_os_data(), crKey, bAlpha, dwFlags) != FALSE;
    }
 
-   bool window::UpdateLayeredWindow(::ca2::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
-      ::ca2::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags)
+   bool window::UpdateLayeredWindow(::draw2d::graphics * pDCDst, POINT *pptDst, SIZE *psize, 
+      ::draw2d::graphics * pDCSrc, POINT *pptSrc, COLORREF crKey, BLENDFUNCTION *pblend, uint32_t dwFlags)
    {
       throw todo(get_app());
       //ASSERT(::IsWindow((oswindow)get_os_data())); 
@@ -1154,7 +1154,7 @@ namespace metrowin
       //return ::GetLayeredWindowAttributes((oswindow)get_os_data(), pcrKey, pbAlpha, pdwFlags) != FALSE;
    }
 
-   bool window::PrintWindow(::ca2::graphics * pgraphics, UINT nFlags) const
+   bool window::PrintWindow(::draw2d::graphics * pgraphics, UINT nFlags) const
    {
       throw todo(get_app());
       //ASSERT(::IsWindow((oswindow)get_os_data())); 
@@ -1315,7 +1315,7 @@ namespace metrowin
       return false;
    }
 
-   void window::_002OnDraw(::ca2::graphics * pdc)
+   void window::_002OnDraw(::draw2d::graphics * pdc)
    {
    throw todo(get_app());
       //::CallWindowProc(*GetSuperWndProcAddr(), get_handle(), WM_PRINT, (WPARAM)((dynamic_cast<::metrowin::graphics * >(pdc))->get_os_data()), (LPARAM)(PRF_CHILDREN | PRF_CLIENT));
@@ -1806,7 +1806,7 @@ restart_mouse_hover_check:
    // special case for OnCtlColor to avoid too many temporary objects
    ASSERT(message == WM_CTLCOLOR);
    __CTLCOLOR* pCtl = reinterpret_cast<__CTLCOLOR*>(lParam);
-   ::ca2::graphics_sp dcTemp; 
+   ::draw2d::graphics_sp dcTemp; 
    dcTemp.set_handle1(pCtl->hDC);
    window wndTemp; 
    wndTemp.set_handle(pCtl->hWnd);
@@ -1830,7 +1830,7 @@ restart_mouse_hover_check:
    // special case for CtlColor to avoid too many temporary objects
    ASSERT(message == WM_REFLECT_BASE+WM_CTLCOLOR);
    __CTLCOLOR* pCtl = reinterpret_cast<__CTLCOLOR*>(lParam);
-   ::ca2::graphics_sp dcTemp; 
+   ::draw2d::graphics_sp dcTemp; 
    dcTemp.set_handle1(pCtl->hDC);
    UINT nCtlType = pCtl->nCtlType;
    HBRUSH hbr = (this->*mmf.pfn_B_D_u)(&dcTemp, nCtlType);
@@ -3139,7 +3139,7 @@ restart_mouse_hover_check:
 //      EnumWindows(GetAppsEnumWindowsProc, (LPARAM) &wnda);
    }
 
-   /*   void window::_001OnDeferPaintLayeredWindowBackground(::ca2::graphics * pdc)
+   /*   void window::_001OnDeferPaintLayeredWindowBackground(::draw2d::graphics * pdc)
    {
    _001DeferPaintLayeredWindowBackground(pdc);
    }*/
@@ -3392,7 +3392,7 @@ restart_mouse_hover_check:
       //try
       //{
 
-      //   ::ca2::dib_sp dib(get_app());
+      //   ::draw2d::dib_sp dib(get_app());
 
       //   rect rectWindow;
       //   GetWindowRect(rectWindow);
@@ -3400,7 +3400,7 @@ restart_mouse_hover_check:
       //   if(!dib->create(rectWindow.bottom_right()))
       //      return;
 
-      //   ::ca2::graphics * pdc = dib->get_graphics();
+      //   ::draw2d::graphics * pdc = dib->get_graphics();
 
       //   if((dynamic_cast<::metrowin::graphics * >(pdc))->get_os_data() == NULL 
       //      || (dynamic_cast<::metrowin::graphics * >(pdc))->get_handle2() == NULL)
@@ -3461,10 +3461,10 @@ restart_mouse_hover_check:
       //if(pbase->m_wparam == NULL)
       //   return;
 
-      //::ca2::graphics_sp graphics(get_app());
+      //::draw2d::graphics_sp graphics(get_app());
       //METROWIN_DC(graphics.m_p)->Attach((HDC) pbase->m_wparam);
       //rect rectx;
-      //::ca2::bitmap * pbitmap = &graphics->GetCurrentBitmap();
+      //::draw2d::bitmap * pbitmap = &graphics->GetCurrentBitmap();
       //::GetCurrentObject((HDC) pbase->m_wparam, OBJ_BITMAP);
       ////      uint32_t dw = ::GetLastError();
       //class size size = pbitmap->get_size();
@@ -3477,11 +3477,11 @@ restart_mouse_hover_check:
       //   rect rectWindow;
       //   GetWindowRect(rectWindow);
 
-      //   ::ca2::dib_sp dib(get_app());
+      //   ::draw2d::dib_sp dib(get_app());
       //   if(!dib->create(rectWindow.bottom_right()))
       //      return;
 
-      //   ::ca2::graphics * pdc = dib->get_graphics();
+      //   ::draw2d::graphics * pdc = dib->get_graphics();
 
       //   if(pdc->get_os_data() == NULL)
       //      return;
@@ -3547,7 +3547,7 @@ restart_mouse_hover_check:
       //Default();
    }
 
-   HBRUSH window::OnCtlColor(::ca2::graphics *, ::ca2::window * pWnd, UINT)
+   HBRUSH window::OnCtlColor(::draw2d::graphics *, ::ca2::window * pWnd, UINT)
    {
       ASSERT(pWnd != NULL && WIN_WINDOW(pWnd)->get_handle() != NULL);
       LRESULT lResult;
@@ -4838,13 +4838,13 @@ throw todo(get_app());
 
    }
 
-   void window::SetFont(::ca2::font* pfont, bool bRedraw)
+   void window::SetFont(::draw2d::font* pfont, bool bRedraw)
    { 
       UNREFERENCED_PARAMETER(bRedraw);
-      ASSERT(::IsWindow(get_handle())); m_pfont = new ::ca2::font(*pfont); 
+      ASSERT(::IsWindow(get_handle())); m_pfont = new ::draw2d::font(*pfont); 
    }
 
-   ::ca2::font* window::GetFont()
+   ::draw2d::font* window::GetFont()
    { 
       ASSERT(::IsWindow(get_handle())); 
       return m_pfont; 
@@ -4929,12 +4929,12 @@ throw todo(get_app());
       //::MapWindowPoints(get_handle(), (oswindow) pwndTo->get_os_data(), (LPPOINT)lpRect, 2); 
    }
 
-   ::ca2::graphics * window::GetDC()
+   ::draw2d::graphics * window::GetDC()
    { 
 
       throw todo(get_app());
 
-      //::ca2::graphics_sp g(get_app());
+      //::draw2d::graphics_sp g(get_app());
       //if(get_handle() == NULL)
       //{
       //   (dynamic_cast < ::metrowin::graphics * >(g.m_p))->Attach(::GetDC(NULL));
@@ -4946,18 +4946,18 @@ throw todo(get_app());
       //return g.detach();
    }
 
-   ::ca2::graphics * window::GetWindowDC()
+   ::draw2d::graphics * window::GetWindowDC()
    {
 
       throw todo(get_app());
 
       //ASSERT(::IsWindow(get_handle())); 
-      //::ca2::graphics_sp g(get_app());
+      //::draw2d::graphics_sp g(get_app());
       //g->attach(::GetWindowDC(get_handle()));
       //return g.detach();
    }
 
-   bool window::ReleaseDC(::ca2::graphics * pgraphics)
+   bool window::ReleaseDC(::draw2d::graphics * pgraphics)
    { 
 
       throw todo(get_app());
@@ -5004,7 +5004,7 @@ throw todo(get_app());
       //return ::GetUpdateRect(get_handle(), lpRect, bErase) != FALSE; 
    }
 
-   int window::GetUpdateRgn(::ca2::region* pRgn, bool bErase)
+   int window::GetUpdateRgn(::draw2d::region* pRgn, bool bErase)
    { 
 
       throw todo(get_app());
@@ -5031,7 +5031,7 @@ throw todo(get_app());
       //::InvalidateRect(get_handle(), lpRect, bErase); 
    }
 
-   void window::InvalidateRgn(::ca2::region* pRgn, bool bErase)
+   void window::InvalidateRgn(::draw2d::region* pRgn, bool bErase)
    {
 
       throw todo(get_app());
@@ -5051,7 +5051,7 @@ throw todo(get_app());
    
    }
   
-   void window::ValidateRgn(::ca2::region* pRgn)
+   void window::ValidateRgn(::draw2d::region* pRgn)
    {
    
       throw todo(get_app());
@@ -5150,13 +5150,13 @@ throw todo(get_app());
    }
 
 
-   ::ca2::graphics * window::GetDCEx(::ca2::region* prgnClip, uint32_t flags)
+   ::draw2d::graphics * window::GetDCEx(::draw2d::region* prgnClip, uint32_t flags)
    {
 
       throw todo(get_app());
 
       //ASSERT(::IsWindow(get_handle())); 
-      //::ca2::graphics_sp g(get_app());
+      //::draw2d::graphics_sp g(get_app());
       //g->attach(::GetDCEx(get_handle(), (HRGN)prgnClip->get_os_data(), flags));
       //return g.detach(); 
 
@@ -5184,7 +5184,7 @@ throw todo(get_app());
 
    }
 
-   bool window::RedrawWindow(LPCRECT lpRectUpdate, ::ca2::region* prgnUpdate, UINT flags)
+   bool window::RedrawWindow(LPCRECT lpRectUpdate, ::draw2d::region* prgnUpdate, UINT flags)
    { 
 
       //throw todo(get_app());
@@ -5229,7 +5229,7 @@ throw todo(get_app());
    
    }
 
-   bool window::DrawCaption(::ca2::graphics * pgraphics, LPCRECT lprc, UINT uFlags)
+   bool window::DrawCaption(::draw2d::graphics * pgraphics, LPCRECT lprc, UINT uFlags)
    {
 
       throw todo(get_app());
@@ -5539,7 +5539,7 @@ throw todo(get_app());
    
    }
 
-   int window::ScrollWindowEx(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, ::ca2::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags)
+   int window::ScrollWindowEx(int dx, int dy, LPCRECT lpRectScroll, LPCRECT lpRectClip, ::draw2d::region* prgnUpdate, LPRECT lpRectUpdate, UINT flags)
    { 
 
       throw todo(get_app());
@@ -5740,7 +5740,7 @@ throw todo(get_app());
 
    }
 
-   void window::CreateCaret(::ca2::bitmap* pBitmap)
+   void window::CreateCaret(::draw2d::bitmap* pBitmap)
    {
 
       throw todo(get_app());
@@ -5859,21 +5859,23 @@ throw todo(get_app());
 
    }
 
-   void window::Print(::ca2::graphics * pgraphics, uint32_t dwFlags) const
+   void window::Print(::draw2d::graphics * pgraphics, uint32_t dwFlags) const
    { 
 
       ASSERT(::IsWindow(get_handle()));
 
-      const_cast < window * > (this)->send_message(WM_PRINT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
+      throw not_implemented(get_app());
+//      const_cast < window * > (this)->send_message(WM_PRINT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
 
    }
 
-   void window::PrintClient(::ca2::graphics * pgraphics, uint32_t dwFlags) const
+   void window::PrintClient(::draw2d::graphics * pgraphics, uint32_t dwFlags) const
    { 
 
       ASSERT(::IsWindow(get_handle()));
 
-      const_cast < window * > (this)->send_message(WM_PRINTCLIENT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
+      throw not_implemented(get_app());
+      //const_cast < window * > (this)->send_message(WM_PRINTCLIENT, (WPARAM)(dynamic_cast<::metrowin::graphics * >(pgraphics))->get_os_data(), (LPARAM) dwFlags);
 
    }
 
@@ -5930,7 +5932,7 @@ throw todo(get_app());
    void window::OnEndSession(bool)
    { Default(); }
    
-   bool window::OnEraseBkgnd(::ca2::graphics *)
+   bool window::OnEraseBkgnd(::draw2d::graphics *)
    {
       
       return Default() != FALSE;
@@ -5945,7 +5947,7 @@ throw todo(get_app());
 
 #endif
 
-   void window::OnIconEraseBkgnd(::ca2::graphics *)
+   void window::OnIconEraseBkgnd(::draw2d::graphics *)
    { Default(); }
    void window::OnKillFocus(::ca2::window *)
    { Default(); }
@@ -7137,7 +7139,7 @@ bool CLASS_DECL_metrowin __register_class(WNDCLASS* lpWndClass)
 namespace metrowin
 {
 
-   /*   void window::_001DeferPaintLayeredWindowBackground(::ca2::graphics * pdc)
+   /*   void window::_001DeferPaintLayeredWindowBackground(::draw2d::graphics * pdc)
    {
 
 
@@ -7189,7 +7191,7 @@ namespace metrowin
 
       //   Gdiplus::Bitmap b(cx, cy, cx *4 , PixelFormat32bppARGB, (BYTE *) pcolorref);
 
-      //   ::ca2::graphics_sp spg(get_app());
+      //   ::draw2d::graphics_sp spg(get_app());
 
       //   (dynamic_cast < ::metrowin::graphics * > (spg.m_p))->attach(new Gdiplus::Graphics(&b));
 
@@ -7321,7 +7323,7 @@ namespace metrowin
    }
 
 
-   void window::set_view_port_org(::ca2::graphics * pgraphics)
+   void window::set_view_port_org(::draw2d::graphics * pgraphics)
    {
       // graphics will be already set its view port to the window for linux - cairo with xlib
 

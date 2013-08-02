@@ -25,9 +25,6 @@
     <Filter Include="Header Files\operational_system\template">
       <UniqueIdentifier>{c8acb731-a5af-499d-8d46-47c6d2ca0cbf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\NewFilter1">
-      <UniqueIdentifier>{b83be8ea-ac72-44a5-bde7-fd27e1ee559b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\operational_system\NewFilter1">
       <UniqueIdentifier>{dcaa0965-00c1-4687-9d5b-4089aec346f4}</UniqueIdentifier>
     </Filter>
@@ -69,19 +66,10 @@
     <ClCompile Include="metrowin_appterm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="metrowin_bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_brush.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="metrowin_copydesk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_crypt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_dib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_dir.cpp">
@@ -111,15 +99,6 @@
     <ClCompile Include="metrowin_folder_watch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="metrowin_font.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_graphics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_graphics_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="metrowin_handle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,19 +111,10 @@
     <ClCompile Include="metrowin_os.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="metrowin_palette.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_pen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="metrowin_port_forward.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_preview_dc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_region.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_registry.cpp">
@@ -181,9 +151,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_file_find.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="metrowin_graphics_path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="metrowin_directx.cpp">
@@ -266,19 +233,10 @@
     <ClInclude Include="metrowin_application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="metrowin_bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_brush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="metrowin_copydesk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_crypt.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_dib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_dir.h">
@@ -302,15 +260,6 @@
     <ClInclude Include="metrowin_folder_watch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="metrowin_font.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_graphics.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_graphics_object.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="metrowin_handle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -326,19 +275,10 @@
     <ClInclude Include="metrowin_os.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="metrowin_palette.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_pen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="metrowin_port_forward.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_printer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_region.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_registry.h">
@@ -372,9 +312,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_uac_tools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_graphics_path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_directx.h">

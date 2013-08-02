@@ -43,7 +43,7 @@ namespace metrowin
       m_directx = ref new directx_base(papp);
    }
 
-   extern void _001DeferPaintLayeredWindowBackground(oswindow hwnd, ::ca2::graphics * pdc);
+   extern void _001DeferPaintLayeredWindowBackground(oswindow hwnd, ::draw2d::graphics * pdc);
    window_draw::~window_draw()
    {
 #ifndef METROWIN
@@ -203,7 +203,7 @@ namespace metrowin
    }
 
    bool window_draw::to(
-      ::ca2::graphics *          pdc,
+      ::draw2d::graphics *          pdc,
       LPCRECT        lpcrectUpdate,
       user::oswindow_tree::Array & hwndtreea,
       bool           bGdiLocked,
@@ -237,7 +237,7 @@ namespace metrowin
    }
 
    bool window_draw::to(
-      ::ca2::graphics *          pdc,
+      ::draw2d::graphics *          pdc,
       LPCRECT        lpcrectUpdate,
       user::oswindow_tree & hwndtree,
       bool           bGdiLocked,
@@ -423,7 +423,7 @@ namespace metrowin
       if(m_pbuffer->GetBuffer()->get_os_data() == NULL)
          return true;
 
-      ::ca2::graphics * pdc = (dynamic_cast<::metrowin::graphics * >(m_pbuffer->GetBuffer()));
+      ::draw2d::graphics * pdc = (dynamic_cast<::metrowin::graphics * >(m_pbuffer->GetBuffer()));
 
       if(pdc == NULL)
       {
@@ -470,14 +470,14 @@ namespace metrowin
 
       m_wndpaOut.remove_all();
 
-      ::ca2::region_sp rgnWindow(get_app());
-      ::ca2::region_sp rgnIntersect(get_app());
+      ::draw2d::region_sp rgnWindow(get_app());
+      ::draw2d::region_sp rgnIntersect(get_app());
 
       rgnWindow->create_rect(0, 0, 0, 0);
       rgnIntersect->create_rect(0, 0, 0, 0);
 
       /*rect rectIntersect;
-      ::ca2::region_sp rgnUpdate(get_app());
+      ::draw2d::region_sp rgnUpdate(get_app());
       rgnUpdate->CreateRectRgnIndirect(rectUpdate);
       oswindow hwndOrder = ::GetWindow(::GetDesktopWindow(), GW_CHILD);
       for(;;)
@@ -1083,7 +1083,7 @@ namespace metrowin
 
    bool window_draw::ScreenOutput(
       user::buffer * pbuffer,
-      ::ca2::region & rgnUpdate)
+      ::draw2d::region & rgnUpdate)
    {
       UNREFERENCED_PARAMETER(pbuffer);
       UNREFERENCED_PARAMETER(rgnUpdate);
@@ -1209,7 +1209,7 @@ namespace metrowin
       // The ::ca2::window owned device context is clipped
       // with the update region in screen coordinates
       // translated to ::ca2::window client coordinates.
-      //::ca2::region_sp rgnClip(get_app());
+      //::draw2d::region_sp rgnClip(get_app());
       //rgnClip->CreateRectRgn(0, 0, 0, 0);
       //rgnClip->CopyRgn(&rgnUpdate);
       //rgnClip->OffsetRgn( - rectWnd.top_left());

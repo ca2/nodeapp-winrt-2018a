@@ -72,17 +72,6 @@ CLASS_DECL_metrowin void __try_cleanup();
 #include "metrowin_factory_exchange.h"
 #include "metrowin_uac_tools.h"
 #include "metrowin_window_draw.h"
-#include "metrowin_graphics.h"
-#include "metrowin_graphics_object.h"
-#include "metrowin_graphics_path.h"
-#include "metrowin_bitmap.h"
-#include "metrowin_dib.h"
-#include "metrowin_palette.h"
-#include "metrowin_pen.h"
-#include "metrowin_font.h"
-#include "metrowin_brush.h"
-#include "metrowin_region.h"
-//#includemetro "win_draw_dib.h"
 #include "metrowin_thread.h"
 #include "metrowin_window.h"
 #include "metrowin_port_forward.h"
@@ -99,8 +88,8 @@ CLASS_DECL_metrowin void __try_cleanup();
 #define METROWIN_BRUSH(pbrush) (dynamic_cast < ::metrowin::brush * > (pbrush))
 #define METROWIN_PATH(ppath) (dynamic_cast < ::metrowin::graphics_path * > (ppath))
 #define METROWIN_FONT(pfont) (dynamic_cast < ::metrowin::font * > (pfont))
-#define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::ca2::graphics * )(pgraphics)))
-#define WIN_DIB(pdib) (dynamic_cast < ::metrowin::dib * > (dynamic_cast < ::ca2::dib * >(pdib)))
+#define SP_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (( ::draw2d::graphics * )(pgraphics)))
+#define WIN_DIB(pdib) (dynamic_cast < ::metrowin::dib * > (dynamic_cast < ::draw2d::dib * >(pdib)))
 
 
 #pragma comment(lib, "kernel32.lib")

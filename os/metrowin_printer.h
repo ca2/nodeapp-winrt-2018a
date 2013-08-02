@@ -25,7 +25,7 @@ namespace metrowin
 
          virtual bool initialize(::metrowin::printer * pprinter, DEVMODE * pdevmode = NULL);
          virtual bool close();
-         virtual ::ca2::graphics * create_graphics();
+         virtual ::draw2d::graphics * create_graphics();
 
       };
 
@@ -39,7 +39,7 @@ namespace metrowin
 
 
       virtual bool open(const char * pszDeviceName);
-      virtual ::ca2::graphics * create_graphics();
+      virtual ::draw2d::graphics * create_graphics();
       virtual bool is_opened();
       virtual bool close();
 

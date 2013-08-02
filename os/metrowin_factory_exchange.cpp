@@ -16,15 +16,6 @@ namespace metrowin
       System.factory().cloneable < application                 >  (System.template type_info < ::ca2::application_base       > (), 1);
       System.factory().cloneable < dir                         >  (System.template type_info < ::ca2::dir::system        > (), 1);
       System.factory().cloneable_small < folder_watch          >  (System.template type_info < ::ca2::folder_watch      > ());
-      System.factory().cloneable_large < dib                   >  (System.template type_info < ::ca2::dib                > ());
-      System.factory().cloneable_large < graphics              >  (System.template type_info < ::ca2::graphics           > ());
-      System.factory().cloneable_large < graphics_path         >  (System.template type_info < ::ca2::graphics_path      > ());
-      System.factory().cloneable_large < bitmap                >  (System.template type_info < ::ca2::bitmap             > ());
-      System.factory().cloneable_large < pen                   >  (System.template type_info < ::ca2::pen                > ());
-      System.factory().cloneable_large < brush                 >  (System.template type_info < ::ca2::brush              > ());
-      System.factory().cloneable_large < palette               >  (System.template type_info < ::ca2::palette            > ());
-      System.factory().cloneable_large < region                >  (System.template type_info < ::ca2::region             > ());
-      System.factory().cloneable_large < font                  >  (System.template type_info < ::ca2::font               > ());
       System.factory().creatable < window_draw                 >  (System.template type_info < ::ca2::window_draw        > (), 1);
       System.factory().creatable_large < thread                >  (System.template type_info < ::ca2::thread             > ());
       System.factory().creatable_large < window                >  (System.template type_info < ::ca2::window             > ());
@@ -37,7 +28,6 @@ namespace metrowin
       System.factory().creatable < printer                     >  (System.template type_info < ::user::printer          > (), 1);
       
 
-      ::metrowin::dib::s_initialize();
    }
 
 

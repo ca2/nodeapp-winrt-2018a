@@ -245,9 +245,10 @@ namespace metrowin
          );
 
 
+      ID2D1DeviceContext * pdevicecontext = m_d2dContext.Get();
 
-      System.m_pdc = m_d2dContext.Get();
-      System.m_pmutexDc = &m_mutexDc;
+      System.m_pdevicecontext    = pdevicecontext;
+      System.m_pmutexDc          = &m_mutexDc;
 
 
 
@@ -769,28 +770,13 @@ namespace metrowin
       g.m_pdc = NULL;*/
 
 
-
-
-      ::ca2::graphics_sp dc(get_app()->allocer());
-
-      dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
-
-
-      System.m_pui->_000OnDraw(dc);
-
-
-      
-
-
-      /*
-      for(int i = 0; i < uiptra.get_count(); i++)
+      //if(false)
       {
-
-         uiptra[i]->_000OnDraw(dc);
-
-      }*/
-
-      dc->detach();
+         ::draw2d::graphics_sp dc(get_app()->allocer());
+         dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
+         System.m_pui->_000OnDraw(dc);
+         dc->detach();
+      }
 
 
 

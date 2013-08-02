@@ -81,7 +81,7 @@ namespace metrowin
 
    class window;
    class graphics;
-   class graphics_object;
+   class ::draw2d::object;
 
    template < int t_iHandleCount >
    class handle_base
@@ -199,7 +199,7 @@ public:
 };*/
 
 /*class hgdiobj_map : 
-   public handle_map < ::metrowin::hgdiobj_handle, ::metrowin::graphics_object >
+   public handle_map < ::metrowin::hgdiobj_handle, ::metrowin::::draw2d::object >
 {
 public:
 };*/

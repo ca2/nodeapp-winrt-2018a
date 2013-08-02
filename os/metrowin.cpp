@@ -1,5 +1,6 @@
 #include "framework.h"
 
+extern int __abi___threading_model;
 
 
 #ifdef METROWIN
@@ -17,6 +18,8 @@ DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 
       ::ca2::g_pfn_get_thread = &::metrowin::get_thread;
       ::ca2::g_pfn_get_thread_state = &::metrowin::get_thread_state;
+
+      __abi___threading_model = 0; // avoid further changes
 
    }
    else if (dwReason == DLL_PROCESS_DETACH)

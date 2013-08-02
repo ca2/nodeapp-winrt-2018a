@@ -619,7 +619,7 @@ namespace metrowin
 
 //      window::DeleteTempMap();
       //      graphics::DeleteTempMap();
-      //    graphics_object::DeleteTempMap();
+      //    ::draw2d::object::DeleteTempMap();
 
       try
       {
@@ -1083,7 +1083,7 @@ stop_run:
    void thread::delete_temp()
    {
 
-      //      graphics_object::DeleteTempMap();
+      //      ::draw2d::object::DeleteTempMap();
       //    graphics::DeleteTempMap();
 //      window::DeleteTempMap();
 
@@ -1794,7 +1794,7 @@ run:
          if (bDeleteTemp)
          {
             // clean up temp objects
-            //         graphics_object::DeleteTempMap();
+            //         ::draw2d::object::DeleteTempMap();
             //       graphics::DeleteTempMap();
 //            window::DeleteTempMap();
          }

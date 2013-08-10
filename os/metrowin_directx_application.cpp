@@ -421,7 +421,6 @@ namespace metrowin
 
       //   ASSERT(hPrevInstance == NULL);
 
-      int nReturnCode = 0;
 
 
       ::metrowin::main_init_data * pinitmaindata  = new ::metrowin::main_init_data;
@@ -442,7 +441,37 @@ namespace metrowin
 
       //MessageBox(NULL, "box1", "box1", MB_ICONINFORMATION);
 
+
+
+   }
+
+
+   ::ca2::window_draw * directx_application::create_twf_2ex()
+   {
+
+      ::metrowin::window_draw * pwindowdraw = new ::metrowin::window_draw(m_psystem);
+
+      pwindowdraw->m_xapp = this;
+
+      return pwindowdraw;
+
+   }
+
+
+   void directx_application::init_part_2ex()
+   {
+
+      m_psystem->m_window = m_window;
+
+      int nReturnCode = 0;
+
       nReturnCode = m_psystem->main_start();
+
+      m_psystem->m_pui->initialize(m_window.Get(), this);
+
+      m_psystem->m_ptwf = create_twf_2ex();
+
+      m_psystem->m_ptwf->twf_start();
 
       stringa straLibrary = m_psystem->command()->m_varTopicQuery["app"];
 
@@ -477,250 +506,59 @@ namespace metrowin
       __begin_thread(m_psystem, &system_main, m_psystem);
 
 
-
    }
-
-   /*   void directx_application::CreateDeviceIndependentResources()
-   {
-   directx_base::CreateDeviceIndependentResources();
-
-   // Create a DirectWrite text format object.
-   ::metrowin::throw_if_failed(
-   m_dwriteFactory->CreateTextFormat(
-   L"Gabriola",
-   nullptr,
-   DWRITE_FONT_WEIGHT_REGULAR,
-   DWRITE_FONT_STYLE_NORMAL,
-   DWRITE_FONT_STRETCH_NORMAL,
-   64.0f,
-   L"en-US", // locale
-   &m_textFormat
-   )
-   );
-
-   // Center the text horizontally.
-   ::metrowin::throw_if_failed(
-   m_textFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER)
-   );
-
-   // Center the text vertically.
-   ::metrowin::throw_if_failed(
-   m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER)
-   );
-   }
-
-   void directx_application::CreateDeviceResources()
-   {
-   directx_base::CreateDeviceResources();
-
-   m_sampleOverlay = ref new SampleOverlay();
-
-   m_sampleOverlay->Initialize(
-   m_d2dDevice.Get(),
-   m_d2dContext.Get(),
-   m_wicFactory.Get(),
-   m_dwriteFactory.Get(),
-   "DirectWrite Hello World sample"
-   );
-
-   ::metrowin::throw_if_failed(
-   m_d2dContext->CreateSolidColorBrush(
-   D2D1::ColorF(D2D1::ColorF::Black),
-   &m_blackBrush
-   )
-   );
-   }
-
-   void directx_application::CreateWindowSizeDependentResources()
-   {
-   directx_base::CreateWindowSizeDependentResources();
-
-   Platform::String^ text = "Hello World From ... DirectWrite!";
-
-   D2D1_SIZE_F size = m_d2dContext->GetSize();
-
-   // Create a DirectWrite Text Layout object
-   ::metrowin::throw_if_failed(
-   m_dwriteFactory->CreateTextLayout(
-   text->Data(),                       // Text to be displayed
-   text->Length(),                     // Length of the text
-   m_textFormat.Get(),                 // DirectWrite Text Format object
-   size.width,                         // Width of the Text Layout
-   size.height,                        // Height of the Text Layout
-   &m_textLayout
-   )
-   );
-
-   // Text range for the "DirectWrite!" at the end of the string
-   DWRITE_TEXT_RANGE textRange = {21, 12}; // 21 references the "D" in DirectWrite! and 12 is the number of characters in the word
-
-   // Set the font size on that text range to 100
-   ::metrowin::throw_if_failed(
-   m_textLayout->SetFontSize(100.0f, textRange)
-   );
-
-   // Create a DirectWrite Typography object
-   ::metrowin::throw_if_failed(
-   m_dwriteFactory->CreateTypography(
-   &m_textTypography
-   )
-   );
-
-   // Enumerate a stylistic set 6 font feature for application to our text layout
-   DWRITE_FONT_FEATURE fontFeature = {DWRITE_FONT_FEATURE_TAG_STYLISTIC_SET_6, 1};
-
-   // Apply the previously enumerated font feature to our Text Typography object
-   ::metrowin::throw_if_failed(
-   m_textTypography->AddFontFeature(fontFeature)
-   );
-
-   // Move our text range to the entire length of the string
-   textRange.length = text->Length();
-   textRange.startPosition = 0;
-
-   // Apply our recently defined typography to our entire text range
-   ::metrowin::throw_if_failed(
-   m_textLayout->SetTypography(
-   m_textTypography.Get(),
-   textRange
-   )
-   );
-
-   // Move the text range to the end again
-   textRange.length = 12;
-   textRange.startPosition = 21;
-
-   // Set the underline on the text range
-   ::metrowin::throw_if_failed(
-   m_textLayout->SetUnderline(TRUE, textRange)
-   );
-
-   // Set the font weight on the text range
-   ::metrowin::throw_if_failed(
-   m_textLayout->SetFontWeight(DWRITE_FONT_WEIGHT_BOLD, textRange)
-   );
-   }
-
-   void directx_application::Render()
-   {
-   m_d2dContext->BeginDraw();
-
-   D2D1_COLOR_F cr = D2D1::ColorF(D2D1::ColorF::White);
-   m_d2dContext->Clear(cr);
-
-
-   ::draw2d::graphics_sp dc(::ca2::get_thread_app());
-
-   dc->attach((ID2D1DeviceContext * ) m_d2dContext);
-
-   Sys(::ca2::get_thread_app())._001OnDraw(&dc);
-
-   dc->detach();
-
-   m_d2dContext->SetTransform(D2D1::Matrix3x2F::Identity());
-
-   m_d2dContext->DrawTextLayout(
-   D2D1::Point2F(0.0f, 0.0f),
-   m_textLayout.Get(),
-   m_blackBrush.Get()
-   );
-
-   simple_graphics g;
-
-   g.reference_os_data(m_d2dContext.Get());
-
-   RECT rect;
-
-   rect.left     = 200;
-   rect.top      = 200;
-   rect.right    = 300;
-   rect.bottom   = 100;
-
-   g.fill_solid_rect(rect, ARGB(127, 255, 255, 240));
-
-   g.m_pdc = NULL;
-
-
-   // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device
-   // is lost. It will be handled during the next call to Present.
-   HRESULT hr = m_d2dContext->EndDraw();
-   if (hr != D2DERR_RECREATE_TARGET)
-   {
-   ::metrowin::throw_if_failed(hr);
-   }
-
-   //      m_sampleOverlay->Render();
-
-
-   }*/
 
    void directx_application::Initialize(CoreApplicationView ^ applicationView)
    {
-      applicationView->Activated +=
-         ref new TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &directx_application::OnActivated);
+      
+      applicationView->Activated += ref new TypedEventHandler<CoreApplicationView^, IActivatedEventArgs^>(this, &directx_application::OnActivated);
 
-      CoreApplication::Suspending +=
-         ref new EventHandler<SuspendingEventArgs^>(this, &directx_application::OnSuspending);
+      CoreApplication::Suspending += ref new EventHandler<SuspendingEventArgs^>(this, &directx_application::OnSuspending);
 
-      CoreApplication::Resuming +=
-         ref new EventHandler<Platform::Object^>(this, &directx_application::OnResuming);
+      CoreApplication::Resuming += ref new EventHandler<Platform::Object^>(this, &directx_application::OnResuming);
+
+   }
+
+
+   void directx_application::install_message_handling_2ex()
+   {
+
+      CoreWindow ^ window = m_window.Get();
+      
+      window->PointerCursor = ref new CoreCursor(CoreCursorType::Arrow, 0);
+
+      window->SizeChanged += ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &directx_application::OnWindowSizeChanged);
+
+      window->PointerMoved += ref new TypedEventHandler < CoreWindow^, PointerEventArgs^>(this, &directx_application::OnPointerMoved);
+
+      window->CharacterReceived += ref new TypedEventHandler<CoreWindow^, CharacterReceivedEventArgs^>(this, &directx_application::OnCharacterReceived);
+
+      window->KeyDown += ref new TypedEventHandler < CoreWindow^, KeyEventArgs^>(this, &directx_application::OnKeyDown);
+
+      window->KeyUp += ref new TypedEventHandler < CoreWindow^, KeyEventArgs^>( this, &directx_application::OnKeyUp);
+
+      window->PointerPressed += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &directx_application::OnPointerPressed);
+
+      window->PointerReleased += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &directx_application::OnPointerReleased);
+
+      DisplayProperties::LogicalDpiChanged += ref new DisplayPropertiesEventHandler(this, &directx_application::OnLogicalDpiChanged);
+
+      DisplayProperties::DisplayContentsInvalidated += ref new DisplayPropertiesEventHandler(this, &directx_application::OnDisplayContentsInvalidated);
+
    }
 
    void directx_application::SetWindow(_In_ CoreWindow^ window)
    {
+
       m_window = window;
 
-      m_psystem->m_pui->initialize(m_window.Get(), this);
+      install_message_handling_2ex();
 
-      m_psystem->m_window = m_window;
+      m_directx = ref new directx_base(m_psystem);
 
+      m_directx->Initialize(window, DisplayProperties::LogicalDpi);
 
-      window->PointerCursor = ref new CoreCursor(CoreCursorType::Arrow, 0);
-
-      window->SizeChanged +=
-         ref new TypedEventHandler<CoreWindow^, WindowSizeChangedEventArgs^>(this, &directx_application::OnWindowSizeChanged);
-
-      window->PointerMoved +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
-         this, &directx_application::OnPointerMoved);
-
-      window->CharacterReceived +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::CharacterReceivedEventArgs^>(
-         this, &directx_application::OnCharacterReceived);
-
-      window->KeyDown +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^>(
-         this, &directx_application::OnKeyDown);
-
-      window->KeyUp +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::KeyEventArgs^>(
-         this, &directx_application::OnKeyUp);
-
-      window->PointerPressed +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
-         this, &directx_application::OnPointerPressed);
-
-      window->PointerReleased +=
-         ref new Windows::Foundation::TypedEventHandler<
-         Windows::UI::Core::CoreWindow^, Windows::UI::Core::PointerEventArgs^>(
-         this, &directx_application::OnPointerReleased);
-
-      DisplayProperties::LogicalDpiChanged +=
-         ref new DisplayPropertiesEventHandler(this, &directx_application::OnLogicalDpiChanged);
-
-      DisplayProperties::DisplayContentsInvalidated +=
-         ref new DisplayPropertiesEventHandler(this, &directx_application::OnDisplayContentsInvalidated);
-
-      m_psystem->defer_initialize_twf();
-
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
-
-      pdraw->m_directx->Initialize(window, DisplayProperties::LogicalDpi);
+      init_part_2ex();
 
       m_rectLastWindowRect = m_window->Bounds;
 
@@ -738,63 +576,82 @@ namespace metrowin
       m_window->Dispatcher->ProcessEvents(CoreProcessEventsOption::ProcessUntilQuit);
    }
 
+
    void directx_application::Uninitialize()
    {
+
    }
+
 
    void directx_application::OnWindowSizeChanged(CoreWindow ^ sender, WindowSizeChangedEventArgs ^ args)
    {
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
-
 
       m_rectLastWindowRect = m_window->Bounds;
 
+      m_directx->UpdateForWindowSizeChange();
 
-      pdraw->m_directx->UpdateForWindowSizeChange();
-
-
-
-      //UpdateForWindowSizeChange();
-      //      m_sampleOverlay->UpdateForWindowSizeChange();
-      /*      Render();
-      Present();*/
    }
+
 
    void directx_application::OnLogicalDpiChanged(Platform::Object ^ sender)
    {
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
       m_rectLastWindowRect = m_window->Bounds;
 
-      pdraw->m_directx->SetDpi(DisplayProperties::LogicalDpi);
-      /*SetDpi(DisplayProperties::LogicalDpi);
+      m_directx->SetDpi(DisplayProperties::LogicalDpi);
+   
+      /*
+      
+      SetDpi(DisplayProperties::LogicalDpi);
+
       Render();
-      Present();*/
+
+      Present();
+      
+      */
+
    }
+
+
    void directx_application::OnDisplayContentsInvalidated(Platform::Object ^ sender)
    {
-      // Ensure the D3D Device is available for rendering.
-      ::metrowin::window_draw * pdraw = dynamic_cast < ::metrowin::window_draw * > (m_psystem->get_twf().m_p);
 
-      pdraw->m_directx->ValidateDevice();
-      /*ValidateDevice();
+      // Ensure the D3D Device is available for rendering.
+
+      m_directx->ValidateDevice();
+      
+      /*
+      
+      ValidateDevice();
 
       Render();
-      Present();*/
+      
+      Present();
+      
+      */
+
    }
+
 
    void directx_application::OnActivated(CoreApplicationView^ applicationView, IActivatedEventArgs^ args)
    {
+
       m_window->Activate();
+
    }
+
 
    void directx_application::OnSuspending(Platform::Object ^ sender, SuspendingEventArgs ^ args)
    {
+
    }
+
 
    void directx_application::OnResuming(Platform::Object ^ sender, Platform::Object ^ args)
    {
+
    }
+
 
    void directx_application::OnCharacterReceived(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::CharacterReceivedEventArgs ^ args)
    { 

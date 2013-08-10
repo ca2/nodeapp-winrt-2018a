@@ -9,7 +9,7 @@ namespace metrowin
 {
 
 
-   ref class directx_base;
+   ref class directx_application;
 
    class CLASS_DECL_metrowin window_draw : 
       virtual public ::ca2::window_draw,
@@ -25,8 +25,7 @@ namespace metrowin
          OptimizeAllNext,
       };
 
-
-      directx_base ^                         m_directx;
+      directx_application ^                  m_xapp;
       user::interaction_ptr_array            m_wndpaOut;
       mutex                                  m_mutexRendering;
       mutex                                  m_mutexRgnUpdate;

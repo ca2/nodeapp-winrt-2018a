@@ -18,6 +18,9 @@ namespace metrowin
 
       Platform::Agile<Windows::UI::Core::CoreWindow>  m_window;
 
+            directx_base ^                         m_directx;
+
+
       mutex m_mutex;
 
       ::plane::system * m_psystem;
@@ -37,7 +40,10 @@ namespace metrowin
 
       directx_application(Platform::String ^ strId);
 
-      
+
+      void init_part_2ex();
+      void install_message_handling_2ex();
+      ::ca2::window_draw * create_twf_2ex();
 
       // DirectXBase Methods
       //virtual void CreateDeviceIndependentResources() override;

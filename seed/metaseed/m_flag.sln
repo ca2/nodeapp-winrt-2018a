@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_flag", "..\..\..\a
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_flag", "..\..\..\app-core\appseed\flag\winmetro_flag.vcxproj", "{35F34DBA-26BA-4A9D-ABAA-83936D842000}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "draw2d_direct2d", "..\..\..\app\appseed\draw2d_direct2d\m_draw2d_direct2d.vcxproj", "{0EEC2ECE-CAAF-446A-B805-7E538FF11996}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		basis|ARM = basis|ARM
@@ -308,6 +310,30 @@ Global
 		{35F34DBA-26BA-4A9D-ABAA-83936D842000}.Release|x64.ActiveCfg = Release|x64
 		{35F34DBA-26BA-4A9D-ABAA-83936D842000}.Release|x64.Build.0 = Release|x64
 		{35F34DBA-26BA-4A9D-ABAA-83936D842000}.Release|x64.Deploy.0 = Release|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|ARM.ActiveCfg = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|ARM.Build.0 = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|Win32.ActiveCfg = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|Win32.Build.0 = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|x64.ActiveCfg = basis|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.basis|x64.Build.0 = basis|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|ARM.ActiveCfg = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|ARM.Build.0 = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|Win32.ActiveCfg = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|Win32.Build.0 = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|x64.ActiveCfg = basis|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Debug|x64.Build.0 = basis|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|ARM.ActiveCfg = profiler|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|ARM.Build.0 = profiler|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|Win32.ActiveCfg = profiler|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|Win32.Build.0 = profiler|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|x64.ActiveCfg = profiler|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.profiler|x64.Build.0 = profiler|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|ARM.ActiveCfg = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|ARM.Build.0 = basis|ARM
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|Win32.ActiveCfg = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|Win32.Build.0 = basis|Win32
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|x64.ActiveCfg = basis|x64
+		{0EEC2ECE-CAAF-446A-B805-7E538FF11996}.Release|x64.Build.0 = basis|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

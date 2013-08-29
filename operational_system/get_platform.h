@@ -39,3 +39,4 @@
 
 #include "bare_operational_system.h"
 
+#define MOVE_SEMANTICS

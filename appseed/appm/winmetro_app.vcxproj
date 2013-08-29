@@ -39,7 +39,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1dc17004-a99d-40ca-80f4-537ffed13d2a}</ProjectGuid>
+    <ProjectGuid>{1DC17004-A99D-40CA-80F4-537FFED11988}</ProjectGuid>
     <RootNamespace>Direct3DApp2</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and '$(VisualStudioVersion)' == ''">$(VCTargetsPath11)</VCTargetsPath>
@@ -210,12 +210,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\app\appseed\c\m_c.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900ebb72}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\app\appseed\optca\m_optca.vcxproj">
-      <Project>{73472f5d-e2e2-4ed4-a2e0-65fae45f0353}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\os2\m_os2.vcxproj">
-      <Project>{5c2ae0fe-a604-4666-b24f-a96473e2b59e}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\os\m_os.vcxproj">
       <Project>{fccdd981-5c10-4487-becf-eb3a7d4a1380}</Project>

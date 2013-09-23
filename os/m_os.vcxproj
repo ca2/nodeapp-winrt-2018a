@@ -134,7 +134,7 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>_METROWIN_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(SolutionDir)../../../app;$(SolutionDir)../../../app/thirdparty/include;$(SolutionDir)../../../app/thirdparty/appseed;$(SolutionDir)../../../app/appseed;$(SolutionDir)../../../app/appseed/ca2;$(SolutionDir)../../../;$(SolutionDir)../../;$(ProjectDir)../../appseed;$(ProjectDir)../../;$(ProjectDir)../;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(SolutionDir)../../../app;$(SolutionDir)../../../app/thirdparty/include;$(SolutionDir)../../../app/thirdparty/appseed;$(SolutionDir)../../../app/appseed;$(SolutionDir)../../../app/appseed/core;$(SolutionDir)../../../;$(SolutionDir)../../;$(ProjectDir)../../appseed;$(ProjectDir)../../;$(ProjectDir)../;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm384 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Async</ExceptionHandling>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -240,6 +240,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\operational_system\bare_operational_system.h" />
+    <ClInclude Include="..\operational_system\config.h" />
     <ClInclude Include="..\operational_system\_ca.h" />
     <ClInclude Include="..\operational_system\cross\cross.h" />
     <ClInclude Include="..\operational_system\cross\general\general.h" />
@@ -351,14 +352,23 @@
     <None Include="os.def" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\app\appseed\ca2\m_ca2.vcxproj">
-      <Project>{420d7aeb-cfca-45de-bb6e-95055df21987}</Project>
+    <ProjectReference Include="..\..\app\appseed\base\m_base.vcxproj">
+      <Project>{5487686f-8a2f-401a-a38e-fda8900e1984}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\app\appseed\ca\m_ca.vcxproj">
+    <ProjectReference Include="..\..\app\appseed\boot\m_boot.vcxproj">
       <Project>{5fd926e7-e8b9-4451-baac-81efa94d1985}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\app\appseed\c\m_c.vcxproj">
-      <Project>{5487686f-8a2f-401a-a38e-fda8900e1984}</Project>
+    <ProjectReference Include="..\..\app\appseed\core\m_core.vcxproj">
+      <Project>{420d7aeb-cfca-45de-bb6e-95055df21987}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\thirdparty\appseed\FreeImage\m_FreeImage.vcxproj">
+      <Project>{fced5042-9a2d-4e71-8022-129e8e5d1993}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj">
+      <Project>{af9dfa62-6f0e-47b8-a55b-5ad825571f4f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\app\thirdparty\appseed\zlib\_m_ca2zlib.vcxproj">
+      <Project>{84fbad70-591c-44fa-93c4-ee232b3a1995}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

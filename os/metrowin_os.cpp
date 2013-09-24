@@ -12,8 +12,8 @@ namespace metrowin
 {
 
 
-   os::os(::ca2::application * papp) :
-      ca2(papp),
+   os::os(base_application * papp) :
+      element(papp),
       ::ca2::os(papp)
    {
    }
@@ -548,9 +548,9 @@ namespace metrowin
          try
          {
 
-            strCommand = ::ca2::str::consume_quoted_value(psz);
-            ::ca2::str::consume_spaces(psz);
-            ::ca2::str::consume(psz, "\"%L\"");
+            strCommand = ::str::consume_quoted_value(psz);
+            ::str::consume_spaces(psz);
+            ::str::consume(psz, "\"%L\"");
             strParam = psz;
 
          }
@@ -858,7 +858,7 @@ namespace metrowin
 
       ::count ca;
 
-      ::ca2::thread * pthread;
+      ::thread * pthread;
 
       ca = ::metrowin::thread::s_threadptra.get_size();
 
@@ -874,7 +874,7 @@ namespace metrowin
          
             try
             {
-               pthread = dynamic_cast < ::ca2::thread * >(::metrowin::thread::s_threadptra[i]);
+               pthread = dynamic_cast < ::thread * >(::metrowin::thread::s_threadptra[i]);
                pthread->m_bRun = false;
                pthread->m_p->m_bRun = false;
             }

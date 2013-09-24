@@ -3,9 +3,9 @@
 namespace metrowin
 {
 
-   folder_watch::folder_watch(::ca2::application * papp) :
-      ca2(papp),
-      ::ca2::thread(papp)
+   folder_watch::folder_watch(base_application * papp) :
+      element(papp),
+      ::thread(papp)
    {
    }
 

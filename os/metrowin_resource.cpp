@@ -4,8 +4,8 @@
 #if FALSE
 
 
-WinResource::WinResource(::ca2::application * papp) :
-   ca2(papp)
+WinResource::WinResource(base_application * papp) :
+   element(papp)
 {
 }
 
@@ -16,7 +16,7 @@ WinResource::~WinResource()
 
 
 /*bool WinResource::ReadResource(
-   ::ca2::filesp & file, 
+   ::file::buffer_sp & file, 
    UINT nID, 
    const char * lpcszType)
 {
@@ -29,7 +29,7 @@ WinResource::~WinResource()
 
 /*bool WinResource::ReadResource(
    HINSTANCE hinst,
-   ::ca2::filesp & file, 
+   ::file::buffer_sp & file, 
    UINT nID, 
    const char * lpcszType)
 {
@@ -51,7 +51,7 @@ WinResource::~WinResource()
         try
         {
            // create the .mdb file
-//           ::ca2::filesp f(lpcszFilePath, ::ca2::file::mode_create | ::ca2::file::mode_write );
+//           ::file::buffer_sp f(lpcszFilePath, ::file::mode_create | ::file::mode_write );
 
            // write the ::fontopus::user-defined resource to the .mdb file
            spfile->write(lpnRes, dwResSize);
@@ -78,7 +78,7 @@ WinResource::~WinResource()
 
 bool WinResource::ReadResource(string & str, HINSTANCE hinst,  UINT nID, const char * lpcszType)
 {
-   ::primitive::memory_file file(get_app());
+   ::file::memory_buffer file(get_app());
    if(!ReadResource(file, hinst, nID, lpcszType))
       return false;
    file.allocate_add_up(1);

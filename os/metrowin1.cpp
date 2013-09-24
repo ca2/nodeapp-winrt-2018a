@@ -83,7 +83,7 @@ namespace metrowin
       return iLen;
    }*/
    /*
-   CLASS_DECL_metrowin void TimeToFileTime(::ca2::application * papp, const ::datetime::time& time, LPFILETIME pFileTime)
+   CLASS_DECL_metrowin void TimeToFileTime(base_application * papp, const ::datetime::time& time, LPFILETIME pFileTime)
    {
          SYSTEMTIME sysTime;
          sysTime.wYear           = (WORD)time.GetYear();

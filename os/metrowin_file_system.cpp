@@ -4,8 +4,8 @@
 namespace metrowin
 {
 
-   file_system::file_system(::ca2::application * papp) :
-      ca2(papp)
+   file_system::file_system(base_application * papp) :
+      element(papp)
    {
 
    }
@@ -20,12 +20,12 @@ namespace metrowin
    {
       /*      if(::ca2::file_system::FullPath(str, lpszFileIn))
       return true;*/
-      if(::ca2::str::begins_ci(lpszFileIn, "http://"))
+      if(::str::begins_ci(lpszFileIn, "http://"))
       {
          str = lpszFileIn;
          return true;
       }
-      else if(::ca2::str::begins_ci(lpszFileIn, "https://"))
+      else if(::str::begins_ci(lpszFileIn, "https://"))
       {
          str = lpszFileIn;
          return true;
@@ -49,12 +49,12 @@ namespace metrowin
       //if(::ca2::file_system::FullPath(wstrFullPath, wstrPath))
       // return true;
 
-      if(::ca2::str::begins_ci(wstrPath, L"http://"))
+      if(::str::begins_ci(wstrPath, L"http://"))
       {
          wstrFullPath = wstrPath;
          return true;
       }
-      else if(::ca2::str::begins_ci(wstrPath, L"https://"))
+      else if(::str::begins_ci(wstrPath, L"https://"))
       {
          wstrFullPath = wstrPath;
          return true;

@@ -27,10 +27,10 @@ namespace metrowin
 
 
       window();
-      window(::ca2::application * papp);
+      window(base_application * papp);
       virtual void construct(oswindow hwnd);
 
-      virtual void on_delete(::ca2::ca2 * poc);
+      virtual void on_delete(element * poc);
 
       //virtual oswindow get_handle() const;
 

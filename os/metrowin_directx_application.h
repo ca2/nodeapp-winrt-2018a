@@ -7,7 +7,7 @@ namespace metrowin
 
    ref class directx_application : 
       public Windows::ApplicationModel::Core::IFrameworkView,
-      public ::ca2::system_window
+      public ::core::system_window
    {
    internal:
 

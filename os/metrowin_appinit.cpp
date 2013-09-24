@@ -22,7 +22,7 @@
 
 
 /////////////////////////////////////////////////////////////////////////////
-// ::ca2::filesp implementation helpers
+// ::file::buffer_sp implementation helpers
 
 //#ifdef ::ca2::GetFileName
 //#undef ::ca2::GetFileName

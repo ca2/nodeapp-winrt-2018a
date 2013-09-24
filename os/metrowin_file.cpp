@@ -10,8 +10,8 @@ namespace metrowin
    }
 
 
-   file::file(::ca2::application * papp) :
-      ca2(papp)
+   file::file(base_application * papp) :
+      element(papp)
    {
 
       m_hFile = (UINT) hFileNull;
@@ -20,8 +20,8 @@ namespace metrowin
 
    }
 
-   file::file(::ca2::application * papp, int hFile) :
-      ca2(papp)
+   file::file(base_application * papp, int hFile) :
+      element(papp)
    {
 
       m_hFile = hFile;
@@ -30,8 +30,8 @@ namespace metrowin
 
    }
 
-   file::file(::ca2::application * papp, const char * lpszFileName, UINT nOpenFlags) :
-      ca2(papp)
+   file::file(base_application * papp, const char * lpszFileName, UINT nOpenFlags) :
+      element(papp)
    {
 
       ASSERT(__is_valid_string(lpszFileName));
@@ -49,7 +49,7 @@ namespace metrowin
 
    }
 
-   sp(::ca2::file) file::Duplicate() const
+   sp(::file::stream_buffer) file::Duplicate() const
    {
       ASSERT_VALID(this);
       ASSERT(m_hFile != (UINT)hFileNull);
@@ -83,7 +83,7 @@ namespace metrowin
       nOpenFlags &= ~(UINT)type_binary;
 
 
-      if(nOpenFlags & ::ca2::file::defer_create_directory)
+      if(nOpenFlags & ::file::defer_create_directory)
       {
          System.dir_mk(System.dir_name(lpszFileName));
       }
@@ -659,7 +659,7 @@ namespace metrowin
          ::ca2::international::unicode_to_utf8(strShortName, wstrShortName);
       }
 #else
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 #endif
    }
 
@@ -669,13 +669,13 @@ namespace metrowin
 
    void file::assert_valid() const
    {
-      ::ca2::object::assert_valid();
+      ::object::assert_valid();
       // we permit the descriptor m_hFile to be any value for derived classes
    }
 
    void file::dump(dump_context & dumpcontext) const
    {
-      ::ca2::object::dump(dumpcontext);
+      ::object::dump(dumpcontext);
 
       dumpcontext << "with handle " << (UINT)m_hFile;
       dumpcontext << " and name \"" << m_strFileName << "\"";
@@ -684,7 +684,7 @@ namespace metrowin
 
 
 
-   // IMPLEMENT_DYNAMIC(file, ::ca2::object)
+   // IMPLEMENT_DYNAMIC(file, ::object)
 
    /////////////////////////////////////////////////////////////////////////////
 
@@ -971,13 +971,13 @@ namespace metrowin
 
 
 
-   void WinFileException::ThrowOsError(::ca2::application * papp, LONG lOsError, const char * lpszFileName /* = NULL */)
+   void WinFileException::ThrowOsError(base_application * papp, LONG lOsError, const char * lpszFileName /* = NULL */)
    {
       if (lOsError != 0)
          vfxThrowFileException(papp, WinFileException::OsErrorToException(lOsError), lOsError, lpszFileName);
    }
 
-   void WinFileException::ThrowErrno(::ca2::application * papp, int nErrno, const char * lpszFileName /* = NULL */)
+   void WinFileException::ThrowErrno(base_application * papp, int nErrno, const char * lpszFileName /* = NULL */)
    {
       if (nErrno != 0)
          vfxThrowFileException(papp, WinFileException::ErrnoToException(nErrno), _doserrno, lpszFileName);
@@ -988,7 +988,7 @@ namespace metrowin
    /////////////////////////////////////////////////////////////////////////////
    // WinFileException helpers
 
-   void CLASS_DECL_metrowin vfxThrowFileException(::ca2::application * papp, int cause, LONG lOsError, const char * lpszFileName /* == NULL */)
+   void CLASS_DECL_metrowin vfxThrowFileException(base_application * papp, int cause, LONG lOsError, const char * lpszFileName /* == NULL */)
    {
 #ifdef DEBUG
       const char * lpsz;
@@ -1464,7 +1464,7 @@ namespace metrowin
 
 
 
-   // ::ca2::filesp
+   // ::file::buffer_sp
    file::operator HFILE() const
    { return m_hFile; }
    uint64_t file::ReadHuge(void * lpBuffer, uint64_t dwCount)
@@ -1668,7 +1668,7 @@ namespace metrowin
 
 #else
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
 
 #endif
@@ -1678,7 +1678,7 @@ namespace metrowin
 
 
 
-void CLASS_DECL_metrowin vfxThrowFileException(::ca2::application * papp, int cause, LONG lOsError,   const char * lpszFileName /* == NULL */)
+void CLASS_DECL_metrowin vfxThrowFileException(base_application * papp, int cause, LONG lOsError,   const char * lpszFileName /* == NULL */)
 {
    throw ::ca2::file_exception(papp, cause, lOsError, lpszFileName);
 #ifdef WINDOWSEX

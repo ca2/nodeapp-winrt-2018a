@@ -128,11 +128,11 @@ namespace metrowin
 template<class TYPE>
 struct ConstructDestruct
 {
-   static void Construct(::ca2::object* pObject)
+   static void Construct(::object* pObject)
    { 
       new (pObject) TYPE; 
    }
-   static void Destruct(::ca2::object* pObject)
+   static void Destruct(::object* pObject)
    {
       TYPE* p = dynamic_cast < TYPE * > (pObject);
       p->~TYPE();
@@ -174,7 +174,7 @@ public:
 
 // Operations
 public:
-   CT * from_handle(HANDLE h, CT * (* pfnAllocator) (::ca2::application *, HANDLE) = NULL, ::ca2::application * papp = NULL);
+   CT * from_handle(HANDLE h, CT * (* pfnAllocator) (::ca2::application *, HANDLE) = NULL, base_application * papp = NULL);
    void delete_temp();
 
    void set_permanent(HANDLE h, CT * permOb);
@@ -183,7 +183,7 @@ public:
    CT * lookup_permanent(HANDLE h);
    CT * lookup_temporary(HANDLE h);
 
-   friend class ::ca2::thread;
+   friend class ::thread;
 };
 
 /*class CLASS_DECL_metrowin hwnd_map :
@@ -232,7 +232,7 @@ handle_map < HT, CT > ::handle_map() :
 }
 
 template < class HT, class CT >
-CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::application *, HANDLE), ::ca2::application * papp)
+CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::application *, HANDLE), base_application * papp)
 {
    
    single_lock sl(&m_mutex, TRUE);
@@ -274,7 +274,7 @@ CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::ap
       {
          pTemp = pfnAllocator(papp, h);
          if (pTemp == NULL)
-            throw memory_exception(::ca2::get_thread_app());
+            throw memory_exception(::get_thread_app());
       }
       else
       {
@@ -282,7 +282,7 @@ CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::ap
    //      ASSERT((UINT)m_pClass->m_nObjectSize == m_alloc.GetAllocSize());
          pTemp = (CT*)m_alloc.Alloc();
          if (pTemp == NULL)
-            throw memory_exception(::ca2::get_thread_app());
+            throw memory_exception(::get_thread_app());
 
          // now construct the object in place
          ASSERT(m_pfnConstructObject != NULL);
@@ -308,7 +308,7 @@ CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::ap
    //__enable_memory_tracking(bEnable);
 
    // now set the handle in the object
-   HANDLE* ph = pTemp->m_handlea;  // after ::ca2::object
+   HANDLE* ph = pTemp->m_handlea;  // after ::object
    ph[0] = h;
    if (HT::s_iHandleCount == 2)
       ph[1] = h;
@@ -380,7 +380,7 @@ void handle_map < HT, CT >::delete_temp()
 
       // zero out the handles
       ASSERT(HT::s_iHandleCount == 1 || HT::s_iHandleCount == 2);
-      HANDLE* ph = pTemp->m_handlea;  // after ::ca2::object
+      HANDLE* ph = pTemp->m_handlea;  // after ::object
       ASSERT(ph[0] == h || ph[0] == NULL);
       ph[0] = NULL;
       if (HT::s_iHandleCount == 2)

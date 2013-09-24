@@ -17,7 +17,7 @@ namespace metrowin
    // File - raw unbuffered disk file I/O
 
    class CLASS_DECL_metrowin file :
-      virtual public ::ca2::file
+      virtual public ::file::stream_buffer
    {
    public:
 
@@ -42,9 +42,9 @@ namespace metrowin
       UINT           m_hFile;
 
 
-      file(::ca2::application * papp);
-      file(::ca2::application * papp, int hFile);
-      file(::ca2::application * papp, const char * lpszFileName, UINT nOpenFlags);
+      file(base_application * papp);
+      file(base_application * papp, int hFile);
+      file(base_application * papp, const char * lpszFileName, UINT nOpenFlags);
       virtual ~file();
 
 
@@ -64,7 +64,7 @@ namespace metrowin
       uint64_t ReadHuge(void * lpBuffer, uint64_t dwCount);
       void WriteHuge(const void * lpBuffer, uint64_t dwCount);
 
-      virtual sp(::ca2::file) Duplicate() const;
+      virtual sp(::file::stream_buffer) Duplicate() const;
       
       virtual file_position seek(file_offset lOff, ::ca2::e_seek nFrom);
       virtual void set_length(file_size dwNewLen);
@@ -93,8 +93,8 @@ namespace metrowin
    {
       int OsErrorToException(LONG lOsError);
       int ErrnoToException(int nErrno);
-      void ThrowOsError(::ca2::application * papp, LONG lOsError, const char * lpszFileName = NULL);
-      void ThrowErrno(::ca2::application * papp, int nErrno, const char * lpszFileName = NULL);
+      void ThrowOsError(base_application * papp, LONG lOsError, const char * lpszFileName = NULL);
+      void ThrowErrno(base_application * papp, int nErrno, const char * lpszFileName = NULL);
 
    }
 

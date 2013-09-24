@@ -8,11 +8,11 @@ class CLASS_DECL_metrowin WinResource :
 public:
 
 
-   WinResource(::ca2::application * papp);
+   WinResource(base_application * papp);
    virtual ~WinResource();
    
    bool ReadResource(string & str, HINSTANCE hinst, UINT nID, const char * lpcszType);
-   bool ReadResource(::ca2::file & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
+   bool ReadResource(::file::stream_buffer & file, HINSTANCE hinst, UINT nID, const char * lpcszType);
 
 
 };

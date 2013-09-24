@@ -2,7 +2,9 @@
 
 
 #define WINDOWS
+#ifndef _WINDOWS
 #define _WINDOWS
+#endif
 #define METROWIN
 
 
@@ -241,11 +243,11 @@
 // The following macros are used on data declarations/definitions
 //  (they are redefined for extension DLLs and the shared MFC DLL)
 #define __DATADEF
-#define __API CLASS_DECL_ca
+#define __API CLASS_DECL_c
 
 // used when building the "core" MFC80.DLL
 #ifndef __CORE_DATA
-	#define __CORE_DATA CLASS_DECL_ca
+	#define __CORE_DATA CLASS_DECL_c
 	#define __CORE_DATADEF
 #endif
 
@@ -305,7 +307,7 @@
 #ifdef ___DEVBUILD
 	#define __IMPL_DATA __DATA_EXPORT
 #else
-	#define __IMPL_DATA CLASS_DECL_ca 
+	#define __IMPL_DATA CLASS_DECL_c 
 #endif
 
 
@@ -345,7 +347,7 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 //CLASS_DECL_c Platform::String ^ rtstr(const char * psz);
 //CLASS_DECL_c Platform::String ^ itoa_dup(int i);
-CLASS_DECL_ca int MessageBox(oswindow window, const char * pszMessage, const char * pszTitle, int iFlags);
+CLASS_DECL_c int MessageBox(oswindow window, const char * pszMessage, const char * pszTitle, int iFlags);
 
 
 

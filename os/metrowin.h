@@ -2,7 +2,7 @@
 
 #define SECURITY_WIN32
 
-#include "ca2.h"
+#include "core.h"
 #include <shlobj.h>
 #include <Security.h>
 #include <shlobj.h>
@@ -80,7 +80,7 @@ CLASS_DECL_metrowin void __try_cleanup();
 //CLASS_DECL_metrowin WNDPROC __get_window_procedure();
 #define __window_procedure (*__get_window_procedure())
 
-#define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::ca2::thread * >(pthread)))
+#define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::thread * >(pthread)))
 #define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca2::window * >(pwnd)))
 #define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (pgraphics))
 #define METROWIN_BITMAP(pbitmap) (dynamic_cast < ::metrowin::bitmap * > (pbitmap))

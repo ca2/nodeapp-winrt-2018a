@@ -10,7 +10,7 @@ namespace metrowin
 
 
       class CLASS_DECL_metrowin document_properties :
-         virtual public ::ca2::object
+         virtual public ::object
       {
       public:
 
@@ -19,7 +19,7 @@ namespace metrowin
          HDC            m_hdc;
 
 
-         document_properties(::ca2::application * papp);
+         document_properties(base_application * papp);
          virtual ~document_properties();
 
 
@@ -34,7 +34,7 @@ namespace metrowin
       document_properties     m_documentproperties;
 
 
-      printer(::ca2::application * papp);
+      printer(base_application * papp);
       virtual ~printer();
 
 

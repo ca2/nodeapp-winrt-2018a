@@ -18,7 +18,7 @@ namespace metrowin
    public:
       
       
-      file_system(::ca2::application * papp);
+      file_system(base_application * papp);
       virtual ~file_system();
 
 

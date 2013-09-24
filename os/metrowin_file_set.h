@@ -17,7 +17,7 @@ namespace metrowin
       stringa        m_straFile;
 
 
-      file_set(::ca2::application * papp);
+      file_set(base_application * papp);
       virtual ~file_set();
 
 

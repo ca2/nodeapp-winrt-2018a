@@ -22,7 +22,7 @@ namespace metrowin
    CLASS_DECL_metrowin HICON       ExtractIcon(HINSTANCE hInst, const char * lpszExeFileName, UINT nIconIndex);
    CLASS_DECL_metrowin bool        DeleteFile(const char * lpFileName);
    CLASS_DECL_metrowin int         GetMenuStringW(HMENU hMenu, UINT uIDItem, string & str, UINT flags);
-   CLASS_DECL_metrowin void        TimeToFileTime(::ca2::application * papp, const ::datetime::time& time, LPFILETIME pFileTime);
+   CLASS_DECL_metrowin void        TimeToFileTime(base_application * papp, const ::datetime::time& time, LPFILETIME pFileTime);
 
 
 } // namespace metrowin
@@ -72,7 +72,7 @@ CLASS_DECL_metrowin WNDPROC __get_window_procedure();
 /*typedef void (__MSG_CALL ::ca2::window::*__PMSGW)();
    // like '__PMSG' but for ::ca2::window derived classes only
 
-typedef void (__MSG_CALL ::ca2::thread::*__PMSGT)();
+typedef void (__MSG_CALL ::thread::*__PMSGT)();
    // like '__PMSG' but for thread-derived classes only*/
 #endif
 
@@ -87,13 +87,13 @@ CLASS_DECL_metrowin LONG delete_registry_tree_helper(HKEY hParentKey, const stri
 
 
 CLASS_DECL_metrowin ::metrowin::thread * __get_thread();
-CLASS_DECL_metrowin void __set_thread(::ca2::thread * pthread);
+CLASS_DECL_metrowin void __set_thread(::thread * pthread);
 CLASS_DECL_metrowin MSG* __get_current_message();
 
-CLASS_DECL_metrowin void __end_thread(::ca2::application * papp, UINT nExitCode, bool bDelete = TRUE);
+CLASS_DECL_metrowin void __end_thread(base_application * papp, UINT nExitCode, bool bDelete = TRUE);
 
 CLASS_DECL_metrowin void __init_thread();
-CLASS_DECL_metrowin void __term_thread(::ca2::application * papp, HINSTANCE hInstTerm = NULL);
+CLASS_DECL_metrowin void __term_thread(base_application * papp, HINSTANCE hInstTerm = NULL);
 
 /////////////////////////////////////////////////////////////////////////////
 // Global functions for access to the one and only application

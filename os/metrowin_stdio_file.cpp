@@ -9,8 +9,8 @@
 namespace metrowin
 {
 
-   stdio_file::stdio_file(::ca2::application * papp) :
-      ca2(papp),
+   stdio_file::stdio_file(base_application * papp) :
+      element(papp),
       file(papp)
    {
       m_pStream = NULL;
@@ -33,13 +33,13 @@ namespace metrowin
 
       ASSERT(__is_valid_string(lpszFileName));
 
-      if(nOpenFlags  & ::ca2::file::defer_create_directory)
+      if(nOpenFlags  & ::file::defer_create_directory)
       {
          Application.dir().mk(System.dir().name(lpszFileName));
       }
 
       m_pStream = NULL;
-      if (!file::open(lpszFileName, (nOpenFlags & ~::ca2::file::type_text)))
+      if (!file::open(lpszFileName, (nOpenFlags & ~::file::type_text)))
          return FALSE;
 
       ASSERT(m_hFile != hFileNull);
@@ -48,7 +48,7 @@ namespace metrowin
       char szMode[4]; // C-runtime open string
       int nMode = 0;
 
-      // determine read/write mode depending on ::ca2::filesp mode
+      // determine read/write mode depending on ::file::buffer_sp mode
       if (nOpenFlags & mode_create)
       {
          if (nOpenFlags & modeNoTruncate)

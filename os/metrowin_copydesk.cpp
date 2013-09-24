@@ -5,8 +5,8 @@ namespace metrowin
 {
 
 
-   copydesk::copydesk(::ca2::application * papp) :
-      ca2(papp),
+   copydesk::copydesk(base_application * papp) :
+      element(papp),
       ::ca2::copydesk(papp),
       ::ca2::window_sp(papp)
    {

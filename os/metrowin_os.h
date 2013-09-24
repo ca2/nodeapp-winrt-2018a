@@ -14,7 +14,7 @@ namespace metrowin
    public:
    
       
-      os(::ca2::application * papp);
+      os(base_application * papp);
       virtual ~os();
 
 

@@ -125,10 +125,11 @@
 #include <winapifamily.h>
 #include <windows.h>
 #include <shlwapi.h>
+#if defined(__cplusplus_winrt)
 #include <wrl/client.h>
 #define __PLACEMENT_NEW_INLINE
 #include <agile.h>
-
+#endif
 
 #include "oswindow.h"
 
@@ -136,6 +137,8 @@
 //#include <wrl/client.h>
 //#include <ppl.h>
 //#include <ppltasks.h>
+
+#if defined(__cplusplus_winrt)
 
 namespace dx
 {
@@ -176,6 +179,8 @@ namespace dx
 		return byteArrayTask;
 	}*/
 } // namespace dx
+
+#endif // #if defined(__cplusplus_winrt)
 
 
 #pragma warning(pop)

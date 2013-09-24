@@ -16,7 +16,7 @@
    { ASSERT(afxCurrentAppName != NULL); return afxCurrentAppName; }
  CLASS_DECL_metrowin sp(::user::interaction) __get_main_window()
 {
-      ::ca2::thread* pThread = dynamic_cast < ::ca2::thread * > (::metrowin::get_thread());
+      ::thread* pThread = dynamic_cast < ::thread * > (::metrowin::get_thread());
       return pThread != NULL ? pThread->GetMainWnd() : NULL; 
  }
 

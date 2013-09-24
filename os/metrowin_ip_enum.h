@@ -20,7 +20,7 @@ namespace metrowin
    public:
 
       
-      ip_enum(::ca2::application * papp);
+      ip_enum(base_application * papp);
       virtual ~ip_enum();
 
       

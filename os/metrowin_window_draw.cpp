@@ -24,9 +24,9 @@ public:
 namespace metrowin
 {
 
-   window_draw::window_draw(::ca2::application * papp) : 
-      ca2(papp),
-      ::ca2::thread(papp),
+   window_draw::window_draw(base_application * papp) : 
+      element(papp),
+      ::thread(papp),
       ::ca2::window_draw(papp),
       message_window_simple_callback(papp),
       m_mutexRender(papp),
@@ -275,7 +275,7 @@ namespace metrowin
 
    bool window_draw::UpdateBuffer()
    {
-      mutex_lock ml(user_mutex());
+      single_lock ml(user_mutex());
       if(m_bRender)
          return false;
       single_lock sl(&m_mutexRender, FALSE);

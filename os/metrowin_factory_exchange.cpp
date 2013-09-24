@@ -5,11 +5,11 @@ namespace metrowin
 {
 
 
-   factory_exchange::factory_exchange(::ca2::application * papp) :
-      ca2(papp)
+   factory_exchange::factory_exchange(base_application * papp) :
+      element(papp)
    {
       System.factory().cloneable_large < stdio_file          >  (System.template type_info < ::ca2::text_file         > ());
-      System.factory().cloneable_large < file               >  (System.template type_info < ::ca2::file              > ());
+      System.factory().cloneable_large < file               >  (System.template type_info < ::file::stream_buffer              > ());
       System.factory().cloneable_large < file_set            >  (System.template type_info < ::ca2::file_set          > ());
       System.factory().cloneable < file_system               >  (System.template type_info < ::ca2::file_system       > (), 1);
 //      System.factory().cloneable < WinResource                 >  (System.template type_info < ::ca2::resource          > (), 1);
@@ -17,7 +17,7 @@ namespace metrowin
       System.factory().cloneable < dir                         >  (System.template type_info < ::ca2::dir::system        > (), 1);
       System.factory().cloneable_small < folder_watch          >  (System.template type_info < ::ca2::folder_watch      > ());
       System.factory().creatable < window_draw                 >  (System.template type_info < ::ca2::window_draw        > (), 1);
-      System.factory().creatable_large < thread                >  (System.template type_info < ::ca2::thread             > ());
+      System.factory().creatable_large < thread                >  (System.template type_info < ::thread             > ());
       System.factory().creatable_large < window                >  (System.template type_info < ::ca2::window             > ());
 //      System.factory().cloneable_small < draw_dib              >  (System.template type_info < ::ca2::draw_dib           > ());
       System.factory().creatable < os                          >  (System.template type_info < ::ca2::os                 > (), 1);
@@ -40,7 +40,7 @@ namespace metrowin
 
 
 
-void ca2_factory_exchange(::ca2::application * papp)
+void ca2_factory_exchange(base_application * papp)
 {
    metrowin::factory_exchange factoryexchange(papp);
 }

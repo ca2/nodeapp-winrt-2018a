@@ -21,7 +21,7 @@ namespace metrowin
 
 
 
-      stdio_file(::ca2::application * papp);
+      stdio_file(base_application * papp);
 
 
       virtual void write_string(const char * lpsz);
@@ -41,7 +41,7 @@ namespace metrowin
       virtual file_size get_length() const;
 
       // Unsupported APIs
-      virtual sp(::ca2::file) Duplicate() const;
+      virtual sp(::file::stream_buffer) Duplicate() const;
       virtual void LockRange(file_position dwPos, file_size dwCount);
       virtual void UnlockRange(file_position dwPos, file_size dwCount);
    };

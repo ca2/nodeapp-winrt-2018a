@@ -12,7 +12,7 @@ namespace ca2
    {
 
 
-      ::ca2::thread *          m_pthread;    // thread for new thread
+      ::thread *          m_pthread;    // thread for new thread
       HANDLE hEvent;          // event triggered after success/non-success
       HANDLE hEvent2;         // event triggered after thread is resumed
 
@@ -31,7 +31,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin thread :
-      virtual public ::ca2::thread,
+      virtual public ::thread,
       virtual public ::ca2::message_window_simple_callback
    {
    public:
@@ -42,7 +42,7 @@ namespace metrowin
       uint32_t                                     m_nThreadID;      // this thread's ID
 
       static comparable_array < HTHREAD >          s_haThread;
-      static comparable_array < ::ca2::thread * >   s_threadptra;
+      static comparable_array < ::thread * >   s_threadptra;
       // list of frame_window objects for thread
       simple_list < frame_window * >               m_frameList;
       // temporary/permanent ::map state
@@ -52,11 +52,11 @@ namespace metrowin
       event                                        m_evFinish;
       UINT                                         m_nDisablePumpCount;
       mutex                                        m_mutexUiPtra;
-      ::ca2::thread *                               m_pAppThread;
+      ::thread *                               m_pAppThread;
       UINT                                         m_dwFinishTimeout;
 
 
-      thread(::ca2::application * papp);
+      thread(base_application * papp);
 
 
       operator HANDLE() const;
@@ -67,7 +67,7 @@ namespace metrowin
       void set_os_data(void * pvoidOsData);
       void set_os_int(int_ptr iData);
 
-      virtual void set_p(::ca2::thread * p);
+      virtual void set_p(::thread * p);
 
 
       virtual void construct(__THREADPROC pfnThreadProc, LPVOID pParam);
@@ -94,7 +94,7 @@ namespace metrowin
       virtual void set_run(bool bRun = true);
       virtual event & get_finish_event();
       virtual bool get_run();
-      virtual ::ca2::thread * get_app_thread();
+      virtual ::thread * get_app_thread();
       virtual sp(::user::interaction) get_active_ui();
       virtual sp(::user::interaction) set_active_ui(sp(::user::interaction) pui);
       virtual void step_timer();
@@ -106,7 +106,7 @@ namespace metrowin
 * \author	Thomas Nass
 */
 
-      virtual void on_delete(::ca2::ca2 * poc);
+      virtual void on_delete(element * poc);
 
 
       virtual void start();
@@ -200,7 +200,7 @@ namespace metrowin
    };
 
 
-   CLASS_DECL_metrowin ::ca2::thread * get_thread();
+   CLASS_DECL_metrowin ::thread * get_thread();
    CLASS_DECL_metrowin ::ca2::thread_state * get_thread_state();
 
 

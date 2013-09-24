@@ -5,11 +5,11 @@ namespace metrowin
 
    class CLASS_DECL_metrowin folder_watch :
       virtual public ::ca2::folder_watch,
-      virtual public ::ca2::thread
+      virtual public ::thread
    {
    public:
       
-      folder_watch(::ca2::application * papp);
+      folder_watch(base_application * papp);
 
       virtual bool watch(const char * pszPath);
 

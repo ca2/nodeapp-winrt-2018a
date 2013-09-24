@@ -6,8 +6,8 @@ namespace metrowin
 {
 
 
-   printer::printer(::ca2::application * papp) :
-      ca2(papp),
+   printer::printer(base_application * papp) :
+      element(papp),
       ::user::printer(papp),
       m_documentproperties(papp)
    {
@@ -51,8 +51,8 @@ namespace metrowin
    }
 
 
-   printer::document_properties::document_properties(::ca2::application * papp) :
-      ca2(papp)
+   printer::document_properties::document_properties(base_application * papp) :
+      element(papp)
    {
       m_hdc = NULL;
       m_pdevmode = NULL;

@@ -42,7 +42,7 @@ namespace metrowin
       main_init_data *     m_pmaininitdata;
 
 
-      application(::ca2::application * papp);
+      application(base_application * papp);
       virtual ~application();
       
       virtual HINSTANCE GetHinstance();
@@ -196,8 +196,8 @@ namespace metrowin
       sp(::user::interaction) window_from_os_data(void * pdata);
       sp(::user::interaction) window_from_os_data_permanent(void * pdata);
 
-      virtual ::ca2::thread * GetThread();
-      virtual void set_thread(::ca2::thread * pthread);
+      virtual ::thread * GetThread();
+      virtual void set_thread(::thread * pthread);
 
       virtual sp(::ca2::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
       virtual sp(::ca2::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);

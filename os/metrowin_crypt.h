@@ -11,7 +11,7 @@ namespace metrowin
    public:
 
 
-      crypt(::ca2::application * papp);
+      crypt(base_application * papp);
       virtual ~crypt();
 
 

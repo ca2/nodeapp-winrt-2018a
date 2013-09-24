@@ -12,7 +12,7 @@ namespace metrowin
    public:
 
       
-      copydesk(::ca2::application * papp);
+      copydesk(base_application * papp);
       virtual ~copydesk();
 
       

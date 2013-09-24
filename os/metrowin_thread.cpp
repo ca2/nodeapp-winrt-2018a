@@ -163,12 +163,12 @@ CLASS_DECL_metrowin ::metrowin::thread * __get_thread()
 }
 
 
-CLASS_DECL_metrowin void __set_thread(::ca2::thread * pthread)
+CLASS_DECL_metrowin void __set_thread(::thread * pthread)
 {
    // check for current thread in module thread state
    //__MODULE_THREAD_STATE* pState = __get_module_thread_state();
    ___THREAD_STATE* pState =  __get_thread_state();
-   pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::ca2::thread::m_p.m_p);
+   pState->m_pCurrentWinThread = dynamic_cast < ::metrowin::thread * > (pthread->::thread::m_p.m_p);
    ::get_current_thread()->m_pthread = pthread;
 }
 
@@ -203,7 +203,7 @@ CLASS_DECL_metrowin void __internal_process_wnd_proc_exception(base_exception*, 
 
 CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception* e, ::ca2::signal_object * pobj)
 {
-   ::ca2::thread *pThread = App(pobj->get_app()).GetThread();
+   ::thread *pThread = App(pobj->get_app()).GetThread();
    if( pThread )
       return pThread->ProcessWndProcException( e, pobj );
    else
@@ -218,7 +218,7 @@ void __internal_pre_translate_message(::ca2::signal_object * pobj)
 
       //   ASSERT_VALID(this);
 
-      ::ca2::thread * pthread = ::metrowin::get_thread();
+      ::thread * pthread = ::metrowin::get_thread();
       if(pthread)
       {
          // if this is a thread-message, short-circuit this function
@@ -282,7 +282,7 @@ void __internal_pre_translate_message(::ca2::signal_object * pobj)
 
 void __cdecl __pre_translate_message(::ca2::signal_object * pobj)
 {
-   ::ca2::thread *pThread = App(pobj->get_app()).GetThread();
+   ::thread *pThread = App(pobj->get_app()).GetThread();
    if( pThread )
       return pThread->pre_translate_message( pobj );
    else
@@ -350,7 +350,7 @@ bool __internal_is_idle_message(LPMESSAGE lpmsg)
 
 bool __cdecl __is_idle_message(::ca2::signal_object * pobj)
 {
-   ::ca2::thread *pThread = App(pobj->get_app()).GetThread();
+   ::thread *pThread = App(pobj->get_app()).GetThread();
    if( pThread )
       return pThread->is_idle_message(pobj);
    else
@@ -367,7 +367,7 @@ bool __cdecl __is_idle_message(MESSAGE* pMsg)
 }
 
 
-/*thread* CLASS_DECL_metrowin __begin_thread(::ca2::application * papp, __THREADPROC pfnThreadProc, LPVOID pParam,
+/*thread* CLASS_DECL_metrowin __begin_thread(base_application * papp, __THREADPROC pfnThreadProc, LPVOID pParam,
 int nPriority, UINT nStackSize, uint32_t dwCreateFlags,
 LPSECURITY_ATTRIBUTES lpSecurityAttrs)
 {
@@ -388,7 +388,7 @@ VERIFY(pThread->ResumeThread() != (uint32_t)-1);
 
 return pThread;
 }*/
-void CLASS_DECL_metrowin __end_thread(::ca2::application * papp, UINT nExitCode, bool bDelete)
+void CLASS_DECL_metrowin __end_thread(base_application * papp, UINT nExitCode, bool bDelete)
 {
    // remove current thread object from primitive::memory
    __MODULE_THREAD_STATE* pState = __get_module_thread_state();
@@ -421,7 +421,7 @@ void CLASS_DECL_metrowin __end_thread(::ca2::application * papp, UINT nExitCode,
 
 extern thread_local_storage * gen_ThreadData;
 
-void CLASS_DECL_metrowin __term_thread(::ca2::application * papp, HINSTANCE hInstTerm)
+void CLASS_DECL_metrowin __term_thread(base_application * papp, HINSTANCE hInstTerm)
 {
    UNREFERENCED_PARAMETER(papp);
    try
@@ -474,10 +474,10 @@ namespace metrowin
 
 
    comparable_array < HTHREAD > thread::s_haThread;
-   comparable_array < ::ca2::thread * > thread::s_threadptra;
+   comparable_array < ::thread * > thread::s_threadptra;
 
 
-   void thread::set_p(::ca2::thread * p)
+   void thread::set_p(::thread * p)
    {
       m_p = p;
    }
@@ -503,16 +503,16 @@ namespace metrowin
       CommonConstruct();
    }
 
-   thread::thread(::ca2::application * papp) :
-      ca2(papp),
+   thread::thread(base_application * papp) :
+      element(papp),
       message_window_simple_callback(papp),//,
       //m_evFinish(FALSE, TRUE)
-      ::ca2::thread(NULL),
+      ::thread(NULL),
       m_evFinish(papp),
       m_mutexUiPtra(papp)
    {
       m_evFinish.SetEvent();
-      m_pAppThread = dynamic_cast < ::ca2::thread * > (papp);
+      m_pAppThread = dynamic_cast < ::thread * > (papp);
       m_pThreadParams = NULL;
       m_pfnThreadProc = NULL;
 
@@ -598,7 +598,7 @@ namespace metrowin
       {
          try
          {
-            ::ca2::ca2 * pca = m_captraDeletePool[i];            
+            element * pca = m_captraDeletePool[i];            
             if(dynamic_cast < ::ca2::application * > (pca) == m_papp)
             {
                m_papp = NULL;
@@ -666,7 +666,7 @@ namespace metrowin
 
    }
 
-   void thread::on_delete(::ca2::ca2 * p)
+   void thread::on_delete(element * p)
    {
       UNREFERENCED_PARAMETER(p);
    }
@@ -812,7 +812,7 @@ namespace metrowin
       return m_bRun;
    }
 
-   ::ca2::thread * thread::get_app_thread()
+   ::thread * thread::get_app_thread()
    {
       return m_pAppThread;
    }
@@ -929,7 +929,7 @@ namespace metrowin
       {
          if(m_p != NULL)
          {
-            ::ca2::thread * pthread = dynamic_cast < ::ca2::thread * > (m_p.m_p);
+            ::thread * pthread = dynamic_cast < ::thread * > (m_p.m_p);
             if(pthread != NULL && pthread->m_pbReady != NULL)
             {
                *pthread->m_pbReady = true;
@@ -960,7 +960,7 @@ namespace metrowin
       if(m_bAutoDelete)
       {
          // delete thread if it is auto-deleting
-         //pthread->::ca::smart_pointer < ::ca2::thread >::m_p = NULL;
+         //pthread->::ca::smart_pointer < ::thread >::m_p = NULL;
          m_p.release();
          // delete_this();
       }
@@ -1770,7 +1770,7 @@ run:
    }
 
 
-   CLASS_DECL_metrowin ::ca2::thread * get_thread()
+   CLASS_DECL_metrowin ::thread * get_thread()
    {
       ::metrowin::thread * pwinthread = __get_thread();
       if(pwinthread == NULL)
@@ -1802,7 +1802,7 @@ run:
 
 
 #ifndef ___PORTABLE
-         ::ca2::application * papp = dynamic_cast < ::ca2::application * > (get_app());
+         base_application * papp = dynamic_cast < ::ca2::application * > (get_app());
          ___THREAD_STATE* pThreadState = gen_ThreadState.GetDataNA();
          if( pThreadState != NULL )
          {
@@ -2620,8 +2620,8 @@ return __internal_process_wnd_proc_exception( e, pMsg );
 
 LRESULT CALLBACK __message_filter_hook(int code, WPARAM wParam, LPARAM lParam)
 {
-   ::ca2::thread* pthread;
-   if (afxContextIsDLL || (code < 0 && code != MSGF_DDEMGR) || (pthread = dynamic_cast < ::ca2::thread * > (::metrowin::get_thread())) == NULL)
+   ::thread* pthread;
+   if (afxContextIsDLL || (code < 0 && code != MSGF_DDEMGR) || (pthread = dynamic_cast < ::thread * > (::metrowin::get_thread())) == NULL)
    {
       return ::CallNextHookEx(gen_ThreadState->m_hHookOldMsgFilter, code, wParam, lParam);
    }

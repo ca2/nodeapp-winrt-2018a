@@ -322,7 +322,7 @@ namespace metrowin
 
    void file_find::dump(dump_context & dumpcontext) const
    {
-      ::ca2::object::dump(dumpcontext);
+      ::object::dump(dumpcontext);
       dumpcontext << "\nm_hContext = " << (UINT) m_hContext;
    }
 

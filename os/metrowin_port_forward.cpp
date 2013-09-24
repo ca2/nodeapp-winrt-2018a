@@ -15,8 +15,8 @@ namespace metrowin
    // Construction/Destruction
    //////////////////////////////////////////////////////////////////////
 
-   port_forward::port_forward(::ca2::application * papp) :
-      ca2(papp)
+   port_forward::port_forward(base_application * papp) :
+      element(papp)
    {
       /*
 	   InitializeMembersToNull();
@@ -1342,7 +1342,7 @@ namespace metrowin
          if(!b)
          {
             DWORD dw = ::GetLastError();
-            ::MessageBoxA(NULL, ::ca2::str::itoa(dw), ::ca2::str::itoa(dw), 0);
+            ::MessageBoxA(NULL, ::str::itoa(dw), ::str::itoa(dw), 0);
          }
       }
 	

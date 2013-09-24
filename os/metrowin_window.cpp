@@ -38,8 +38,8 @@ namespace metrowin
       m_pguieCapture = NULL;
    }
 
-   window::window(::ca2::application * papp) :
-      ca2(papp),
+   window::window(base_application * papp) :
+      element(papp),
       ::user::interaction(papp)
    {
       m_pcallback = NULL;
@@ -90,7 +90,7 @@ namespace metrowin
 
 #else
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
 #endif
 
@@ -128,7 +128,7 @@ namespace metrowin
       pThreadState->m_lastSentMsg.time = ::GetMessageTime();
       pThreadState->m_lastSentMsg.pt = point(::GetMessagePos());
 #else
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 #endif
       return &pThreadState->m_lastSentMsg;
    }
@@ -508,7 +508,7 @@ namespace metrowin
 
       m_pwindow = pwindow;
 
-      m_pthread = dynamic_cast < ::ca2::thread * > (::ca2::get_thread());
+      m_pthread = dynamic_cast < ::thread * > (::ca2::get_thread());
 
 
       return true;
@@ -669,7 +669,7 @@ namespace metrowin
       single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_mutex, TRUE);
       pobj->m_bRet = true;
       // cleanup main and active windows
-      ::ca2::thread* pThread = System.GetThread();
+      ::thread* pThread = System.GetThread();
       if (pThread != NULL)
       {
          if (pThread->GetMainWnd() == this)
@@ -766,7 +766,7 @@ namespace metrowin
             return; // let go
          ASSERT(pMap != NULL);
 
-         //         ::ca2::object* p=NULL;
+         //         ::object* p=NULL;
          /*if(pMap)
          {
          ASSERT( (p = pMap->lookup_permanent(get_handle())) != NULL ||
@@ -794,7 +794,7 @@ namespace metrowin
 
    void window::dump(dump_context & dumpcontext) const
    {
-      ::ca2::object::dump(dumpcontext);
+      ::object::dump(dumpcontext);
 
       dumpcontext << "\nm_hWnd = " << (void *)get_handle();
 
@@ -2293,7 +2293,7 @@ restart_mouse_hover_check:
    ::user::interaction * window::GetDescendantWindow(::user::interaction * hWnd, id id)
    {
       
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //single_lock sl(&hWnd->m_pthread->m_pthread->m_mutex, TRUE);
       //// GetDlgItem recursive (return first found)
@@ -2342,7 +2342,7 @@ restart_mouse_hover_check:
    void window::SendMessageToDescendants(oswindow hWnd, UINT message, WPARAM wParam, LPARAM lParam, bool bDeep, bool bOnlyPerm)
    {
       
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       // walk through HWNDs to avoid creating temporary window objects
       // unless we need to call this function recursively
@@ -2562,7 +2562,7 @@ restart_mouse_hover_check:
    ::user::interaction * pWnd = hWndChild;
    if (strIdc == pszIdLeftOver)
    hWndLeftOver = hWndChild;
-   else if (::ca2::str::begins(strIdc, pszPrefix) && pWnd != NULL)
+   else if (::str::begins(strIdc, pszPrefix) && pWnd != NULL)
    hWndChild->SendMessage(WM_SIZEPARENT, 0, (LPARAM)&layout);
    }
    for (int i = 0; i < m_pguie->m_uiptra.get_count();   i++)
@@ -2572,7 +2572,7 @@ restart_mouse_hover_check:
    ::user::interaction * pWnd = hWndChild;
    if (strIdc == pszIdLeftOver)
    hWndLeftOver = hWndChild;
-   else if (::ca2::str::begins(strIdc, pszPrefix) && pWnd != NULL)
+   else if (::str::begins(strIdc, pszPrefix) && pWnd != NULL)
    hWndChild->SendMessage(WM_SIZEPARENT, 0, (LPARAM)&layout);
    }
    }
@@ -2585,7 +2585,7 @@ restart_mouse_hover_check:
    ::user::interaction * pWnd = hWndChild;
    if (strIdc == pszIdLeftOver)
    hWndLeftOver = hWndChild;
-   else if (::ca2::str::begins(strIdc, pszPrefix) && pWnd != NULL)
+   else if (::str::begins(strIdc, pszPrefix) && pWnd != NULL)
    hWndChild->SendMessage(WM_SIZEPARENT, 0, (LPARAM)&layout);
    }
    for (int i = 0; i < m_uiptra.get_count();   i++)
@@ -2595,7 +2595,7 @@ restart_mouse_hover_check:
    ::user::interaction * pWnd = hWndChild;
    if (strIdc == pszIdLeftOver)
    hWndLeftOver = hWndChild;
-   else if (::ca2::str::begins(strIdc, pszPrefix) && pWnd != NULL)
+   else if (::str::begins(strIdc, pszPrefix) && pWnd != NULL)
    hWndChild->SendMessage(WM_SIZEPARENT, 0, (LPARAM)&layout);
    }
    }
@@ -3134,7 +3134,7 @@ restart_mouse_hover_check:
    void window::get_app_wnda(user::oswindow_array & wnda)
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
 //      EnumWindows(GetAppsEnumWindowsProc, (LPARAM) &wnda);
    }
@@ -3146,7 +3146,7 @@ restart_mouse_hover_check:
 
 
    class print_window :
-      virtual ::ca2::object
+      virtual ::object
    {
    public:
 
@@ -3156,8 +3156,8 @@ restart_mouse_hover_check:
       oswindow m_hwnd;
       HDC m_hdc;
 
-      print_window(::ca2::application * papp, oswindow hwnd, HDC hdc, uint32_t dwTimeout) :
-         ca2(papp),
+      print_window(base_application * papp, oswindow hwnd, HDC hdc, uint32_t dwTimeout) :
+         element(papp),
          m_event(papp)
       {
          m_event.ResetEvent();
@@ -3173,7 +3173,7 @@ restart_mouse_hover_check:
 
       static UINT c_cdecl s_print_window(LPVOID pvoid)
       {
-         throw todo(::ca2::get_thread_app());
+         throw todo(::get_thread_app());
 
          //print_window * pprintwindow = (print_window *) pvoid;
          //try
@@ -3596,7 +3596,7 @@ restart_mouse_hover_check:
       //return TRUE;
 
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
 
    }
@@ -3930,7 +3930,7 @@ restart_mouse_hover_check:
       oswindow hWndParent = oswindow_get(get_parent());
       m_iModal = m_iModalCount;
       int iLevel = m_iModal;
-      oprop(string("RunModalLoop.thread(") + ::ca2::str::from(iLevel) + ")") = System.GetThread();
+      oprop(string("RunModalLoop.thread(") + ::str::from(iLevel) + ")") = System.GetThread();
       m_iModalCount++;
 
       m_iaModalThread.add(::GetCurrentThreadId());
@@ -4103,7 +4103,7 @@ ExitModal:
          System.GetThread()->post_thread_message(WM_NULL);
          for(int i = iLevel; i >= 0; i--)
          {
-            ::ca2::thread * pthread = oprop(string("RunModalLoop.thread(") + ::ca2::str::from(i) + ")").ca2 < ::ca2::thread > ();
+            ::thread * pthread = oprop(string("RunModalLoop.thread(") + ::str::from(i) + ")").cast < ::thread > ();
             try
             {
                pthread->post_thread_message(WM_NULL);
@@ -4199,8 +4199,8 @@ ExitModal:
    }
 
 
-   /*   view_update_hint::view_update_hint(::ca2::application * papp) :
-   ca2(papp)
+   /*   view_update_hint::view_update_hint(base_application * papp) :
+   element(papp)
    {
    }
    */
@@ -4493,8 +4493,8 @@ throw todo(get_app());
       return m_id;
    }
 
-   /*   guie_message_wnd::guie_message_wnd(::ca2::application * papp) :
-   ca2(papp)
+   /*   guie_message_wnd::guie_message_wnd(base_application * papp) :
+   element(papp)
    {
    m_pguieForward = NULL;
    }
@@ -5315,7 +5315,7 @@ throw todo(get_app());
    sp(::user::interaction) window::GetCapture()
    {
 
-      //throw todo(::ca2::get_thread_app());
+      //throw todo(::get_thread_app());
 
       return ::GetCapture()->window();
    
@@ -5587,7 +5587,7 @@ throw todo(get_app());
    sp(::ca2::window) window::FindWindow(const char * lpszClassName, const char * lpszWindowName)
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::FindWindow(lpszClassName, lpszWindowName)); 
    
@@ -5596,7 +5596,7 @@ throw todo(get_app());
    sp(::ca2::window) window::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::FindWindowEx(hwndParent, hwndChildAfter, lpszClass, lpszWindow)); 
    
@@ -5663,7 +5663,7 @@ throw todo(get_app());
    sp(::ca2::window) window::WindowFromPoint(POINT point)
    { 
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::WindowFromPoint(point));
 
@@ -5716,7 +5716,7 @@ throw todo(get_app());
    ::ca2::window * window::GetOpenClipboardWindow()
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::GetOpenClipboardWindow());
 
@@ -5725,7 +5725,7 @@ throw todo(get_app());
    ::ca2::window * window::GetClipboardOwner()
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::GetClipboardOwner());
 
@@ -5734,7 +5734,7 @@ throw todo(get_app());
    ::ca2::window * window::GetClipboardViewer()
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::GetClipboardViewer());
 
@@ -5776,7 +5776,7 @@ throw todo(get_app());
    point window::GetCaretPos()
    { 
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //point point;
 
@@ -5787,7 +5787,7 @@ throw todo(get_app());
    void window::SetCaretPos(POINT point)
    { 
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //::SetCaretPos(point.x, point.y);
 
@@ -5823,7 +5823,7 @@ throw todo(get_app());
    sp(::ca2::window) window::GetForegroundWindow()
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //return ::metrowin::window::from_handle(::GetForegroundWindow());
 
@@ -6276,7 +6276,7 @@ throw todo(get_app());
    oswindow window::GetSafeOwner_(oswindow hParent, oswindow* pWndTop)
    {
 
-      throw todo(::ca2::get_thread_app());
+      throw todo(::get_thread_app());
 
       //// get ::ca2::window to start with
       //oswindow hWnd = hParent;
@@ -6323,7 +6323,7 @@ throw todo(get_app());
       //return hWnd;    // return the owner as oswindow
    }
 
-   void window::on_delete(::ca2::ca2 * pui)
+   void window::on_delete(element * pui)
    {
       UNREFERENCED_PARAMETER(pui);
    }
@@ -6476,7 +6476,7 @@ run:
             // the window should not be in the permanent ::map at this time
             ASSERT(::metrowin::window::FromHandlePermanent(hWnd) == NULL);
 
-            pWndInit->m_pthread = dynamic_cast < ::ca2::thread * > (::metrowin::get_thread());
+            pWndInit->m_pthread = dynamic_cast < ::thread * > (::metrowin::get_thread());
             pWndInit->m_pthread->add(pWndInit);
             pWndInit->m_pguie->m_pthread = pWndInit->m_pthread;
             pWndInit->m_pguie->m_pthread->add(pWndInit->m_pguie);
@@ -6593,8 +6593,8 @@ lCallNextHook:
 } // namespace metrowin
 
 
-CTestCmdUI::CTestCmdUI(sp(::ca2::application) papp) :
-   ca2(papp),
+CTestCmdUI::CTestCmdUI(sp(base_application) papp) :
+   element(papp),
    cmd_ui(papp)
 {
    m_bEnabled = TRUE;  // assume it is enabled

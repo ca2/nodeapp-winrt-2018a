@@ -5,9 +5,6 @@
 #define DEBUG
 #endif
 
-#define METROWIN  // Merde Windows : Metro Style Application
-#define WINDOWS
-#define WIN32
 #define DECL_C __cdecl
 
 
@@ -57,3 +54,5 @@ __declspec(selectany)  int _forceCRTManifest;
 
 END_EXTERN_C
 
+
+#pragma warning(disable:4250) // disable warning if inherited via dominance

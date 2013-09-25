@@ -60,7 +60,7 @@ int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ ar
 
    //pinitmaindata->m_hInstance             = hInstance;
    //pinitmaindata->m_hPrevInstance         = hPrevInstance;
-   //pinitmaindata->m_vssCommandLine        = ::ca2::international::unicode_to_utf8(::GetCommandLineW());
+   //pinitmaindata->m_vssCommandLine        = ::str::international::unicode_to_utf8(::GetCommandLineW());
    //pinitmaindata->m_nCmdShow              = nCmdShow;
 
    

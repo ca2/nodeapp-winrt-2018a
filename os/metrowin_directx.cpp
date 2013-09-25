@@ -18,7 +18,7 @@ namespace metrowin
 
    // Constructor.
    directx_base::directx_base(base_application * papp) :
-      m_papp(papp),
+      m_pbaseapp(papp),
       m_windowSizeChangeInProgress(false),
       m_dpi(-1.0f),
       m_mutexDc(papp)

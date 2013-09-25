@@ -31,12 +31,12 @@ namespace metrowin
          return true;
       }
       wstring wstrFileIn;
-      wstrFileIn = ::ca2::international::utf8_to_unicode(lpszFileIn);
+      wstrFileIn = ::str::international::utf8_to_unicode(lpszFileIn);
       wstring wstrFileOut;
       //      bool b = vfxFullPath(wstrFileOut.alloc(MAX_PATH * 8), wstrFileIn) != FALSE;
       /*      if(b)
       {
-      ::ca2::international::unicode_to_utf8(str, wstrFileOut);
+      ::str::international::unicode_to_utf8(str, wstrFileOut);
       }
       return b;*/
 
@@ -70,10 +70,10 @@ namespace metrowin
    {
       int nMax = MAX_PATH * 8;
       wstring wstrPathName;
-      wstrPathName = ::ca2::international::utf8_to_unicode(lpszPathName);
+      wstrPathName = ::str::international::utf8_to_unicode(lpszPathName);
       wstring wstrTitle;
       //UINT user = vfxGetFileName(wstrPathName, wstrTitle.alloc(nMax), nMax);
-      str = ::ca2::international::unicode_to_utf8(wstrTitle);
+      str = ::str::international::unicode_to_utf8(wstrTitle);
       //return user;
       return 0;
    }
@@ -91,7 +91,7 @@ namespace metrowin
 
       WIN32_FILE_ATTRIBUTE_DATA data;
 
-      if(!GetFileAttributesExW(::ca2::international::utf8_to_unicode(pszPath), GetFileExInfoStandard, &data))
+      if(!GetFileAttributesExW(::str::international::utf8_to_unicode(pszPath), GetFileExInfoStandard, &data))
       {
          varRet.set_type(var::type_null);
       }

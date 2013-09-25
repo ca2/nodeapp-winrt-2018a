@@ -108,7 +108,7 @@ namespace metrowin
          const char * lpszWindowName, uint32_t dwStyle,
          const RECT& rect,
          ::user::interaction * pParentWnd, id id,
-         ::ca2::create_context* pContext = NULL);
+         ::create_context * pContext = NULL);
 
       // advanced creation (allows access to extended styles)
       virtual bool CreateEx(uint32_t dwExStyle, const char * lpszClassName,
@@ -445,7 +445,7 @@ namespace metrowin
       // dialog support
       void UpdateDialogControls(command_target* pTarget, bool bDisableIfNoHndler);
       void CenterWindow(::user::interaction * pAlternateOwner = NULL);
-      virtual id   RunModalLoop(uint32_t dwFlags = 0, ::ca2::live_object * pliveobject = NULL);
+      virtual id   RunModalLoop(uint32_t dwFlags = 0, ::core::live_object * pliveobject = NULL);
       virtual bool ContinueModal(int iLevel);
       virtual void EndModalLoop(id nResult);
       virtual void EndAllModalLoops(id nResult);

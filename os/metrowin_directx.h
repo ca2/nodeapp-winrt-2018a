@@ -33,7 +33,7 @@ namespace metrowin
    {
    internal:
 
-      base_application * m_papp;
+      base_application * m_pbaseapp;
 
       mutex    m_mutexDc;
 
@@ -43,7 +43,7 @@ namespace metrowin
 
       base_application * get_app() const
       {
-         return m_papp;
+         return m_pbaseapp;
       }
    
 

@@ -13,7 +13,7 @@ namespace metrowin
    /*
    HINSTANCE LoadLibrary(const char * lpsz)
    {
-      return ::LoadLibraryW(::ca2::international::utf8_to_unicode(lpsz));
+      return ::LoadLibraryW(::str::international::utf8_to_unicode(lpsz));
    }
    */
 
@@ -25,13 +25,13 @@ namespace metrowin
 
    DWORD GetFileAttributes(const char * lpFileName)
    {
-      return ::GetFileAttributesW(::ca2::international::utf8_to_unicode(lpFileName));
+      return ::GetFileAttributesW(::str::international::utf8_to_unicode(lpFileName));
    }
    */
    /*
    bool CreateDirectory(const char * lpPathName, LPSECURITY_ATTRIBUTES lpSecurityAttributes)
    {
-      return ::CreateDirectoryW(::ca2::international::utf8_to_unicode(lpPathName), lpSecurityAttributes) != FALSE;
+      return ::CreateDirectoryW(::str::international::utf8_to_unicode(lpPathName), lpSecurityAttributes) != FALSE;
    }
    */
    /*
@@ -67,19 +67,19 @@ namespace metrowin
 
    HICON ExtractIcon(HINSTANCE hInst, const char * lpszExeFileName, UINT nIconIndex)
    {
-      return ::ExtractIconW(hInst, ::ca2::international::utf8_to_unicode(lpszExeFileName), nIconIndex);
+      return ::ExtractIconW(hInst, ::str::international::utf8_to_unicode(lpszExeFileName), nIconIndex);
    }
 
    bool  DeleteFile(const char * lpFileName)
    {
-      return ::DeleteFileW(::ca2::international::utf8_to_unicode(lpFileName)) != FALSE;
+      return ::DeleteFileW(::str::international::utf8_to_unicode(lpFileName)) != FALSE;
    }
    */
 /*   int GetMenuString(HMENU hmenu, UINT uIDItem, string & str, UINT flags)
    {
       wstring str;
       int iLen = _GetMenuString(hmenu, uIDItem, wstr, flags);
-      ::ca2::international::unicode_to_utf8(str, str);
+      ::str::international::unicode_to_utf8(str, str);
       return iLen;
    }*/
    /*

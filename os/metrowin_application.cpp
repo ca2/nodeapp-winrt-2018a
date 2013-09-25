@@ -17,7 +17,7 @@ namespace metrowin
 
       WIN_THREAD(::thread::m_p.m_p)->m_pAppThread = this;
 
-      m_psystem = papp->m_psystem;
+      m_pbasesystem = papp->m_pplaneapp->m_pbasesystem;
 
       m_pfilemanager = NULL;
 
@@ -72,7 +72,7 @@ namespace metrowin
    {
       ASSERT(m_atomApp == NULL && m_atomSystemTopic == NULL); // do once
 /*
-      m_atomApp            = ::GlobalAddAtomW(::ca2::international::utf8_to_unicode(m_strAppName));
+      m_atomApp            = ::GlobalAddAtomW(::str::international::utf8_to_unicode(m_strAppName));
       m_atomSystemTopic    = ::GlobalAddAtomW(L"system");*/
    }
 
@@ -223,7 +223,7 @@ namespace metrowin
          // check for missing ::ca2::LockTempMap calls
          if (__get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock != 0)
          {
-            TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n",
+            TRACE(::core::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n",
                __get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock);
          }
    #endif
@@ -489,9 +489,9 @@ namespace metrowin
 
       WIN_THREAD(::thread::m_p.m_p)->m_bRun = false;
 
-      int32_t iRet = ::ca2::application::exit_instance();
+      int32_t iRet = ::application::exit_instance();
 
-      //::ca::smart_pointer < application_base >::destroy();
+      //smart_pointer < application_base >::destroy();
 
       return iRet;
 
@@ -656,8 +656,8 @@ namespace metrowin
       }
 
 
-//      dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca2::application >::m_p->::ca2::thread_sp::m_p))->m_hThread = __get_thread()->m_hThread;
-  //    dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::ca2::application >::m_p->::ca2::thread_sp::m_p))->m_nThreadID = __get_thread()->m_nThreadID;
+//      dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::application >::m_p->::ca2::thread_sp::m_p))->m_hThread = __get_thread()->m_hThread;
+  //    dynamic_cast < ::metrowin::thread * > ((smart_pointer < ::application >::m_p->::ca2::thread_sp::m_p))->m_nThreadID = __get_thread()->m_nThreadID;
       dynamic_cast < class ::metrowin::thread * > (::thread::m_p.m_p)->m_hThread      =  ::get_current_thread();
       dynamic_cast < class ::metrowin::thread * > (::thread::m_p.m_p)->m_nThreadID    =  ::GetCurrentThreadId();
       
@@ -723,7 +723,7 @@ namespace metrowin
 
 
 
-   bool application::set_main_init_data(::ca2::main_init_data * pdata)
+   bool application::set_main_init_data(::core::main_init_data * pdata)
    {
 
       m_pmaininitdata = (::metrowin::main_init_data *) pdata;
@@ -759,7 +759,7 @@ namespace metrowin
          // fill in the initial state for the application
          // Windows specific initialization (not done if no application)
          m_hInstance = hInstance;
-         (dynamic_cast < base_application * >(m_papp.m_p))->m_hInstance = hInstance;
+         (dynamic_cast < application * >(m_pbaseapp.m_p))->m_hInstance = hInstance;
          //hPrevInstance; // Obsolete.
          m_strCmdLine = strCmdLine;
          m_nCmdShow = nCmdShow;

@@ -434,8 +434,8 @@ namespace metrowin
 
       m_psystem->init_main_data(pinitmaindata);
 
-      m_psystem->m_papp = m_psystem;
-      m_psystem->m_psystem = m_psystem;
+//      m_psystem->m_pbaseapp   = m_psystem;
+  //    m_psystem->m_psystem    = m_pbasesystem;
 
 
 
@@ -665,7 +665,7 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::key * pkey = canew(::message::key(get_app()));
 
@@ -694,7 +694,7 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::key * pkey = canew(::message::key(get_app()));
 
@@ -726,7 +726,7 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::key * pkey = new  ::message::key(get_app());
 
@@ -761,7 +761,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::mouse * pmouse = new  ::message::mouse(get_app());
 
@@ -794,7 +794,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::mouse * pmouse = new  ::message::mouse(get_app());
 
@@ -859,7 +859,7 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       ::message::mouse * pmouse = new  ::message::mouse(get_app());
 

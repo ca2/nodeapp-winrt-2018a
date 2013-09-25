@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin crypt :
-      virtual public ::ca2::crypt
+      virtual public ::core::crypt
    {
    public:
 

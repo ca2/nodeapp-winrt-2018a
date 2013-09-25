@@ -7,8 +7,8 @@ namespace metrowin
 
    copydesk::copydesk(base_application * papp) :
       element(papp),
-      ::ca2::copydesk(papp),
-      ::ca2::window_sp(papp)
+      ::core::copydesk(papp),
+      ::user::window_sp(papp)
    {
    }
 
@@ -99,7 +99,7 @@ namespace metrowin
          UINT uiLen = ::DragQueryFileW(hdrop, i, NULL, 0);
          wchar_t * lpwsz = (wchar_t *) malloc(sizeof(wchar_t) * (uiLen + 1));
          ::DragQueryFileW(hdrop, i, lpwsz, uiLen + 1);
-         stra.add(::ca2::international::unicode_to_utf8(lpwsz));
+         stra.add(::str::international::unicode_to_utf8(lpwsz));
          free(lpwsz);
       }
       ::CloseClipboard();
@@ -120,7 +120,7 @@ namespace metrowin
 
       for(int i = 0; i < stra.get_size(); i++)
       {
-         iLen += ::ca2::international::utf8_to_unicode_count(stra[i]) + 1;
+         iLen += ::str::international::utf8_to_unicode_count(stra[i]) + 1;
       }
 
 
@@ -138,7 +138,7 @@ namespace metrowin
       for(int i = 0; i < stra.get_size(); i++)
       {
          ASSERT(m_p->IsWindow());
-         ::ca2::international::utf8_to_unicode(lpwstrCopy, ::ca2::international::utf8_to_unicode_count(stra[i]) + 1, stra[i]);
+         ::str::international::utf8_to_unicode(lpwstrCopy, ::str::international::utf8_to_unicode_count(stra[i]) + 1, stra[i]);
          ASSERT(m_p->IsWindow());
          lpwstrCopy += (stra[i].get_length() + 1);
       }
@@ -165,7 +165,7 @@ namespace metrowin
    bool copydesk::initialize()
    {
       
-      if(!::ca2::copydesk::initialize())
+      if(!::core::copydesk::initialize())
          return false;
 
       /*if(!m_p->CreateEx(0, System.RegisterWndClass(0), NULL, 0, rect(0, 0, 0, 0), NULL, id()))
@@ -181,11 +181,11 @@ namespace metrowin
 
       bool bOk;
       
-      bOk = ::ca2::copydesk::finalize();
+      bOk = ::core::copydesk::finalize();
 
-      if(::ca2::window_sp::is_set() && ::ca2::window_sp::m_p->IsWindow())
+      if(::user::window_sp::is_set() && ::user::window_sp::m_p->IsWindow())
       {
-         bOk = ::ca2::window_sp::m_p->DestroyWindow() != FALSE;
+         bOk = ::user::window_sp::m_p->DestroyWindow() != FALSE;
       }
       else
       {
@@ -203,7 +203,7 @@ namespace metrowin
    //   int iLen = 0;
 
       string str;
-      str = ::ca2::international::utf8_to_unicode(psz);
+      str = ::str::international::utf8_to_unicode(psz);
 
 
 
@@ -215,10 +215,10 @@ namespace metrowin
       EmptyClipboard();
 
 
-      count iCount = ::ca2::international::utf8_to_unicode_count(str) + 1;
+      count iCount = ::str::international::utf8_to_unicode_count(str) + 1;
       HGLOBAL hglbCopy = ::GlobalAlloc(GMEM_MOVEABLE, iCount * sizeof(WCHAR));
       wchar_t * lpwstrCopy  = (wchar_t *) ::GlobalLock(hglbCopy);
-      ::ca2::international::utf8_to_unicode(lpwstrCopy, iCount, str);
+      ::str::international::utf8_to_unicode(lpwstrCopy, iCount, str);
       ::GlobalUnlock(hglbCopy);
 
       HGLOBAL hglbCopy2 = ::GlobalAlloc(GMEM_MOVEABLE, sizeof(CHAR) * (strlen(psz) + 1));
@@ -245,7 +245,7 @@ namespace metrowin
          if(!m_p->OpenClipboard())
             return "";
          HGLOBAL hglb = GetClipboardData(CF_UNICODETEXT);
-         string str(::ca2::international::unicode_to_utf8((const wchar_t *) GlobalLock(hglb)));
+         string str(::str::international::unicode_to_utf8((const wchar_t *) GlobalLock(hglb)));
          GlobalUnlock(hglb);
          VERIFY(::CloseClipboard());
          return str;

@@ -17,7 +17,7 @@ bool __internal_is_idle_message(MSG* pMsg);
 namespace core
 {
 
-   thread_startup::core::thread_startup()
+   thread_startup::thread_startup()
    {
    }
 
@@ -105,13 +105,13 @@ uint32_t __thread_entry(void * pParam)
          // Note: DELETE_EXCEPTION(e) not required.
 
          // exception happened during thread initialization!!
-         //TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Error during thread initialization!\n");
+         //TRACE(::core::trace::category_AppMsg, 0, "Warning: Error during thread initialization!\n");
 
          // set error flag and allow the creating thread to notice the error
          //         threadWnd.Detach();
          pStartup->bError = TRUE;
          VERIFY(::SetEvent(pStartup->hEvent));
-         __end_thread(dynamic_cast < base_application * > (pThread->m_papp.m_p), (UINT)-1, FALSE);
+         __end_thread(dynamic_cast < base_application * > (pThread->m_pbaseapp.m_p), (UINT)-1, FALSE);
          ASSERT(FALSE);  // unreachable
       }
 
@@ -218,13 +218,13 @@ void __internal_pre_translate_message(signal_details * pobj)
 
       //   ASSERT_VALID(this);
 
-      ::thread * pthread = ::metrowin::get_thread();
+      base_thread * pthread = ::metrowin::get_thread();
       if(pthread)
       {
          // if this is a thread-message, short-circuit this function
          if (pbase->m_pwnd == NULL)
          {
-            pthread->DispatchThreadMessageEx(pobj);
+            pthread->m_pthread->DispatchThreadMessageEx(pobj);
             if(pobj->m_bRet)
                return;
          }
@@ -234,15 +234,15 @@ void __internal_pre_translate_message(signal_details * pobj)
 
       try
       {
-         if(pthread->m_papp->m_psession != NULL)
+         if(pthread->m_pbaseapp->m_pplaneapp->m_psession != NULL)
          {
             try
             {
-               for(int i = 0; i < pthread->m_papp->m_psession->frames().get_count(); i++)
+               for(int i = 0; i < pthread->m_pbaseapp->m_pplaneapp->m_psession->m_pplanesession->frames().get_count(); i++)
                {
                   try
                   {
-                     sp(::user::interaction) pui = pthread->m_papp->m_psession->frames()(i);
+                     sp(::user::interaction) pui = pthread->m_pbaseapp->m_pplaneapp->m_psession->m_pplanesession->frames()(i);
                      if(pui != NULL)
                      {
                         if(pui->m_pguie != NULL)
@@ -538,7 +538,7 @@ namespace metrowin
       // most threads are deleted when not needed
       m_bAutoDelete  = TRUE;
 
-      m_frameList.Construct(offsetof(::user::frame_window, m_pNextFrameWnd));
+      //m_frameList.Construct(offsetof(::user::frame_window, m_pNextFrameWnd));
       m_ptimera = canew(::user::interaction::timer_array(get_app()));
       m_puiptra = canew(::user::interaction_ptr_array(get_app()));
 
@@ -645,7 +645,7 @@ namespace metrowin
 
    HANDLE thread::item() const
    {
-      return m_hThread == NULL ? NULL : (m_hThread->m_pevent == NULL ? NULL : m_hThread->m_pevent->m_hEvent);
+      return m_hThread == NULL ? NULL : (m_hThread->m_pevent == NULL ? NULL : m_hThread->m_pevent->get_os_data());
    }
 
    bool thread::begin(int32_t iPriority, UINT nStackSize, uint32_t dwCreateFlags, LPSECURITY_ATTRIBUTES lpSecurityAttrs)
@@ -853,7 +853,7 @@ namespace metrowin
       startup.dwCreateFlags = dwCreateFlags;
       if (startup.hEvent == NULL || startup.hEvent2 == NULL)
       {
-         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: CreateEvent failed in thread::CreateThread.\n");
+         TRACE(::core::trace::category_AppMsg, 0, "Warning: CreateEvent failed in thread::CreateThread.\n");
          if (startup.hEvent != NULL)
             ::CloseHandle(startup.hEvent);
          if (startup.hEvent2 != NULL)
@@ -960,7 +960,7 @@ namespace metrowin
       if(m_bAutoDelete)
       {
          // delete thread if it is auto-deleting
-         //pthread->::ca::smart_pointer < ::thread >::m_p = NULL;
+         //pthread->smart_pointer < ::thread >::m_p = NULL;
          m_p.release();
          // delete_this();
       }
@@ -1010,11 +1010,11 @@ namespace metrowin
             m_p->m_dwAlive = m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_dwAlive;
             }
             try
             {
@@ -1056,11 +1056,11 @@ namespace metrowin
             m_p->m_dwAlive = m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_dwAlive;
             }
          }
          while (::PeekMessage(&msg, NULL, NULL, NULL, PM_NOREMOVE) != FALSE);
@@ -1101,7 +1101,7 @@ stop_run:
          // Check for missing LockTempMap calls
          if(m_nTempMapLock != 0)
          {
-            TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n", m_nTempMapLock);
+            TRACE(::core::trace::category_AppMsg, 0, "Warning: Temp ::map lock count non-zero (%ld).\n", m_nTempMapLock);
          }
          LockTempMaps();
          UnlockTempMaps(true);
@@ -1262,7 +1262,7 @@ stop_run:
       SCAST_PTR(::message::base, pbase, pobj);
       if(!pbase->m_bRet && pbase->m_uiMessage == WM_APP + 1984 && pbase->m_wparam == 77)
       {
-         ::ca::smart_pointer < ::user::message > spmessage(pbase->m_lparam);
+         smart_pointer < ::user::message > spmessage(pbase->m_lparam);
          spmessage->send();
          pbase->m_uiMessage   = 0;    // ssshhhh.... - self-healing - sh...
          pbase->m_wparam      = 0;    // ssshhhh.... - self-healing - sh...
@@ -1317,7 +1317,7 @@ stop_run:
       for(int i = 0; i < signalptra.get_size(); i++)
       {
          Signal & signal = *signalptra[i];
-         ::ca2::signal * psignal = signal.m_psignal;
+         ::signal * psignal = signal.m_psignal;
          ::message::e_prototype eprototype = signal.m_eprototype;
          if(eprototype == ::message::PrototypeNone)
          {
@@ -1455,7 +1455,7 @@ stop_run:
 
          if(!::GetMessage(&msg, NULL, NULL, NULL))
          {
-            TRACE(::ca2::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
+            TRACE(::core::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
             m_nDisablePumpCount++; // application must die
             // Note: prevents calling message loop things in 'exit_instance'
             // will never be decremented
@@ -1464,7 +1464,7 @@ stop_run:
 
          if(m_nDisablePumpCount != 0)
          {
-            TRACE(::ca2::trace::category_AppMsg, 0, "Error: thread::pump_message called when not permitted.\n");
+            TRACE(::core::trace::category_AppMsg, 0, "Error: thread::pump_message called when not permitted.\n");
             ASSERT(FALSE);
          }
 
@@ -1473,7 +1473,7 @@ stop_run:
          if(msg.message != WM_KICKIDLE)
          {
             {
-               ::ca::smart_pointer < ::message::base > spbase;
+               smart_pointer < ::message::base > spbase;
 
                spbase = get_base(&msg);
 
@@ -1492,13 +1492,13 @@ stop_run:
 
                try
                {
-                  if(m_papp != NULL)
+                  if(m_pbaseapp != NULL)
                   {
                      try
                      {
-                        if(m_papp->m_psystem != NULL)
+                        if(m_pbaseapp->m_pplaneapp->m_psystem != NULL)
                         {
-                           m_papp->m_psystem->pre_translate_message(spbase);
+                           m_pbaseapp->m_pplaneapp->m_psystem->pre_translate_message(spbase);
                            if(spbase->m_bRet)
                               return TRUE;
                         }
@@ -1506,11 +1506,11 @@ stop_run:
                      catch(...)
                      {
                      }
-                     if(m_papp->m_psession != NULL)
+                     if(m_pbaseapp->m_pplaneapp->m_psession != NULL)
                      {
                         try
                         {
-                           m_papp->m_psession->pre_translate_message(spbase);
+                           m_pbaseapp->m_pplaneapp->m_psession->m_pplanesession->pre_translate_message(spbase);
                            if(spbase->m_bRet)
                               return TRUE;
                         }
@@ -1525,9 +1525,9 @@ stop_run:
                }
                try
                {
-                  if(!m_papp->is_system())
+                  if(!m_pbaseapp->m_pplaneapp->is_system())
                   {
-                     m_papp->pre_translate_message(spbase);
+                     m_pbaseapp->m_pplaneapp->pre_translate_message(spbase);
                      if(spbase->m_bRet)
                         return TRUE;
                   }
@@ -1703,7 +1703,7 @@ stop_run:
       catch(::exception::base * pe)
       {
          __process_window_procedure_exception(pe, pbase);
-         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Uncaught exception in message_handler (returning %ld).\n", pbase->get_lresult());
+         TRACE(::core::trace::category_AppMsg, 0, "Warning: Uncaught exception in message_handler (returning %ld).\n", pbase->get_lresult());
          pe->Delete();
       }
 run:
@@ -1770,7 +1770,7 @@ run:
    }
 
 
-   CLASS_DECL_metrowin ::thread * get_thread()
+   CLASS_DECL_metrowin ::base_thread * get_thread()
    {
       ::metrowin::thread * pwinthread = __get_thread();
       if(pwinthread == NULL)
@@ -1809,8 +1809,8 @@ run:
             // restore safety pool after temp objects destroyed
             if(papp != NULL &&
                (pThreadState->m_pSafetyPoolBuffer == NULL ||
-               _msize(pThreadState->m_pSafetyPoolBuffer) < papp->m_nSafetyPoolSize) &&
-               papp->m_nSafetyPoolSize != 0)
+               _msize(pThreadState->m_pSafetyPoolBuffer) < papp->m_pplaneapp->m_pplaneapp->m_nSafetyPoolSize) &&
+               papp->m_pplaneapp->m_pplaneapp->m_nSafetyPoolSize != 0)
             {
                // attempt to restore the safety pool to its max size
                size_t nOldSize = 0;
@@ -1824,10 +1824,10 @@ run:
                //bool bEnable = __enable_memory_tracking(FALSE);
                try
                {
-                  pThreadState->m_pSafetyPoolBuffer = malloc(papp->m_nSafetyPoolSize);
+                  pThreadState->m_pSafetyPoolBuffer = malloc(papp->m_pplaneapp->m_pplaneapp->m_nSafetyPoolSize);
                   if (pThreadState->m_pSafetyPoolBuffer == NULL)
                   {
-                     //                  TRACE(::ca2::trace::category_AppMsg, 0, "Warning: failed to reclaim %d bytes for primitive::memory safety pool.\n",
+                     //                  TRACE(::core::trace::category_AppMsg, 0, "Warning: failed to reclaim %d bytes for primitive::memory safety pool.\n",
                      //                   pApp->m_nSafetyPoolSize);
                      // at least get the old buffer back
                      if (nOldSize != 0)
@@ -1863,7 +1863,7 @@ run:
 
       ::metrowin::thread* pThread = pStartup->pThread;
 
-      //      ::ca2::application* papp = dynamic_cast < base_application * > (get_app());
+      //      ::application* papp = dynamic_cast < base_application * > (get_app());
       m_evFinish.ResetEvent();
       install_message_handling(pThread);
       m_p->install_message_handling(pThread);
@@ -1974,7 +1974,7 @@ run:
       {
          // cleanup and shutdown the thread
          //         threadWnd.Detach();
-         __end_thread(dynamic_cast < base_application * > (m_papp.m_p), nResult);
+         __end_thread(dynamic_cast < base_application * > (m_pbaseapp.m_p), nResult);
       }
       catch(...)
       {
@@ -2068,7 +2068,7 @@ ___THREAD_STATE *pState = __get_thread_state();
 if (!::GetMessage(&(pState->m_msgCur), NULL, NULL, NULL))
 {
 #ifdef DEBUG
-TRACE(::ca2::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
+TRACE(::core::trace::category_AppMsg, 1, "thread::pump_message - Received WM_QUIT.\n");
 pState->m_nDisablePumpCount++; // application must die
 #endif
 // Note: prevents calling message loop things in 'exit_instance'
@@ -2079,7 +2079,7 @@ return FALSE;
 #ifdef DEBUG
 if (pState->m_nDisablePumpCount != 0)
 {
-TRACE(::ca2::trace::category_AppMsg, 0, "Error: thread::pump_message called when not permitted.\n");
+TRACE(::core::trace::category_AppMsg, 0, "Error: thread::pump_message called when not permitted.\n");
 ASSERT(FALSE);
 }
 #endif
@@ -2305,7 +2305,7 @@ startup.hEvent2 = ::CreateEvent(NULL, TRUE, FALSE, NULL);
 startup.dwCreateFlags = dwCreateFlags;
 if (startup.hEvent == NULL || startup.hEvent2 == NULL)
 {
-TRACE(::ca2::trace::category_AppMsg, 0, "Warning: CreateEvent failed in thread::CreateThread.\n");
+TRACE(::core::trace::category_AppMsg, 0, "Warning: CreateEvent failed in thread::CreateThread.\n");
 if (startup.hEvent != NULL)
 ::CloseHandle(startup.hEvent);
 if (startup.hEvent2 != NULL)
@@ -2584,7 +2584,7 @@ m_signala.GetSignalsByMessage(signalptra, pmsg->message, 0, 0);
 for(int i = 0; i < signalptra.get_size(); i++)
 {
 Signal & signal = *signalptra[i];
-::ca2::signal * psignal = signal.m_psignal;
+::signal * psignal = signal.m_psignal;
 ::message::e_prototype eprototype = signal.m_eprototype;
 if(eprototype == ::message::PrototypeNone)
 {
@@ -2626,7 +2626,7 @@ LRESULT CALLBACK __message_filter_hook(int code, WPARAM wParam, LPARAM lParam)
       return ::CallNextHookEx(gen_ThreadState->m_hHookOldMsgFilter, code, wParam, lParam);
    }
    ASSERT(pthread != NULL);
-   ::ca::smart_pointer < ::message::base > spbase;
+   smart_pointer < ::message::base > spbase;
    spbase(pthread->get_base((LPMSG)lParam));
    pthread->ProcessMessageFilter(code, spbase);
    LRESULT lresult = spbase->m_bRet ? 1 : 0;

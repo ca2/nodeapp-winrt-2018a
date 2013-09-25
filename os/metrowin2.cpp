@@ -1,8 +1,8 @@
 #include "framework.h"
 
 // Global helper functions
- CLASS_DECL_metrowin base_application * __get_app()
-{ return dynamic_cast < base_application * > (afxCurrentWinApp); }
+ CLASS_DECL_metrowin application * __get_app()
+{ return dynamic_cast < application * > (afxCurrentWinApp); }
 
  CLASS_DECL_metrowin HINSTANCE __get_instance_handle()
    { ASSERT(afxCurrentInstanceHandle != NULL);

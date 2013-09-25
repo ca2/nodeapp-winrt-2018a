@@ -6,7 +6,7 @@ namespace metrowin
 
 
    dir::dir(sp(base_application) papp) :
-      ::ca2::element(papp),
+      ::element(papp),
       ::file::dir::system(papp),
       m_path(papp)
    {
@@ -20,7 +20,7 @@ namespace metrowin
    }
 
    path::path(sp(base_application) papp) :
-      element(papp)
+      ::element(papp)
    {
    }
 
@@ -156,7 +156,7 @@ namespace metrowin
    string dir::relpath(const char * lpcszSource, const char * lpcszRelative, const char * psz2)
    {
       const char * pszRequest;
-      if(::ca2::is_url(lpcszSource, &pszRequest))
+      if(::url::is_url(lpcszSource, &pszRequest))
       {
          if(::str::begins(lpcszRelative, "/"))
          {
@@ -222,7 +222,7 @@ namespace metrowin
 
    }
 
-   void dir::ls_pattern(sp(base_application) papp, const char * lpcsz, const char * pszPattern, stringa * pstraPath, stringa * pstraTitle, array < bool, bool > * pbaIsDir, array < int64_t, int64_t > * piaSize)
+   void dir::ls_pattern(sp(base_application) papp, const char * lpcsz, const char * pszPattern, stringa * pstraPath, stringa * pstraTitle, bool_array * pbaIsDir, int64_array * piaSize)
    {
 #ifdef WINDOWSEX
       if(::file::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
@@ -296,7 +296,7 @@ namespace metrowin
       rls_pattern(papp, lpcsz, "*.*", pstraPath, pstraTitle, pstraRelative, NULL, NULL, eextract);
    }
 
-   void dir::rls_pattern(sp(base_application) papp, const char * lpcsz, const char * lpszPattern, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative, array < bool, bool > * pbaIsDir, array < int64_t, int64_t > * piaSize, e_extract eextract)
+   void dir::rls_pattern(sp(base_application) papp, const char * lpcsz, const char * lpszPattern, stringa * pstraPath, stringa * pstraTitle, stringa * pstraRelative, bool_array * pbaIsDir, int64_array * piaSize, e_extract eextract)
    {
 
       stringa stra;
@@ -489,7 +489,7 @@ namespace metrowin
 #endif
    }
 
-   void dir::ls(sp(base_application) papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, array < bool, bool > * pbaIsDir, array < int64_t, int64_t > * piaSize)
+   void dir::ls(sp(base_application) papp, const char * lpcsz, stringa * pstraPath, stringa * pstraTitle, bool_array * pbaIsDir, int64_array * piaSize)
    {
       return ls_pattern(papp, lpcsz, "*.*", pstraPath, pstraTitle, pbaIsDir, piaSize);
    }
@@ -528,7 +528,7 @@ namespace metrowin
       }
       /*
       uint32_t dwAttrib;
-      dwAttrib = GetFileAttributesW(::ca2::international::utf8_to_unicode(strPath));
+      dwAttrib = GetFileAttributesW(::str::international::utf8_to_unicode(strPath));
       /*if(dwAttrib == INVALID_FILE_ATTRIBUTES)
       {
          dwAttrib = GetFileAttributes(lpcszPath);
@@ -563,9 +563,9 @@ namespace metrowin
 
       wstring wstrPath;
       
-      //strsize iLen = ::ca2::international::utf8_to_unicode_count(strPath);
+      //strsize iLen = ::str::international::utf8_to_unicode_count(strPath);
       //wstrPath.alloc(iLen + 32);
-      wstrPath = ::ca2::international::utf8_to_unicode(strPath);
+      wstrPath = ::str::international::utf8_to_unicode(strPath);
       if(wstrPath.get_length() >= MAX_PATH)
       {
          if(::str::begins(wstrPath, L"\\\\"))
@@ -634,7 +634,7 @@ namespace metrowin
          return bIsDir;
 
 
-      if(papp->m_bZipIsDir && iLast >= 3  && !strnicmp_dup(&((const char *) str)[iLast - 3], ".zip", 4))
+      if(papp->m_pplaneapp->m_bZipIsDir && iLast >= 3  && !strnicmp_dup(&((const char *) str)[iLast - 3], ".zip", 4))
       {
          m_isdirmap.set(str.Left(iLast + 1), true, 0);
          return true;
@@ -642,7 +642,7 @@ namespace metrowin
       
       strsize iFind = ::str::find_ci(".zip:", str);
 
-      if(papp->m_bZipIsDir && iFind >= 0 && iFind < iLast)
+      if(papp->m_pplaneapp->m_bZipIsDir && iFind >= 0 && iFind < iLast)
       {
          bool bHasSubFolder;
          uint32_t dwLastError;
@@ -656,11 +656,11 @@ namespace metrowin
 
       wstring wstrPath;
       
-      //strsize iLen = ::ca2::international::utf8_to_unicode_count(str, iLast + 1);
+      //strsize iLen = ::str::international::utf8_to_unicode_count(str, iLast + 1);
 
       //wstrPath.alloc(iLen + 32);
 
-      wstrPath = ::ca2::international::utf8_to_unicode(str, iLast + 1);
+      wstrPath = ::str::international::utf8_to_unicode(str, iLast + 1);
 
       //OutputDebugStringW(wstrPath);
 
@@ -684,7 +684,7 @@ namespace metrowin
       
    //   bIsDir = (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 
-      bIsDir = ::dir::is(::ca2::international::unicode_to_utf8(wstrPath));
+      bIsDir = ::dir::is(::str::international::unicode_to_utf8(wstrPath));
       
       m_isdirmap.set(str.Left(iLast + 1), bIsDir, ::GetLastError());
 
@@ -812,7 +812,7 @@ namespace metrowin
          if(!is(stra[i], papp) && ::GetLastError() != ERROR_ACCESS_DENIED)
          {
             
-            if(!::CreateDirectoryW(::ca2::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
+            if(!::CreateDirectoryW(::str::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
             {
                uint32_t dwError = ::GetLastError();
                if(dwError == ERROR_ALREADY_EXISTS)
@@ -836,7 +836,7 @@ namespace metrowin
                   catch(...)
                   {
                   }
-                  if(::CreateDirectoryW(::ca2::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
+                  if(::CreateDirectoryW(::str::international::utf8_to_unicode("\\\\?\\" + stra[i]), NULL))
                   {
                      m_isdirmap.set(stra[i], true, 0);
                      goto try1;
@@ -881,11 +881,11 @@ namespace metrowin
             }
             else
             {
-               ::DeleteFileW(::ca2::international::utf8_to_unicode(straPath[i]));
+               ::DeleteFileW(::str::international::utf8_to_unicode(straPath[i]));
             }
          }
       }
-      return RemoveDirectoryW(::ca2::international::utf8_to_unicode(psz)) != FALSE;
+      return RemoveDirectoryW(::str::international::utf8_to_unicode(psz)) != FALSE;
    }
 
 
@@ -1165,7 +1165,7 @@ namespace metrowin
 #else
       return "CurrentUser";
 #endif
-      //return ::ca2::international::unicode_to_utf8(buf);
+      //return ::str::international::unicode_to_utf8(buf);
    }
 
    string dir::default_userappdata(sp(base_application) papp, const char * lpcszPrefix, const char * lpcszLogin, const char * pszRelativePath)

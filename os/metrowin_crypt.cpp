@@ -7,7 +7,7 @@ namespace metrowin
 
    crypt::crypt(base_application * papp) :
       element(papp),
-      ::ca2::crypt(papp)
+      ::core::crypt(papp)
    {
    }
 

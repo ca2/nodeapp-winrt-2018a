@@ -1165,7 +1165,7 @@ namespace metrowin
 	   }
 	
 	   if( bStr != NULL )
-		   mappingContainer.ExternalIPAddress = string( ::ca2::international::unicode_to_utf8(bStr) );
+		   mappingContainer.ExternalIPAddress = string( ::str::international::unicode_to_utf8(bStr) );
 	
 	   SysFreeString(bStr);
 	   bStr = NULL;
@@ -1210,7 +1210,7 @@ namespace metrowin
 	   }
 	
 	   if( bStr != NULL )
-		   mappingContainer.Protocol = ::ca2::international::unicode_to_utf8(bStr);
+		   mappingContainer.Protocol = ::str::international::unicode_to_utf8(bStr);
 	
 	   SysFreeString(bStr);
 	   bStr = NULL;
@@ -1227,7 +1227,7 @@ namespace metrowin
 	   }
 	
 	   if( bStr != NULL )
-		   mappingContainer.InternalClient = ::ca2::international::unicode_to_utf8(bStr);
+		   mappingContainer.InternalClient = ::str::international::unicode_to_utf8(bStr);
 	
 	   SysFreeString(bStr);
 	   bStr = NULL;
@@ -1259,7 +1259,7 @@ namespace metrowin
 	   }
 	
 	   if( bStr != NULL )
-		   mappingContainer.Description = ::ca2::international::unicode_to_utf8( bStr );
+		   mappingContainer.Description = ::str::international::unicode_to_utf8( bStr );
 	
 	   SysFreeString(bStr);
 	   bStr = NULL;
@@ -1331,7 +1331,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.Description = ::ca2::international::unicode_to_utf8( bStr );
+		   deviceInfo.Description = ::str::international::unicode_to_utf8( bStr );
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1353,7 +1353,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.FriendlyName = ::ca2::international::unicode_to_utf8(bStr );	
+		   deviceInfo.FriendlyName = ::str::international::unicode_to_utf8(bStr );	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1385,7 +1385,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.IconURL = ::ca2::international::unicode_to_utf8( bStr );	
+		   deviceInfo.IconURL = ::str::international::unicode_to_utf8( bStr );	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1417,7 +1417,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.ManufacturerName = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.ManufacturerName = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1432,7 +1432,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.ManufacturerURL = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.ManufacturerURL = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1447,7 +1447,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.ModelName = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.ModelName = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1462,7 +1462,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.ModelNumber = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.ModelNumber = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1477,7 +1477,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.ModelURL = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.ModelURL = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1503,7 +1503,7 @@ namespace metrowin
 		   {
 			   if ( SUCCEEDED( piDev->get_FriendlyName( &bStr ) ) )
 			   {
-				   deviceInfo.ParentDevice = ::ca2::international::unicode_to_utf8(bStr);
+				   deviceInfo.ParentDevice = ::str::international::unicode_to_utf8(bStr);
 				   SysFreeString(bStr);
 				   bStr = NULL;
 			   }
@@ -1522,7 +1522,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.PresentationURL = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.PresentationURL = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1546,7 +1546,7 @@ namespace metrowin
 		   {
 			   if ( SUCCEEDED( piDev->get_FriendlyName( &bStr ) ) )
 			   {
-				   deviceInfo.RootDevice = ::ca2::international::unicode_to_utf8(bStr );
+				   deviceInfo.RootDevice = ::str::international::unicode_to_utf8(bStr );
 				   SysFreeString(bStr);
 				   bStr = NULL;
 			   }
@@ -1566,7 +1566,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.SerialNumber = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.SerialNumber = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1612,7 +1612,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.Type = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.Type = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1627,7 +1627,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-         deviceInfo.UniqueDeviceName = ::ca2::international::unicode_to_utf8(bStr);	
+         deviceInfo.UniqueDeviceName = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }
@@ -1642,7 +1642,7 @@ namespace metrowin
 	   hrReturn |= result;
 	   if ( SUCCEEDED(result) )
 	   {
-		   deviceInfo.UPC = ::ca2::international::unicode_to_utf8(bStr);	
+		   deviceInfo.UPC = ::str::international::unicode_to_utf8(bStr);	
 		   SysFreeString(bStr);
 		   bStr = NULL;
 	   }

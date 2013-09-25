@@ -26,7 +26,7 @@ namespace metrowin
 
       virtual void write_string(const char * lpsz);
       virtual char * read_string(char * lpsz, UINT nMax);
-      virtual UINT read_string(string & rString);
+      virtual bool read_string(string & rString);
 
       virtual ~stdio_file();
       void dump(dump_context & dumpcontext) const;
@@ -34,7 +34,7 @@ namespace metrowin
       virtual bool open(const char * lpszFileName, UINT nOpenFlags);
       virtual ::primitive::memory_size read(void * lpBuf, ::primitive::memory_size nCount);
       virtual void write(const void * lpBuf, ::primitive::memory_size nCount);
-      virtual file_position seek(file_offset lOff, ::ca2::e_seek nFrom);
+      virtual file_position seek(file_offset lOff, ::file::e_seek nFrom);
       virtual void Abort();
       virtual void Flush();
       virtual void close();
@@ -44,8 +44,13 @@ namespace metrowin
       virtual sp(::file::stream_buffer) Duplicate() const;
       virtual void LockRange(file_position dwPos, file_size dwCount);
       virtual void UnlockRange(file_position dwPos, file_size dwCount);
+
+
    };
 
 
-
 } // namespace metrowin
+
+
+
+

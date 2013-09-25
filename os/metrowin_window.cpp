@@ -12,7 +12,7 @@ namespace metrowin
 
    window::window()
    {
-      m_pcallback = NULL;
+      m_plistener = NULL;
       m_pguie = this;
 //      set_handle(NULL);
       //m_pguieOwner = ::;
@@ -27,7 +27,7 @@ namespace metrowin
 
    void window::construct(oswindow hWnd)
    {
-      m_pcallback = NULL;
+      m_plistener = NULL;
       m_pguie = this;
 //      set_handle(hWnd);
       m_pguie->m_nFlags = 0;
@@ -42,7 +42,7 @@ namespace metrowin
       element(papp),
       ::user::interaction(papp)
    {
-      m_pcallback = NULL;
+      m_plistener = NULL;
       m_pguie = this;
 //      set_handle(NULL);
 //      m_pguieOwner = NULL;
@@ -422,8 +422,8 @@ namespace metrowin
          string strMessage;
          strMessage.Format("%s\n\nSystem Error Code: %d", strLastError, dwLastError);
 
-         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Window creation failed: GetLastError returned:\n");
-         TRACE(::ca2::trace::category_AppMsg, 0, "%s\n", strMessage);
+         TRACE(::core::trace::category_AppMsg, 0, "Warning: Window creation failed: GetLastError returned:\n");
+         TRACE(::core::trace::category_AppMsg, 0, "%s\n", strMessage);
          try
          {
             if(dwLastError == 0x0000057e)
@@ -488,7 +488,7 @@ namespace metrowin
       const char * lpszWindowName, uint32_t dwStyle,
       const RECT& rect,
       ::user::interaction* pParentWnd, id id,
-      ::ca2::create_context* pContext)
+      ::create_context* pContext)
    {
       // can't use for desktop or pop-up windows (use CreateEx instead)
       ASSERT(pParentWnd != NULL);
@@ -508,7 +508,7 @@ namespace metrowin
 
       m_pwindow = pwindow;
 
-      m_pthread = dynamic_cast < ::thread * > (::ca2::get_thread());
+      m_pthread = dynamic_cast < ::thread * > (::get_thread());
 
 
       return true;
@@ -525,7 +525,7 @@ namespace metrowin
 
 #endif
 
-      m_pcallback = pcallback;
+      m_plistener = pcallback;
       if(IsWindow())
       {
          SetWindowText(pszName);
@@ -545,9 +545,9 @@ namespace metrowin
    window::~window()
    {
 
-      if(m_papp != NULL && m_papp->m_psystem != NULL && Sys(m_papp).user()->m_pwindowmap != NULL)
+      if(m_pbaseapp != NULL && m_pbaseapp->m_pplaneapp != NULL && m_pbaseapp->m_pplaneapp->m_psystem != NULL && Sys(m_pbaseapp).user()->m_pwindowmap != NULL)
       {
-         Sys(m_papp).user()->m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
+         Sys(m_pbaseapp).user()->m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
       single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_pthread->m_mutex, TRUE);
@@ -558,9 +558,9 @@ namespace metrowin
       sl.unlock();
       if (get_handle() != NULL)
       {
-         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: calling DestroyWindow in window::~window; "
+         TRACE(::core::trace::category_AppMsg, 0, "Warning: calling DestroyWindow in window::~window; "
             "OnDestroy or PostNcDestroy in derived class will not be called.\n");
-         m_pcallback = NULL;
+         m_plistener = NULL;
          DestroyWindow();
       }
    }
@@ -1204,7 +1204,7 @@ namespace metrowin
       // need to use top level parent (for the case where get_handle() is in DLL)
       ::user::interaction * pWnd = EnsureTopLevelParent();
 
-      TRACE(::ca2::trace::category_AppMsg, 0, "WinHelp: pszHelpFile = '%s', dwData: $%lx, fuCommand: %d.\n", pApp->m_pszHelpFilePath, dwData, nCmd);
+      TRACE(::core::trace::category_AppMsg, 0, "WinHelp: pszHelpFile = '%s', dwData: $%lx, fuCommand: %d.\n", pApp->m_pszHelpFilePath, dwData, nCmd);
 
       // finally, run the Windows Help engine
       /* trans   if (!::WinHelp(WIN_WINDOW(pWnd)->get_handle(), pApp->m_pszHelpFilePath, nCmd, dwData))
@@ -1232,7 +1232,7 @@ namespace metrowin
    // need to use top level parent (for the case where get_handle() is in DLL)
    ::user::interaction * pWnd = EnsureTopLevelParent();
 
-   TRACE(::ca2::trace::category_AppMsg, 0, "HtmlHelp: pszHelpFile = '%s', dwData: $%lx, fuCommand: %d.\n", pApp->m_pszHelpFilePath, dwData, nCmd);
+   TRACE(::core::trace::category_AppMsg, 0, "HtmlHelp: pszHelpFile = '%s', dwData: $%lx, fuCommand: %d.\n", pApp->m_pszHelpFilePath, dwData, nCmd);
 
    // run the HTML Help engine
    /* trans   if (!::ca2::HtmlHelp(WIN_WINDOW(pWnd)->get_handle(), pApp->m_pszHelpFilePath, nCmd, dwData))
@@ -1336,9 +1336,9 @@ namespace metrowin
             return;
       }
 
-      if(m_pcallback != NULL)
+      if(m_plistener != NULL)
       {
-         m_pcallback->message_queue_message_handler(pobj);
+         m_plistener->message_queue_message_handler(pobj);
          if(pobj->m_bRet)
             return;
       }
@@ -1391,7 +1391,7 @@ namespace metrowin
             || pbase->m_uiMessage == WM_MBUTTONDOWN
             || pbase->m_uiMessage == WM_MOUSEMOVE)
          {
-            if(Application.fontopus()->m_puser != NULL && m_papp->m_psession != NULL)
+            if(Application.fontopus()->m_puser != NULL && m_pbaseapp->m_pplaneapp->m_psession != NULL)
             {
                try
                {
@@ -1420,17 +1420,17 @@ namespace metrowin
          ::message::mouse * pmouse = (::message::mouse *) pbase;
 
          Application.m_ptCursor = pmouse->m_pt;
-         if(m_papp->m_psession != NULL)
+         if(m_pbaseapp->m_pplaneapp->m_psession != NULL)
          {
             Session.m_ptCursor = pmouse->m_pt;
          }
-         if(m_pguie != NULL && m_pguie != this && m_pguie->m_papp->m_psession != NULL && m_pguie->m_papp->m_psession != m_papp->m_psession)
+         if(m_pguie != NULL && m_pguie != this && m_pguie->m_pbaseapp->m_pplaneapp->m_psession != NULL && m_pguie->m_pbaseapp->m_pplaneapp->m_psession != m_pbaseapp->m_pplaneapp->m_psession)
          {
-            Sess(m_pguie->m_papp->m_psession).m_ptCursor = pmouse->m_pt;
+            Sess(m_pguie->m_pbaseapp->m_pplaneapp->m_psession).m_ptCursor = pmouse->m_pt;
          }
 
          ::plane::session * psession = NULL;
-         if(m_papp->is_system())
+         if(m_pbaseapp->m_pplaneapp->is_system())
          {
             psession = System.query_session(0);
             if(psession != NULL && psession->m_bSessionSynchronizedCursor)
@@ -1596,7 +1596,7 @@ restart_mouse_hover_check:
          pbase->set_lresult(DefWindowProc(pbase->m_uiMessage, pbase->m_wparam, pbase->m_lparam));
          return;
       }
-      if(pbase->m_uiMessage == ::ca2::message_event)
+      if(pbase->m_uiMessage == ::message::message_event)
       {
          if(m_pguie != this && m_pguie != NULL)
          {
@@ -2074,7 +2074,7 @@ restart_mouse_hover_check:
       _001OnCommand(nID, CN_UPDATE_COMMAND_UI, &state, NULL);
       if (!state.m_bEnabled)
       {
-      TRACE(::ca2::trace::category_AppMsg, 0, "Warning: not executing disabled command %d\n", nID);
+      TRACE(::core::trace::category_AppMsg, 0, "Warning: not executing disabled command %d\n", nID);
       return TRUE;
       }
 
@@ -2100,7 +2100,7 @@ restart_mouse_hover_check:
 
       #ifdef DEBUG
       if (nCode < 0 && nCode != (int)0x8000)
-      TRACE(::ca2::trace::category_AppMsg, 0, "Implementation Warning: control notification = $%X.\n",
+      TRACE(::core::trace::category_AppMsg, 0, "Implementation Warning: control notification = $%X.\n",
       nCode);
       #endif
 
@@ -2638,7 +2638,7 @@ restart_mouse_hover_check:
 
    // move and resize all the windows at once!
    if (layout.hDWP == NULL || !::EndDeferWindowPos(layout.hDWP))
-   TRACE(::ca2::trace::category_AppMsg, 0, "Warning: DeferWindowPos failed - low system resources.\n");
+   TRACE(::core::trace::category_AppMsg, 0, "Warning: DeferWindowPos failed - low system resources.\n");
    }
 
    */
@@ -2766,7 +2766,7 @@ restart_mouse_hover_check:
 
       //// move and resize all the windows at once!
       //if (layout.hDWP == NULL || !::EndDeferWindowPos(layout.hDWP))
-      //   TRACE(::ca2::trace::category_AppMsg, 0, "Warning: DeferWindowPos failed - low system resources.\n");
+      //   TRACE(::core::trace::category_AppMsg, 0, "Warning: DeferWindowPos failed - low system resources.\n");
    }
 
 
@@ -3163,7 +3163,7 @@ restart_mouse_hover_check:
          m_event.ResetEvent();
          m_hwnd = hwnd;
          m_hdc = hdc;
-         __begin_thread(papp, &print_window::s_print_window, (LPVOID) this, ::ca2::scheduling_priority_above_normal);
+         __begin_thread(papp, &print_window::s_print_window, (LPVOID) this, ::core::scheduling_priority_above_normal);
          if(m_event.wait(millis(dwTimeout)).timeout())
          {
             TRACE("print_window::time_out");
@@ -3567,7 +3567,7 @@ restart_mouse_hover_check:
       //if (hDC == NULL)
       //{
       //   // sometimes Win32 passes a NULL hDC in the WM_CTLCOLOR message.
-      //   //         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: hDC is NULL in window::GrayCtlColor; WM_CTLCOLOR not processed.\n");
+      //   //         TRACE(::core::trace::category_AppMsg, 0, "Warning: hDC is NULL in window::GrayCtlColor; WM_CTLCOLOR not processed.\n");
       //   return FALSE;
       //}
 
@@ -3919,7 +3919,7 @@ restart_mouse_hover_check:
    }
 
 
-   id window::RunModalLoop(uint32_t dwFlags, ::ca2::live_object * pliveobject)
+   id window::RunModalLoop(uint32_t dwFlags, ::core::live_object * pliveobject)
    {
 
             
@@ -3972,11 +3972,11 @@ restart_mouse_hover_check:
             m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -4020,11 +4020,11 @@ restart_mouse_hover_check:
             m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -4150,9 +4150,9 @@ ExitModal:
 //#ifdef DEBUG
 //      else if (*lplpfn != oldWndProc)
 //      {
-//         TRACE(::ca2::trace::category_AppMsg, 0, "p: Trying to use SubclassWindow with incorrect window\n");
-//         TRACE(::ca2::trace::category_AppMsg, 0, "\tderived class.\n");
-//         TRACE(::ca2::trace::category_AppMsg, 0, "\thWnd = $%08X (nIDC=$%08X) is not a %hs.\n", (UINT)(uint_ptr)hWnd,
+//         TRACE(::core::trace::category_AppMsg, 0, "p: Trying to use SubclassWindow with incorrect window\n");
+//         TRACE(::core::trace::category_AppMsg, 0, "\tderived class.\n");
+//         TRACE(::core::trace::category_AppMsg, 0, "\thWnd = $%08X (nIDC=$%08X) is not a %hs.\n", (UINT)(uint_ptr)hWnd,
 //            __get_dialog_control_id(hWnd), typeid(*this).name());
 //         ASSERT(FALSE);
 //         // undo the subclassing if continuing after assert
@@ -4237,8 +4237,8 @@ ExitModal:
    {
       /*bool b;
       bool * pb = &b;
-      if(m_papp->s_ptwf != NULL)
-      pb = &m_papp->s_ptwf->m_bProDevianMode;
+      if(m_pbaseapp->m_pplaneapp->s_ptwf != NULL)
+      pb = &m_pbaseapp->m_pplaneapp->s_ptwf->m_bProDevianMode;
       keeper < bool > keepOnDemandDraw(pb, false, *pb, true);
       */
       ASSERT(::IsWindow(get_handle())); 
@@ -4755,7 +4755,7 @@ throw todo(get_app());
    LRESULT window::send_message(UINT uiMessage, WPARAM wparam, lparam lparam)
    {
 
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       spbase = get_base(m_pguie, uiMessage, wparam, lparam);
 
@@ -6345,7 +6345,7 @@ throw todo(get_app());
 
       // Catch exceptions thrown outside the scope of a callback
       // in debug builds and warn the ::fontopus::user.
-      ::ca::smart_pointer < ::message::base > spbase;
+      smart_pointer < ::message::base > spbase;
 
       spbase(pinteraction->get_base(pinteraction, nMsg, wParam, lParam));
 
@@ -6388,7 +6388,7 @@ throw todo(get_app());
       catch(::exception::base * pe)
       {
          __process_window_procedure_exception(pe, spbase);
-         //         TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Uncaught exception in message_handler (returning %ld).\n", spbase->get_lresult());
+         //         TRACE(::core::trace::category_AppMsg, 0, "Warning: Uncaught exception in message_handler (returning %ld).\n", spbase->get_lresult());
          pe->Delete();
       }
       catch(...)
@@ -7074,7 +7074,7 @@ LRESULT CALLBACK
       msg.lParam = lParam;
 
       //lResult = __process_window_procedure_exception(pe, &msg);
-      //      TRACE(::ca2::trace::category_AppMsg, 0, "Warning: Uncaught exception in __activation_window_procedure (returning %ld).\n",
+      //      TRACE(::core::trace::category_AppMsg, 0, "Warning: Uncaught exception in __activation_window_procedure (returning %ld).\n",
       //       lResult);
       pe->Delete();
    }
@@ -7102,7 +7102,7 @@ bool CLASS_DECL_metrowin __register_class(WNDCLASS* lpWndClass)
 
    if (!::RegisterClass(lpWndClass))
    {
-      //      TRACE(::ca2::trace::category_AppMsg, 0, "Can't register window class named %s\n",
+      //      TRACE(::core::trace::category_AppMsg, 0, "Can't register window class named %s\n",
       //       lpWndClass->lpszClassName);
       return FALSE;
    }

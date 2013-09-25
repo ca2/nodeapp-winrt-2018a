@@ -124,7 +124,7 @@ ___DEBUG_STATE::~___DEBUG_STATE()
       catch(std::__non_rtti_object & e)
       {
          ::OutputDebugStringW(L"~___DEBUG_STATE _CrtdumpMemoryLeaks std::__non_rtti_object\n");
-         ::OutputDebugStringW(::ca2::international::utf8_to_unicode(e.what()));
+         ::OutputDebugStringW(::str::international::utf8_to_unicode(e.what()));
          ::OutputDebugStringW(L"\n");
       }
       catch(...)

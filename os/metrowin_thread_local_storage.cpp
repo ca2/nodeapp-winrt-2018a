@@ -132,7 +132,7 @@ no_track_object* process_local_object::get_data(
       }
       catch(::exception::base * pe)
       {
-         ::ca2::rethrow(pe);
+         ::exception::rethrow(pe);
       }
       
    }

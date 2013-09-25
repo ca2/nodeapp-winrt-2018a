@@ -759,7 +759,7 @@ namespace metrowin
          // fill in the initial state for the application
          // Windows specific initialization (not done if no application)
          m_hInstance = hInstance;
-         (dynamic_cast < application * >(m_pbaseapp.m_p))->m_hInstance = hInstance;
+         (dynamic_cast < ::application * >(m_pbaseapp.m_p))->m_hInstance = hInstance;
          //hPrevInstance; // Obsolete.
          m_strCmdLine = strCmdLine;
          m_nCmdShow = nCmdShow;

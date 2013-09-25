@@ -705,7 +705,7 @@ namespace metrowin
 
    string dir::stage(const char * lpcsz, const char * lpcsz2)
    {
-      return path(ca2("stage"), lpcsz, lpcsz2);
+      return path(element("stage"), lpcsz, lpcsz2);
    }
 
    string dir::stageapp(const char * lpcsz, const char * lpcsz2)
@@ -719,7 +719,7 @@ namespace metrowin
    }
 
    // stage in ccvotagus spalib
-   string dir::ca2(const char * lpcsz, const char * lpcsz2)
+   string dir::element(const char * lpcsz, const char * lpcsz2)
    {
       
       single_lock sl(&m_mutex, true);
@@ -728,7 +728,7 @@ namespace metrowin
 
    }
 
-   string dir::ca2(const string & str, const char * lpcsz2)
+   string dir::element(const string & str, const char * lpcsz2)
    {
       
       single_lock sl(&m_mutex, true);
@@ -737,7 +737,7 @@ namespace metrowin
 
    }
 
-   string dir::ca2(const char * lpcsz, const string & str2)
+   string dir::element(const char * lpcsz, const string & str2)
    {
       
       single_lock sl(&m_mutex, true);
@@ -746,7 +746,7 @@ namespace metrowin
 
    }
 
-   string dir::ca2(const string & str, const string & str2)
+   string dir::element(const string & str, const string & str2)
    {
       
       single_lock sl(&m_mutex, true);
@@ -755,7 +755,7 @@ namespace metrowin
 
    }
 
-   string dir::ca2(const string & str)
+   string dir::element(const string & str)
    {
       
       single_lock sl(&m_mutex, true);
@@ -764,7 +764,7 @@ namespace metrowin
 
    }
 
-   string dir::ca2()
+   string dir::element()
    {
       
       single_lock sl(&m_mutex, true);
@@ -980,7 +980,7 @@ namespace metrowin
          m_strTimeFolder = appdata("time");
 
       if(m_strNetSeedFolder.is_empty())
-         m_strNetSeedFolder = ca2("net/netseed");
+         m_strNetSeedFolder = element("net/netseed");
 
       mk(m_strTimeFolder, get_app());
 

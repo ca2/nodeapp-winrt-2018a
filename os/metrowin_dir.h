@@ -66,12 +66,12 @@ namespace metrowin
       virtual string netseed(const char * lpcsz = NULL, const char * lpcsz2 = NULL);
       
       // stage in ccvotagus spalib
-      virtual string ca2(const char * lpcsz, const char * lpcsz2 = NULL);
-      virtual string ca2();
-      virtual string ca2(const string & str);
-      virtual string ca2(const string & str, const string & str2);
-      virtual string ca2(const char * lpcsz, const string & str2);
-      virtual string ca2(const string & str, const char * lpcsz2);
+      virtual string element(const char * lpcsz, const char * lpcsz2 = NULL);
+      virtual string element();
+      virtual string element(const string & str);
+      virtual string element(const string & str, const string & str2);
+      virtual string element(const char * lpcsz, const string & str2);
+      virtual string element(const string & str, const char * lpcsz2);
 
       virtual string module(const char * lpcsz = NULL, const char * lpcsz2 = NULL);
       virtual string ca2module(const char * lpcsz = NULL, const char * lpcsz2 = NULL);

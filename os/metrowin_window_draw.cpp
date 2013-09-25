@@ -275,7 +275,7 @@ namespace metrowin
 
    bool window_draw::UpdateBuffer()
    {
-      single_lock ml(&user_mutex());
+      synch_lock ml(&user_mutex());
       if(m_bRender)
          return false;
       single_lock sl(&m_mutexRender, FALSE);

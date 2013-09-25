@@ -18,9 +18,9 @@ void CLASS_DECL_metrowin __cdecl _ca2_purecall()
 void __cdecl _null_se_translator(unsigned int uiCode, EXCEPTION_POINTERS * ppointers);
 
 
-//::ca2::application *     win_application_create(::ca2::application * pappSystem, const char * pszId);
-//::ca2::application *     win_instantiate_application(::ca2::application * pappSystem, const char * pszId);
-//int                     win_application_procedure(::ca2::application * pappSystem)
+//base_application *     win_application_create(base_application * pappSystem, const char * pszId);
+//base_application *     win_instantiate_application(base_application * pappSystem, const char * pszId);
+//int                     win_application_procedure(base_application * pappSystem)
 //UINT c_cdecl          win_application_thread_proc(LPVOID);
 /////////////////////////////////////////////////////////////////////////////
 // Standard WinMain implementation

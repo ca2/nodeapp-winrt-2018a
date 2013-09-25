@@ -130,7 +130,7 @@ no_track_object* process_local_object::get_data(
          if (m_pObject == NULL)
             m_pObject = (*pfnCreateObject)();
       }
-      catch(base_exception * pe)
+      catch(::exception::base * pe)
       {
          ::ca2::rethrow(pe);
       }

@@ -21,7 +21,7 @@
 
 string get_error_message(DWORD dwError);
 
-//::ca2::application *     win_instantiate_application(::ca2::application * pappSystem, const char * pszId);
+//base_application *     win_instantiate_application(base_application * pappSystem, const char * pszId);
 
 /////////////////////////////////////////////////////////////////////////////
 // explicit initialization for general purpose classes
@@ -81,7 +81,7 @@ CLASS_DECL_metrowin void __try_cleanup();
 #define __window_procedure (*__get_window_procedure())
 
 #define WIN_THREAD(pthread) (dynamic_cast < ::metrowin::thread * > (dynamic_cast < ::thread * >(pthread)))
-#define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::ca2::window * >(pwnd)))
+#define WIN_WINDOW(pwnd) (dynamic_cast < ::metrowin::window * > (dynamic_cast < ::user::window * >(pwnd)))
 #define METROWIN_DC(pgraphics) (dynamic_cast < ::metrowin::graphics * > (pgraphics))
 #define METROWIN_BITMAP(pbitmap) (dynamic_cast < ::metrowin::bitmap * > (pbitmap))
 #define METROWIN_PEN(ppen) (dynamic_cast < ::metrowin::pen * > (ppen))
@@ -107,15 +107,15 @@ CLASS_DECL_metrowin void __try_cleanup();
 #pragma comment(lib, "Msimg32.lib") 
 #pragma comment(lib, "Psapi.lib") 
 
-CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, ::ca2::signal_object * pobj);
+CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, signal_details * pobj);
 CLASS_DECL_metrowin void __trace_message(const char * lpszPrefix, LPMESSAGE lpmsg);
 
-CLASS_DECL_metrowin bool __cdecl __is_idle_message(::ca2::signal_object * pobj);
+CLASS_DECL_metrowin bool __cdecl __is_idle_message(signal_details * pobj);
 CLASS_DECL_metrowin bool __cdecl __is_idle_message(MESSAGE * pMsg);
 
 
-CLASS_DECL_metrowin void __process_window_procedure_exception(base_exception*, ::ca2::signal_object * pobj);
-CLASS_DECL_metrowin void __cdecl __pre_translate_message(::ca2::signal_object * pobj);
+CLASS_DECL_metrowin void __process_window_procedure_exception(::exception::base*, signal_details * pobj);
+CLASS_DECL_metrowin void __cdecl __pre_translate_message(signal_details * pobj);
 
 #include "metrowin_printer.h"
 

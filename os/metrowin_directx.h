@@ -33,7 +33,7 @@ namespace metrowin
    {
    internal:
 
-      ::ca2::application * m_papp;
+      base_application * m_papp;
 
       mutex    m_mutexDc;
 
@@ -41,7 +41,7 @@ namespace metrowin
 
       directx_base(base_application * papp);
 
-      ::ca2::application * get_app() const
+      base_application * get_app() const
       {
          return m_papp;
       }

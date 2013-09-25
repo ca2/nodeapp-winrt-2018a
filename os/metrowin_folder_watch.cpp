@@ -11,7 +11,7 @@ namespace metrowin
 
    bool folder_watch::watch(const char * pszPath)
    {
-      if(!::ca2::folder_watch::watch(pszPath))
+      if(!::file::folder_watch::watch(pszPath))
          return false;
 
       if(!begin())

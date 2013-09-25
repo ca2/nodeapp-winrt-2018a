@@ -24,7 +24,7 @@ namespace metrowin
       mutex m_mutex;
 
       ::plane::system * m_psystem;
-      ::ca2::application * m_papp;
+      base_application * m_papp;
 
       bool        m_bLeftButton;
       bool        m_bMiddleButton;
@@ -32,7 +32,7 @@ namespace metrowin
 
       Windows::Foundation::Rect m_rectLastWindowRect;
 
-      ::ca2::application * get_app() const
+      base_application * get_app() const
       {
          return m_papp;
       }
@@ -43,7 +43,7 @@ namespace metrowin
 
       void init_part_2ex();
       void install_message_handling_2ex();
-      ::ca2::window_draw * create_twf_2ex();
+      ::user::window_draw * create_twf_2ex();
 
       // DirectXBase Methods
       //virtual void CreateDeviceIndependentResources() override;

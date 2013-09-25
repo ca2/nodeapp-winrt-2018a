@@ -7,7 +7,7 @@ namespace metrowin
 
    dir::dir(sp(base_application) papp) :
       ::ca2::element(papp),
-      ::ca2::dir::system(papp),
+      ::file::dir::system(papp),
       m_path(papp)
    {
       
@@ -225,9 +225,9 @@ namespace metrowin
    void dir::ls_pattern(sp(base_application) papp, const char * lpcsz, const char * pszPattern, stringa * pstraPath, stringa * pstraTitle, array < bool, bool > * pbaIsDir, array < int64_t, int64_t > * piaSize)
    {
 #ifdef WINDOWSEX
-      if(::ca2::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
+      if(::file::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
       {
-         return ::ca2::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
+         return ::file::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
       }
       file_find filefind;
       bool bWorking;
@@ -257,9 +257,9 @@ namespace metrowin
       }
 #else
 
-      if(::ca2::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
+      if(::file::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
       {
-         return ::ca2::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
+         return ::file::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
       }
       stringa stra;
       ::dir::ls(stra, lpcsz);
@@ -408,7 +408,7 @@ namespace metrowin
       bWorking = filefind.FindFile(System.dir().path(lpcsz, "*.*"));
       if(!bWorking)
       {
-         ::ca2::dir::system::ls_dir(papp, lpcsz, pstraPath, pstraTitle);
+         ::file::dir::system::ls_dir(papp, lpcsz, pstraPath, pstraTitle);
          return;
       }
       while(bWorking)
@@ -510,7 +510,7 @@ namespace metrowin
          return bIsDir;
       }
 
-      if(::ca2::dir::system::is(lpcszPath, papp))
+      if(::file::dir::system::is(lpcszPath, papp))
          return true;
 
 
@@ -546,7 +546,7 @@ namespace metrowin
    bool dir::is(const string & strPath, sp(base_application) papp)
    {
       
-      if(::ca2::dir::system::is(strPath, papp))
+      if(::file::dir::system::is(strPath, papp))
          return true;
 
       bool bIsDir;
@@ -955,7 +955,7 @@ namespace metrowin
    }
 
 
-   class ::ca2::path & dir::path()
+   class ::file::path & dir::path()
    {
       return m_path;
    }

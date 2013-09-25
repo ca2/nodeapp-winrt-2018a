@@ -13,7 +13,7 @@ namespace metrowin
 
 
    class file_system :
-      virtual public ::ca2::file_system
+      virtual public ::file::system
    {
    public:
       

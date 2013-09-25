@@ -11,7 +11,7 @@ namespace metrowin
 
    class stdio_file : 
       virtual public file,
-      virtual public ::ca2::text_file
+      virtual public ::file::text_buffer
    {
    public:
 

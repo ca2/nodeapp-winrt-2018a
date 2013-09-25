@@ -9,7 +9,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin os :
-      public ::ca2::os
+      public ::core::os
    {
    public:
    

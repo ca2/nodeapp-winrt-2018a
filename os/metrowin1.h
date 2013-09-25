@@ -29,11 +29,11 @@ namespace metrowin
 
 
 
-// Placed on frame for EXCEPTION linkage, or base_exception cleanup
+// Placed on frame for EXCEPTION linkage, or ::exception::base cleanup
 struct CLASS_DECL_metrowin __exception_link
 {
    __exception_link* m_pLinkPrev;    // previous top, next in handler chain
-   base_exception* m_pException;   // current exception (NULL in try block)
+   ::exception::base* m_pException;   // current exception (NULL in try block)
 
    __exception_link();       // for initialization and linking
    ~__exception_link()       // for cleanup and unlinking
@@ -69,8 +69,8 @@ CLASS_DECL_metrowin LRESULT CALLBACK __window_procedure(oswindow hWnd, UINT nMsg
 CLASS_DECL_metrowin WNDPROC __get_window_procedure();
 #define __window_procedure (*__get_window_procedure())
 
-/*typedef void (__MSG_CALL ::ca2::window::*__PMSGW)();
-   // like '__PMSG' but for ::ca2::window derived classes only
+/*typedef void (__MSG_CALL ::user::window::*__PMSGW)();
+   // like '__PMSG' but for ::user::window derived classes only
 
 typedef void (__MSG_CALL ::thread::*__PMSGT)();
    // like '__PMSG' but for thread-derived classes only*/
@@ -112,7 +112,7 @@ CLASS_DECL_metrowin void __term_thread(base_application * papp, HINSTANCE hInstT
   // __in_z LPTSTR lpCmdLine, __in int nCmdShow);
 CLASS_DECL_metrowin void __win_term();
 
-CLASS_DECL_metrowin ::ca2::application* __get_app();
+CLASS_DECL_metrowin ::application* __get_app();
 CLASS_DECL_metrowin sp(::user::interaction) __get_main_window();
 //CLASS_DECL_metrowin HINSTANCE CLASS_DECL_metrowin System.m_hInstance;
 CLASS_DECL_metrowin HINSTANCE __get_resource_handle();

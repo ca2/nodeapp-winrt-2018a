@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin path :
-      virtual public ::ca2::path
+      virtual public ::file::path
    {
    public:
 
@@ -20,7 +20,7 @@ namespace metrowin
    };
 
    class CLASS_DECL_metrowin dir :
-      virtual public ::ca2::dir::system
+      virtual public ::file::dir::system
    {
    public:
 
@@ -33,8 +33,8 @@ namespace metrowin
       dir(sp(base_application) papp);
 
 
-      using ::ca2::dir::system::path;
-      virtual class ::ca2::path & path();
+      using ::file::dir::system::path;
+      virtual class ::file::path & path();
       virtual string path(const char * pszFolder, strsize iLenFolder, const char * pszRelative, strsize iLenRelative, const char * psz2, strsize iLen2, bool bUrl);
 
       virtual string relpath(const char * lpcszSource, const char * lpcszRelative, const char * lpcsz2 = NULL);

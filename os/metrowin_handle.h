@@ -123,8 +123,6 @@ namespace metrowin
 } // namespace metrowin
 
 
-#include "base/ca2/ca2_fixed_alloc.h"
-
 template<class TYPE>
 struct ConstructDestruct
 {
@@ -174,7 +172,7 @@ public:
 
 // Operations
 public:
-   CT * from_handle(HANDLE h, CT * (* pfnAllocator) (::ca2::application *, HANDLE) = NULL, base_application * papp = NULL);
+   CT * from_handle(HANDLE h, CT * (* pfnAllocator) (base_application *, HANDLE) = NULL, base_application * papp = NULL);
    void delete_temp();
 
    void set_permanent(HANDLE h, CT * permOb);
@@ -232,7 +230,7 @@ handle_map < HT, CT > ::handle_map() :
 }
 
 template < class HT, class CT >
-CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::application *, HANDLE), base_application * papp)
+CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (base_application *, HANDLE), base_application * papp)
 {
    
    single_lock sl(&m_mutex, TRUE);
@@ -292,7 +290,7 @@ CT* handle_map < HT, CT >::from_handle(HANDLE h, CT * (*pfnAllocator) (::ca2::ap
       // set it in the ::map
       m_temporaryMap.set_at(h, pTemp);
    }
-   catch(base_exception * pe)
+   catch(::exception::base * pe)
    {
 //#ifndef ___PORTABLE
 //      __set_new_handler(pnhOldHandler);

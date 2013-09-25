@@ -1196,7 +1196,7 @@ namespace metrowin
    }
 
 
-   // IMPLEMENT_DYNAMIC(WinFileException, base_exception)
+   // IMPLEMENT_DYNAMIC(WinFileException, ::exception::base)
 
    /////////////////////////////////////////////////////////////////////////////
 

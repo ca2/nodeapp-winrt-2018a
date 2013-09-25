@@ -446,7 +446,7 @@ namespace metrowin
    }
 
 
-   ::ca2::window_draw * directx_application::create_twf_2ex()
+   ::user::window_draw * directx_application::create_twf_2ex()
    {
 
       ::metrowin::window_draw * pwindowdraw = new ::metrowin::window_draw(m_psystem);
@@ -665,9 +665,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::key * pkey = canew(::ca2::message::key(get_app()));
+      ::message::key * pkey = canew(::message::key(get_app()));
 
       spbase = pkey;
 
@@ -694,9 +694,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::key * pkey = canew(::ca2::message::key(get_app()));
+      ::message::key * pkey = canew(::message::key(get_app()));
 
       spbase = pkey;
 
@@ -726,9 +726,9 @@ namespace metrowin
       if(m_psystem->m_pui->m_pimpl == NULL)
          return;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::key * pkey = new  ::ca2::message::key(get_app());
+      ::message::key * pkey = new  ::message::key(get_app());
 
       spbase = pkey;
 
@@ -761,9 +761,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
+      ::message::mouse * pmouse = new  ::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -794,9 +794,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
+      ::message::mouse * pmouse = new  ::message::mouse(get_app());
 
       spbase = pmouse;
 
@@ -859,9 +859,9 @@ namespace metrowin
 
       ::g_iMouse = pointerPoint->PointerId;
 
-      ::ca::smart_pointer < ::ca2::message::base > spbase;
+      ::ca::smart_pointer < ::message::base > spbase;
 
-      ::ca2::message::mouse * pmouse = new  ::ca2::message::mouse(get_app());
+      ::message::mouse * pmouse = new  ::message::mouse(get_app());
 
       spbase = pmouse;
 

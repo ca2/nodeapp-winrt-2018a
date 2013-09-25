@@ -27,8 +27,8 @@ namespace metrowin
    window_draw::window_draw(base_application * papp) : 
       element(papp),
       ::thread(papp),
-      ::ca2::window_draw(papp),
-      message_window_simple_callback(papp),
+      ::user::window_draw(papp),
+      message_queue(papp),
       m_mutexRender(papp),
       m_mutexRendering(papp),
       m_mutexRgnUpdate(papp),
@@ -43,9 +43,9 @@ namespace metrowin
    }
 
 
-   void window_draw::message_window_message_handler(::ca2::signal_object * pobj)
+   void window_draw::message_queue_message_handler(signal_details * pobj)
    {
-      SCAST_PTR(::ca2::message::base, pbase, pobj);
+      SCAST_PTR(::message::base, pbase, pobj);
       if(pbase->m_uiMessage == (WM_USER + 1984 + 1977))
       {
          _synch_redraw();
@@ -357,8 +357,8 @@ namespace metrowin
       return &m_semaphoreBuffer;
    }
 
-   // The first ::ca2::window handle in the array must belong
-   // to the higher z order ::ca2::window.
+   // The first ::user::window handle in the array must belong
+   // to the higher z order ::user::window.
    // The rectangle must contain all update region.
    // It must be in screen coordinates.
 
@@ -366,7 +366,7 @@ namespace metrowin
 
    // Remark: this optimization eliminates top level windows
    // that are lower z order siblings of a higher z order
-   // top level ::ca2::window that contains all
+   // top level ::user::window that contains all
    // the update region in a opaque area.
    // It doesn´t eliminates from the update parent windows
    // obscured by opaque children.
@@ -470,7 +470,7 @@ namespace metrowin
          return OptimizeNone;
       }
 
-   //    ::ca2::window * pwnd = window::FromHandlePermanent(hwnd);
+   //    ::user::window * pwnd = window::FromHandlePermanent(hwnd);
        
       
       if(ptwi == NULL)
@@ -561,7 +561,7 @@ namespace metrowin
       ::GetWindowRect(hwnd, rectWindow);
 
 
-   //   ::ca2::window * pwnd = ::metrowin::window::from_handle(hwnd);
+   //   ::user::window * pwnd = ::metrowin::window::from_handle(hwnd);
 
       if(!TwfGetTopWindow(
             hwndParam,
@@ -674,7 +674,7 @@ namespace metrowin
 #ifdef WINDOWSEX
       rect rectWindow;
 
-   //   ::ca2::window * pwndOpaque = window::FromHandlePermanent(hwndOpaque);
+   //   ::user::window * pwndOpaque = window::FromHandlePermanent(hwndOpaque);
 
       ::GetWindowRect(hwndOpaque, rectWindow);
 
@@ -764,7 +764,7 @@ namespace metrowin
       // pdc is the source primitive::memory device context
       // from which bitmap the screen is updated.
       user::buffer * pbuffer,
-      // hwndParam ::ca2::window device context
+      // hwndParam ::user::window device context
       // is used from screen output
       ::user::interaction* pwnd)
    {
@@ -799,7 +799,7 @@ namespace metrowin
 
       if(hdcScreen == NULL)
       {
-         // If it has failed to get ::ca2::window
+         // If it has failed to get ::user::window
          // owned device context, try to get
          // a device context from the cache.
          hdcScreen = ::GetDCEx(hwndParam, NULL, DCX_CACHE | DCX_CLIPSIBLINGS | DCX_WINDOW);
@@ -827,13 +827,13 @@ namespace metrowin
       // rect rectUpdate;
       // rgnUpdate.GetRgnBox(rectUpdate);
 
-      // get the ::ca2::window client area box
+      // get the ::user::window client area box
       // in screen coordinates.
       rect64 rectWindow;
       rectWindow = pwnd->m_rectParentClient;
 
       // Output rectangle receive the intersection
-      // of ::ca2::window box and update box.
+      // of ::user::window box and update box.
       //rect rectOutput;
       //rectOutput.intersect(rectWnd, rectUpdate);
 
@@ -847,9 +847,9 @@ namespace metrowin
       rect64 rectOutputClient(rectWindow);
       rectOutputClient -= rectWindow.top_left();
 
-      // The ::ca2::window owned device context is clipped
+      // The ::user::window owned device context is clipped
       // with the update region in screen coordinates
-      // translated to ::ca2::window client coordinates.
+      // translated to ::user::window client coordinates.
       //::draw2d::region_sp rgnClip(get_app());
       //rgnClip->CreateRectRgn(0, 0, 0, 0);
       //rgnClip->CopyRgn(&rgnUpdate);
@@ -998,8 +998,8 @@ throw todo(get_app());
 
 
 
-   // The first ::ca2::window handle in the array must belong
-   // to the higher z order ::ca2::window.
+   // The first ::user::window handle in the array must belong
+   // to the higher z order ::user::window.
    // The rectangle must contain all update region.
    // It must be in screen coordinates.
 
@@ -1007,7 +1007,7 @@ throw todo(get_app());
 
    // Remark: this optimization eliminates top level windows
    // that are lower z order siblings of a higher z order
-   // top level ::ca2::window that contains all
+   // top level ::user::window that contains all
    // the update region in a opaque area.
    // It doesn´t eliminates from the update parent windows
    // obscured by opaque children.

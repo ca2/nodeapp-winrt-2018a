@@ -153,17 +153,17 @@ namespace metrowin
 
       // called when occurs an standard_exception exception in run
       // return true to call run again
-      virtual bool on_run_exception(::ca2::exception & e);
+      virtual bool on_run_exception(::exception::exception & e);
 
    // Overridables
       // thread initialization
       virtual bool initialize_instance();
 
-      virtual ::ca2::message::e_prototype GetMessagePrototype(UINT uiMessage, UINT uiCode); 
+      virtual ::message::e_prototype GetMessagePrototype(UINT uiMessage, UINT uiCode); 
 
       // running and idle processing
       virtual int run();
-      virtual void pre_translate_message(::ca2::signal_object * pobj);
+      virtual void pre_translate_message(signal_details * pobj);
       virtual bool pump_message();     // low level message pump
       virtual bool on_idle(LONG lCount); // return TRUE if more idle processing
       virtual bool is_idle_message(MSG* pMsg);  // checks for special messages
@@ -172,7 +172,7 @@ namespace metrowin
       virtual int exit_instance(); // default will 'delete this'
 
       // Advanced: exception handling
-      virtual LRESULT ProcessWndProcException(base_exception* e, const MSG* pMsg);
+      virtual LRESULT ProcessWndProcException(::exception::base* e, const MSG* pMsg);
 
       // Advanced: handling messages sent to message filter hook
       virtual bool ProcessMessageFilter(int code, LPMSG lpMsg);
@@ -199,8 +199,8 @@ namespace metrowin
       virtual ::thread * GetThread();
       virtual void set_thread(::thread * pthread);
 
-      virtual sp(::ca2::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
-      virtual sp(::ca2::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
+      virtual sp(::user::window) FindWindow(const char * lpszClassName, const char * lpszWindowName);
+      virtual sp(::user::window) FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow);
 
       virtual void get_time(struct timeval *p);
       virtual void set_env_var(const string & var,const string & value);

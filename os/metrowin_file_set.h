@@ -6,7 +6,7 @@ namespace metrowin
 
 
    class CLASS_DECL_metrowin file_set : 
-      public ::ca2::file_set
+      public ::file::set
    {
    public:
 

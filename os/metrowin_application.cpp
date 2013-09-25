@@ -60,12 +60,12 @@ namespace metrowin
 
    void application::_001OnFileNew()
    {
-      ::ca2::application_base::m_p->_001OnFileNew(NULL);
+      ::application_base::m_p->_001OnFileNew(NULL);
    }
 
    sp(::user::document_interface) application::_001OpenDocumentFile(var varFile)
    {
-      return ::ca2::application_base::m_p->_001OpenDocumentFile(varFile);
+      return ::application_base::m_p->_001OpenDocumentFile(varFile);
    }
 
    void application::_001EnableShellOpen()
@@ -227,23 +227,23 @@ namespace metrowin
                __get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock);
          }
    #endif
-         ::ca2::LockTempMaps(::ca2::application_base::m_p);
-         ::ca2::UnlockTempMaps(::ca2::application_base::m_p, -1);
+         ::ca2::LockTempMaps(::application_base::m_p);
+         ::ca2::UnlockTempMaps(::application_base::m_p, -1);
       }
-      catch( base_exception* e )
+      catch( ::exception::base* e )
       {
          e->Delete();
       }*/
 
       try
       {
-         // cleanup thread local tooltip ::ca2::window
+         // cleanup thread local tooltip ::user::window
          if (hInstTerm == NULL)
          {
 //            __MODULE_THREAD_STATE* pModuleThreadState = __get_module_thread_state();
          }
       }
-      catch( base_exception* e )
+      catch( ::exception::base* e )
       {
          e->Delete();
       }
@@ -254,7 +254,7 @@ namespace metrowin
          if (gen_ThreadData != NULL)
             gen_ThreadData->delete_data();
       }
-      catch( base_exception* e )
+      catch( ::exception::base* e )
       {
          e->Delete();
       }
@@ -394,7 +394,7 @@ namespace metrowin
 
    // called when occurs an standard_exception exception in run
    // return true to call run again
-   bool application::on_run_exception(::ca2::exception & e)
+   bool application::on_run_exception(::exception::exception & e)
    {
       return ::metrowin::thread::on_run_exception(e);
    }
@@ -406,7 +406,7 @@ namespace metrowin
       return ::metrowin::thread::initialize_instance();
    }
 
-   ::ca2::message::e_prototype application::GetMessagePrototype(UINT uiMessage, UINT uiCode)
+   ::message::e_prototype application::GetMessagePrototype(UINT uiMessage, UINT uiCode)
    {
       return ::metrowin::thread::GetMessagePrototype(uiMessage, uiCode);
    }
@@ -416,7 +416,7 @@ namespace metrowin
    {
       return ::metrowin::thread::run();
    }
-   bool application::pre_translate_message(::ca2::signal_object * pobj)
+   bool application::pre_translate_message(signal_details * pobj)
    {
       return ::metrowin::thread::pre_translate_message(pMsg);
    }
@@ -435,7 +435,7 @@ namespace metrowin
 */
    bool application::process_initialize()
    {
-      if(::ca2::application_base::m_p->is_system())
+      if(::application_base::m_p->is_system())
       {
          if(__get_module_state()->m_pmapHWND == NULL)
          {
@@ -498,7 +498,7 @@ namespace metrowin
    }
 /*
    // Advanced: exception handling
-   LRESULT application::ProcessWndProcException(base_exception* e, const MSG* pMsg)
+   LRESULT application::ProcessWndProcException(::exception::base* e, const MSG* pMsg)
    {
       return   ::metrowin::thread::ProcessWndProcException(e, pMsg);
    }
@@ -560,14 +560,14 @@ namespace metrowin
       return ((oswindow) pdata)->window();
    }
 #else
-   ::ca2::window * application::window_from_os_data(void * pdata)
+   ::user::window * application::window_from_os_data(void * pdata)
    {
       return ::metrowin::window::from_handle((oswindow) pdata);
    }
 
-   ::ca2::window * application::window_from_os_data_permanent(void * pdata)
+   ::user::window * application::window_from_os_data_permanent(void * pdata)
    {
-      ::ca2::window * pwnd = ::metrowin::window::FromHandlePermanent((oswindow) pdata);
+      ::user::window * pwnd = ::metrowin::window::FromHandlePermanent((oswindow) pdata);
       if(pwnd != NULL)
          return pwnd;
       user::interaction_ptr_array wndptra = System.frames();
@@ -664,12 +664,12 @@ namespace metrowin
 
    }
 
-   sp(::ca2::window) application::FindWindow(const char * lpszClassName, const char * lpszWindowName)
+   sp(::user::window) application::FindWindow(const char * lpszClassName, const char * lpszWindowName)
    {
       return window::FindWindow(lpszClassName, lpszWindowName);
    }
 
-   sp(::ca2::window) application::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
+   sp(::user::window) application::FindWindowEx(oswindow hwndParent, oswindow hwndChildAfter, const char * lpszClass, const char * lpszWindow)
    {
       return window::FindWindowEx(hwndParent, hwndChildAfter, lpszClass, lpszWindow);
    }
@@ -728,7 +728,7 @@ namespace metrowin
 
       m_pmaininitdata = (::metrowin::main_init_data *) pdata;
 
-      if(m_pmaininitdata != NULL && ::ca2::application_base::m_p->is_system())
+      if(m_pmaininitdata != NULL && ::application_base::m_p->is_system())
       {
          if(!win_init(m_pmaininitdata))
             return false;
@@ -759,7 +759,7 @@ namespace metrowin
          // fill in the initial state for the application
          // Windows specific initialization (not done if no application)
          m_hInstance = hInstance;
-         (dynamic_cast < ::ca2::application * >(m_papp.m_p))->m_hInstance = hInstance;
+         (dynamic_cast < base_application * >(m_papp.m_p))->m_hInstance = hInstance;
          //hPrevInstance; // Obsolete.
          m_strCmdLine = strCmdLine;
          m_nCmdShow = nCmdShow;
@@ -770,11 +770,11 @@ namespace metrowin
          if (!afxContextIsDLL)
             __init_thread();
 
-         // Initialize ::ca2::window::m_pfnNotifyWinEvent
+         // Initialize ::user::window::m_pfnNotifyWinEvent
       /*   HMODULE hModule = ::GetModuleHandle("user32.dll");
          if (hModule != NULL)
          {
-            ::ca2::window::m_pfnNotifyWinEvent = (::ca2::window::PFNNOTIFYWINEVENT)::GetProcAddress(hModule, "NotifyWinEvent");
+            ::user::window::m_pfnNotifyWinEvent = (::user::window::PFNNOTIFYWINEVENT)::GetProcAddress(hModule, "NotifyWinEvent");
          }*/
 
       return true;

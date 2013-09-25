@@ -14,7 +14,7 @@ namespace metrowin
 
    os::os(base_application * papp) :
       element(papp),
-      ::ca2::os(papp)
+      ::core::os(papp)
    {
    }
 

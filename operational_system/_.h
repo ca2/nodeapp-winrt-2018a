@@ -19,6 +19,9 @@
 #define _CRT_NONSTDC_NO_DEPRECATE
 #define _CRT_RAND_S
 
+#define __PLACEMENT_NEW_INLINE
+
+
 
 #define _WIDEN(x) L#x
 

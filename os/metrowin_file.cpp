@@ -54,7 +54,7 @@ namespace metrowin
       ASSERT_VALID(this);
       ASSERT(m_hFile != (UINT)hFileNull);
 
-      file* pFile = new file(get_app(), hFileNull);
+      sp(file) pFile = canew(file(get_app(), hFileNull));
       HANDLE hFile;
       if (!::DuplicateHandle(::GetCurrentProcess(), (HANDLE)m_hFile,
          ::GetCurrentProcess(), &hFile, 0, FALSE, DUPLICATE_SAME_ACCESS))

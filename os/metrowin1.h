@@ -55,7 +55,7 @@ typedef int (__cdecl * _PNH)( size_t );
 
 _PNH CLASS_DECL_metrowin __get_new_handler();
 _PNH CLASS_DECL_metrowin __set_new_handler(_PNH pfnNewHandler);
-CLASS_DECL_c int c_cdecl __new_handler(size_t nSize);
+CLASS_DECL_BASE int c_cdecl __new_handler(size_t nSize);
 
 void CLASS_DECL_metrowin __abort();
 

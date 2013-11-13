@@ -257,10 +257,16 @@ namespace metrowin
       }
 #else
 
-      if(::file::dir::system::is(lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
+      
+      bool bIs;
+
+      if(::file::dir::system::is_or_definitively_not(bIs, lpcsz, papp)) // if base class "already" "says" it is a dir, let it handle it: may be not a operational system dir, e.g., zip or compressed directory...
       {
+         if (!bIs)
+            return;
          return ::file::dir::system::ls_pattern(papp, lpcsz, pszPattern, pstraPath, pstraTitle, pbaIsDir, piaSize);
       }
+
       stringa stra;
       ::dir::ls(stra, lpcsz);
       for(int i = 0; i < stra.get_count(); i++)
@@ -470,7 +476,7 @@ namespace metrowin
       }
 #else
       stringa stra;
-      ::dir::ls(stra, lpcsz);
+      ls(papp, lpcsz, &stra);
       for(int i = 0; i < stra.get_count(); i++)
       {
          string strPath = stra[i];
@@ -510,8 +516,10 @@ namespace metrowin
          return bIsDir;
       }
 
-      if(::file::dir::system::is(lpcszPath, papp))
-         return true;
+      bool bIs;
+
+      if(::file::dir::system::is_or_definitively_not(bIs, lpcszPath, papp))
+         return bIs;
 
 
       string strPath(lpcszPath);

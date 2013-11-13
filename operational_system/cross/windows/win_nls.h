@@ -1272,7 +1272,7 @@ GetLocaleInfoA(
     LPSTR  lpLCData,
     int32_t      cchData);
 // For Windows Vista and above GetLocaleInfoEx is preferred
-CLASS_DECL_c
+CLASS_DECL_BASE
 int32_t
 WINAPI
 GetLocaleInfoW(
@@ -1703,7 +1703,7 @@ WINAPI
 SetUserGeoID(
     GEOID       GeoId);
 
-CLASS_DECL_c
+CLASS_DECL_BASE
 LCID
 WINAPI
 ConvertDefaultLocale(
@@ -1743,12 +1743,12 @@ LANGID
 WINAPI
 GetUserDefaultLangID(void);
 
-CLASS_DECL_c
+CLASS_DECL_BASE
 LCID
 WINAPI
 GetSystemDefaultLCID(void);
 
-CLASS_DECL_c
+CLASS_DECL_BASE
 LCID
 WINAPI
 GetUserDefaultLCID(void);

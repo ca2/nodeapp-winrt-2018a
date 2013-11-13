@@ -5,9 +5,9 @@
 CLASS_DECL_metrowin int ca2_main();
 
 
-//CLASS_DECL_ca extern fixed_alloc_array * g_pfixedallocaWstring;
+//CLASS_DECL_BOOT extern fixed_alloc_array * g_pfixedallocaWstring;
 
-//CLASS_DECL_ca fixed_alloc_array * new_wstring_manager();
+//CLASS_DECL_BOOT fixed_alloc_array * new_wstring_manager();
 
 void CLASS_DECL_metrowin __cdecl _ca2_purecall()
 {
@@ -145,7 +145,7 @@ int CLASS_DECL_metrowin win_main(::Platform::Array < ::Platform::String ^ > ^ ar
    }*/
 
 
-   set_heap_mutex(NULL);
+//   set_heap_mutex(NULL);
 
    return nReturnCode;
 
@@ -241,7 +241,7 @@ int CLASS_DECL_metrowin ca2_main(HINSTANCE hInstance, HINSTANCE hPrevInstance, c
       {
       }*/
 
-      set_heap_mutex(NULL);
+//      set_heap_mutex(NULL);
 
 
       return nReturnCode;

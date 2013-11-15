@@ -5,7 +5,7 @@ namespace multimedia
 {
 
 
-   namespace audio_mmsystem
+   namespace audio_xaudio2
    {
 
 
@@ -17,7 +17,7 @@ namespace multimedia
       {
 
          m_pencoder = NULL;
-         m_hwavein = NULL;
+         m_paudio = nullptr;
          m_estate = state_initial;
          m_bResetting = false;
 
@@ -47,21 +47,21 @@ namespace multimedia
       {
          SCAST_PTR(::message::base, pbase, pobj);
          //ASSERT(GetMainWnd() == NULL);
-         if(pbase->m_uiMessage == MM_WIM_OPEN ||
+/*         if(pbase->m_uiMessage == MM_WIM_OPEN ||
             pbase->m_uiMessage == MM_WIM_CLOSE ||
             pbase->m_uiMessage == MM_WIM_DATA)
          {
             translate_wave_in_message(pbase);
             if(pbase->m_bRet)
                return;
-         }
+         }*/
          return thread::pre_translate_message(pbase);
       }
 
       ::multimedia::e_result wave_in::wave_in_open(int32_t iBufferCount, int32_t iBufferSampleCount)
       {
 
-         if(m_hwavein != NULL && m_estate != state_initial)
+         if(m_pvoice != NULL && m_estate != state_initial)
          {
             wave_in_initialize_encoder();
 
@@ -71,7 +71,7 @@ namespace multimedia
 
          single_lock sLock(&m_mutex, TRUE);
          ::multimedia::e_result mmr;
-         ASSERT(m_hwavein == NULL);
+         ASSERT(m_pvoice == NULL);
          ASSERT(m_estate == state_initial);
 
          m_pwaveformat->wFormatTag = WAVE_FORMAT_PCM;
@@ -84,8 +84,8 @@ namespace multimedia
          sp(::multimedia::audio::wave) audiowave = Application.audiowave();
          m_iBuffer = 0;
 
-         if(MMSYSERR_NOERROR == (mmr = mmsystem::translate(waveInOpen(
-            &m_hwavein,
+/*         if(MMSYSERR_NOERROR == (mmr = xaudio2::translate(waveInOpen(
+            &m_pvoice,
             audiowave->m_uiWaveInDevice,
             wave_format(),
             get_os_int(),
@@ -95,8 +95,8 @@ namespace multimedia
 
          m_pwaveformat->nSamplesPerSec = 22050;
          m_pwaveformat->nAvgBytesPerSec = m_pwaveformat->nSamplesPerSec * m_pwaveformat->nBlockAlign;
-         if(MMSYSERR_NOERROR == (mmr = mmsystem::translate(waveInOpen(
-            &m_hwavein,
+         if(MMSYSERR_NOERROR == (mmr = xaudio2::translate(waveInOpen(
+            &m_pvoice,
             WAVE_MAPPER,
             wave_format(),
             (uint32_t) get_os_int(),
@@ -105,8 +105,8 @@ namespace multimedia
             goto Opened;
          m_pwaveformat->nSamplesPerSec = 11025;
          m_pwaveformat->nAvgBytesPerSec = m_pwaveformat->nSamplesPerSec * m_pwaveformat->nBlockAlign;
-         if(MMSYSERR_NOERROR == (mmr = mmsystem::translate(waveInOpen(
-            &m_hwavein,
+         if(MMSYSERR_NOERROR == (mmr = xaudio2::translate(waveInOpen(
+            &m_pvoice,
             WAVE_MAPPER,
             wave_format(),
             (uint32_t) get_os_int(),
@@ -126,7 +126,7 @@ namespace multimedia
             }
             else if(mmr == WAVERR_BADFORMAT)
             {
-               TRACE("Attempted to open with an unsupported waveform-audio_mmsystem format.");
+               TRACE("Attempted to open with an unsupported waveform-audio_xaudio2 format.");
             }
             TRACE("ERROR OPENING WAVE INPUT DEVICE");
             return mmr;
@@ -188,7 +188,7 @@ Opened:
          for(i = 0; i < iSize; i++)
          {
             
-            if(MMSYSERR_NOERROR != (mmr = mmsystem::translate(waveInPrepareHeader(m_hwavein, mmsystem::create_new_WAVEHDR(wave_in_get_buffer(), i), sizeof(WAVEHDR)))))
+            if(MMSYSERR_NOERROR != (mmr = xaudio2::translate(waveInPrepareHeader(m_pvoice, xaudio2::create_new_WAVEHDR(wave_in_get_buffer(), i), sizeof(WAVEHDR)))))
             {
                TRACE("ERROR OPENING Preparing INPUT DEVICE buffer");
                return mmr;
@@ -209,7 +209,7 @@ Opened:
 
          }
 
-         m_estate = state_opened;
+         m_estate = state_opened;*/
 
          return ::multimedia::result_success;
 
@@ -232,10 +232,10 @@ Opened:
 
          iSize = (int32_t) wave_in_get_buffer()->GetBufferCount();
 
-         for(i = 0; i < iSize; i++)
+         /*for(i = 0; i < iSize; i++)
          {
 
-            if(::multimedia::result_success != (mmr = mmsystem::translate(waveInUnprepareHeader(m_hwavein, wave_hdr(i), sizeof(WAVEHDR)))))
+            if(::multimedia::result_success != (mmr = xaudio2::translate(waveInUnprepareHeader(m_pvoice, wave_hdr(i), sizeof(WAVEHDR)))))
             {
                TRACE("ERROR OPENING Unpreparing INPUT DEVICE buffer");
                //return mmr;
@@ -245,11 +245,11 @@ Opened:
 
          }
 
-         mmr = mmsystem::translate(waveInClose(m_hwavein));
+         mmr = xaudio2::translate(waveInClose(m_pvoice));
 
-         m_hwavein = NULL;
+         m_pvoice = NULL;
 
-         m_estate = state_initial;
+         m_estate = state_initial;*/
 
          return ::multimedia::result_success;
 
@@ -263,20 +263,20 @@ Opened:
          if(m_estate == state_recording)
             return ::multimedia::result_success;
          
-         //ASSERT(m_estate == state_opened || m_estate == state_stopped);
+         /*//ASSERT(m_estate == state_opened || m_estate == state_stopped);
 
          if(m_estate != state_opened && m_estate != state_stopped)
             return ::multimedia::result_success;
 
          ::multimedia::e_result mmr;
 
-         if(::multimedia::result_success != (mmr = mmsystem::translate(waveInStart(m_hwavein))))
+         if(::multimedia::result_success != (mmr = xaudio2::translate(waveInStart(m_pvoice))))
          {
             TRACE("ERROR starting INPUT DEVICE ");
             return mmr;
          }
 
-         m_estate = state_recording;
+         m_estate = state_recording;*/
 
          return ::multimedia::result_success;
 
@@ -290,14 +290,14 @@ Opened:
          if(m_estate != state_recording)
             return ::multimedia::result_error;
 
-         ::multimedia::e_result mmr;
+         /*::multimedia::e_result mmr;
 
          m_estate = state_stopping;
 
          try
          {
 
-            if(::multimedia::result_success != (mmr = mmsystem::translate(waveInStop(m_hwavein))))
+            if(::multimedia::result_success != (mmr = xaudio2::translate(waveInStop(m_pvoice))))
             {
 
                TRACE("wave_in::wave_in_stop : ERROR OPENING stopping INPUT DEVICE ");
@@ -314,42 +314,12 @@ Opened:
 
          m_estate = state_stopped;
 
-         m_eventStopped.SetEvent();
+         m_eventStopped.SetEvent();*/
 
          return ::multimedia::result_success;
 
       }
 
-
-      void CALLBACK wave_in::wave_in_proc(HWAVEIN hwi, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2)
-      {
-
-         UNREFERENCED_PARAMETER(hwi);
-         UNREFERENCED_PARAMETER(dwInstance);
-         UNREFERENCED_PARAMETER(dwParam1);
-         UNREFERENCED_PARAMETER(dwParam2);
-         if(uMsg == WIM_DATA)
-         {
-            ASSERT(FALSE);
-            /*      uint32_t msSampleTime = timeGetTime();
-            thread * pthread = (thread *) dwInstance;
-            ASSERT(pthread != NULL);
-            LPWAVEHDR lpWaveHdr = (LPWAVEHDR) dwParam1;
-            LPWAVEPROCDATAMESSAGE lpxfwm = new WAVEPROCDATAMESSAGE;
-            lpxfwm->bDelete = TRUE;
-            lpxfwm->msSampleTime = msSampleTime;
-            //      lpxfwm->tkSamplePosition = tkPosition;
-            lpxfwm->lpWaveHdr = lpWaveHdr;
-            pthread->post_thread_message(
-            WM_USER,
-            (WPARAM) WAVM_WAVE_PROC_DATA,
-            (LPARAM) lpxfwm);
-            //      i++;
-            //      if( i > 2)
-            //         i = 0;*/
-         }
-
-      }
 
 
       ::multimedia::e_result wave_in::wave_in_reset()
@@ -359,7 +329,8 @@ Opened:
 
          m_bResetting = true;
 
-         if(m_hwavein == NULL)
+         /*
+         if(m_pvoice == NULL)
          {
 
             return ::multimedia::result_success;
@@ -386,7 +357,7 @@ Opened:
          try
          {
 
-            if(::multimedia::result_success != (mmr = mmsystem::translate(waveInReset(m_hwavein))))
+            if(::multimedia::result_success != (mmr = xaudio2::translate(waveInReset(m_pvoice))))
             {
                
                TRACE("wave_in::Reset error resetting input device");
@@ -404,7 +375,9 @@ Opened:
 
          m_bResetting = false;
 
+         */
          return ::multimedia::result_success;
+
 
       }
 
@@ -412,6 +385,7 @@ Opened:
       void wave_in::translate_wave_in_message(::signal_details * pobj)
       {
 
+         /*
          SCAST_PTR(::message::base, pbase, pobj);
 
          ASSERT(pbase->m_uiMessage == MM_WIM_OPEN || pbase->m_uiMessage == MM_WIM_CLOSE || pbase->m_uiMessage == MM_WIM_DATA);
@@ -443,23 +417,26 @@ Opened:
 
          pbase->m_bRet = true;
 
+         */
+
       }
 
 
       ::multimedia::e_result wave_in::wave_in_add_buffer(int32_t iBuffer)
       {
          
-         return wave_in_add_buffer(wave_hdr(iBuffer));
+//         return wave_in_add_buffer(wave_hdr(iBuffer));
+         return ::multimedia::result_success;
 
       }
 
-
+      /*
       ::multimedia::e_result wave_in::wave_in_add_buffer(LPWAVEHDR lpwavehdr)
       {
 
          ::multimedia::e_result mmr;
 
-         if(::multimedia::result_success != (mmr = mmsystem::translate(waveInAddBuffer(m_hwavein, lpwavehdr, sizeof(WAVEHDR)))))
+         if(::multimedia::result_success != (mmr = xaudio2::translate(waveInAddBuffer(m_pvoice, lpwavehdr, sizeof(WAVEHDR)))))
          {
 
             TRACE("ERROR OPENING Adding INPUT DEVICE buffer");
@@ -471,7 +448,7 @@ Opened:
          return mmr;
 
       }
-
+      */
 
       bool wave_in::wave_in_initialize_encoder()
       {
@@ -489,39 +466,39 @@ Opened:
       WAVEFORMATEX * wave_in::wave_format()
       {
 
-         mmsystem::translate(m_waveformatex, m_pwaveformat);
+         xaudio2::translate(m_waveformatex, m_pwaveformat);
 
          return &m_waveformatex;
 
       }
 
-      HWAVEIN wave_in::wave_in_get_safe_HWAVEIN()
+/*      HWAVEIN wave_in::wave_in_get_safe_HWAVEIN()
       {
          
          if(this == NULL)
             return NULL;
 
-         return m_hwavein;
+         return m_pvoice;
 
-      }
+      }*/
 
       void * wave_in::get_os_data()
       {
 
-         return m_hwavein;
+         return m_pvoice;
 
       }
 
 
-      LPWAVEHDR wave_in::wave_hdr(int iBuffer)
+/*      LPWAVEHDR wave_in::wave_hdr(int iBuffer)
       {
 
-         return ::multimedia::mmsystem::get_os_data(wave_in_get_buffer(), iBuffer);
+         return ::multimedia::xaudio2::get_os_data(wave_in_get_buffer(), iBuffer);
 
-      }
+      }*/
 
 
-   } // namespace audio_mmsystem
+   } // namespace audio_xaudio2
 
 
 } // namespace multimedia

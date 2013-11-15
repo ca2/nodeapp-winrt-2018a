@@ -111,8 +111,8 @@ namespace metrowin
 
       virtual void start();
 
-      int GetThreadPriority();
-      bool SetThreadPriority(int nPriority);
+      int get_thread_priority();
+      bool set_thread_priority(int nPriority);
 
    // Operations
       uint32_t SuspendThread();

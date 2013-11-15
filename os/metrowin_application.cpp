@@ -160,7 +160,8 @@ namespace metrowin
 
       return "";
 #else
-      throw todo(get_app());
+      TRACE("returning hard coded default 1.0 version for metrowin::application::get_version");
+      return "1.0";
 #endif
 
    }
@@ -814,7 +815,27 @@ namespace metrowin
       return "draw2d_direct2d";
    }
 
+   string application::veriwell_multimedia_music_midi_get_default_library_name()
+   {
 
+      return "";
+   }
+
+
+
+   string application::multimedia_audio_mixer_get_default_library_name()
+   {
+
+      return "";
+
+   }
+
+
+
+   string application::multimedia_audio_get_default_library_name()
+   {
+      return "audio_xaudio2";
+   }
 } // namespace metrowin
 
 

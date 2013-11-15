@@ -5,19 +5,19 @@ namespace multimedia
 {
 
 
-   namespace audio_mmsystem
+   namespace audio_xaudio2
    {
 
 
-      class  CLASS_DECL_AUDIO_MMSYSTEM wave_in :
+      class  CLASS_DECL_AUDIO_XAUDIO2 wave_in :
          virtual public ::multimedia::audio::wave_in
       {
       public:
 
 
-         HWAVEIN              m_hwavein;
-
-         WAVEFORMATEX         m_waveformatex; 
+         interface IXAudio2 *                   m_paudio;
+         interface IXAudio2MasteringVoice *     m_pvoice;
+         WAVEFORMATEX                           m_waveformatex;
 
 
          wave_in(sp(base_application) papp);
@@ -27,9 +27,7 @@ namespace multimedia
          virtual bool wave_in_initialize_encoder();
 
          virtual ::multimedia::e_result wave_in_add_buffer(int32_t iBuffer);
-         virtual ::multimedia::e_result wave_in_add_buffer(LPWAVEHDR lpwavehdr);
 
-         HWAVEIN wave_in_get_safe_HWAVEIN();
          virtual void * get_os_data();
          
          ::multimedia::e_result wave_in_open(int32_t iBufferCount, int32_t iBufferSampleCount);
@@ -44,16 +42,13 @@ namespace multimedia
          virtual int32_t exit_instance();
          virtual void pre_translate_message(::signal_details * pobj);
 
-         static void CALLBACK wave_in_proc(HWAVEIN hwi, UINT uMsg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2);
-
          WAVEFORMATEX * wave_format();
-         LPWAVEHDR wave_hdr(int iBuffer);
 
 
       };
 
 
-   } // namespace audio_mmsystem
+   } // namespace audio_xaudio2
 
 
 } // namespace multimedia

@@ -382,7 +382,7 @@ lpSecurityAttrs))
 pThread->Delete();
 return NULL;
 }
-VERIFY(pThread->SetThreadPriority(nPriority));
+VERIFY(pThread->set_thread_priority(nPriority));
 if (!(dwCreateFlags & CREATE_SUSPENDED))
 VERIFY(pThread->ResumeThread() != (uint32_t)-1);
 
@@ -868,7 +868,7 @@ namespace metrowin
       if (m_hThread == NULL)
          return FALSE;
 
-      VERIFY(SetThreadPriority(iPriority));
+      VERIFY(set_thread_priority(iPriority));
 
       // start the thread just for ca2 API initialization
       VERIFY(ResumeThread() != (uint32_t)-1);
@@ -1718,7 +1718,7 @@ run:
 
    }
 
-   bool thread::SetThreadPriority(int nPriority)
+   bool thread::set_thread_priority(int nPriority)
    { 
       ASSERT(m_hThread != NULL); 
 
@@ -1726,8 +1726,14 @@ run:
 
    }
 
-   int thread::GetThreadPriority()
-   { ASSERT(m_hThread != NULL); return ::GetThreadPriority(m_hThread); }
+   int thread::get_thread_priority()
+   { 
+      
+      ASSERT(m_hThread != NULL); 
+      
+      return ::GetThreadPriority(m_hThread); 
+   
+   }
 
    uint32_t thread::ResumeThread()
    {

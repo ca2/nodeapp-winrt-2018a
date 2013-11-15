@@ -2,17 +2,17 @@
 
 
 #include "app-core/appseed/multimedia/multimedia/multimedia.h"
-#include <mmsystem.h>
+#include <xaudio2.h>
 
 
-#if defined(_MULTIMEDIA_MMSYSTEM_LIBRARY)
-   #define CLASS_DECL_MULTIMEDIA_MMSYSTEM  CLASS_DECL_EXPORT
+#if defined(_MULTIMEDIA_XAUDIO2_LIBRARY)
+   #define CLASS_DECL_MULTIMEDIA_XAUDIO2  CLASS_DECL_EXPORT
 #else
-   #define  CLASS_DECL_MULTIMEDIA_MMSYSTEM  CLASS_DECL_IMPORT
+   #define  CLASS_DECL_MULTIMEDIA_XAUDIO2  CLASS_DECL_IMPORT
 #endif
 
 
-#include "multimedia_mmsystem_translation.h"
+#include "multimedia_xaudio2_translation.h"
 
 
-#include "multimedia_mmsystem_factory_exchange.h"
+#include "multimedia_xaudio2_factory_exchange.h"

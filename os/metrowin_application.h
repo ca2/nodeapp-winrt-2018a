@@ -213,6 +213,13 @@ namespace metrowin
 
       virtual string draw2d_get_default_library_name();
 
+      string veriwell_multimedia_music_midi_get_default_library_name();
+
+
+         string multimedia_audio_mixer_get_default_library_name();
+
+         string multimedia_audio_get_default_library_name();
+
    };
 
 

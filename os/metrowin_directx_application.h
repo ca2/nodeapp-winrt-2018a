@@ -19,7 +19,7 @@ namespace metrowin
       Platform::Agile<Windows::UI::Core::CoreWindow>  m_window;
 
             directx_base ^                         m_directx;
-
+            bool  m_bFontopusShift;
 
       mutex m_mutex;
 

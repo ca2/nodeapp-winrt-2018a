@@ -50,7 +50,7 @@ uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
    case ::Windows::System::VirtualKey::B:
       return 'b';
    case ::Windows::System::VirtualKey::C:
-      return 'ca';
+      return 'c';
    case ::Windows::System::VirtualKey::D:
       return 'd';
    case ::Windows::System::VirtualKey::E:
@@ -91,6 +91,8 @@ uint_ptr virtualkey_to_char(::Windows::System::VirtualKey e)
       return 'v';
    case ::Windows::System::VirtualKey::W:
       return 'w';
+   case ::Windows::System::VirtualKey::X:
+      return 'x';
    case ::Windows::System::VirtualKey::Y:
       return 'y';
    case ::Windows::System::VirtualKey::Z:
@@ -684,7 +686,11 @@ namespace metrowin
 
    void directx_application::OnKeyDown(Windows::UI::Core::CoreWindow ^ , Windows::UI::Core::KeyEventArgs ^ args)
    { 
-      
+      if (args->VirtualKey == ::Windows::System::VirtualKey::Shift)
+      {
+         m_bFontopusShift = true;
+      }
+
       if(m_psystem == NULL)
          return;
 
@@ -732,6 +738,12 @@ namespace metrowin
 
       spbase = pkey;
 
+
+      if (args->VirtualKey == ::Windows::System::VirtualKey::Shift)
+      {
+         m_bFontopusShift = false;
+      }
+
       pkey->m_uiMessage       = WM_KEYUP;
       pkey->m_pwnd            = m_psystem->m_pui;
       pkey->m_nChar           = virtualkey_to_char(args->VirtualKey);
@@ -739,8 +751,40 @@ namespace metrowin
       pkey->m_wparam          = pkey->m_nChar;
 //      pkey->m_key = args;
 
+      if (::fontopus::get_visible())
+      {
+         string str;
+         str = (char)pkey->m_nChar;
+         if (m_bFontopusShift)
+         {
+            if (pkey->m_nChar == 0xbe)
+            {
+               str = ">";
+            }
+            else if (str == "2")
+            {
+               str = "@";
+            }
+            else
+            {
+               str.make_upper();
+            }
+         }
+         else
+         {
+            if (pkey->m_nChar == 0xbe)
+            {
+               str = ".";
+            }
+         }
+         ::fontopus::on_char(pkey->m_nChar, str);
+      }
+      else
+      {
+         m_psystem->m_pui->m_pimpl->message_handler(spbase);
+      }
 
-      m_psystem->m_pui->m_pimpl->message_handler(spbase);
+      
 
    }
 
@@ -771,6 +815,12 @@ namespace metrowin
       pmouse->m_pt.y       = (LONG) pointerPoint->RawPosition.Y;
       pmouse->m_uiMessage  = WM_MOUSEMOVE;
       pmouse->m_pwnd       = m_psystem->m_pui;
+
+      if (::fontopus::get_visible())
+      {
+         ::fontopus::on_mouse_move(pmouse->m_pt.x, pmouse->m_pt.y);
+      }
+
 
       m_ptLastCursor = pointerPoint->RawPosition;
 
@@ -812,6 +862,10 @@ namespace metrowin
          m_bLeftButton           = true;
          m_bMiddleButton         = false;
          m_bRightButton          = false;
+         if (::fontopus::get_visible())
+         {
+            ::fontopus::on_lbutton_down(pmouse->m_pt.x, pmouse->m_pt.y);
+         }
 
       }
       else if(args->CurrentPoint->Properties->IsRightButtonPressed && !m_bRightButton)
@@ -849,11 +903,6 @@ namespace metrowin
       if(m_psystem == NULL)
          return;
 
-      if(m_psystem->m_pui == NULL)
-         return;
-
-      if(m_psystem->m_pui->m_pimpl == NULL)
-         return;
 
       Windows::UI::Input::PointerPoint^ pointerPoint = args->CurrentPoint;
 
@@ -875,6 +924,12 @@ namespace metrowin
          pmouse->m_uiMessage     = WM_LBUTTONUP;
          m_bLeftButton           = false;
 
+         if (::fontopus::get_visible())
+         {
+            ::fontopus::on_lbutton_up(pmouse->m_pt.x, pmouse->m_pt.y);
+         }
+         
+
       }
       else if(m_bRightButton && !args->CurrentPoint->Properties->IsRightButtonPressed)
       {
@@ -892,6 +947,14 @@ namespace metrowin
       }
 
 
+      
+
+
+      if (m_psystem->m_pui == NULL)
+         return;
+
+      if (m_psystem->m_pui->m_pimpl == NULL)
+         return;
 
 
       pmouse->m_pwnd = m_psystem->m_pui;

@@ -37,6 +37,8 @@ namespace metrowin
 
       mutex    m_mutexDc;
 
+      
+
       bool m_bInitialized;
 
       directx_base(base_application * papp);

@@ -769,8 +769,18 @@ namespace metrowin
 
       g.m_pdc = NULL;*/
 
+      if (::fontopus::get_visible())
+      {
+         ::draw2d::graphics_sp dc(get_app()->allocer());
+         dc->attach((ID2D1DeviceContext *)m_d2dContext.Get());
+         System.m_pui->draw_control_background(dc);
+         ::fontopus::draw((ID2D1DeviceContext *)m_d2dContext.Get());
+         dc->detach();
+      }
+
 
       //if(false)
+      else
       {
          ::draw2d::graphics_sp dc(get_app()->allocer());
          dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());

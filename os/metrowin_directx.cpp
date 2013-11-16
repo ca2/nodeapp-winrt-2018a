@@ -322,7 +322,10 @@ namespace metrowin
    void directx_base::UpdateForWindowSizeChange()
    {
       // Only handle window size changed if there is no pending DPI change.
-      if (m_dpi != DisplayProperties::LogicalDpi)
+      
+      ::Windows::Graphics::Display::DisplayInformation ^ displayinformation = ::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+
+      if (m_dpi != displayinformation->LogicalDpi)
       {
          return;
       }

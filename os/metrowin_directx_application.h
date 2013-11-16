@@ -69,13 +69,9 @@ namespace metrowin
          _In_ Windows::UI::Core::WindowSizeChangedEventArgs^ args
          );
 
-      void OnLogicalDpiChanged(
-         _In_ Platform::Object^ sender
-         );
+      void DpiChanged(::Windows::Graphics::Display::DisplayInformation ^ sender, Platform::Object ^ obj);
 
-      void OnDisplayContentsInvalidated(
-         _In_ Platform::Object^ sender
-         );
+      void DisplayContentsInvalidated(::Windows::Graphics::Display::DisplayInformation ^ sender, Platform::Object ^ obj);
 
       void OnActivated(
          _In_ Windows::ApplicationModel::Core::CoreApplicationView^ applicationView,

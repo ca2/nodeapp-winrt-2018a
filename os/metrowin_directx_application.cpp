@@ -543,9 +543,11 @@ namespace metrowin
 
       window->PointerReleased += ref new TypedEventHandler<CoreWindow^, PointerEventArgs^>(this, &directx_application::OnPointerReleased);
 
-      DisplayProperties::LogicalDpiChanged += ref new DisplayPropertiesEventHandler(this, &directx_application::OnLogicalDpiChanged);
+      ::Windows::Graphics::Display::DisplayInformation ^ displayinformation = ::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
 
-      DisplayProperties::DisplayContentsInvalidated += ref new DisplayPropertiesEventHandler(this, &directx_application::OnDisplayContentsInvalidated);
+      displayinformation->DpiChanged += ref new TypedEventHandler < DisplayInformation ^, Object ^ >(this, &directx_application::DpiChanged);
+
+      displayinformation->DisplayContentsInvalidated += ref new TypedEventHandler < DisplayInformation ^, Object ^ >(this, &directx_application::DisplayContentsInvalidated);
 
    }
 
@@ -558,7 +560,10 @@ namespace metrowin
 
       m_directx = ref new directx_base(m_psystem);
 
-      m_directx->Initialize(window, DisplayProperties::LogicalDpi);
+
+      ::Windows::Graphics::Display::DisplayInformation ^ displayinformation = ::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+
+      m_directx->Initialize(window, displayinformation->LogicalDpi);
 
       init_part_2ex();
 
@@ -595,12 +600,12 @@ namespace metrowin
    }
 
 
-   void directx_application::OnLogicalDpiChanged(Platform::Object ^ sender)
+   void directx_application::DpiChanged(::Windows::Graphics::Display::DisplayInformation ^ sender, Platform::Object ^ obj)
    {
 
       m_rectLastWindowRect = m_window->Bounds;
 
-      m_directx->SetDpi(DisplayProperties::LogicalDpi);
+      m_directx->SetDpi(sender->LogicalDpi);
    
       /*
       
@@ -615,7 +620,7 @@ namespace metrowin
    }
 
 
-   void directx_application::OnDisplayContentsInvalidated(Platform::Object ^ sender)
+   void directx_application::DisplayContentsInvalidated(::Windows::Graphics::Display::DisplayInformation ^ sender, Platform::Object ^ obj)
    {
 
       // Ensure the D3D Device is available for rendering.

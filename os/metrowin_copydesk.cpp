@@ -34,7 +34,7 @@ namespace metrowin
             return;
          }
 
-         if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::Uri))
+         if(view->Contains(::Windows::ApplicationModel::DataTransfer::StandardDataFormats::ApplicationLink))
          {
             iFileCount = 1;
          }

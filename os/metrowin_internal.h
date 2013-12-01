@@ -22,7 +22,7 @@
 #include "metrowin_file_set.h"
 
 #include "metrowin_copydesk.h"
-#include "metrowin_crypt.h"
+#include "metrowin_crypto.h"
 #include "metrowin_ip_enum.h"
 #include "metrowin_registry.h"
 

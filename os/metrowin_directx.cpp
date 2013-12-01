@@ -341,10 +341,10 @@ namespace metrowin
          CreateWindowSizeDependentResources();
       }
 
-      System.m_pui->m_rectParentClient.left     = 0;
-      System.m_pui->m_rectParentClient.top      = 0;
-      System.m_pui->m_rectParentClient.right    = (int64_t) m_window->Bounds.Width;
-      System.m_pui->m_rectParentClient.bottom   = (int64_t) m_window->Bounds.Height;
+      System.m_posdata->m_pui->m_rectParentClient.left     = 0;
+      System.m_posdata->m_pui->m_rectParentClient.top = 0;
+      System.m_posdata->m_pui->m_rectParentClient.right = (int64_t)m_window->Bounds.Width;
+      System.m_posdata->m_pui->m_rectParentClient.bottom = (int64_t)m_window->Bounds.Height;
 
    }
 
@@ -745,7 +745,11 @@ namespace metrowin
 
       m_d2dContext->BeginDraw();
 
-      D2D1_COLOR_F cr = D2D1::ColorF(D2D1::ColorF::White);
+      D2D1_COLOR_F cr;
+      cr.a = 1.0f;
+      cr.b = 0xcc / 255.f;
+      cr.r = 0xcc / 255.f;
+      cr.g = 0xcc / 255.f;
       m_d2dContext->Clear(cr);
 
 
@@ -771,26 +775,21 @@ namespace metrowin
       g.fill_solid_rect(rect, ARGB(127, 255, 255, 240));
 
       g.m_pdc = NULL;*/
+      ::draw2d::graphics_sp dc(get_app()->allocer());
+      dc->attach((ID2D1DeviceContext *)m_d2dContext.Get());
 
-      if (::fontopus::get_visible())
+      ::os::simple_ui * psimpleui = System.m_psimpleui;
+
+      if (psimpleui != NULL && psimpleui->m_bVisible)
       {
-         ::draw2d::graphics_sp dc(get_app()->allocer());
-         dc->attach((ID2D1DeviceContext *)m_d2dContext.Get());
-         System.m_pui->draw_control_background(dc);
-         ::fontopus::draw((ID2D1DeviceContext *)m_d2dContext.Get());
-         dc->detach();
+         System.m_psimpleui->draw(dc);
       }
-
-
-      //if(false)
       else
       {
-         ::draw2d::graphics_sp dc(get_app()->allocer());
-         dc->attach((ID2D1DeviceContext * ) m_d2dContext.Get());
-         System.m_pui->_000OnDraw(dc);
-         dc->detach();
+         System.m_posdata->m_pui->_000OnDraw(dc);
       }
 
+      dc->detach();
 
 
       // We ignore D2DERR_RECREATE_TARGET here. This error indicates that the device

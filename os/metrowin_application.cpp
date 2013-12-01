@@ -60,12 +60,12 @@ namespace metrowin
 
    void application::_001OnFileNew()
    {
-      ::application_base::m_p->_001OnFileNew(NULL);
+      m_pimpl->_001OnFileNew(NULL);
    }
 
-   sp(::user::document_interface) application::_001OpenDocumentFile(var varFile)
+   sp(::user::object) application::_001OpenDocumentFile(var varFile)
    {
-      return ::application_base::m_p->_001OpenDocumentFile(varFile);
+      return m_pimpl->_001OpenDocumentFile(varFile);
    }
 
    void application::_001EnableShellOpen()
@@ -228,8 +228,8 @@ namespace metrowin
                __get_module_thread_state()->m_pCurrentWinThread->m_nTempMapLock);
          }
    #endif
-         ::ca2::LockTempMaps(::application_base::m_p);
-         ::ca2::UnlockTempMaps(::application_base::m_p, -1);
+         ::ca2::LockTempMaps(m_pimpl);
+         ::ca2::UnlockTempMaps(m_pimpl, -1);
       }
       catch( ::exception::base* e )
       {
@@ -436,7 +436,7 @@ namespace metrowin
 */
    bool application::process_initialize()
    {
-      if(::application_base::m_p->is_system())
+      if(m_pimpl->is_system())
       {
          if(__get_module_state()->m_pmapHWND == NULL)
          {
@@ -729,7 +729,7 @@ namespace metrowin
 
       m_pmaininitdata = (::metrowin::main_init_data *) pdata;
 
-      if(m_pmaininitdata != NULL && ::application_base::m_p->is_system())
+      if(m_pmaininitdata != NULL && m_pimpl->is_system())
       {
          if(!win_init(m_pmaininitdata))
             return false;

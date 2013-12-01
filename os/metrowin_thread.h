@@ -200,7 +200,7 @@ namespace metrowin
    };
 
 
-   CLASS_DECL_metrowin base_thread * get_thread();
+   CLASS_DECL_metrowin ::thread * get_thread();
    CLASS_DECL_metrowin ::thread_state * get_thread_state();
 
 

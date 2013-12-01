@@ -69,9 +69,6 @@
     <ClCompile Include="metrowin_copydesk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="metrowin_crypt.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="metrowin_dir.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -162,6 +159,9 @@
     <ClCompile Include="metrowin_printer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="metrowin_crypto.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -231,9 +231,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_copydesk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="metrowin_crypt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="metrowin_dir.h">
@@ -349,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="..\operational_system\cross\windows\win_nls.h">
       <Filter>Header Files\operational_system\cross\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="metrowin_crypto.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

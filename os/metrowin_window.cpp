@@ -22,6 +22,7 @@ namespace metrowin
       m_bMouseHover = false;
       m_pfont = NULL;
       m_pguieCapture = NULL;
+      m_pwindow = new ::user::native_window;
    }
 
 
@@ -52,6 +53,7 @@ namespace metrowin
       m_bMouseHover = false;
       m_pfont = NULL;
       m_pguieCapture = NULL;
+      m_pwindow = new ::user::native_window;
    }
 
 
@@ -289,9 +291,9 @@ namespace metrowin
    m_bVisible = (dwStyle & WS_VISIBLE) != 0;
 
    m_pthread = get_app();
-   m_pthread->m_pthread->add(this);
+   m_pthread->add(this);
    m_pguie->m_pthread = m_pthread;
-   m_pguie->m_pthread->m_pthread->add(m_pguie);
+   m_pguie->m_pthread->add(m_pguie);
 
 
    //m_pguie = this;
@@ -501,12 +503,12 @@ namespace metrowin
          pParentWnd->get_handle(), id, (LPVOID)pContext);
    }
 
-   bool window::initialize(Windows::UI::Core::CoreWindow ^ window, ::core::system_window ^ pwindow)
+   bool window::initialize(::user::native_window_initialize * pinitialize)
    {
       
-      m_window = window;
+      m_window = pinitialize->window;
 
-      m_pwindow = pwindow;
+      m_pwindow->m_pwindow  = pinitialize->pwindow;
 
       m_pthread = dynamic_cast < ::thread * > (::get_thread());
 
@@ -550,7 +552,7 @@ namespace metrowin
          Sys(m_pbaseapp).user()->m_pwindowmap->m_map.remove_key((int_ptr) (void *) get_handle());
       }
 
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
       if(m_pfont != NULL)
       {
          delete m_pfont;
@@ -666,7 +668,7 @@ namespace metrowin
    // WM_NCDESTROY is the absolute LAST message sent.
    void window::_001OnNcDestroy(signal_details * pobj)
    {
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
       pobj->m_bRet = true;
       // cleanup main and active windows
       ::thread* pThread = System.GetThread();
@@ -849,7 +851,7 @@ namespace metrowin
 
    bool window::DestroyWindow()
    {
-      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_pthread->m_mutex, TRUE);
+      single_lock sl(m_pthread == NULL ? NULL : &m_pthread->m_mutex, TRUE);
       ::user::window * pWnd;
       hwnd_map * pMap;
       oswindow hWndOrig;
@@ -1294,7 +1296,7 @@ namespace metrowin
 
 #endif
 
-   bool window::_001OnCmdMsg(BaseCmdMsg * pcmdmsg)
+   bool window::_001OnCmdMsg(base_cmd_msg * pcmdmsg)
    {
       if(command_target_interface::_001OnCmdMsg(pcmdmsg))
          return TRUE;
@@ -1344,7 +1346,7 @@ namespace metrowin
       }
       if(pbase->m_uiMessage == WM_TIMER)
       {
-         m_pthread->m_pthread->step_timer();
+         m_pthread->step_timer();
       }
       else if(pbase->m_uiMessage == WM_LBUTTONDOWN)
       {
@@ -3934,8 +3936,8 @@ restart_mouse_hover_check:
       m_iModalCount++;
 
       m_iaModalThread.add(::GetCurrentThreadId());
-      base_application * pappThis1 = dynamic_cast < base_application * > (m_pthread->m_pthread->m_p.m_p);
-      base_application * pappThis2 = dynamic_cast < base_application * > (m_pthread->m_pthread);
+      base_application * pappThis1 = dynamic_cast < base_application * > (m_pthread->m_p.m_p);
+      base_application * pappThis2 = dynamic_cast < base_application * > (m_pthread.m_p);
       // acquire and dispatch messages until the modal state is done
       MESSAGE msg;
       for (;;)
@@ -3969,14 +3971,14 @@ restart_mouse_hover_check:
                bIdle = FALSE;
             }
 
-            m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
+            m_pthread.m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -3992,7 +3994,7 @@ restart_mouse_hover_check:
                goto ExitModal;
 
             // pump message, but quit on WM_QUIT
-            if (!m_pthread->m_pthread->pump_message())
+            if (!m_pthread->pump_message())
             {
                __post_quit_message(0);
                return -1;
@@ -4017,14 +4019,14 @@ restart_mouse_hover_check:
                lIdleCount = 0;
             }
 
-            m_pthread->m_pthread->m_p->m_dwAlive = m_pthread->m_pthread->m_dwAlive = ::get_tick_count();
+            m_pthread->m_p->m_dwAlive = m_pthread->m_dwAlive = ::get_tick_count();
             if(pappThis1 != NULL)
             {
-               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis1->m_pplaneapp->m_dwAlive = m_pthread->m_dwAlive;
             }
             if(pappThis2 != NULL)
             {
-               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_pthread->m_dwAlive;
+               pappThis2->m_pplaneapp->m_dwAlive = m_pthread->m_dwAlive;
             }
             if(pliveobject != NULL)
             {
@@ -4042,7 +4044,7 @@ restart_mouse_hover_check:
 
          if(m_pguie->m_pthread != NULL)
          {
-            m_pguie->m_pthread->m_pthread->step_timer();
+            m_pguie->m_pthread->step_timer();
          }
          if (!ContinueModal(iLevel))
             goto ExitModal;
@@ -4429,7 +4431,7 @@ ExitModal:
    void window::GetWindowRect(__rect64 * lprect)
    {
       
-      Windows::Foundation::Rect rect = m_pwindow->get_window_rect();
+      Windows::Foundation::Rect rect = m_pwindow->m_pwindow->get_window_rect();
 
 
       lprect->left   = (int64_t) rect.X;
@@ -5244,7 +5246,7 @@ throw todo(get_app());
    { 
 
       UNREFERENCED_PARAMETER(lpfnTimer);
-      m_pguie->m_pthread->m_pthread->set_timer(m_pguie, nIDEvent, nElapse);
+      m_pguie->m_pthread->set_timer(m_pguie, nIDEvent, nElapse);
       return nIDEvent;
    
    }
@@ -5258,10 +5260,10 @@ throw todo(get_app());
       if(m_pguie->m_pthread == NULL)
          return false;
 
-      if(m_pguie->m_pthread->m_pthread == NULL)
+      if(m_pguie->m_pthread == NULL)
          return false;
 
-      m_pguie->m_pthread->m_pthread->unset_timer(m_pguie, nIDEvent);
+      m_pguie->m_pthread->unset_timer(m_pguie, nIDEvent);
 
       return TRUE;
    

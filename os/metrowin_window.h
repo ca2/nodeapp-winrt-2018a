@@ -41,7 +41,7 @@ namespace metrowin
 
       bool create_message_queue(const char * pszName, ::message_queue_listener* pcallback = NULL);
 
-      virtual bool initialize(Windows::UI::Core::CoreWindow ^ window, ::core::system_window ^ pwindow) override;
+      virtual bool initialize(::user::native_window_initialize * pinitialize) override;
 
 
       static const MSG* GetCurrentMessage();
@@ -61,7 +61,7 @@ namespace metrowin
 
       virtual oswindow _get_handle();
 
-      virtual bool _001OnCmdMsg(BaseCmdMsg * pcmdmsg);   
+      virtual bool _001OnCmdMsg(base_cmd_msg * pcmdmsg);   
 
       virtual bool BaseOnControlEvent(::user::control_event * pevent);
 

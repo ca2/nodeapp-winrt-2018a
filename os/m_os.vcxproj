@@ -135,7 +135,7 @@
       <CompileAsWinRT>true</CompileAsWinRT>
       <PrecompiledHeaderFile>framework.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>_METROWIN_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.;$(SolutionDir)../../../app;$(SolutionDir)../../../app/thirdparty/include;$(SolutionDir)../../../app/thirdparty/appseed;$(SolutionDir)../../../app/appseed;$(SolutionDir)../../../app/appseed/core;$(SolutionDir)../../../;$(SolutionDir)../../;$(ProjectDir)../../appseed;$(ProjectDir)../../;$(ProjectDir)../;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;$(SolutionDir)../../../app;$(SolutionDir)../../../app/thirdparty/include;$(SolutionDir)../../../app/thirdparty/appseed;$(SolutionDir)../../../app/appseed;$(SolutionDir)../../../app/appseed/core;$(SolutionDir)../../../app/appseed/base;$(SolutionDir)../../../;$(SolutionDir)../../;$(ProjectDir)../../appseed;$(ProjectDir)../../;$(ProjectDir)../;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zm384 /bigobj %(AdditionalOptions)</AdditionalOptions>
       <ExceptionHandling>Async</ExceptionHandling>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -271,7 +271,7 @@
     <ClInclude Include="factory_exchange.h" />
     <ClInclude Include="metrowin_application.h" />
     <ClInclude Include="metrowin_copydesk.h" />
-    <ClInclude Include="metrowin_crypt.h" />
+    <ClInclude Include="metrowin_crypto.h" />
     <ClInclude Include="metrowin_dir.h" />
     <ClInclude Include="metrowin_directx.h" />
     <ClInclude Include="metrowin_directx_application.h" />
@@ -326,7 +326,7 @@
     <ClCompile Include="metrowin_appmodul.cpp" />
     <ClCompile Include="metrowin_appterm.cpp" />
     <ClCompile Include="metrowin_copydesk.cpp" />
-    <ClCompile Include="metrowin_crypt.cpp" />
+    <ClCompile Include="metrowin_crypto.cpp" />
     <ClCompile Include="metrowin_dir.cpp" />
     <ClCompile Include="metrowin_dumpinit.cpp" />
     <ClCompile Include="metrowin_error.cpp" />
@@ -360,9 +360,6 @@
     <ProjectReference Include="..\..\app\appseed\base\m_base.vcxproj">
       <Project>{5487686f-8a2f-401a-a38e-fda8900e1984}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\app\appseed\boot\m_boot.vcxproj">
-      <Project>{5fd926e7-e8b9-4451-baac-81efa94d1985}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\..\app\appseed\core\m_core.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df21987}</Project>
     </ProjectReference>
@@ -371,9 +368,6 @@
     </ProjectReference>
     <ProjectReference Include="..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj">
       <Project>{af9dfa62-6f0e-47b8-a55b-5ad825571f4f}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\app\thirdparty\appseed\zlib\_m_ca2zlib.vcxproj">
-      <Project>{84fbad70-591c-44fa-93c4-ee232b3a1995}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

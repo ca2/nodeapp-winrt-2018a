@@ -5,14 +5,14 @@ namespace metrowin
 {
 
 
-   class CLASS_DECL_metrowin crypt :
-      virtual public ::core::crypt
+   class CLASS_DECL_metrowin crypto :
+      virtual public ::crypto::crypto
    {
    public:
 
 
-      crypt(base_application * papp);
-      virtual ~crypt();
+      crypto(base_application * papp);
+      virtual ~crypto();
 
 
       virtual bool encrypt(primitive::memory & storageEncrypt, const primitive::memory & storageDecrypt, const char * pszSalt);

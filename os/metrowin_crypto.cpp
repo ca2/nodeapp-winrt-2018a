@@ -5,19 +5,19 @@ namespace metrowin
 {
 
 
-   crypt::crypt(base_application * papp) :
+   crypto::crypto(base_application * papp) :
       element(papp),
-      ::core::crypt(papp)
+      ::crypto::crypto(papp)
    {
    }
 
 
-   crypt::~crypt()
+   crypto::~crypto()
    {
    }
 
 
-   bool crypt::decrypt(primitive::memory & storageDecrypt, const primitive::memory & storageEncrypt, const char * pszSalt)
+   bool crypto::decrypt(primitive::memory & storageDecrypt, const primitive::memory & storageEncrypt, const char * pszSalt)
    {
 
       UNREFERENCED_PARAMETER(pszSalt);
@@ -34,7 +34,7 @@ namespace metrowin
 
    }
 
-   bool crypt::encrypt(primitive::memory & storageEncrypt, const primitive::memory & storageDecrypt, const char * pszSalt)
+   bool crypto::encrypt(primitive::memory & storageEncrypt, const primitive::memory & storageDecrypt, const char * pszSalt)
    {
 
       UNREFERENCED_PARAMETER(pszSalt);

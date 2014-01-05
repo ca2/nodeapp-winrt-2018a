@@ -24,7 +24,7 @@ namespace metrowin
 
 
       // in non-running state until WinMain
-      m_hInstance = NULL;
+//      m_hInstance = NULL;
 //      m_hLangResourceDLL = NULL;
       m_pszHelpFilePath = NULL;
       m_pszProfileName = NULL;
@@ -759,8 +759,8 @@ namespace metrowin
 
          // fill in the initial state for the application
          // Windows specific initialization (not done if no application)
-         m_hInstance = hInstance;
-         (dynamic_cast < ::application * >(m_pbaseapp.m_p))->m_hInstance = hInstance;
+//         m_hInstance = hInstance;
+//         (dynamic_cast < ::application * >(m_pbaseapp.m_p))->m_hInstance = hInstance;
          //hPrevInstance; // Obsolete.
          m_strCmdLine = strCmdLine;
          m_nCmdShow = nCmdShow;

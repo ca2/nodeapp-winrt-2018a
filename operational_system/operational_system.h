@@ -61,3 +61,15 @@ typedef std::type_info std_type_info;
 #include <stddef.h>
 #include <stdarg.h>
 #include <errno.h>
+
+
+#ifdef __cplusplus_winrt
+
+#include <wrl.h>
+#include <wrl/client.h>
+#include <agile.h>
+
+#endif
+
+
+

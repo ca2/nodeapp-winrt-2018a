@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "basefreeimage", "..\..\..\a
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "basefreetype", "..\..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj", "{AF9DFA62-6F0E-47B8-A55B-5AD825571F4F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "os", "..\..\os\m_os.vcxproj", "{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_hellomultiverse", "..\..\..\app-core\appseed\hellomultiverse\m_hellomultiverse.vcxproj", "{AA5C6E24-9DF1-4EC1-A907-E298FEAE1990}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_uinteraction", "..\..\..\app-core\appseed\uinteraction\m_uinteraction.vcxproj", "{7A455B6F-E8D8-4ACF-BC1A-EE58C5D81992}"
@@ -133,48 +131,6 @@ Global
 		{AF9DFA62-6F0E-47B8-A55B-5AD825571F4F}.Release|Win32.Build.0 = basis|Win32
 		{AF9DFA62-6F0E-47B8-A55B-5AD825571F4F}.Release|x64.ActiveCfg = basis|x64
 		{AF9DFA62-6F0E-47B8-A55B-5AD825571F4F}.Release|x64.Build.0 = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|Android.ActiveCfg = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|ARM.ActiveCfg = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|ARM.Build.0 = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|Win32.ActiveCfg = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|Win32.Build.0 = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|x64.ActiveCfg = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.basis|x64.Build.0 = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|Android.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|ARM.ActiveCfg = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|ARM.Build.0 = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|Win32.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|Win32.Build.0 = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|x64.ActiveCfg = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.codeanalysis|x64.Build.0 = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|Android.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|ARM.ActiveCfg = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|ARM.Build.0 = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|Win32.ActiveCfg = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|Win32.Build.0 = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|x64.ActiveCfg = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Debug|x64.Build.0 = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|Android.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|ARM.ActiveCfg = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|ARM.Build.0 = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|Win32.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|Win32.Build.0 = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|x64.ActiveCfg = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.memdleak|x64.Build.0 = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|Android.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|ARM.ActiveCfg = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|ARM.Build.0 = profiler|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|Win32.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|Win32.Build.0 = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|x64.ActiveCfg = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.profiler|x64.Build.0 = profiler|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|Android.ActiveCfg = profiler|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|ARM.ActiveCfg = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|ARM.Build.0 = basis|ARM
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|Win32.ActiveCfg = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|Win32.Build.0 = basis|Win32
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|x64.ActiveCfg = basis|x64
-		{FCCDD981-5C10-4487-BECF-EB3A7D4A1986}.Release|x64.Build.0 = basis|x64
 		{AA5C6E24-9DF1-4EC1-A907-E298FEAE1990}.basis|Android.ActiveCfg = basis|Win32
 		{AA5C6E24-9DF1-4EC1-A907-E298FEAE1990}.basis|ARM.ActiveCfg = basis|ARM
 		{AA5C6E24-9DF1-4EC1-A907-E298FEAE1990}.basis|ARM.Build.0 = basis|ARM

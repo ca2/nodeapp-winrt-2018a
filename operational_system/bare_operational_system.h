@@ -96,20 +96,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // Special __debug_break: used to break into debugger at critical times
 
-#ifndef __debug_break
-#if core_level_1
-#define __debug_break() DebugBreak()
-#elif ___NO_DEBUG_CRT
-// by default, debug break is asm int 3, or a call to DebugBreak, or nothing
-#if defined(_M_IX86) && !defined(___PORTABLE)
-#define __debug_break() _asm { int 3 }
-#else
-#define __debug_break() DebugBreak()
-#endif
-#else
-#define __debug_break() _CrtDbgBreak()
-#endif
-#endif
+#define debug_break() __debugbreak()
 
 /*#ifndef DEBUG
 #ifdef __debug_break

@@ -273,9 +273,9 @@ typedef struct {
 // This is modified version of div() function from Microsoft's div.ca found
 // in %MSVC.NET%\crt\src\div.ca
 #ifdef STATIC_IMAXDIV // [
-static
+//static
 #else // STATIC_IMAXDIV ][
-_inline
+//_inline
 #endif // STATIC_IMAXDIV ]
 /*imaxdiv_t __cdecl imaxdiv(intmax_t numer, intmax_t denom)
 {

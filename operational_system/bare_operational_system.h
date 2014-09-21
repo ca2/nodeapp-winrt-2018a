@@ -18,31 +18,6 @@
 
 #define DECL_SPEC_ANY __declspec(selectany)
 
-/////////////////////////////////////////////////////////////////////////////
-// turn off reference tracking for certain often used symbols
-
-#ifndef ___PORTABLE
-#pragma component(browser, off, references, "ASSERT")
-#pragma component(browser, off, references, "__assert_failed_line")
-#pragma component(browser, off, references, "__debug_break")
-#pragma component(browser, off, references, "bool")
-#pragma component(browser, off, references, "BYTE")
-#pragma component(browser, off, references, "DECLSPEC_IMPORT")
-#pragma component(browser, off, references, "DWORD")
-#pragma component(browser, off, references, "FALSE")
-#pragma component(browser, off, references, "FAR")
-#pragma component(browser, off, references, "LPSTR")
-#pragma component(browser, off, references, "LPTSTR")
-#pragma component(browser, off, references, "LPCSTR")
-#pragma component(browser, off, references, "LPCTSTR")
-#pragma component(browser, off, references, "NULL")
-#pragma component(browser, off, references, "PASCAL")
-#pragma component(browser, off, references, "THIS_FILE")
-#pragma component(browser, off, references, "TRUE")
-#pragma component(browser, off, references, "UINT")
-#pragma component(browser, off, references, "WINAPI")
-#pragma component(browser, off, references, "WORD")
-#endif  //!___PORTABLE
 
 
 #ifndef DEBUG

@@ -10,16 +10,6 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #include "get_platform.h"
 
 
-typedef int_ptr ssize_t;
-typedef void * HDROP;
-
-
-#pragma once
-
-#ifndef _DEBUG
-#define _DEBUG
-#endif
-
 #define IMPLEMENT_VISTA_TOOLS
 #define WIN32
 #define DRAWDIB_INCLUDE_STRETCHDIB
@@ -44,3 +34,12 @@ typedef std::type_info std_type_info;
 
 
 #include "inttypes.h"
+#include "integer_type.h"
+
+
+
+
+typedef int_ptr ssize_t;
+typedef void * HDROP;
+
+

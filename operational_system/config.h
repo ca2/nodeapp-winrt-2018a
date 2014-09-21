@@ -7,12 +7,16 @@
 
 #define OSBIT 32
 
-#pragma once
-
 
 #ifdef _DEBUG
 #define DEBUG
 #endif
+
+#ifndef _DEBUG
+#define _DEBUG
+#endif
+
+#define NOMINMAX
 
 #define DECL_C __cdecl
 
@@ -61,4 +65,8 @@
 
 #pragma warning(disable:4250) // disable warning if inherited via dominance
 
+
+
+
+#define DRAWDIB_INCLUDE_STRETCHDIB
 

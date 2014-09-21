@@ -13,14 +13,13 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #define IMPLEMENT_VISTA_TOOLS
 #define WIN32
 #define DRAWDIB_INCLUDE_STRETCHDIB
-
+#ifdef __cplusplus
 #pragma pointers_to_members( full_generality, virtual_inheritance )
+#endif
+
 #include "win32_system.h"
 #define _ApplicationFrameworkDLL
 
-#include <typeinfo.h>
-
-typedef std::type_info std_type_info;
 
 #if defined(_M_X64)
 
@@ -34,7 +33,7 @@ typedef std::type_info std_type_info;
 
 
 #include "inttypes.h"
-#include "integer_type.h"
+//#include "integer_type.h"
 
 
 

@@ -72,3 +72,8 @@
 
 #define DRAWDIB_INCLUDE_STRETCHDIB
 
+#ifdef cplus
+
+#define inline static
+
+#endif

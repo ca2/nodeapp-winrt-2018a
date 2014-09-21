@@ -582,6 +582,7 @@ typedef DWORD_PTR       dword_ptr   , * pdword_ptr;
 
 
 #include <stdio.h>
+#include <mmsystem.h>
 
 
 

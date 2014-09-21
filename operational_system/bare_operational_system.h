@@ -175,6 +175,9 @@
 #define __PLACEMENT_NEW_INLINE
 //#include <agile.h>
 #endif
+#ifdef __cplusplus_winrt
+using Platform;
+#endif
 
 #include "oswindow.h"
 

@@ -67,7 +67,7 @@ typedef std::type_info std_type_info;
 
 #include <wrl.h>
 #include <wrl/client.h>
-#include <agile.h>
+//#include <agile.h>
 
 #endif
 

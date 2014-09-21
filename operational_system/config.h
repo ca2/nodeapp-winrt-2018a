@@ -58,22 +58,7 @@
 #define _STL_NOFORCE_MANIFEST
 
 
-BEGIN_EXTERN_C
-
-
-__declspec(selectany)  int _forceCRTManifest;
-
-
-END_EXTERN_C
-
 
 #pragma warning(disable:4250) // disable warning if inherited via dominance
-
-
-
-#pragma once
-
-
-//typedef int  int_bool;
 
 

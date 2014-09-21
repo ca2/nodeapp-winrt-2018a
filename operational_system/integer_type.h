@@ -43,12 +43,12 @@
 #include "standard_integer.h"
 
 // 7.8 Format conversion of integer types
-
+/*
 typedef struct {
    intmax_t quot;
    intmax_t rem;
 } imaxdiv_t;
-
+*/
 // 7.8.1 Macros for format specifiers
 
 #if !defined(__cplusplus) || defined(__STDC_FORMAT_MACROS) // [   See footnote 185 at page 198
@@ -277,7 +277,7 @@ static
 #else // STATIC_IMAXDIV ][
 _inline
 #endif // STATIC_IMAXDIV ]
-imaxdiv_t __cdecl imaxdiv(intmax_t numer, intmax_t denom)
+/*imaxdiv_t __cdecl imaxdiv(intmax_t numer, intmax_t denom)
 {
    imaxdiv_t result;
 
@@ -291,7 +291,7 @@ imaxdiv_t __cdecl imaxdiv(intmax_t numer, intmax_t denom)
    }
 
    return result;
-}
+}*/
 
 // 7.8.2.3 The strtoimax and strtoumax functions
 #define strtoimax _strtoi64

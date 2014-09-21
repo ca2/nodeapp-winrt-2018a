@@ -19,13 +19,6 @@ END_EXTERN_C
 #define THROWS throw(...)
 
 
-#define WINVER 0x0600
-#define _WIN32_WINNT   0x0600
-
-
-#define VC_EXTRALEAN
-
-
 #ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
 #endif

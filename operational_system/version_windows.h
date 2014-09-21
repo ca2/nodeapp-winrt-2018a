@@ -28,6 +28,9 @@
 #define _WIN32_IE          0x0A00            // _WIN32_IE_IE100
 
 
+#define VC_EXTRALEAN
+
+
 
 // certain parts of WINDOWS.H are necessary
 #undef NOKERNEL

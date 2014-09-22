@@ -10,7 +10,7 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #include "get_platform.h"
 
 
-#define IMPLEMENT_VISTA_TOOLS
+//#define IMPLEMENT_VISTA_TOOLS
 #define WIN32
 #define DRAWDIB_INCLUDE_STRETCHDIB
 #ifdef __cplusplus

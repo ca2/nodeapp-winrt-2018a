@@ -212,7 +212,9 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #if defined(__cplusplus_winrt)
 #include <wrl/client.h>
 #define __PLACEMENT_NEW_INLINE
-//#include <agile.h>
+#define _IOSFWD_
+#define _ALGORITHM_
+#include <agile.h>
 #endif
 #if defined(__cplusplus_winrt)
 using namespace Platform;

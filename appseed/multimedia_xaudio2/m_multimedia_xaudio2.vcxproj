@@ -113,9 +113,6 @@
     <ProjectReference Include="..\..\..\app\appseed\core\m_core.vcxproj">
       <Project>{420d7aeb-cfca-45de-bb6e-95055df21987}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\app\thirdparty\appseed\freetype\_m_ca2freetype.vcxproj">
-      <Project>{af9dfa62-6f0e-47b8-a55b-5ad825571f4f}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="multimedia_xaudio2.def" />

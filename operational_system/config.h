@@ -21,9 +21,9 @@
 #define DECL_C __cdecl
 
 
-#define CLASS_DECL_EXPORT _declspec(dllexport)
-#define CLASS_DECL_IMPORT _declspec(dllimport)
-#define CLASS_DECL_THREAD _declspec(thread)
+#define CLASS_DECL_EXPORT __declspec(dllexport)
+#define CLASS_DECL_IMPORT __declspec(dllimport)
+#define CLASS_DECL_THREAD __declspec(thread)
 
 #define NO_VARIADIC_TEMPLATE
 

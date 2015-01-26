@@ -82,3 +82,6 @@
 #define inline static
 
 #endif
+
+
+#define static_inline static

@@ -218,6 +218,7 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #endif
 #if defined(__cplusplus_winrt)
 using namespace Platform;
+using namespace Windows::System;
 #endif
 
 #include "oswindow.h"

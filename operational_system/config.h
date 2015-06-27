@@ -5,7 +5,23 @@
 #define WINDOWS
 #define WIN32
 
+#if defined(_M_X64)  // X64
+
+
+#define AMD64
+#define OS64BIT
+#define OSBIT 64
+
+
+#elif defined(_M_IX86)
+
+
+#define X86
+#define OS32BIT
 #define OSBIT 32
+
+
+#endif
 
 
 #ifdef _DEBUG
@@ -25,7 +41,7 @@
 #define CLASS_DECL_IMPORT __declspec(dllimport)
 #define CLASS_DECL_THREAD __declspec(thread)
 
-#define NO_VARIADIC_TEMPLATE
+//#define NO_VARIADIC_TEMPLATE
 
 
 #ifndef _CRT_SECURE_NO_WARNINGS

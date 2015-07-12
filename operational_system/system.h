@@ -220,7 +220,7 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 using namespace Platform;
 using namespace Windows::System;
 using namespace Windows::System::Threading;
-
+using namespace Windows::Storage;
 #endif
 
 #include "oswindow.h"

@@ -5,6 +5,13 @@
 #define WINDOWS
 #define WIN32
 
+#ifdef __cplusplus
+typedef wchar_t unichar;
+#else
+typedef unsigned short unichar;
+#endif
+
+
 #if defined(_M_X64)  // X64
 
 

@@ -723,3 +723,5 @@ typedef int_ptr ssize_t;
 typedef void * HDROP;
 
 
+typedef wchar_t unichar;
+typedef unsigned int unichar32;

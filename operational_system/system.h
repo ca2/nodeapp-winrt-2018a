@@ -223,7 +223,7 @@ using namespace Windows::System::Threading;
 using namespace Windows::Storage;
 #endif
 
-
+#include "_stdint.h"
 
 #include "oswindow.h"
 
@@ -616,11 +616,11 @@ __INLINE oswindow GetNextWindow(oswindow hWnd,UINT nDirection)
 #define DECLSPEC_NO_RETURN __declspec(noreturn)
 
 
-typedef INT_PTR         int_ptr,* pint_ptr;
-typedef UINT_PTR        uint_ptr,* puint_ptr;
-typedef LONG_PTR        long_ptr,* plong_ptr;
-typedef ULONG_PTR       ulong_ptr,* pulong_ptr;
-typedef DWORD_PTR       dword_ptr,* pdword_ptr;
+//typedef INT_PTR         int_ptr,* pint_ptr;
+//typedef UINT_PTR        uint_ptr,* puint_ptr;
+//typedef LONG_PTR        long_ptr,* plong_ptr;
+//typedef ULONG_PTR       ulong_ptr,* pulong_ptr;
+//typedef DWORD_PTR       dword_ptr,* pdword_ptr;
 
 
 
@@ -661,11 +661,6 @@ return op;
 
 
 
-#ifdef AMD64
-#define rtptr unsigned __int64;
-#else
-#define rtptr unsigned __int32;
-#endif
 
 
 
@@ -704,24 +699,13 @@ END_EXTERN_C
 #endif
 
 
-#if defined(_M_X64)
-
-#define _AMD64_
-
-#else 
-
-#define _X86_
-
-#endif
-
-
-#include "inttypes.h"
+//#include "inttypes.h"
 //#include "integer_type.h"
 
 
 
 
-typedef int_ptr ssize_t;
+//typedef int_ptr ssize_t;
 typedef void * HDROP;
 
 

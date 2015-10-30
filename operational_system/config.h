@@ -11,24 +11,24 @@ typedef wchar_t unichar;
 typedef unsigned short unichar;
 #endif
 
-
-#if defined(_M_X64)  // X64
-
-
-#define AMD64
-#define OS64BIT
-#define OSBIT 64
-
-
-#elif defined(_M_IX86)
-
-
-#define X86
-#define OS32BIT
-#define OSBIT 32
-
-
-#endif
+//
+//#if defined(_M_X64)  // X64
+//
+//
+//#define AMD64
+//#define OS64BIT
+//#define OSBIT 64
+//
+//
+//#elif defined(_M_IX86)
+//
+//
+//#define X86
+//#define OS32BIT
+//#define OSBIT 32
+//
+//
+//#endif
 
 
 #ifdef _DEBUG
@@ -81,8 +81,7 @@ typedef unsigned short unichar;
 
 
 #pragma warning(disable:4250) // disable warning if inherited via dominance
-
-
+#pragma warning(disable:4275) // disable warning about dll-interface inheriting from non-dll interface (always true for template bases)... : classical and clear linkage errors will appear if it is not template class
 
 
 #define DRAWDIB_INCLUDE_STRETCHDIB

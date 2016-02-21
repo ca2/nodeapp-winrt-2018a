@@ -204,11 +204,13 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #pragma warning(push)
 #pragma warning(disable: 4311 4312)
 #pragma warning(disable: 4201)  // winnt.h uses nameless structs
-
+#define _WINSOCKAPI_
 
 #include <winapifamily.h>
 #include <windows.h>
 #include <shlwapi.h>
+#include <shellapi.h>
+#include <winuser.h>
 #if defined(__cplusplus_winrt)
 #include <wrl/client.h>
 #define __PLACEMENT_NEW_INLINE
@@ -336,7 +338,7 @@ typedef struct HKEY__ *HKEY;
 #ifdef GetWindowTask
 #undef GetWindowTask
 #ifdef _WIN32
-__INLINE HTASK GetWindowTask(oswindow hWnd)
+__INLINE HTASK GetWindowTask(HWND hWnd)
 {
    return (HTASK)(DWORD_PTR)GetWindowThreadProcessId(hWnd,NULL);
 }
@@ -346,7 +348,7 @@ __INLINE HTASK GetWindowTask(oswindow hWnd)
 // Win32 uses macros with parameters for this, which breaks C++ code.
 #ifdef GetNextWindow
 #undef GetNextWindow
-__INLINE oswindow GetNextWindow(oswindow hWnd,UINT nDirection)
+__INLINE HWND GetNextWindow(HWND hWnd,UINT nDirection)
 {
    return GetWindow(hWnd,nDirection);
 }
@@ -706,8 +708,8 @@ END_EXTERN_C
 
 
 //typedef int_ptr ssize_t;
-typedef void * HDROP;
-
+//typedef void * HDROP;
+//DECLARE_HANDLE(HDROP);
 
 typedef wchar_t unichar;
 typedef unsigned int unichar32;

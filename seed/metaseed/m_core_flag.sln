@@ -49,6 +49,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axisopenssl", "..\..\..\app
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcre", "..\..\..\app\appseed\pcre\w_pcre.vcxproj", "{0A43902C-E3C1-4383-B902-FB9D29296571}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gcom", "..\..\..\app-core\appseed\gcom\w_gcom.vcxproj", "{B7AFCEFA-8451-7723-8F97-4543BB980265}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		basis|ARM = basis|ARM
@@ -341,6 +343,18 @@ Global
 		{0A43902C-E3C1-4383-B902-FB9D29296571}.stage|Win32.Build.0 = stage|Win32
 		{0A43902C-E3C1-4383-B902-FB9D29296571}.stage|x64.ActiveCfg = stage|x64
 		{0A43902C-E3C1-4383-B902-FB9D29296571}.stage|x64.Build.0 = stage|x64
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|ARM.ActiveCfg = basis|ARM
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|ARM.Build.0 = basis|ARM
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|Win32.ActiveCfg = basis|Win32
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|Win32.Build.0 = basis|Win32
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|x64.ActiveCfg = basis|x64
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.basis|x64.Build.0 = basis|x64
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|ARM.ActiveCfg = stage|ARM
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|ARM.Build.0 = stage|ARM
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|Win32.ActiveCfg = stage|Win32
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|Win32.Build.0 = stage|Win32
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|x64.ActiveCfg = stage|x64
+		{B7AFCEFA-8451-7723-8F97-4543BB980265}.stage|x64.Build.0 = stage|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

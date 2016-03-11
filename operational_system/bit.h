@@ -1,7 +1,13 @@
 #pragma once
 
+#if defined(_M_ARM)
 
-#if defined(_M_X64)  // X64
+#define ARM
+#define OS32BIT
+#define OSBIT 32
+
+
+#elif defined(_M_X64)  // X64
 
 
 #define AMD64

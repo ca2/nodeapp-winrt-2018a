@@ -103,10 +103,12 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #endif
 
 
-#define  NTDDI_VERSION     0x06020000        //  NTDDI_WIN8
-#define  WINVER            0x0602            // _WIN32_WINNT_WIN8
-#define _WIN32_WINNT 	   0x0602            // _WIN32_WINNT_WIN8
-#define _WIN32_IE          0x0A00            // _WIN32_IE_IE100
+#include <sdkddkver.h>
+
+//#define  NTDDI_VERSION     0x06020000        //  NTDDI_WIN8
+//#define  WINVER            0x0602            // _WIN32_WINNT_WIN8
+//#define _WIN32_WINNT 	   0x0602            // _WIN32_WINNT_WIN8
+//#define _WIN32_IE          0x0A00            // _WIN32_IE_IE100
 
 
 #define VC_EXTRALEAN

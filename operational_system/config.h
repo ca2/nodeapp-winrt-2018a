@@ -1,7 +1,9 @@
 #pragma once
 
 
+#ifndef METROWIN
 #define METROWIN
+#endif
 #define WINDOWS
 #define WIN32
 

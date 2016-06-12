@@ -44,7 +44,9 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #ifndef _WINDOWS
 #define _WINDOWS
 #endif
+#ifndef METROWIN
 #define METROWIN
+#endif
 
 
 /////////////////////////////////////////////////////////////////////////////

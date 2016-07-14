@@ -7,6 +7,10 @@
 #define WINDOWS
 #define WIN32
 
+
+#define VARIADIC_TEMPLATE_FORMAT2
+
+
 #ifdef __cplusplus
 typedef wchar_t unichar;
 #else

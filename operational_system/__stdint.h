@@ -5,13 +5,12 @@
 //
 // The C Standard Library <stdint.h> header.
 //
-#pragma once
-#define _STDINT
 
 #ifndef RC_INVOKED
 
 
 
+#ifndef _STDINT
 #define int8_t signed char
 #define int16_t short              
 #define int32_t int                
@@ -20,6 +19,7 @@
 #define uint16_t unsigned short     
 #define uint32_t unsigned int       
 #define uint64_t unsigned long long 
+#endif
 
 #define ulong32 unsigned long
 #define ulong64 unsigned long long 
@@ -136,3 +136,7 @@ typedef unsigned long long uintmax_t;
  * Copyright (c) 1992-2012 by P.J. Plauger.  ALL RIGHTS RESERVED.
  * Consult your license regarding permissions and restrictions.
 V6.00:0009 */
+
+
+
+

@@ -220,7 +220,9 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #define __PLACEMENT_NEW_INLINE
 #define _IOSFWD_
 #define _ALGORITHM_
+#define std _std
 #include <agile.h>
+#undef std
 #endif
 #if defined(__cplusplus_winrt)
 using namespace Platform;
@@ -228,6 +230,7 @@ using namespace Windows::System;
 using namespace Windows::System::Threading;
 using namespace Windows::Storage;
 #endif
+
 
 #include "_stdint.h"
 

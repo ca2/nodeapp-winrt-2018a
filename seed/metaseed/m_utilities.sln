@@ -51,8 +51,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia_playlist_spotify
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_decode_ffmpeg", "..\..\..\app-veriwell\appseed\video_decode_ffmpeg\w_veriwell_video_decode_ffmpeg.vcxproj", "{6194CE72-4893-4284-AF9E-DB807B49093F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "music_midi_xaudio", "..\..\..\app\appseed\music_midi_xaudio\w_music_midi_xaudio.vcxproj", "{7D2387EB-A3DE-4EA5-B061-48A856DD7211}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_addressbook", "..\..\..\app-core\appseed\addressbook\w_addressbook.vcxproj", "{B7AFCEFA-3079-4B23-8F97-4543BB980265}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_addressbook", "..\..\..\app-core\appseed\addressbook\w_winmetro_addressbook.vcxproj", "{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}"
@@ -359,18 +357,6 @@ Global
 		{6194CE72-4893-4284-AF9E-DB807B49093F}.stage|Win32.Build.0 = stage|Win32
 		{6194CE72-4893-4284-AF9E-DB807B49093F}.stage|x64.ActiveCfg = stage|x64
 		{6194CE72-4893-4284-AF9E-DB807B49093F}.stage|x64.Build.0 = stage|x64
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|ARM.ActiveCfg = basis|ARM
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|ARM.Build.0 = basis|ARM
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|Win32.ActiveCfg = basis|Win32
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|Win32.Build.0 = basis|Win32
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|x64.ActiveCfg = basis|x64
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.basis|x64.Build.0 = basis|x64
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|ARM.ActiveCfg = stage|ARM
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|ARM.Build.0 = stage|ARM
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|Win32.ActiveCfg = stage|Win32
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|Win32.Build.0 = stage|Win32
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|x64.ActiveCfg = stage|x64
-		{7D2387EB-A3DE-4EA5-B061-48A856DD7211}.stage|x64.Build.0 = stage|x64
 		{B7AFCEFA-3079-4B23-8F97-4543BB980265}.basis|ARM.ActiveCfg = basis|ARM
 		{B7AFCEFA-3079-4B23-8F97-4543BB980265}.basis|ARM.Build.0 = basis|ARM
 		{B7AFCEFA-3079-4B23-8F97-4543BB980265}.basis|Win32.ActiveCfg = basis|Win32

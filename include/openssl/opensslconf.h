@@ -4,7 +4,7 @@
 /* OpenSSL was configured with the following options: */
 
 
-#define _WIN32_WINNT 0x0600
+#define _WIN32_WINNT 0x0603
 
 #include "nodeapp/operational_system/config_debug.h"
 

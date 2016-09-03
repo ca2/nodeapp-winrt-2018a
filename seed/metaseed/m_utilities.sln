@@ -57,6 +57,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_addressbook", "..\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_addressbook", "..\..\..\app-core\appseed\addressbook\w_winmetro_addressbook.vcxproj", "{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sphere", "..\..\..\app\appseed\sphere\w_sphere.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tesseract", "..\..\..\app-core\appseed\tesseract\w_tesseract.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		basis|ARM = basis|ARM
@@ -397,6 +401,30 @@ Global
 		{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}.stage|x64.ActiveCfg = stage|x64
 		{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}.stage|x64.Build.0 = stage|x64
 		{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}.stage|x64.Deploy.0 = stage|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|ARM.ActiveCfg = basis|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|ARM.Build.0 = basis|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|Win32.ActiveCfg = basis|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|Win32.Build.0 = basis|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|x64.ActiveCfg = basis|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.basis|x64.Build.0 = basis|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|ARM.ActiveCfg = stage|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|ARM.Build.0 = stage|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|Win32.ActiveCfg = stage|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|Win32.Build.0 = stage|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|x64.ActiveCfg = stage|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}.stage|x64.Build.0 = stage|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|ARM.ActiveCfg = basis|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|ARM.Build.0 = basis|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|Win32.ActiveCfg = basis|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|Win32.Build.0 = basis|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|x64.ActiveCfg = basis|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.basis|x64.Build.0 = basis|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|ARM.ActiveCfg = stage|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|ARM.Build.0 = stage|ARM
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|Win32.ActiveCfg = stage|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|Win32.Build.0 = stage|Win32
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|x64.ActiveCfg = stage|x64
+		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|x64.Build.0 = stage|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

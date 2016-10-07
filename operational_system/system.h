@@ -720,3 +720,12 @@ END_EXTERN_C
 
 typedef wchar_t unichar;
 typedef unsigned int unichar32;
+
+#define WINUCHAR UCHAR
+#define WINULONG ULONG
+#define PWINUCHAR PUCHAR
+#define PWINULONG PULONG
+#define WINUSHORT USHORT
+
+
+

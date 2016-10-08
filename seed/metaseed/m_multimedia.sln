@@ -65,7 +65,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_veriwell_mplite", "..\.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_veriwell_mplite", "..\..\..\app-veriwell\appseed\mplite\w_winmetro_mplite.vcxproj", "{9C6FC641-43F3-416A-85F6-7809ABF404D3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "music_midi_xaudio", "..\..\..\app\appseed\music_midi_xaudio\w_music_midi_xaudio.vcxproj", "{7D2387EB-A3DE-4EA5-B061-48A856DD7211}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "music_midi_winrt", "..\..\appseed\music_midi_winrt\w_music_midi_winrt.vcxproj", "{7D2387EB-A3DE-4EA5-B061-48A856DD7211}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

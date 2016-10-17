@@ -52,6 +52,9 @@ namespace music
 //            void send(MidiMessageType etype);
 
             void note_on(int iChannel, unsigned char uchNote, unsigned char uchVelocity);
+            void note_off(int iChannel, unsigned char uchNote, unsigned char uchVelocity);
+            void program_change(int iChannel, unsigned char uchProgram);
+            void control_change(int iChannel, unsigned char uchController, unsigned char uchValue);
             void send(IMidiMessage ^ message);
 
          private:

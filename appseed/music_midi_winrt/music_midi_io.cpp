@@ -654,6 +654,34 @@ namespace music
 
          }
 
+         void message_io::note_off(int iChannel, unsigned char uchNote, unsigned char uchVelocity)
+         {
+
+            IMidiMessage ^ message = ref new MidiNoteOffMessage(iChannel, uchNote, uchVelocity);
+
+            send(message);
+
+         }
+
+         void message_io::program_change(int iChannel, unsigned char uchProgram)
+         {
+
+            IMidiMessage ^ message = ref new MidiProgramChangeMessage(iChannel, uchProgram);
+
+            send(message);
+
+         }
+
+         void message_io::control_change(int iChannel, unsigned char uchController, unsigned char uchValue)
+         {
+
+            IMidiMessage ^ message = ref new MidiControlChangeMessage(iChannel, uchController, uchValue);
+
+            send(message);
+
+         }
+         
+
 
       } // namespace winrt
 

@@ -91,22 +91,6 @@ namespace music
 
             };
 
-            class event :
-               public ::music::midi::sequence::event
-            {
-            public:
-
-
-//               LPMIDIHDR                     m_lpmh;
-
-
-            };
-
-
-            buffer_array                  m_buffera;
-
-            //          HMIDISTRM                     m_hstream;
-
             midi_callback_data            m_midicallbackdata;
 
             message_io ^ m_io;
@@ -212,6 +196,7 @@ namespace music
             imedia_position MillisecsToTicks(imedia_time msOffset);
 
             imedia_time TicksToMillisecs(imedia_position tkOffset);
+            uint64_t TickToMicro(imedia_position tkOffset);
 
             bool IsPlaying();
 

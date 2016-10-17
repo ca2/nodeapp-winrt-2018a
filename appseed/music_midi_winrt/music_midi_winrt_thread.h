@@ -22,7 +22,9 @@ namespace music
 
             sequence *              m_pseq;
 
-            manual_reset_event      m_evPause;
+            manual_reset_event      m_evRun;
+
+            imedia_position         m_tkPosition;
 
 
             thread(::aura::application * papp);

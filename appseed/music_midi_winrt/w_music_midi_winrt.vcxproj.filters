@@ -45,6 +45,12 @@
     <ClInclude Include="player\music_midi_winrt_player.h">
       <Filter>Header Files\player</Filter>
     </ClInclude>
+    <ClInclude Include="music_midi_winrt_midi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="music_midi_winrt_thread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="framework.cpp">
@@ -76,6 +82,12 @@
     </ClCompile>
     <ClCompile Include="player\music_midi_winrt_player.cpp">
       <Filter>Source Files\player</Filter>
+    </ClCompile>
+    <ClCompile Include="music_midi_winrt_midi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="music_midi_winrt_thread.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

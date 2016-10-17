@@ -18,6 +18,7 @@ namespace music
             thread(papp),
             ::music::midi::sequence_thread(papp)
          {
+            
          }
 
          sequence_thread::~sequence_thread()
@@ -37,7 +38,8 @@ namespace music
 
          void sequence_thread::install_message_handling(::message::dispatch * pinterface)
          {
-            IGUI_WIN_MSG_LINK(::music::midi::player::message_command, pinterface, this, &sequence_thread::OnCommand);
+            ::music::midi::sequence_thread::install_message_handling(pinterface);
+//            IGUI_WIN_MSG_LINK(::music::midi::player::message_command, pinterface, this, &sequence_thread::OnCommand);
             IGUI_WIN_MSG_LINK(::music::midi::sequence::message_event, pinterface, this, &sequence_thread::OnMidiSequenceEvent);
          }
 
@@ -66,7 +68,7 @@ namespace music
 
             sp(sequence) seq = pseq;
 
-            return post_thread_message(::music::midi::sequence::message_event,  (WPARAM) pseq, (LPARAM) seq->create_new_event(eevent, lpmh));
+            return post_thread_message(::music::midi::sequence::message_event,  (WPARAM) pseq, (LPARAM) seq->create_new_event(eevent));
 
          }
 
@@ -76,7 +78,7 @@ namespace music
             SCAST_PTR(::message::base, pbase, pobj);
 
             ::music::midi::sequence::event * pevent = (::music::midi::sequence::event *) pbase->m_lparam.m_lparam;
-            ::music::midi::sequence * pseq = (::music::midi::sequence *) pevent->m_psequence;
+            ::music::midi::winrt::sequence * pseq = dynamic_cast < ::music::midi::winrt::sequence * > (pevent->m_psequence);
 
             pseq->OnEvent(pevent);
 
@@ -166,6 +168,7 @@ namespace music
                break;
             case ::music::midi::sequence::EventMidiPlaybackStart:
                {
+               pseq->rt_start();
                   PostNotifyEvent(::music::midi::player::notify_event_playback_start);
                }
                break;
@@ -301,33 +304,33 @@ namespace music
          }
 
 
-         void sequence_thread::ExecuteCommand(smart_pointer < ::music::midi::player::command > spcommand)
-         {
-            spcommand->add_ref();
-            post_thread_message(
-               ::music::midi::player::message_command,
-               0,
-               (LPARAM) (::music::midi::player::command *) spcommand);
-         }
+         //void sequence_thread::ExecuteCommand(smart_pointer < ::music::midi::player::command > spcommand)
+         //{
+         //   spcommand->add_ref();
+         //   post_thread_message(
+         //      ::music::midi::player::message_command,
+         //      0,
+         //      (LPARAM) (::music::midi::player::command *) spcommand);
+         //}
 
 
-         void sequence_thread::OnCommand(::signal_details * pobj)
-         {
-            SCAST_PTR(::message::base, pbase, pobj);
-            smart_pointer < ::music::midi::player::command > spcommand;
-            spcommand = (::music::midi::player::command *) pbase->m_lparam.m_lparam;
-            try
-            {
-               _ExecuteCommand(spcommand);
-            }
-            catch(exception * pe)
-            {
-               pe->Delete();
-            }
-            catch(...)
-            {
-            }
-         }
+         //void sequence_thread::OnCommand(::signal_details * pobj)
+         //{
+         //   SCAST_PTR(::message::base, pbase, pobj);
+         //   smart_pointer < ::music::midi::player::command > spcommand;
+         //   spcommand = (::music::midi::player::command *) pbase->m_lparam.m_lparam;
+         //   try
+         //   {
+         //      _ExecuteCommand(spcommand);
+         //   }
+         //   catch(exception * pe)
+         //   {
+         //      pe->Delete();
+         //   }
+         //   catch(...)
+         //   {
+         //   }
+         //}
 
 
          void sequence_thread::_ExecuteCommand(smart_pointer < ::music::midi::player::command > spcommand)
@@ -367,10 +370,10 @@ namespace music
                   ::music::midi::sequence::PlayerLink & link = get_sequence()->GetPlayerLink();
                   link.SetCommand(spcommand);
                   link.ModifyFlag(::music::midi::sequence::FlagStop, ::music::midi::sequence::FlagNull);
-                  if(MMSYSERR_NOERROR != (mmrc = get_sequence()->Stop()))
-                  {
-                     throw new exception(get_app(), EMidiPlayerStop);
-                  }
+                  //if(MMSYSERR_NOERROR != (mmrc = get_sequence()->Stop()))
+                  //{
+                  //   throw new exception(get_app(), EMidiPlayerStop);
+                  //}
                }
                break;
             case ::music::midi::player::command_stop_and_restart:

@@ -20,6 +20,9 @@ namespace music
             ::music::midi::sequence(papp)
          {
 
+            m_pthreadPlay = NULL;
+
+            m_io = ref new message_io;
 //            m_hstream = NULL;
 
             //m_buffera.Initialize(16, m_cbPreroll, (uint_ptr) (void *) &m_midicallbackdata);
@@ -200,7 +203,7 @@ namespace music
             /* Track buffers must be big enough to hold the state data returned
             ** by smfSeek()
             */
-            cbBuffer = min(m_cbBuffer, ::music::midi::GetStateMaxSize());
+            cbBuffer = MIN(m_cbBuffer, ::music::midi::GetStateMaxSize());
 
 
 Seq_Open_File_Cleanup:
@@ -269,7 +272,7 @@ Seq_Open_File_Cleanup:
                /* Track buffers must be big enough to hold the state data returned
                ** by smfSeek()
                */
-               cbBuffer = min(m_cbBuffer, ::music::midi::GetStateMaxSize());
+               cbBuffer = MIN(m_cbBuffer, ::music::midi::GetStateMaxSize());
             }
 
             if(::music::success != smfrc)
@@ -330,7 +333,7 @@ Seq_Open_File_Cleanup:
                /* Track buffers must be big enough to hold the state data returned
                ** by smfSeek()
                */
-               cbBuffer = min(m_cbBuffer, ::music::midi::GetStateMaxSize());
+               cbBuffer = MIN(m_cbBuffer, ::music::midi::GetStateMaxSize());
             }
 
             if(success != smfrc)
@@ -396,12 +399,12 @@ Seq_Open_File_Cleanup:
             }
             m_lpmhPreroll = NULL;*/
             //    slStream.lock();
-            if (m_hstream != NULL)
-            {
-               m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream);
-               midiStreamClose( m_hstream);
-               m_hstream = NULL;
-            }
+            //if (m_hstream != NULL)
+            //{
+            //   m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream);
+            //   midiStreamClose( m_hstream);
+            //   m_hstream = NULL;
+            //}
             //  slStream.unlock();
 
             SetState(status_no_file);
@@ -451,7 +454,7 @@ Seq_Open_File_Cleanup:
             int32_t                 i;
             e_result                smfrc;
             ::multimedia::e_result  mmrc = ::multimedia::result_success;
-            MIDIPROPTIMEDIV         mptd;
+            //MIDIPROPTIMEDIV         mptd;
             LPMIDIHDR               lpmh = NULL;
             uint32_t                uDeviceID;
 
@@ -469,20 +472,20 @@ Seq_Open_File_Cleanup:
 
             m_tkBase = lpPreroll->tkBase;
             m_tkEnd = lpPreroll->tkEnd;
-            if(m_hstream != NULL)
-            {
-               // Recollect buffers from MMSYSTEM back into free queue
-               //
-               SetState(::music::midi::sequence::status_reset);
-               midiOutReset((HMIDIOUT) m_hstream);
-               while (m_uBuffersInMMSYSTEM)
-                  Sleep(0);
-            }
-            else
-            {
-            }
+            //if(m_hstream != NULL)
+            //{
+            //   // Recollect buffers from MMSYSTEM back into free queue
+            //   //
+            //   SetState(::music::midi::sequence::status_reset);
+            //   midiOutReset((HMIDIOUT) m_hstream);
+            //   while (m_uBuffersInMMSYSTEM)
+            //      Sleep(0);
+            //}
+            //else
+            //{
+            //}
 
-            m_uBuffersInMMSYSTEM = 0;
+            //m_uBuffersInMMSYSTEM = 0;
             SetState(::music::midi::sequence::status_pre_rolling);
 
             //
@@ -492,95 +495,95 @@ Seq_Open_File_Cleanup:
             // NOTE: seqPreroll is equivalent to seek; device might already be open
             //
 
-            if (m_hstream == NULL)
-            {
-               uDeviceID = m_uiDeviceID;
-               //uDeviceID = MIDI_MAPPER;
-               mmrc = translate_mmr(midiStreamOpen(&m_hstream,
-                  &uDeviceID,
-                  1,
-                  (uint_ptr) &MidiOutProc,
-                  0,
-                  CALLBACK_FUNCTION));
-               if(mmrc != ::multimedia::result_success)
-               {
-                  m_hstream = NULL;
-                  if(bThrow)
-                  {
-                     SetState(status_opened);
-                     throw new exception(get_app(), EMidiPlayerPrerollStreamOpen);
-                  }
-                  TRACE("midiStreamOpenError %d\n", mmrc);
-                  //goto seq_Preroll_Cleanup;
-                  if(mmrc == MMSYSERR_BADDEVICEID)
-                     goto seq_Preroll_Cleanup;
-                  else if(mmrc == MMSYSERR_INVALPARAM)
-                     goto seq_Preroll_Cleanup;
-                  else if(mmrc == MMSYSERR_NOMEM)
-                     goto seq_Preroll_Cleanup;
-                  else
-                     goto seq_Preroll_Cleanup;
-               }
+            //if (m_hstream == NULL)
+            //{
+            //   uDeviceID = m_uiDeviceID;
+            //   //uDeviceID = MIDI_MAPPER;
+            //   mmrc = translate_mmr(midiStreamOpen(&m_hstream,
+            //      &uDeviceID,
+            //      1,
+            //      (uint_ptr) &MidiOutProc,
+            //      0,
+            //      CALLBACK_FUNCTION));
+            //   if(mmrc != ::multimedia::result_success)
+            //   {
+            //      m_hstream = NULL;
+            //      if(bThrow)
+            //      {
+            //         SetState(status_opened);
+            //         throw new exception(get_app(), EMidiPlayerPrerollStreamOpen);
+            //      }
+            //      TRACE("midiStreamOpenError %d\n", mmrc);
+            //      //goto seq_Preroll_Cleanup;
+            //      if(mmrc == MMSYSERR_BADDEVICEID)
+            //         goto seq_Preroll_Cleanup;
+            //      else if(mmrc == MMSYSERR_INVALPARAM)
+            //         goto seq_Preroll_Cleanup;
+            //      else if(mmrc == MMSYSERR_NOMEM)
+            //         goto seq_Preroll_Cleanup;
+            //      else
+            //         goto seq_Preroll_Cleanup;
+            //   }
 
-               mptd.cbStruct  = sizeof(mptd);
+            //   mptd.cbStruct  = sizeof(mptd);
 
-               mptd.dwTimeDiv = m_dwTimeDivision;
+            //   mptd.dwTimeDiv = m_dwTimeDivision;
 
-               mmrc = translate_mmr(midiStreamProperty(m_hstream, (LPBYTE) &mptd, MIDIPROP_SET | MIDIPROP_TIMEDIV));
+            //   mmrc = translate_mmr(midiStreamProperty(m_hstream, (LPBYTE) &mptd, MIDIPROP_SET | MIDIPROP_TIMEDIV));
 
-               if (mmrc != ::multimedia::result_success)
-               {
+            //   if (mmrc != ::multimedia::result_success)
+            //   {
 
-                  TRACE( "midiStreamProperty() -> %04X", (WORD)mmrc);
+            //      TRACE( "midiStreamProperty() -> %04X", (WORD)mmrc);
 
-                  midiStreamClose(m_hstream);
+            //      midiStreamClose(m_hstream);
 
-                  m_hstream = NULL;
+            //      m_hstream = NULL;
 
-                  mmrc = translate_mmr(::multimedia::result_not_ready);
+            //      mmrc = translate_mmr(::multimedia::result_not_ready);
 
-                  if(bThrow)
-                  {
+            //      if(bThrow)
+            //      {
 
-                     SetState(status_opened);
+            //         SetState(status_opened);
 
-                     throw new exception(get_app(), EMidiPlayerPrerollStreamProperty);
+            //         throw new exception(get_app(), EMidiPlayerPrerollStreamProperty);
 
-                  }
+            //      }
 
-                  goto seq_Preroll_Cleanup;
+            //      goto seq_Preroll_Cleanup;
 
-               }
+            //   }
 
-            }
+            //}
 
-            mmrc = ::multimedia::result_success;
+            //mmrc = ::multimedia::result_success;
 
             m_buffera.Reset();
 
-            lpmh = &m_buffera[0].m_midihdr;
+            //lpmh = &m_buffera[0].m_midihdr;
 
-            if(IsInSpecialModeV001())
-            {
-               if(m_uiSpecialModeV001Operation == SPMV001GMReset)
-               {
-                  const uchar gmModeOn[] = {
-                     //        0x00, 0x00, 0x00, 0x00,
-                     //        0x00, 0x00, 0x00, 0x00,
-                     //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
-                     0x00, 0x00, 0x00, 0x00,
-                     0x00, 0x00, 0x00, 0x00,
-                     0x06, 0x00, 0x00, MEVT_LONGMSG,
-                     0xf0, 0x7e, 0x7f, 0x09,
-                     0x01, 0xf7, 0x00, 0x00};
-                  char * lpch = lpmh->lpData + lpmh->dwBytesRecorded;
-                  lpmh->dwBytesRecorded += sizeof(gmModeOn);
-                  memcpy(lpch, gmModeOn, sizeof(gmModeOn));
-                  SetSpecialModeV001Flag(false);
-               }
-            }
+            //if(IsInSpecialModeV001())
+            //{
+            //   if(m_uiSpecialModeV001Operation == SPMV001GMReset)
+            //   {
+            //      const uchar gmModeOn[] = {
+            //         //        0x00, 0x00, 0x00, 0x00,
+            //         //        0x00, 0x00, 0x00, 0x00,
+            //         //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
+            //         0x00, 0x00, 0x00, 0x00,
+            //         0x00, 0x00, 0x00, 0x00,
+            //         0x06, 0x00, 0x00, MEVT_LONGMSG,
+            //         0xf0, 0x7e, 0x7f, 0x09,
+            //         0x01, 0xf7, 0x00, 0x00};
+            //      char * lpch = lpmh->lpData + lpmh->dwBytesRecorded;
+            //      lpmh->dwBytesRecorded += sizeof(gmModeOn);
+            //      memcpy(lpch, gmModeOn, sizeof(gmModeOn));
+            //      SetSpecialModeV001Flag(false);
+            //   }
+            //}
 
-            smfrc = file()->WorkSeek(m_tkBase, lpmh);
+            smfrc = file()->WorkSeek(m_tkBase);
 
             m_tkPrerollBase = get_file()->GetPosition();
 
@@ -589,74 +592,76 @@ Seq_Open_File_Cleanup:
 
             m_flags.unsignalize(FlagEOF);
             file()->GetFlags().unsignalize(file::EndOfFile);
-            for(i = 1; i < m_buffera.get_size(); i++)
+            for (i = 1; i < m_buffera.get_size(); i++)
             {
-               lpmh = m_buffera[i].GetMidiHdr();
 
-               smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
-               if(success != smfrc && SEndOfFile != smfrc)
-               {
-                  TRACE( "SFP: smfReadEvents() -> %u", (uint32_t)smfrc);
-                  translate(mmrc, smfrc);
-                  /*if(bThrow)
-                  {
-                  SetState(status_opened);
-                  throw new exception(mmrc, MIDIPLAYERPRERROLLREADEVENTSEXCEPTION);
-                  }*/
-                  goto seq_Preroll_Cleanup;
-               }
-
-
-
-               if (SEndOfFile == smfrc)
-               {
-                  m_flags.signalize(FlagEOF);
-                  break;
-               }
             }
+               //lpmh = m_buffera[i].GetMidiHdr();
 
-            mmrc = m_buffera.midiOutPrepareHeader((HMIDIOUT) m_hstream);
-            if (mmrc != ::multimedia::result_success)
-            {
-               TRACE( "midiOutPrepare(preroll) -> %lu!", (uint32_t)mmrc);
-               mmrc = translate_mmr(::multimedia::result_not_ready);
-               if(bThrow)
-               {
-                  SetState(status_opened);
-                  throw new exception(get_app(), EMidiPlayerPrerollPrepareHeader);
-               }
-               else
-               {
-                  goto seq_Preroll_Cleanup;
-               }
-            }
+            //   smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
+            //   if(success != smfrc && SEndOfFile != smfrc)
+            //   {
+            //      TRACE( "SFP: smfReadEvents() -> %u", (uint32_t)smfrc);
+            //      translate(mmrc, smfrc);
+            //      /*if(bThrow)
+            //      {
+            //      SetState(status_opened);
+            //      throw new exception(mmrc, MIDIPLAYERPRERROLLREADEVENTSEXCEPTION);
+            //      }*/
+            //      goto seq_Preroll_Cleanup;
+            //   }
 
 
-            mmrc = m_buffera.midiStreamOut(m_hstream);
-            if (mmrc != ::multimedia::result_success)
-            {
-               TRACE( "midiOutPrepare(preroll) -> %lu!", (uint32_t)mmrc);
-               mmrc = translate_mmr(::multimedia::result_not_ready);
-               if(bThrow)
-               {
-                  SetState(status_opened);
-                  throw new exception(get_app(), EMidiPlayerPrerollPrepareHeader2);
-               }
-               else
-               {
-                  goto seq_Preroll_Cleanup;
-               }
-            }
-            m_uBuffersInMMSYSTEM +=(uint32_t)  m_buffera.get_size();
 
-seq_Preroll_Cleanup:
+            //   if (SEndOfFile == smfrc)
+            //   {
+            //      m_flags.signalize(FlagEOF);
+            //      break;
+            //   }
+            //}
 
-            if (mmrc != ::multimedia::result_success)
-            {
-               SetState(status_opened);
-               m_flags.unsignalize(::music::midi::sequence::FlagWaiting);
-            }
-            else
+            //mmrc = m_buffera.midiOutPrepareHeader((HMIDIOUT) m_hstream);
+            //if (mmrc != ::multimedia::result_success)
+            //{
+            //   TRACE( "midiOutPrepare(preroll) -> %lu!", (uint32_t)mmrc);
+            //   mmrc = translate_mmr(::multimedia::result_not_ready);
+            //   if(bThrow)
+            //   {
+            //      SetState(status_opened);
+            //      throw new exception(get_app(), EMidiPlayerPrerollPrepareHeader);
+            //   }
+            //   else
+            //   {
+            //      goto seq_Preroll_Cleanup;
+            //   }
+            //}
+
+
+            //mmrc = m_buffera.midiStreamOut(m_hstream);
+            //if (mmrc != ::multimedia::result_success)
+            //{
+            //   TRACE( "midiOutPrepare(preroll) -> %lu!", (uint32_t)mmrc);
+            //   mmrc = translate_mmr(::multimedia::result_not_ready);
+            //   if(bThrow)
+            //   {
+            //      SetState(status_opened);
+            //      throw new exception(get_app(), EMidiPlayerPrerollPrepareHeader2);
+            //   }
+            //   else
+            //   {
+            //      goto seq_Preroll_Cleanup;
+            //   }
+            //}
+            //m_uBuffersInMMSYSTEM +=(uint32_t)  m_buffera.get_size();
+
+//seq_Preroll_Cleanup:
+//
+//            if (mmrc != ::multimedia::result_success)
+//            {
+//               SetState(status_opened);
+//               m_flags.unsignalize(::music::midi::sequence::FlagWaiting);
+//            }
+//            else
             {
                SetState(status_pre_rolled);
             }
@@ -705,10 +710,10 @@ seq_Preroll_Cleanup:
             m_evMmsgDone.ResetEvent();
 
             ::multimedia::e_result mmrc = ::multimedia::result_success;
-            if(m_hstream != NULL)
-            {
-               mmrc = translate_mmr(midiStreamRestart(m_hstream));
-            }
+            //if(m_hstream != NULL)
+            //{
+            //   mmrc = translate_mmr(midiStreamRestart(m_hstream));
+            //}
             sl.unlock();
             if(mmrc == ::multimedia::result_success)
             {
@@ -753,10 +758,10 @@ seq_Preroll_Cleanup:
             ::multimedia::e_result mmrc = ::multimedia::result_success;
             //    single_lock slStream(&m_csStream, false);
             //  slStream.lock();
-            if(m_hstream != NULL)
-            {
-               mmrc = translate_mmr(midiStreamPause(m_hstream));
-            }
+            //if(m_hstream != NULL)
+            //{
+            //   mmrc = translate_mmr(midiStreamPause(m_hstream));
+            //}
             //slStream.unlock();
 
             SetLevelMeter(0);
@@ -796,10 +801,10 @@ seq_Preroll_Cleanup:
             //    ::multimedia::e_result mmrc = 0;
             //    single_lock slStream(&m_csStream, false);
             //  slStream.lock();
-            if(m_hstream != NULL)
-            {
-               midiStreamRestart(m_hstream);
-            }
+            //if(m_hstream != NULL)
+            //{
+            //   midiStreamRestart(m_hstream);
+            //}
             //slStream.unlock();
             return ::multimedia::result_success;
          }
@@ -843,23 +848,23 @@ seq_Preroll_Cleanup:
 
             m_eventMidiPlaybackEnd.ResetEvent();
 
-            if(m_hstream != NULL)
-            {
+            //if(m_hstream != NULL)
+            //{
 
-               m_mmrcLastErr = translate_mmr(midiStreamStop(m_hstream));
+            //   m_mmrcLastErr = translate_mmr(midiStreamStop(m_hstream));
 
-               if(::multimedia::result_success != m_mmrcLastErr)
-               {
+            //   if(::multimedia::result_success != m_mmrcLastErr)
+            //   {
 
-                  TRACE( "::music::midi::sequence::Stop() -> midiOutStop() returned %lu in seqStop()!\n", (uint32_t)m_mmrcLastErr);
+            //      TRACE( "::music::midi::sequence::Stop() -> midiOutStop() returned %lu in seqStop()!\n", (uint32_t)m_mmrcLastErr);
 
-                  m_flags.unsignalize(FlagWaiting);
+            //      m_flags.unsignalize(FlagWaiting);
 
-                  return ::multimedia::result_not_ready;
+            //      return ::multimedia::result_not_ready;
 
-               }
+            //   }
 
-            }
+            //}
 
             //m_eventMidiPlaybackEnd.lock();
 
@@ -900,66 +905,66 @@ seq_Preroll_Cleanup:
                return ::multimedia::result_internal;
 
             ::multimedia::e_result                mmr;
-            MMTIME                  mmt;
+            //MMTIME                  mmt;
 
-            if (::music::midi::sequence::status_playing != GetState() &&
-               ::music::midi::sequence::status_paused != GetState() &&
-               ::music::midi::sequence::status_pre_rolling != GetState() &&
-               ::music::midi::sequence::status_pre_rolled != GetState() &&
-               ::music::midi::sequence::status_opened != GetState() &&
-               ::music::midi::sequence::status_stopping != GetState())
-            {
-               TRACE( "seqTime(): State wrong! [is %u]", GetState());
-               return ::multimedia::result_unsupported_function;
-            }
+            //if (::music::midi::sequence::status_playing != GetState() &&
+            //   ::music::midi::sequence::status_paused != GetState() &&
+            //   ::music::midi::sequence::status_pre_rolling != GetState() &&
+            //   ::music::midi::sequence::status_pre_rolled != GetState() &&
+            //   ::music::midi::sequence::status_opened != GetState() &&
+            //   ::music::midi::sequence::status_stopping != GetState())
+            //{
+            //   TRACE( "seqTime(): State wrong! [is %u]", GetState());
+            //   return ::multimedia::result_unsupported_function;
+            //}
 
-            pTicks = 0;
-            if (status_opened != GetState())
-            {
-               pTicks = m_tkBase;
-               if (status_pre_rolled != GetState())
-               {
-                  mmt.wType = TIME_TICKS;
-                  //            single_lock slStream(&m_csStream, false);
-                  //          slStream.lock();
-                  if(m_hstream == NULL)
-                  {
-                     TRACE("m_hmidi == NULL!!!!");
-                     return ::multimedia::result_not_ready;
-                  }
-                  else
-                  {
-                     try
-                     {
+            //pTicks = 0;
+            //if (status_opened != GetState())
+            //{
+            //   pTicks = m_tkBase;
+            //   if (status_pre_rolled != GetState())
+            //   {
+            //      mmt.wType = TIME_TICKS;
+            //      //            single_lock slStream(&m_csStream, false);
+            //      //          slStream.lock();
+            //      if(m_hstream == NULL)
+            //      {
+            //         TRACE("m_hmidi == NULL!!!!");
+            //         return ::multimedia::result_not_ready;
+            //      }
+            //      else
+            //      {
+            //         try
+            //         {
 
-                        mmr = translate_mmr(midiStreamPosition(m_hstream, &mmt, sizeof(mmt)));
+            //            mmr = translate_mmr(midiStreamPosition(m_hstream, &mmt, sizeof(mmt)));
 
-                        if (::multimedia::result_success != mmr)
-                        {
+            //            if (::multimedia::result_success != mmr)
+            //            {
 
-                           TRACE( "midiStreamPosition() returned %lu", (uint32_t)mmr);
+            //               TRACE( "midiStreamPosition() returned %lu", (uint32_t)mmr);
 
-                           return ::multimedia::result_not_ready;
+            //               return ::multimedia::result_not_ready;
 
-                        }
+            //            }
 
-                     }
-                     catch(...)
-                     {
+            //         }
+            //         catch(...)
+            //         {
 
-                        return ::multimedia::result_not_ready;
+            //            return ::multimedia::result_not_ready;
 
-                     }
+            //         }
 
-                     pTicks += mmt.u.ticks;
+            //         pTicks += mmt.u.ticks;
 
-                  }
+            //      }
 
-                  //        slStream.unlock();
+            //      //        slStream.unlock();
 
-               }
+            //   }
 
-            }
+            //}
 
             return ::multimedia::result_success;
 
@@ -977,54 +982,54 @@ seq_Preroll_Cleanup:
                return ::multimedia::result_internal;
 
             ::multimedia::e_result                mmr;
-            MMTIME                  mmt;
+            //MMTIME                  mmt;
 
-            if (status_playing != GetState() &&
-               status_paused != GetState() &&
-               status_pre_rolling != GetState() &&
-               status_pre_rolled != GetState() &&
-               status_opened != GetState() &&
-               status_stopping != GetState())
-            {
-               TRACE( "seqTime(): State wrong! [is %u]", GetState());
-               return ::multimedia::result_unsupported_function;
-            }
+            //if (status_playing != GetState() &&
+            //   status_paused != GetState() &&
+            //   status_pre_rolling != GetState() &&
+            //   status_pre_rolled != GetState() &&
+            //   status_opened != GetState() &&
+            //   status_stopping != GetState())
+            //{
+            //   TRACE( "seqTime(): State wrong! [is %u]", GetState());
+            //   return ::multimedia::result_unsupported_function;
+            //}
 
-            time = 0;
-            if (status_opened != GetState())
-            {
-               time = (int_ptr) TicksToMillisecs(m_tkBase);
-               if (status_pre_rolled != GetState())
-               {
-                  mmt.wType = TIME_MS;
-                  //            single_lock slStream(&m_csStream, false);
-                  //          slStream.lock();
-                  if(m_hstream == NULL)
-                  {
-                     TRACE("m_hmidi == NULL!!!!");
-                     return ::multimedia::result_not_ready;
-                  }
-                  else
-                  {
-                     try
-                     {
+            //time = 0;
+            //if (status_opened != GetState())
+            //{
+            //   time = (int_ptr) TicksToMillisecs(m_tkBase);
+            //   if (status_pre_rolled != GetState())
+            //   {
+            //      mmt.wType = TIME_MS;
+            //      //            single_lock slStream(&m_csStream, false);
+            //      //          slStream.lock();
+            //      if(m_hstream == NULL)
+            //      {
+            //         TRACE("m_hmidi == NULL!!!!");
+            //         return ::multimedia::result_not_ready;
+            //      }
+            //      else
+            //      {
+            //         try
+            //         {
 
-                        mmr = translate_mmr(midiStreamPosition(m_hstream, &mmt, sizeof(mmt)));
-                        if (::multimedia::result_success != mmr)
-                        {
-                           TRACE( "midiStreamPosition() returned %lu", (uint32_t)mmr);
-                           return ::multimedia::result_not_ready;
-                        }
-                     }
-                     catch(...)
-                     {
-                        return ::multimedia::result_not_ready;
-                     }
-                     time += mmt.u.ms;
-                  }
-                  //        slStream.unlock();
-               }
-            }
+            //            mmr = translate_mmr(midiStreamPosition(m_hstream, &mmt, sizeof(mmt)));
+            //            if (::multimedia::result_success != mmr)
+            //            {
+            //               TRACE( "midiStreamPosition() returned %lu", (uint32_t)mmr);
+            //               return ::multimedia::result_not_ready;
+            //            }
+            //         }
+            //         catch(...)
+            //         {
+            //            return ::multimedia::result_not_ready;
+            //         }
+            //         time += mmt.u.ms;
+            //      }
+            //      //        slStream.unlock();
+            //   }
+            //}
 
             return ::multimedia::result_success;
          }
@@ -1067,223 +1072,223 @@ seq_Preroll_Cleanup:
             return file()->TicksToMillisecs(tkOffset);
          }
 
-         void sequence::OnDone(HMIDISTRM hmidistream, LPMIDIHDR lpmidihdr)
-         {
-            UNREFERENCED_PARAMETER(hmidistream);
-            e_result               smfrc;
-            midi_callback_data *      lpData;
-            ASSERT(lpmidihdr != NULL);
-            lpData = (midi_callback_data *) lpmidihdr->dwUser;
-            ASSERT(lpData != NULL);
+         //void sequence::OnDone(HMIDISTRM hmidistream, LPMIDIHDR lpmidihdr)
+         //{
+         //   UNREFERENCED_PARAMETER(hmidistream);
+         //   e_result               smfrc;
+         //   midi_callback_data *      lpData;
+         //   ASSERT(lpmidihdr != NULL);
+         //   lpData = (midi_callback_data *) lpmidihdr->dwUser;
+         //   ASSERT(lpData != NULL);
 
-            ::music::midi::sequence * psequence = lpData->m_psequence;
+         //   ::music::midi::sequence * psequence = lpData->m_psequence;
 
-            sequence_thread * pthread = dynamic_cast < sequence_thread * > (psequence->m_pthread);
+         //   sequence_thread * pthread = dynamic_cast < sequence_thread * > (psequence->m_pthread);
 
-            ASSERT(NULL != lpmidihdr);
+         //   ASSERT(NULL != lpmidihdr);
 
-            --m_uBuffersInMMSYSTEM;
+         //   --m_uBuffersInMMSYSTEM;
 
-            if(m_uBuffersInMMSYSTEM <= 0)
-            {
-               m_evBuffersZero.SetEvent();
-            }
+         //   if(m_uBuffersInMMSYSTEM <= 0)
+         //   {
+         //      m_evBuffersZero.SetEvent();
+         //   }
 
-            if (status_reset == GetState())
-            {
-               // We're recollecting buffers from MMSYSTEM
-               //
-               //      if (lpmidihdr != m_lpmhPreroll)
-               //    {
-               //     lpmidihdr->lpNext    = m_lpmhFree;
-               //   m_lpmhFree           = lpmidihdr;
-               //      }
-               return;
-            }
+         //   if (status_reset == GetState())
+         //   {
+         //      // We're recollecting buffers from MMSYSTEM
+         //      //
+         //      //      if (lpmidihdr != m_lpmhPreroll)
+         //      //    {
+         //      //     lpmidihdr->lpNext    = m_lpmhFree;
+         //      //   m_lpmhFree           = lpmidihdr;
+         //      //      }
+         //      return;
+         //   }
 
-            bool bStopping = status_stopping == GetState();
-            bool bEndOfPlay = m_uBuffersInMMSYSTEM <= 0;
-            bool bSpecialModeV001End = m_flags.is_signalized(FlagSpecialModeV001End);
+         //   bool bStopping = status_stopping == GetState();
+         //   bool bEndOfPlay = m_uBuffersInMMSYSTEM <= 0;
+         //   bool bSpecialModeV001End = m_flags.is_signalized(FlagSpecialModeV001End);
 
-            if (bStopping || bEndOfPlay || bSpecialModeV001End)
-            {
-               //
-               // Reached EOF, just put the buffer back on the free
-               // list
-               //
-               if(bSpecialModeV001End)
-               {
-                  m_flags.unsignalize(FlagSpecialModeV001End);
-                  TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc m_flags.is_signalized(FlagSpecialModeV001End\n");
-                  pthread->PostMidiSequenceEvent(
-                     this,
-                     ::music::midi::sequence::EventSpecialModeV001End,
-                     lpmidihdr);
-               }
-               else if(bStopping)
-               {
-                  if(m_uBuffersInMMSYSTEM == 0)
-                  {
-                     TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc status_stopping == pSeq->GetState()\n");
-                     pthread->PostMidiSequenceEvent(
-                        this,
-                        ::music::midi::sequence::EventStopped,
-                        lpmidihdr);
-                  }
-               }
-               else
-               {
-                  if(m_flags.is_signalized(FlagEOF))
-                  {
-                     TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc m_flags.is_signalized(FlagEOF\n");
-                  }
-                  if(m_uBuffersInMMSYSTEM <= 0)
-                  {
-                     pthread->PostMidiSequenceEvent(
-                        this,
-                        ::music::midi::sequence::EventMidiPlaybackEnd,
-                        lpmidihdr);
-                  }
-               }
-            }
-            else
-            {
-               if(IsInSpecialModeV001())
-               {
-                  if(m_uiSpecialModeV001Operation == SPMV001GMReset)
-                  {
-                     const uchar gmModeOn[] = {
-                        //        0x00, 0x00, 0x00, 0x00,
-                        //        0x00, 0x00, 0x00, 0x00,
-                        //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
-                        0x00, 0x00, 0x00, 0x00,
-                        0x00, 0x00, 0x00, 0x00,
-                        0x06, 0x00, 0x00, MEVT_LONGMSG,
-                        0xf0, 0x7e, 0x7f, 0x09,
-                        0x01, 0xf7, 0x00, 0x00};
-                     lpmidihdr->dwBytesRecorded = sizeof(gmModeOn);
-                     memcpy(lpmidihdr->lpData, gmModeOn, sizeof(gmModeOn));
-                  }
-                  else if(m_uiSpecialModeV001Operation == SPMV001TempoChange)
-                  {
-                     ::music::midi::event event;
-                     file()->GetTempoEvent(event);
-                     file()->StreamEvent(event.GetDelta(), &event, lpmidihdr, 0x7fffffff, 256);
-                     // lpmidihdr->dwBytesRecorded = sizeof(gmModeOn);
-                     // memcpy(lpmidihdr->lpData, gmModeOn, sizeof(gmModeOn));
-                  }
-                  else
-                  {
-                     ASSERT(FALSE);
-                  }
-                  //post_thread_message(lpData->dwThreadID, MIDIPLAYERMESSAGE_STREAMOUT, (WPARAM) pSeq, (LPARAM) lpmidihdr);
-                  pthread->PostMidiSequenceEvent(
-                     this,
-                     EventMidiStreamOut,
-                     lpmidihdr);
-                  m_flags.signalize(FlagSpecialModeV001End);
-                  smfrc = ::music::success;
-                  return;
-               }
-               //
-               // Not EOF yet; attempt to fill another buffer
-               //
-               pthread->PostMidiSequenceEvent(
-                  this,
-                  EventMidiStreamOut,
-                  lpmidihdr);
-            }
+         //   if (bStopping || bEndOfPlay || bSpecialModeV001End)
+         //   {
+         //      //
+         //      // Reached EOF, just put the buffer back on the free
+         //      // list
+         //      //
+         //      if(bSpecialModeV001End)
+         //      {
+         //         m_flags.unsignalize(FlagSpecialModeV001End);
+         //         TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc m_flags.is_signalized(FlagSpecialModeV001End\n");
+         //         pthread->PostMidiSequenceEvent(
+         //            this,
+         //            ::music::midi::sequence::EventSpecialModeV001End,
+         //            lpmidihdr);
+         //      }
+         //      else if(bStopping)
+         //      {
+         //         if(m_uBuffersInMMSYSTEM == 0)
+         //         {
+         //            TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc status_stopping == pSeq->GetState()\n");
+         //            pthread->PostMidiSequenceEvent(
+         //               this,
+         //               ::music::midi::sequence::EventStopped,
+         //               lpmidihdr);
+         //         }
+         //      }
+         //      else
+         //      {
+         //         if(m_flags.is_signalized(FlagEOF))
+         //         {
+         //            TRACE("void CALLBACK ::music::midi::sequence::MidiOutProc m_flags.is_signalized(FlagEOF\n");
+         //         }
+         //         if(m_uBuffersInMMSYSTEM <= 0)
+         //         {
+         //            pthread->PostMidiSequenceEvent(
+         //               this,
+         //               ::music::midi::sequence::EventMidiPlaybackEnd,
+         //               lpmidihdr);
+         //         }
+         //      }
+         //   }
+         //   else
+         //   {
+         //      if(IsInSpecialModeV001())
+         //      {
+         //         if(m_uiSpecialModeV001Operation == SPMV001GMReset)
+         //         {
+         //            const uchar gmModeOn[] = {
+         //               //        0x00, 0x00, 0x00, 0x00,
+         //               //        0x00, 0x00, 0x00, 0x00,
+         //               //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
+         //               0x00, 0x00, 0x00, 0x00,
+         //               0x00, 0x00, 0x00, 0x00,
+         //               0x06, 0x00, 0x00, MEVT_LONGMSG,
+         //               0xf0, 0x7e, 0x7f, 0x09,
+         //               0x01, 0xf7, 0x00, 0x00};
+         //            lpmidihdr->dwBytesRecorded = sizeof(gmModeOn);
+         //            memcpy(lpmidihdr->lpData, gmModeOn, sizeof(gmModeOn));
+         //         }
+         //         else if(m_uiSpecialModeV001Operation == SPMV001TempoChange)
+         //         {
+         //            ::music::midi::event event;
+         //            file()->GetTempoEvent(event);
+         //            file()->StreamEvent(event.GetDelta(), &event, lpmidihdr, 0x7fffffff, 256);
+         //            // lpmidihdr->dwBytesRecorded = sizeof(gmModeOn);
+         //            // memcpy(lpmidihdr->lpData, gmModeOn, sizeof(gmModeOn));
+         //         }
+         //         else
+         //         {
+         //            ASSERT(FALSE);
+         //         }
+         //         //post_thread_message(lpData->dwThreadID, MIDIPLAYERMESSAGE_STREAMOUT, (WPARAM) pSeq, (LPARAM) lpmidihdr);
+         //         pthread->PostMidiSequenceEvent(
+         //            this,
+         //            EventMidiStreamOut,
+         //            lpmidihdr);
+         //         m_flags.signalize(FlagSpecialModeV001End);
+         //         smfrc = ::music::success;
+         //         return;
+         //      }
+         //      //
+         //      // Not EOF yet; attempt to fill another buffer
+         //      //
+         //      pthread->PostMidiSequenceEvent(
+         //         this,
+         //         EventMidiStreamOut,
+         //         lpmidihdr);
+         //   }
 
-         }
+         //}
 
-         void sequence::OnPositionCB(LPMIDIHDR lpmidihdr)
-         {
-            ASSERT(lpmidihdr != NULL);
-            LPBYTE lpbData = (LPBYTE) (lpmidihdr->lpData + lpmidihdr->dwOffset);
-            MIDIEVENT * lpme = (MIDIEVENT *) lpbData;
-            file::buffer::midi_stream_event_header * pheader = (file::buffer::midi_stream_event_header *) &lpme->dwParms[0];
-            lpbData = (LPBYTE) pheader;
-            LPDWORD lpdwParam;
+         //void sequence::OnPositionCB(LPMIDIHDR lpmidihdr)
+         //{
+         //   ASSERT(lpmidihdr != NULL);
+         //   LPBYTE lpbData = (LPBYTE) (lpmidihdr->lpData + lpmidihdr->dwOffset);
+         //   MIDIEVENT * lpme = (MIDIEVENT *) lpbData;
+         //   file::buffer::midi_stream_event_header * pheader = (file::buffer::midi_stream_event_header *) &lpme->dwParms[0];
+         //   lpbData = (LPBYTE) pheader;
+         //   LPDWORD lpdwParam;
 
-            int32_t iSize = pheader->m_dwLength;
-            switch(pheader->m_dwType)
-            {
-            case 0:
-               {
-                  array < ::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &> * plyriceventa = NULL;
-                  array < ::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &> lyriceventa;
-                  for(int32_t i = sizeof(file::buffer::midi_stream_event_header); i < iSize;)
-                  {
-                     pheader = (file::buffer::midi_stream_event_header *) &lpbData[i];
-                     lpdwParam = (LPDWORD) &lpbData[i + sizeof(file::buffer::midi_stream_event_header)];
-                     ASSERT(*lpdwParam == pheader->m_dwType);
-                     switch(pheader->m_dwType)
-                     {
-                     case EVENT_ID_LYRIC_V1:
-                        {
-                           if(plyriceventa == NULL)
-                           {
-                              plyriceventa = new array <::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &>;
-                           }
-                           ::file::memory_buffer memFile(get_app(), (LPBYTE) &lpdwParam[1], pheader->m_dwLength - sizeof(uint32_t));
-                           /* x2x                  CArchive ar(&memFile, CArchive::load);
-                           lyriceventa.Serialize(ar);
-                           plyriceventa->append(lyriceventa); */
-                        }
-                        break;
-                     case EVENT_ID_PAD:
-                        {
-                        }
-                        break;
-                     case EVENT_ID_NOTE_ON:
-                        {
-                           ::file::byte_stream_memory_buffer memFile(get_app(), (LPBYTE) &lpdwParam[1], pheader->m_dwLength - sizeof(uint32_t));
-                           for(int32_t i = 0; i < m_iaLevel.get_size(); i++)
-                           {
-                              BYTE b;
-                              memFile >> b;
-                              m_iaLevel.element_at(i) = b;
-                           }
-                        }
-                        break;
-                     }
-                     i += pheader->m_dwLength + sizeof(file::buffer::midi_stream_event_header);
-                  }
-                  /*         if(plyriceventa != NULL)
-                  {
-                  ::PostMessage(m_midicallbackdata.oswindow, WM_APP + 3388, 3388, (LPARAM) plyriceventa);
-                  }*/
-               }
-               break;
-            case EVENT_ID_PAD:
-               break;
-            default:
-               ASSERT(FALSE);
-               break;
-            }
+         //   int32_t iSize = pheader->m_dwLength;
+         //   switch(pheader->m_dwType)
+         //   {
+         //   case 0:
+         //      {
+         //         array < ::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &> * plyriceventa = NULL;
+         //         array < ::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &> lyriceventa;
+         //         for(int32_t i = sizeof(file::buffer::midi_stream_event_header); i < iSize;)
+         //         {
+         //            pheader = (file::buffer::midi_stream_event_header *) &lpbData[i];
+         //            lpdwParam = (LPDWORD) &lpbData[i + sizeof(file::buffer::midi_stream_event_header)];
+         //            ASSERT(*lpdwParam == pheader->m_dwType);
+         //            switch(pheader->m_dwType)
+         //            {
+         //            case EVENT_ID_LYRIC_V1:
+         //               {
+         //                  if(plyriceventa == NULL)
+         //                  {
+         //                     plyriceventa = new array <::ikaraoke::lyric_event_v1, ::ikaraoke::lyric_event_v1 &>;
+         //                  }
+         //                  ::file::memory_buffer memFile(get_app(), (LPBYTE) &lpdwParam[1], pheader->m_dwLength - sizeof(uint32_t));
+         //                  /* x2x                  CArchive ar(&memFile, CArchive::load);
+         //                  lyriceventa.Serialize(ar);
+         //                  plyriceventa->append(lyriceventa); */
+         //               }
+         //               break;
+         //            case EVENT_ID_PAD:
+         //               {
+         //               }
+         //               break;
+         //            case EVENT_ID_NOTE_ON:
+         //               {
+         //                  ::file::byte_stream_memory_buffer memFile(get_app(), (LPBYTE) &lpdwParam[1], pheader->m_dwLength - sizeof(uint32_t));
+         //                  for(int32_t i = 0; i < m_iaLevel.get_size(); i++)
+         //                  {
+         //                     BYTE b;
+         //                     memFile >> b;
+         //                     m_iaLevel.element_at(i) = b;
+         //                  }
+         //               }
+         //               break;
+         //            }
+         //            i += pheader->m_dwLength + sizeof(file::buffer::midi_stream_event_header);
+         //         }
+         //         /*         if(plyriceventa != NULL)
+         //         {
+         //         ::PostMessage(m_midicallbackdata.oswindow, WM_APP + 3388, 3388, (LPARAM) plyriceventa);
+         //         }*/
+         //      }
+         //      break;
+         //   case EVENT_ID_PAD:
+         //      break;
+         //   default:
+         //      ASSERT(FALSE);
+         //      break;
+         //   }
 
-         }
+         //}
 
-         void CALLBACK sequence::MidiOutProc(HMIDIOUT hmo, UINT wMsg, DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2)
-         {
+         //void CALLBACK sequence::MidiOutProc(HMIDIOUT hmo, UINT wMsg, DWORD_PTR dwInstance, DWORD_PTR dwParam1, DWORD_PTR dwParam2)
+         //{
 
-            UNREFERENCED_PARAMETER(hmo);
-            UNREFERENCED_PARAMETER(dwInstance);
-            UNREFERENCED_PARAMETER(dwParam2);
+         //   UNREFERENCED_PARAMETER(hmo);
+         //   UNREFERENCED_PARAMETER(dwInstance);
+         //   UNREFERENCED_PARAMETER(dwParam2);
 
-            LPMIDIHDR               lpmh         = (LPMIDIHDR) dwParam1;
+         //   LPMIDIHDR               lpmh         = (LPMIDIHDR) dwParam1;
 
-            switch(wMsg)
-            {
-            case MOM_POSITIONCB:
-               ((midi_callback_data *) lpmh->dwUser)->m_psequence->OnPositionCB(lpmh);
-               break;
-            case MOM_DONE:
-               ((midi_callback_data *) lpmh->dwUser)->m_psequence->OnDone(NULL,lpmh);
-               return;
-            }
+         //   switch(wMsg)
+         //   {
+         //   case MOM_POSITIONCB:
+         //      ((midi_callback_data *) lpmh->dwUser)->m_psequence->OnPositionCB(lpmh);
+         //      break;
+         //   case MOM_DONE:
+         //      ((midi_callback_data *) lpmh->dwUser)->m_psequence->OnDone(NULL,lpmh);
+         //      return;
+         //   }
 
-         }
+         //}
 
 
          bool sequence::IsPlaying()
@@ -1446,7 +1451,7 @@ seq_Preroll_Cleanup:
          }
 
 
-         int32_t sequence::GetTempoShift()
+         double sequence::GetTempoShift()
          {
 
             return file()->GetTempoShift();
@@ -1476,7 +1481,8 @@ seq_Preroll_Cleanup:
             if(uiDevice == ::music::midi::device_default)
             {
 
-               m_uiDeviceID = MIDI_MAPPER;
+//               m_uiDeviceID = MIDI_MAPPER;
+               m_uiDeviceID = -1;
 
             }
             else
@@ -1501,13 +1507,13 @@ seq_Preroll_Cleanup:
             ** and buffers in the ready queue
             */
 
-            m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream);
+            //m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream);
 
-            if (m_hstream != NULL)
-            {
-               midiStreamClose( m_hstream);
-               m_hstream = NULL;
-            }
+            //if (m_hstream != NULL)
+            //{
+            //   midiStreamClose( m_hstream);
+            //   m_hstream = NULL;
+            //}
 
             SetState(status_opened);
 
@@ -1531,28 +1537,28 @@ seq_Preroll_Cleanup:
             ::multimedia::e_result mmrc;
 
 
-            if(0 == m_uBuffersInMMSYSTEM)
-            {
-               TRACE( "seqBufferDone: normal sequencer shutdown.");
+            //if(0 == m_uBuffersInMMSYSTEM)
+            //{
+            //   TRACE( "seqBufferDone: normal sequencer shutdown.");
 
-               /* Totally done! Free device and notify.
-               */
-               if(m_hstream)
-               {
-                  if((mmrc = m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream))
-                     != ::multimedia::result_success)
-                  {
-                     TRACE( "midiOutUnprepareHeader failed in seqBufferDone! (%lu)", (uint32_t)mmrc);
-                  }
-                  midiStreamClose(m_hstream);
-                  m_hstream = NULL;
-               }
+            //   /* Totally done! Free device and notify.
+            //   */
+            //   if(m_hstream)
+            //   {
+            //      if((mmrc = m_buffera.midiOutUnprepareHeader((HMIDIOUT) m_hstream))
+            //         != ::multimedia::result_success)
+            //      {
+            //         TRACE( "midiOutUnprepareHeader failed in seqBufferDone! (%lu)", (uint32_t)mmrc);
+            //      }
+            //      midiStreamClose(m_hstream);
+            //      m_hstream = NULL;
+            //   }
 
-               m_mmrcLastErr = ::multimedia::result_success;
-               m_flags.unsignalize(FlagWaiting);
+            //   m_mmrcLastErr = ::multimedia::result_success;
+            //   m_flags.unsignalize(FlagWaiting);
 
-               m_evMmsgDone.SetEvent();
-            }
+            //   m_evMmsgDone.SetEvent();
+            //}
          }
 
          void sequence::OnEvent(::music::midi::sequence::event * pevent)
@@ -1594,77 +1600,77 @@ seq_Preroll_Cleanup:
 
                   }
 
-                  LPMIDIHDR lpmh = pev->m_lpmh;
+                  //LPMIDIHDR lpmh = pev->m_lpmh;
 
-                  e_result smfrc;
+                  //e_result smfrc;
 
-                  if(IsInSpecialModeV001())
-                  {
-                     TRACE("::music::midi::sequence::OnEvent EventMidiStreamOut IsInSpecialModeV001");
-                  }
-                  else
-                  {
-                     smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
-                  }
+                  //if(IsInSpecialModeV001())
+                  //{
+                  //   TRACE("::music::midi::sequence::OnEvent EventMidiStreamOut IsInSpecialModeV001");
+                  //}
+                  //else
+                  //{
+                  //   smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
+                  //}
 
-                  switch(smfrc)
-                  {
-                  case ::music::success:
+                  //switch(smfrc)
+                  //{
+                  //case ::music::success:
 
-                     break;
+                  //   break;
 
-                  case SEndOfFile:
+                  //case SEndOfFile:
 
-                     m_flags.signalize(FlagEOF);
+                  //   m_flags.signalize(FlagEOF);
 
-                     smfrc = ::music::success;
+                  //   smfrc = ::music::success;
 
-                     break;
+                  //   break;
 
-                  default:
-
-
-                     TRACE( "smfReadEvents returned %lu in callback!", (uint32_t) smfrc);
-
-                     SetState(status_stopping);
-
-                     break;
-
-                  }
-
-                  if(::music::midi::sequence::status_stopping == GetState())
-                  {
-
-                     thread()->PostMidiSequenceEvent(this, EventMidiPlaybackEnd, lpmh);
-
-                     return;
-
-                  }
-
-                  ::multimedia::e_result mmrc;
-
-                  if(m_hstream != NULL)
-                  {
-
-                     mmrc = translate_mmr(midiStreamOut(m_hstream, lpmh, sizeof(*lpmh)));
-
-                     if(mmrc == ::multimedia::result_success)
-                     {
-
-                        ++m_uBuffersInMMSYSTEM;
-
-                     }
-                     else
-                     {
-
-                        TRACE("seqBufferDone(): midiStreamOut() returned %lu!", (uint32_t)mmrc);
-
-                        SetState(::music::midi::sequence::status_stopping);
-
-                     }
+                  //default:
 
 
-                  }
+                  //   TRACE( "smfReadEvents returned %lu in callback!", (uint32_t) smfrc);
+
+                  //   SetState(status_stopping);
+
+                  //   break;
+
+                  //}
+
+                  //if(::music::midi::sequence::status_stopping == GetState())
+                  //{
+
+                  //   thread()->PostMidiSequenceEvent(this, EventMidiPlaybackEnd, lpmh);
+
+                  //   return;
+
+                  //}
+
+                  //::multimedia::e_result mmrc;
+
+                  //if(m_hstream != NULL)
+                  //{
+
+                  //   mmrc = translate_mmr(midiStreamOut(m_hstream, lpmh, sizeof(*lpmh)));
+
+                  //   if(mmrc == ::multimedia::result_success)
+                  //   {
+
+                  //      ++m_uBuffersInMMSYSTEM;
+
+                  //   }
+                  //   else
+                  //   {
+
+                  //      TRACE("seqBufferDone(): midiStreamOut() returned %lu!", (uint32_t)mmrc);
+
+                  //      SetState(::music::midi::sequence::status_stopping);
+
+                  //   }
+
+
+                  //}
 
                }
             default:
@@ -1677,15 +1683,15 @@ seq_Preroll_Cleanup:
             single_lock sl(&m_mutex);
             if(!sl.lock(millis(0)))
                return -1;
-            MMTIME mmt;
-            mmt.wType = TIME_TICKS;
-            if(::multimedia::result_success ==
-               midiStreamPosition(
-               m_hstream,
-               &mmt,
-               sizeof(mmt)))
-               return mmt.u.ticks + m_tkPrerollBase;
-            else
+            //MMTIME mmt;
+            //mmt.wType = TIME_TICKS;
+            //if(::multimedia::result_success ==
+            //   midiStreamPosition(
+            //   m_hstream,
+            //   &mmt,
+            //   sizeof(mmt)))
+            //   return mmt.u.ticks + m_tkPrerollBase;
+            //else
                return -1;
          }
 
@@ -1738,543 +1744,548 @@ seq_Preroll_Cleanup:
          }
 
 
-
-         void sequence::Prepare(
-            string2a & str2a,
-            imedia::position_2darray & tka2DTokensTicks,
-            int32_t iMelodyTrack,
-            int2a & ia2TokenLine,
-            ::ikaraoke::data & data)
+         ::multimedia::e_result sequence::SendGMReset()
          {
 
-            UNREFERENCED_PARAMETER(str2a);
-
-            ::music::midi::file::buffer & file = *this->file();
-
-            ::music::midi::tracks & tracks = file.GetTracks();
-
-            ASSERT(!file.IsNull());
-            file.GetTracks().seek_begin();
-            imedia_position               tkMax = file.m_tkLength;
-            imedia_position               tkLastPosition = 0;
-
-
-            ::ikaraoke::static_data & staticdata = data.GetStaticData();
-
-            if(staticdata.m_LyricsDisplayOffset < 480)
-            {
-               staticdata.m_LyricsDisplayOffset = 480;
-            }
-            if(staticdata.m_LyricsDisplayOffset > 720)
-            {
-               staticdata.m_LyricsDisplayOffset = 720;
-            }
-            staticdata.m_LyricsDisplay = 30;
-
-            imedia::position_2darray tk2DNoteOnPositions(get_app());
-            imedia::position_2darray tk2DNoteOffPositions(get_app());
-            imedia::position_2darray tk2DBegPositions(get_app());
-            imedia::position_2darray tk2DEndPositions(get_app());
-            imedia::time_2darray ms2DTokensMillis(get_app());
-            imedia::time_2darray ms2DNoteOnMillis(get_app());
-            imedia::time_2darray ms2DNoteOffMillis(get_app());
-            imedia::time_2darray ms2DBegMillis(get_app());
-            imedia::time_2darray ms2DEndMillis(get_app());
-            ::music::midi::events midiEvents;
-
-
-
-
-            // Note on and off events
-            // and maximum and minimum
-            // pitch bend peaks.
-            ::music::midi::events midiEventsLevel2;
-
-            ::music::midi::events noteOnEvents;
-            ::music::midi::events noteOffEvents;
-
-            ::music::midi::events eventsLevel2Beg;
-            ::music::midi::events eventsLevel2End;
-            ::ikaraoke::events_tracks_v1 lyricEventsForPositionCB;
-            ::ikaraoke::events_tracks_v1 lyricEventsForBouncingBall;
-            ::ikaraoke::events_tracks_v1 lyricEventsForScoring;
-            ::ikaraoke::events_tracks_v1 lyricEvents;
-
-            //   tracks.seek_begin();
-            // tracks.GetXFInfoHeaders(
-            //  &m_xfInfoHeaders);
-
-
-
-            file.PositionToTime(
-               ms2DTokensMillis,
-               tka2DTokensTicks,
-               0);
-
-            ::ikaraoke::lyric_events_v2 *pLyricEventsV2;
-            ::ikaraoke::lyric_events_v2 *pLyricEventsV2_;
-            ::ikaraoke::lyric_events_v2 *pLyricEventsV2B;
-            ::ikaraoke::lyric_events_v2 *pLyricEventsV2C;
-            ::music::midi::events *pMidiEventsV1;
-
-            tk2DNoteOnPositions.set_size_create(tka2DTokensTicks.get_size());
-            tk2DNoteOffPositions.set_size_create(tka2DTokensTicks.get_size());
-            tk2DBegPositions.set_size_create(tka2DTokensTicks.get_size());
-            tk2DEndPositions.set_size_create(tka2DTokensTicks.get_size());
-            int32_t i;
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV2 = new ::ikaraoke::lyric_events_v2();
-               pLyricEventsV2B = new ::ikaraoke::lyric_events_v2();
-               pLyricEventsV2C = new ::ikaraoke::lyric_events_v2();
-               pLyricEventsV2_ = new ::ikaraoke::lyric_events_v2();
-               staticdata.m_eventsv1.add(pLyricEventsV2);
-               staticdata.m_eventsv1.add(pLyricEventsV2B);
-               staticdata.m_eventsv1.add(pLyricEventsV2C);
-               staticdata.m_eventsv1.add(pLyricEventsV2_);
-               lyricEvents.add(pLyricEventsV2_);
-               lyricEventsForScoring.add(pLyricEventsV2);
-               lyricEventsForPositionCB.add(pLyricEventsV2B);
-               lyricEventsForBouncingBall.add(pLyricEventsV2C);
-               pLyricEventsV2->m_iType = 0;
-               pLyricEventsV2->m_iOrder = i;
-               pLyricEventsV2->m_iType = 2;
-               pLyricEventsV2->m_iOrder = i;
-               pLyricEventsV2B->m_iType = ikaraoke::EventRunningElement;
-               pLyricEventsV2B->m_iOrder = i;
-               pLyricEventsV2C->m_iType = 4;
-               pLyricEventsV2C->m_iOrder = i;
-               pMidiEventsV1 = NULL;
-               if(iMelodyTrack < 0)
-               {
-                  pLyricEventsV2->m_iTrack =
-                     file.WorkCalcMelodyTrack(
-                     &pMidiEventsV1,
-                     tka2DTokensTicks.operator[](i),
-                     ia2TokenLine[i]);
-               }
-               else
-               {
-                  pLyricEventsV2->m_iTrack = iMelodyTrack;
-               }
-               pLyricEventsV2B->m_iTrack = pLyricEventsV2->m_iTrack;
-               pLyricEventsV2C->m_iTrack = pLyricEventsV2->m_iTrack;
-               pLyricEventsV2_->m_iTrack = pLyricEventsV2->m_iTrack;
-               if(pLyricEventsV2->m_iTrack < 0)
-               {
-                  pLyricEventsV2->m_iTrack = tracks.m_iMelodyTrackTipA;
-                  pLyricEventsV2B->m_iTrack = tracks.m_iMelodyTrackTipA;
-                  pLyricEventsV2C->m_iTrack = tracks.m_iMelodyTrackTipA;
-                  pLyricEventsV2_->m_iTrack = tracks.m_iMelodyTrackTipA;
-               }
-               staticdata.SetGuessMelodyTrack(pLyricEventsV2->m_iTrack);
-               if(pLyricEventsV2->m_iTrack >= 0)
-               {
-                  if(file.GetFormat() == 0)
-                  {
-                     tracks.TrackAt(0)->WorkSeekBegin();
-                     ((::music::midi::track *)tracks.TrackAt(0))->WorkGetNoteOnOffEventsV1(
-                        &midiEvents,
-                        (int32_t) pLyricEventsV2->m_iTrack,
-                        file.GetFormat() == 1);
-                     tracks.TrackAt(0)->WorkSeekBegin();
-                     ((::music::midi::track *)tracks.TrackAt(0))->WorkGetLevel2Events(
-                        &midiEventsLevel2,
-                        (int32_t) pLyricEventsV2->m_iTrack,
-                        file.GetFormat() == 1);
-                  }
-                  else
-                  {
-                     tracks.TrackAt(pLyricEventsV2->m_iTrack)->seek_begin();
-                     ((::music::midi::track *)tracks.TrackAt(pLyricEventsV2->m_iTrack))->GetLevel2Events(
-                        &midiEvents,
-                        (int32_t) pLyricEventsV2->m_iTrack,
-                        file.GetFormat() == 1);
-                     tracks.TrackAt(pLyricEventsV2->m_iTrack)->seek_begin();
-                     ((::music::midi::track *)tracks.TrackAt(pLyricEventsV2->m_iTrack))->GetLevel2Events(
-                        &midiEventsLevel2,
-                        (int32_t) pLyricEventsV2->m_iTrack,
-                        file.GetFormat() == 1);
-                  }
-               }
-
-               ::music::midi::util miditutil(get_app());
-
-               miditutil.PrepareNoteOnOffEvents(
-                  &noteOnEvents,
-                  &noteOffEvents,
-                  (int32_t) pLyricEventsV2->m_iTrack,
-                  file.GetFormat(),
-                  &midiEvents,
-                  tka2DTokensTicks.operator[](i));
-
-               miditutil.PrepareLevel2Events(
-                  &eventsLevel2Beg,
-                  &eventsLevel2End,
-                  (int32_t) pLyricEventsV2->m_iTrack,
-                  file.GetFormat(),
-                  &midiEventsLevel2,
-                  tka2DTokensTicks.operator[](i));
-
-
-               tk2DNoteOnPositions[i]     = noteOnEvents.m_tkaEventsPosition;
-               tk2DNoteOffPositions[i]    = noteOffEvents.m_tkaEventsPosition;
-               tk2DBegPositions[i]        = eventsLevel2Beg.m_tkaEventsPosition;
-               tk2DEndPositions[i]        = eventsLevel2End.m_tkaEventsPosition;
-               pLyricEventsV2->m_dwaNotesData.copy(noteOnEvents.m_dwaEventsData);
-               pLyricEventsV2B->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
-               pLyricEventsV2C->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
-               pLyricEventsV2_->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
-               midiEvents.remove_all();
-               noteOnEvents.remove_all();
-               noteOffEvents.remove_all();
-               midiEventsLevel2.remove_all();
-               eventsLevel2Beg.remove_all();
-               eventsLevel2End.remove_all();
-               delete pMidiEventsV1;
-            }
-
-            file.PositionToTime(
-               ms2DNoteOnMillis,
-               tk2DNoteOnPositions,
-               0);
-
-            file.PositionToTime(
-               ms2DNoteOffMillis,
-               tk2DNoteOffPositions,
-               0);
-
-            file.PositionToTime(
-               ms2DBegMillis,
-               tk2DBegPositions,
-               0);
-
-            file.PositionToTime(
-               ms2DEndMillis,
-               tk2DEndPositions,
-               0);
-
-
-            ::ikaraoke::lyric_events_v1 *pLyricEventsV1;
-
-
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEvents.get_at(i);
-               staticdata.m_eventstracks.add(pLyricEventsV2);
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaTokensPosition,
-                  ms2DTokensMillis[i],
-                  0);
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaNotesPosition,
-                  ms2DNoteOnMillis[i],
-                  0);
-
-               imedia_time time1(0);
-               imedia_time time2(0);
-
-               pLyricEventsV2->m_msaTokensPosition.CopySorted(
-                  ms2DTokensMillis[i],
-                  time1,
-                  time2);
-
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-                  ms2DNoteOffMillis[i],
-                  ms2DNoteOnMillis[i]);
-
-               imedia_time time3(0);
-               imedia_time time4(0);
-
-               pLyricEventsV2->m_msaNotesPosition.CopySorted(
-                  ms2DNoteOnMillis[i],
-                  time3,
-                  time4);
-
-               imedia_time time5(0x7fffffff);
-
-               pLyricEventsV2->m_msaTokensDuration.ElementDiff(
-                  ms2DTokensMillis[i],
-                  time5);
-
-            }
-
-
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV1 = new ::ikaraoke::lyric_events_v1();
-               pLyricEventsV1->m_iType = ikaraoke::EventAdvanceShow;
-               pLyricEventsV1->m_iOrder = i;
-               //staticdata.m_eventsTracksForPositionCB.add(pLyricEventsV1);
-               file.TimeToPosition(
-                  pLyricEventsV1->m_tkaTokensPosition,
-                  ms2DTokensMillis[i],
-                  -1000);
-               //lyric_track * pLyricTrk = file.GetTracks().CreateLyricTrack();
-               //pLyricTrk->Prepare(*pLyricEventsV1);
-            }
-
-
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForScoring.get_at(i);
-               staticdata.m_eventsTracksForScoring.add(pLyricEventsV2);
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaTokensPosition,
-                  ms2DTokensMillis[i],
-                  0);
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaNotesPosition,
-                  ms2DNoteOnMillis[i],
-                  0);
-
-               imedia_time time1(-100);
-               imedia_time time2(0);
-
-               pLyricEventsV2->m_msaTokensPosition.CopySorted(
-                  ms2DTokensMillis[i],
-                  time1,
-                  time2);
-
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-                  ms2DNoteOffMillis[i],
-                  ms2DNoteOnMillis[i]);
-
-               imedia_time time3(-100);
-               imedia_time time4(0);
-
-               pLyricEventsV2->m_msaNotesPosition.CopySorted(
-                  ms2DNoteOnMillis[i],
-                  time3,
-                  time4);
-
-               imedia_time time5(0x7fffffff);
-
-               pLyricEventsV2->m_msaTokensDuration.ElementDiff(
-                  ms2DTokensMillis[i],
-                  time5);
-
-               pLyricEventsV2->PrepareForScoring(this);
-            }
-
-
-
-
-
-
-
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForPositionCB.get_at(i);
-               staticdata.m_eventsTracksForPositionCB.add(pLyricEventsV2);
-
-               staticdata.m_eventstracksV002.add(pLyricEventsV2);
-
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaTokensPosition,
-                  ms2DTokensMillis[i],
-                  -100);
-
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaNotesPosition,
-                  ms2DNoteOnMillis[i],
-                  -100);
-
-               imedia_time time1(-100);
-               imedia_time time2(0);
-
-               pLyricEventsV2->m_msaTokensPosition.CopySorted(
-                  ms2DTokensMillis[i],
-                  time1,
-                  time2);
-
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-                  ms2DNoteOffMillis[i],
-                  ms2DNoteOnMillis[i]);
-
-               /*
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-               ms2DNoteOffMillis[i],
-               ms2DNoteOnMillis[i]);
-               */
-
-
-               imedia_time time3(-100);
-               imedia_time time4(0);
-
-               pLyricEventsV2->m_msaNotesPosition.CopySorted(
-                  ms2DNoteOnMillis[i],
-                  time3,
-                  time4);
-
-               imedia_time time5(0x7fffffff);
-
-               pLyricEventsV2->m_msaTokensDuration.ElementDiff(
-                  ms2DTokensMillis[i],
-                  time5);
-
-               pLyricEventsV2->PrepareForLyricsDisplay(this);
-               //lyric_track * pLyricTrk = file.GetTracks().CreateLyricTrack();
-               //pLyricTrk->Prepare(*pLyricEventsV2);
-            }
-
-
-
-
-
-
-
-
-
-
-            for(i = 0; i < tka2DTokensTicks.get_size(); i++)
-            {
-               pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForBouncingBall.get_at(i);
-               staticdata.m_eventsTracksForBouncingBall.add(pLyricEventsV2);
-
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaTokensPosition,
-                  ms2DTokensMillis[i],
-                  -100);
-
-               file.TimeToPosition(
-                  pLyricEventsV2->m_tkaNotesPosition,
-                  ms2DNoteOnMillis[i],
-                  -100);
-
-               imedia_time time1(-100);
-               imedia_time time2(0);
-
-               pLyricEventsV2->m_msaTokensPosition.CopySorted(
-                  ms2DTokensMillis[i],
-                  time1,
-                  time2);
-
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-                  ms2DEndMillis[i],
-                  ms2DBegMillis[i]);
-
-               /*
-               pLyricEventsV2->m_msaNotesDuration.Diff(
-               ms2DNoteOffMillis[i],
-               ms2DNoteOnMillis[i]);
-               */
-
-               imedia_time time3(-100);
-               imedia_time time4(0);
-
-               pLyricEventsV2->m_msaNotesPosition.CopySorted(
-                  ms2DNoteOnMillis[i],
-                  time3,
-                  time4);
-
-               imedia_time time5(0x7fffffff);
-
-               pLyricEventsV2->m_msaTokensDuration.ElementDiff(
-                  ms2DTokensMillis[i],
-                  time5);
-
-               pLyricEventsV2->PrepareForBouncingBall(this);
-            }
+            return ::multimedia::result_success;
 
          }
+         //void sequence::Prepare(
+         //   string2a & str2a,
+         //   imedia::position_2darray & tka2DTokensTicks,
+         //   int32_t iMelodyTrack,
+         //   int2a & ia2TokenLine,
+         //   ::ikaraoke::data & data)
+         //{
 
-         void sequence::Prepare(int32_t iTrack, ::ikaraoke::data & data)
-         {
+         //   UNREFERENCED_PARAMETER(str2a);
 
-            ::music::midi::winrt::buffer & file = *this->file();
+         //   ::music::midi::file::buffer & file = *this->file();
 
-            ::music::midi::tracks & tracks = file.GetTracks();
+         //   ::music::midi::tracks & tracks = file.GetTracks();
 
-            string2a & str2a = data.GetStaticData().m_str2aRawTokens;
-
-            imedia::position_2darray position2a;
-
-            int2a ia2TokenLine;
-
-
-            ia2TokenLine.add_new();
-
-            tracks.WorkSeekBegin();
-            tracks.WorkGetEmptyXFTokens(
-               iTrack,
-               str2a,
-               position2a,
-               NULL);
-
-            Prepare(
-               str2a,
-               position2a,
-               iTrack,
-               ia2TokenLine,
-               data);
-
-         }
-
-         void sequence::Prepare(::ikaraoke::data & data)
-         {
-            ::music::midi::winrt::buffer & file = *this->file();
-            ::music::midi::tracks & tracks = file.GetTracks();
-            string2a & str2a = data.GetStaticData().m_str2aRawTokens;
-            imedia::position_2darray position2a;
-            int2a i2aTokenLine;
-
-            ::music::xf::info_headers xfihs;
-            get_file()->GetTracks().GetXFInfoHeaders(&xfihs);
-
-            ::ikaraoke::static_data & staticdata = data.GetStaticData();
-            string str;
-
-            // add Title
-            staticdata.m_straTitleFormat.add("%0");
-            staticdata.m_str2aTitle.set_app(get_app());
-            staticdata.m_str2aTitle.add_new();
-            staticdata.m_str2aTitle[0].add(xfihs.m_strSongName);
-
-            if(xfihs.m_xfInfoHeader.m_straComposer.get_size() > 0)
-            {
-               // add Performer
-               staticdata.m_straTitleFormat.add("Performer: %0");
-               xfihs.m_xfInfoHeader.m_straPerformer.get_format_string(str, ", ");
-               staticdata.m_str2aTitle.add_new();
-               staticdata.m_str2aTitle[1].add(str);
-
-               // add Composer
-               staticdata.m_straTitleFormat.add("Composer: %0");
-               xfihs.m_xfInfoHeader.m_straComposer.get_format_string(str, ", ");
-               staticdata.m_str2aTitle.add_new();
-               staticdata.m_str2aTitle[1].add(str);
+         //   ASSERT(!file.IsNull());
+         //   file.GetTracks().seek_begin();
+         //   imedia_position               tkMax = file.m_tkLength;
+         //   imedia_position               tkLastPosition = 0;
 
 
-               //      staticdata.m_straPerformer = xfihs.m_xfInfoHeader.m_straPerformer;
-               //    staticdata.m_straArtist = xfihs.m_xfInfoHeader.m_straPerformer;
-            }
+         //   ::ikaraoke::static_data & staticdata = data.GetStaticData();
 
-            staticdata.m_dwDefaultCodePage = 1252; // Latin (Default of All Default Code Pages)
+         //   if(staticdata.m_LyricsDisplayOffset < 480)
+         //   {
+         //      staticdata.m_LyricsDisplayOffset = 480;
+         //   }
+         //   if(staticdata.m_LyricsDisplayOffset > 720)
+         //   {
+         //      staticdata.m_LyricsDisplayOffset = 720;
+         //   }
+         //   staticdata.m_LyricsDisplay = 30;
 
-            if(xfihs.m_xfaInfoHeaderLS.get_count())
-            {
-               staticdata.m_dwDefaultCodePage = ::music::xf::SymbolCharCodeToCodePage(xfihs.m_xfaInfoHeaderLS[0].m_strLanguage);
-            }
-
-            tracks.WorkSeekBegin();
-            //tracks.WorkGetXFTokens(staticdata.m_dwDefaultCodePage, str2a, position2a, i2aTokenLine, NULL);
-            tracks.WorkGetXFTokens((uint32_t) -1, str2a, position2a, i2aTokenLine, NULL, false);
-
-            Prepare(
-               str2a,
-               position2a,
-               -1,
-               i2aTokenLine,
-               data);
-
-            tracks.WorkSeekBegin();
-            tracks.WorkGetLongestXFLyrics(staticdata.m_strLyrics, false);
-            tracks.WorkGetLongestXFLyrics(staticdata.m_strLyricsEx1, true);
+         //   imedia::position_2darray tk2DNoteOnPositions(get_app());
+         //   imedia::position_2darray tk2DNoteOffPositions(get_app());
+         //   imedia::position_2darray tk2DBegPositions(get_app());
+         //   imedia::position_2darray tk2DEndPositions(get_app());
+         //   imedia::time_2darray ms2DTokensMillis(get_app());
+         //   imedia::time_2darray ms2DNoteOnMillis(get_app());
+         //   imedia::time_2darray ms2DNoteOffMillis(get_app());
+         //   imedia::time_2darray ms2DBegMillis(get_app());
+         //   imedia::time_2darray ms2DEndMillis(get_app());
+         //   ::music::midi::events midiEvents;
 
 
 
-         }
+
+         //   // Note on and off events
+         //   // and maximum and minimum
+         //   // pitch bend peaks.
+         //   ::music::midi::events midiEventsLevel2;
+
+         //   ::music::midi::events noteOnEvents;
+         //   ::music::midi::events noteOffEvents;
+
+         //   ::music::midi::events eventsLevel2Beg;
+         //   ::music::midi::events eventsLevel2End;
+         //   ::ikaraoke::events_tracks_v1 lyricEventsForPositionCB;
+         //   ::ikaraoke::events_tracks_v1 lyricEventsForBouncingBall;
+         //   ::ikaraoke::events_tracks_v1 lyricEventsForScoring;
+         //   ::ikaraoke::events_tracks_v1 lyricEvents;
+
+         //   //   tracks.seek_begin();
+         //   // tracks.GetXFInfoHeaders(
+         //   //  &m_xfInfoHeaders);
+
+
+
+         //   file.PositionToTime(
+         //      ms2DTokensMillis,
+         //      tka2DTokensTicks,
+         //      0);
+
+         //   ::ikaraoke::lyric_events_v2 *pLyricEventsV2;
+         //   ::ikaraoke::lyric_events_v2 *pLyricEventsV2_;
+         //   ::ikaraoke::lyric_events_v2 *pLyricEventsV2B;
+         //   ::ikaraoke::lyric_events_v2 *pLyricEventsV2C;
+         //   ::music::midi::events *pMidiEventsV1;
+
+         //   tk2DNoteOnPositions.set_size_create(tka2DTokensTicks.get_size());
+         //   tk2DNoteOffPositions.set_size_create(tka2DTokensTicks.get_size());
+         //   tk2DBegPositions.set_size_create(tka2DTokensTicks.get_size());
+         //   tk2DEndPositions.set_size_create(tka2DTokensTicks.get_size());
+         //   int32_t i;
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV2 = new ::ikaraoke::lyric_events_v2();
+         //      pLyricEventsV2B = new ::ikaraoke::lyric_events_v2();
+         //      pLyricEventsV2C = new ::ikaraoke::lyric_events_v2();
+         //      pLyricEventsV2_ = new ::ikaraoke::lyric_events_v2();
+         //      staticdata.m_eventsv1.add(pLyricEventsV2);
+         //      staticdata.m_eventsv1.add(pLyricEventsV2B);
+         //      staticdata.m_eventsv1.add(pLyricEventsV2C);
+         //      staticdata.m_eventsv1.add(pLyricEventsV2_);
+         //      lyricEvents.add(pLyricEventsV2_);
+         //      lyricEventsForScoring.add(pLyricEventsV2);
+         //      lyricEventsForPositionCB.add(pLyricEventsV2B);
+         //      lyricEventsForBouncingBall.add(pLyricEventsV2C);
+         //      pLyricEventsV2->m_iType = 0;
+         //      pLyricEventsV2->m_iOrder = i;
+         //      pLyricEventsV2->m_iType = 2;
+         //      pLyricEventsV2->m_iOrder = i;
+         //      pLyricEventsV2B->m_iType = ikaraoke::EventRunningElement;
+         //      pLyricEventsV2B->m_iOrder = i;
+         //      pLyricEventsV2C->m_iType = 4;
+         //      pLyricEventsV2C->m_iOrder = i;
+         //      pMidiEventsV1 = NULL;
+         //      if(iMelodyTrack < 0)
+         //      {
+         //         //pLyricEventsV2->m_iTrack =
+         //         //   file.WorkCalcMelodyTrack(
+         //         //   &pMidiEventsV1,
+         //         //   tka2DTokensTicks.operator[](i),
+         //         //   ia2TokenLine[i]);
+         //      }
+         //      else
+         //      {
+         //         pLyricEventsV2->m_iTrack = iMelodyTrack;
+         //      }
+         //      pLyricEventsV2B->m_iTrack = pLyricEventsV2->m_iTrack;
+         //      pLyricEventsV2C->m_iTrack = pLyricEventsV2->m_iTrack;
+         //      pLyricEventsV2_->m_iTrack = pLyricEventsV2->m_iTrack;
+         //      if(pLyricEventsV2->m_iTrack < 0)
+         //      {
+         //         pLyricEventsV2->m_iTrack = tracks.m_iMelodyTrackTipA;
+         //         pLyricEventsV2B->m_iTrack = tracks.m_iMelodyTrackTipA;
+         //         pLyricEventsV2C->m_iTrack = tracks.m_iMelodyTrackTipA;
+         //         pLyricEventsV2_->m_iTrack = tracks.m_iMelodyTrackTipA;
+         //      }
+         //      staticdata.SetGuessMelodyTrack(pLyricEventsV2->m_iTrack);
+         //      if(pLyricEventsV2->m_iTrack >= 0)
+         //      {
+         //         if(file.GetFormat() == 0)
+         //         {
+         //            tracks.TrackAt(0)->WorkSeekBegin();
+         //            ((::music::midi::track *)tracks.TrackAt(0))->WorkGetNoteOnOffEventsV1(
+         //               &midiEvents,
+         //               (int32_t) pLyricEventsV2->m_iTrack,
+         //               file.GetFormat() == 1);
+         //            tracks.TrackAt(0)->WorkSeekBegin();
+         //            ((::music::midi::track *)tracks.TrackAt(0))->WorkGetLevel2Events(
+         //               &midiEventsLevel2,
+         //               (int32_t) pLyricEventsV2->m_iTrack,
+         //               file.GetFormat() == 1);
+         //         }
+         //         else
+         //         {
+         //            tracks.TrackAt(pLyricEventsV2->m_iTrack)->seek_begin();
+         //            ((::music::midi::track *)tracks.TrackAt(pLyricEventsV2->m_iTrack))->GetLevel2Events(
+         //               &midiEvents,
+         //               (int32_t) pLyricEventsV2->m_iTrack,
+         //               file.GetFormat() == 1);
+         //            tracks.TrackAt(pLyricEventsV2->m_iTrack)->seek_begin();
+         //            ((::music::midi::track *)tracks.TrackAt(pLyricEventsV2->m_iTrack))->GetLevel2Events(
+         //               &midiEventsLevel2,
+         //               (int32_t) pLyricEventsV2->m_iTrack,
+         //               file.GetFormat() == 1);
+         //         }
+         //      }
+
+         //      ::music::midi::util miditutil(get_app());
+
+         //      miditutil.PrepareNoteOnOffEvents(
+         //         &noteOnEvents,
+         //         &noteOffEvents,
+         //         (int32_t) pLyricEventsV2->m_iTrack,
+         //         file.GetFormat(),
+         //         &midiEvents,
+         //         tka2DTokensTicks.operator()(i));
+
+         //      miditutil.PrepareLevel2Events(
+         //         &eventsLevel2Beg,
+         //         &eventsLevel2End,
+         //         (int32_t) pLyricEventsV2->m_iTrack,
+         //         file.GetFormat(),
+         //         &midiEventsLevel2,
+         //         tka2DTokensTicks.operator()(i));
+
+
+         //      tk2DNoteOnPositions(i)     = noteOnEvents.m_tkaEventsPosition;
+         //      tk2DNoteOffPositions(i)    = noteOffEvents.m_tkaEventsPosition;
+         //      tk2DBegPositions(i)        = eventsLevel2Beg.m_tkaEventsPosition;
+         //      tk2DEndPositions(i)        = eventsLevel2End.m_tkaEventsPosition;
+         //      pLyricEventsV2->m_dwaNotesData.copy(noteOnEvents.m_dwaEventsData);
+         //      pLyricEventsV2B->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
+         //      pLyricEventsV2C->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
+         //      pLyricEventsV2_->m_dwaNotesData.copy(eventsLevel2Beg.m_dwaEventsData);
+         //      midiEvents.remove_all();
+         //      noteOnEvents.remove_all();
+         //      noteOffEvents.remove_all();
+         //      midiEventsLevel2.remove_all();
+         //      eventsLevel2Beg.remove_all();
+         //      eventsLevel2End.remove_all();
+         //      delete pMidiEventsV1;
+         //   }
+
+         //   file.PositionToTime(
+         //      ms2DNoteOnMillis,
+         //      tk2DNoteOnPositions,
+         //      0);
+
+         //   file.PositionToTime(
+         //      ms2DNoteOffMillis,
+         //      tk2DNoteOffPositions,
+         //      0);
+
+         //   file.PositionToTime(
+         //      ms2DBegMillis,
+         //      tk2DBegPositions,
+         //      0);
+
+         //   file.PositionToTime(
+         //      ms2DEndMillis,
+         //      tk2DEndPositions,
+         //      0);
+
+
+         //   ::ikaraoke::lyric_events_v1 *pLyricEventsV1;
+
+
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEvents.get_at(i);
+         //      staticdata.m_eventstracks.add(pLyricEventsV2);
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaTokensPosition,
+         //         ms2DTokensMillis(i),
+         //         0);
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaNotesPosition,
+         //         ms2DNoteOnMillis(i),
+         //         0);
+
+         //      imedia_time time1(0);
+         //      imedia_time time2(0);
+
+         //      pLyricEventsV2->m_msaTokensPosition.CopySorted(
+         //         ms2DTokensMillis(i),
+         //         time1,
+         //         time2);
+
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //         ms2DNoteOffMillis(i),
+         //         ms2DNoteOnMillis(i));
+
+         //      imedia_time time3(0);
+         //      imedia_time time4(0);
+
+         //      pLyricEventsV2->m_msaNotesPosition.CopySorted(
+         //         ms2DNoteOnMillis(i),
+         //         time3,
+         //         time4);
+
+         //      imedia_time time5(0x7fffffff);
+
+         //      pLyricEventsV2->m_msaTokensDuration.ElementDiff(
+         //         ms2DTokensMillis(i),
+         //         time5);
+
+         //   }
+
+
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV1 = new ::ikaraoke::lyric_events_v1();
+         //      pLyricEventsV1->m_iType = ikaraoke::EventAdvanceShow;
+         //      pLyricEventsV1->m_iOrder = i;
+         //      //staticdata.m_eventsTracksForPositionCB.add(pLyricEventsV1);
+         //      file.TimeToPosition(
+         //         pLyricEventsV1->m_tkaTokensPosition,
+         //         ms2DTokensMillis(i),
+         //         -1000);
+         //      //lyric_track * pLyricTrk = file.GetTracks().CreateLyricTrack();
+         //      //pLyricTrk->Prepare(*pLyricEventsV1);
+         //   }
+
+
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForScoring.get_at(i);
+         //      staticdata.m_eventsTracksForScoring.add(pLyricEventsV2);
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaTokensPosition,
+         //         ms2DTokensMillis(i),
+         //         0);
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaNotesPosition,
+         //         ms2DNoteOnMillis(i),
+         //         0);
+
+         //      imedia_time time1(-100);
+         //      imedia_time time2(0);
+
+         //      pLyricEventsV2->m_msaTokensPosition.CopySorted(
+         //         ms2DTokensMillis(i),
+         //         time1,
+         //         time2);
+
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //         ms2DNoteOffMillis(i),
+         //         ms2DNoteOnMillis(i));
+
+         //      imedia_time time3(-100);
+         //      imedia_time time4(0);
+
+         //      pLyricEventsV2->m_msaNotesPosition.CopySorted(
+         //         ms2DNoteOnMillis(i),
+         //         time3,
+         //         time4);
+
+         //      imedia_time time5(0x7fffffff);
+
+         //      pLyricEventsV2->m_msaTokensDuration.ElementDiff(
+         //         ms2DTokensMillis(i),
+         //         time5);
+
+         //      pLyricEventsV2->PrepareForScoring(this);
+         //   }
+
+
+
+
+
+
+
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForPositionCB.get_at(i);
+         //      staticdata.m_eventsTracksForPositionCB.add(pLyricEventsV2);
+
+         //      staticdata.m_eventstracksV002.add(pLyricEventsV2);
+
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaTokensPosition,
+         //         ms2DTokensMillis(i),
+         //         -100);
+
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaNotesPosition,
+         //         ms2DNoteOnMillis(i),
+         //         -100);
+
+         //      imedia_time time1(-100);
+         //      imedia_time time2(0);
+
+         //      pLyricEventsV2->m_msaTokensPosition.CopySorted(
+         //         ms2DTokensMillis(i),
+         //         time1,
+         //         time2);
+
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //         ms2DNoteOffMillis(i),
+         //         ms2DNoteOnMillis(i));
+
+         //      /*
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //      ms2DNoteOffMillis[i],
+         //      ms2DNoteOnMillis(i));
+         //      */
+
+
+         //      imedia_time time3(-100);
+         //      imedia_time time4(0);
+
+         //      pLyricEventsV2->m_msaNotesPosition.CopySorted(
+         //         ms2DNoteOnMillis(i),
+         //         time3,
+         //         time4);
+
+         //      imedia_time time5(0x7fffffff);
+
+         //      pLyricEventsV2->m_msaTokensDuration.ElementDiff(
+         //         ms2DTokensMillis(i),
+         //         time5);
+
+         //      pLyricEventsV2->PrepareForLyricsDisplay(this);
+         //      //lyric_track * pLyricTrk = file.GetTracks().CreateLyricTrack();
+         //      //pLyricTrk->Prepare(*pLyricEventsV2);
+         //   }
+
+
+
+
+
+
+
+
+
+
+         //   for(i = 0; i < tka2DTokensTicks.get_size(); i++)
+         //   {
+         //      pLyricEventsV2 = (::ikaraoke::lyric_events_v2 *) lyricEventsForBouncingBall.get_at(i);
+         //      staticdata.m_eventsTracksForBouncingBall.add(pLyricEventsV2);
+
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaTokensPosition,
+         //         ms2DTokensMillis(i),
+         //         -100);
+
+         //      file.TimeToPosition(
+         //         pLyricEventsV2->m_tkaNotesPosition,
+         //         ms2DNoteOnMillis(i),
+         //         -100);
+
+         //      imedia_time time1(-100);
+         //      imedia_time time2(0);
+
+         //      pLyricEventsV2->m_msaTokensPosition.CopySorted(
+         //         ms2DTokensMillis(i),
+         //         time1,
+         //         time2);
+
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //         ms2DEndMillis(i),
+         //         ms2DBegMillis(i));
+
+         //      /*
+         //      pLyricEventsV2->m_msaNotesDuration.Diff(
+         //      ms2DNoteOffMillis[i],
+         //      ms2DNoteOnMillis(i));
+         //      */
+
+         //      imedia_time time3(-100);
+         //      imedia_time time4(0);
+
+         //      pLyricEventsV2->m_msaNotesPosition.CopySorted(
+         //         ms2DNoteOnMillis(i),
+         //         time3,
+         //         time4);
+
+         //      imedia_time time5(0x7fffffff);
+
+         //      pLyricEventsV2->m_msaTokensDuration.ElementDiff(
+         //         ms2DTokensMillis(i),
+         //         time5);
+
+         //      pLyricEventsV2->PrepareForBouncingBall(this);
+         //   }
+
+         //}
+
+         //void sequence::Prepare(int32_t iTrack, ::ikaraoke::data & data)
+         //{
+
+         //   ::music::midi::winrt::buffer & file = *this->file();
+
+         //   ::music::midi::tracks & tracks = file.GetTracks();
+
+         //   string2a & str2a = data.GetStaticData().m_str2aRawTokens;
+
+         //   imedia::position_2darray position2a;
+
+         //   int2a ia2TokenLine;
+
+
+         //   ia2TokenLine.add_new();
+
+         //   tracks.WorkSeekBegin();
+         //   tracks.WorkGetEmptyXFTokens(
+         //      iTrack,
+         //      str2a,
+         //      position2a,
+         //      NULL);
+
+         //   Prepare(
+         //      str2a,
+         //      position2a,
+         //      iTrack,
+         //      ia2TokenLine,
+         //      data);
+
+         //}
+
+         //void sequence::Prepare(::ikaraoke::data & data)
+         //{
+         //   ::music::midi::winrt::buffer & file = *this->file();
+         //   ::music::midi::tracks & tracks = file.GetTracks();
+         //   string2a & str2a = data.GetStaticData().m_str2aRawTokens;
+         //   imedia::position_2darray position2a;
+         //   int2a i2aTokenLine;
+
+         //   ::music::xf::info_headers xfihs;
+         //   get_file()->GetTracks().GetXFInfoHeaders(&xfihs);
+
+         //   ::ikaraoke::static_data & staticdata = data.GetStaticData();
+         //   string str;
+
+         //   // add Title
+         //   staticdata.m_straTitleFormat.add("%0");
+         //   staticdata.m_str2aTitle.set_app(get_app());
+         //   staticdata.m_str2aTitle.add_new();
+         //   staticdata.m_str2aTitle[0].add(xfihs.m_strSongName);
+
+         //   if(xfihs.m_xfInfoHeader.m_straComposer.get_size() > 0)
+         //   {
+         //      // add Performer
+         //      staticdata.m_straTitleFormat.add("Performer: %0");
+         //      xfihs.m_xfInfoHeader.m_straPerformer.get_format_string(str, ", ");
+         //      staticdata.m_str2aTitle.add_new();
+         //      staticdata.m_str2aTitle[1].add(str);
+
+         //      // add Composer
+         //      staticdata.m_straTitleFormat.add("Composer: %0");
+         //      xfihs.m_xfInfoHeader.m_straComposer.get_format_string(str, ", ");
+         //      staticdata.m_str2aTitle.add_new();
+         //      staticdata.m_str2aTitle[1].add(str);
+
+
+         //      //      staticdata.m_straPerformer = xfihs.m_xfInfoHeader.m_straPerformer;
+         //      //    staticdata.m_straArtist = xfihs.m_xfInfoHeader.m_straPerformer;
+         //   }
+
+         //   staticdata.m_dwDefaultCodePage = 1252; // Latin (Default of All Default Code Pages)
+
+         //   if(xfihs.m_xfaInfoHeaderLS.get_count())
+         //   {
+         //      staticdata.m_dwDefaultCodePage = ::music::xf::SymbolCharCodeToCodePage(xfihs.m_xfaInfoHeaderLS[0].m_strLanguage);
+         //   }
+
+         //   tracks.WorkSeekBegin();
+         //   //tracks.WorkGetXFTokens(staticdata.m_dwDefaultCodePage, str2a, position2a, i2aTokenLine, NULL);
+         //   tracks.WorkGetXFTokens((uint32_t) -1, str2a, position2a, i2aTokenLine, NULL, false);
+
+         //   Prepare(
+         //      str2a,
+         //      position2a,
+         //      -1,
+         //      i2aTokenLine,
+         //      data);
+
+         //   tracks.WorkSeekBegin();
+         //   tracks.WorkGetLongestXFLyrics(staticdata.m_strLyrics, false);
+         //   tracks.WorkGetLongestXFLyrics(staticdata.m_strLyricsEx1, true);
+
+
+
+         //}
 
 
          void sequence::GetPositionLength(imedia_position &position)
@@ -2285,9 +2296,9 @@ seq_Preroll_Cleanup:
          void sequence::buffer::Initialize(int32_t iSize, uint_ptr dwUser)
          {
             m_storage.allocate(iSize);
-            m_midihdr.lpData           = (char *) m_storage.get_data();
-            m_midihdr.dwBufferLength   = (uint32_t) m_storage.get_size();
-            m_midihdr.dwUser           = dwUser;
+            //m_midihdr.lpData           = (char *) m_storage.get_data();
+            //m_midihdr.dwBufferLength   = (uint32_t) m_storage.get_size();
+            //m_midihdr.dwUser           = dwUser;
             m_bPrepared                = false;
 
          }
@@ -2328,8 +2339,8 @@ seq_Preroll_Cleanup:
 
          void sequence::buffer::Reset()
          {
-            m_midihdr.dwBytesRecorded  = 0;
-            m_midihdr.dwFlags          = 0;
+            //m_midihdr.dwBytesRecorded  = 0;
+            //m_midihdr.dwFlags          = 0;
          }
 
          bool sequence::buffer::IsPrepared()
@@ -2338,119 +2349,119 @@ seq_Preroll_Cleanup:
          }
 
 
-         ::multimedia::e_result sequence::buffer::midiOutPrepareHeader(HMIDIOUT hmidiout)
-         {
+         //::multimedia::e_result sequence::buffer::midiOutPrepareHeader(HMIDIOUT hmidiout)
+         //{
 
-            ::multimedia::e_result mmr = ::multimedia::result_success;
+         //   ::multimedia::e_result mmr = ::multimedia::result_success;
 
-            if(hmidiout == NULL)
-               return mmr;
+         //   if(hmidiout == NULL)
+         //      return mmr;
 
-            if(m_bPrepared)
-               return mmr;
+         //   if(m_bPrepared)
+         //      return mmr;
 
-            mmr = translate_mmr(::midiOutPrepareHeader(hmidiout, &m_midihdr, sizeof(m_midihdr)));
+         //   mmr = translate_mmr(::midiOutPrepareHeader(hmidiout, &m_midihdr, sizeof(m_midihdr)));
 
-            if(mmr == ::multimedia::result_success)
-            {
+         //   if(mmr == ::multimedia::result_success)
+         //   {
 
-               m_bPrepared = true;
+         //      m_bPrepared = true;
 
-            }
+         //   }
 
-            return mmr;
+         //   return mmr;
 
-         }
-
-
-         ::multimedia::e_result sequence::buffer::midiOutUnprepareHeader(HMIDIOUT hmidiout)
-         {
-
-            ::multimedia::e_result mmr = ::multimedia::result_success;
-
-            if(hmidiout == NULL)
-               return mmr;
-
-            if(!m_bPrepared)
-               return mmr;
-
-            mmr = translate_mmr(::midiOutUnprepareHeader(hmidiout, &m_midihdr, sizeof(m_midihdr)));
-
-            if(mmr == ::multimedia::result_success)
-            {
-
-               m_bPrepared = false;
-
-            }
-
-            return mmr;
-
-         }
-
-         ::multimedia::e_result sequence::buffer_array::midiOutUnprepareHeader(HMIDIOUT hmidiout)
-         {
-            ::multimedia::e_result mmr = ::multimedia::result_success;
-
-            for (int32_t i = 0; i < this->get_size(); i++)
-            {
-               ::multimedia::e_result mmrBuffer = this->element_at(i).midiOutUnprepareHeader(hmidiout);
-               if(mmrBuffer != ::multimedia::result_success)
-               {
-                  mmr = mmrBuffer;
-               }
-            }
-            return mmr;
-         }
-
-         ::multimedia::e_result sequence::buffer_array::midiOutPrepareHeader(HMIDIOUT hmidiout)
-         {
-            ::multimedia::e_result mmrc = ::multimedia::result_success;
-            for(int32_t i = 0; i < this->get_size(); i++)
-            {
-               mmrc = this->element_at(i).midiOutPrepareHeader(
-                  hmidiout);
-               if(mmrc != ::multimedia::result_success)
-               {
-                  for(; i >= 0; i--)
-                  {
-                     this->element_at(i).midiOutUnprepareHeader(hmidiout);
-                  }
-                  return mmrc;
-               }
-            }
-            return mmrc;
-         }
-
-         void sequence::buffer::SetNextMidiHdr(LPMIDIHDR lpNext)
-         {
-            m_midihdr.lpNext = lpNext;
-         }
+         //}
 
 
-         ::multimedia::e_result sequence::buffer::midiStreamOut(HMIDISTRM hmidiout)
-         {
-            ASSERT(hmidiout != NULL);
-            return translate_mmr(::midiStreamOut(hmidiout, &m_midihdr, sizeof(m_midihdr)));
-         }
+         //::multimedia::e_result sequence::buffer::midiOutUnprepareHeader(HMIDIOUT hmidiout)
+         //{
 
-         ::multimedia::e_result sequence::buffer_array::midiStreamOut(HMIDISTRM hmidiout)
-         {
-            ::multimedia::e_result mmrc = ::multimedia::result_success;
-            for(int32_t i = 0; i < this->get_size(); i++)
-            {
-               mmrc = this->element_at(i).midiStreamOut(
-                  hmidiout);
-               if(mmrc != ::multimedia::result_success)
-               {
-                  //         for(; i >= 0; i--)
-                  //       {
-                  //        this->element_at(i).midiOutUnprepareHeader(hmidiout);
-                  //   }
-                  return mmrc;
-               }
-            }
-            return mmrc;
-         }
+         //   ::multimedia::e_result mmr = ::multimedia::result_success;
+
+         //   if(hmidiout == NULL)
+         //      return mmr;
+
+         //   if(!m_bPrepared)
+         //      return mmr;
+
+         //   mmr = translate_mmr(::midiOutUnprepareHeader(hmidiout, &m_midihdr, sizeof(m_midihdr)));
+
+         //   if(mmr == ::multimedia::result_success)
+         //   {
+
+         //      m_bPrepared = false;
+
+         //   }
+
+         //   return mmr;
+
+         //}
+
+         //::multimedia::e_result sequence::buffer_array::midiOutUnprepareHeader(HMIDIOUT hmidiout)
+         //{
+         //   ::multimedia::e_result mmr = ::multimedia::result_success;
+
+         //   for (int32_t i = 0; i < this->get_size(); i++)
+         //   {
+         //      ::multimedia::e_result mmrBuffer = this->element_at(i).midiOutUnprepareHeader(hmidiout);
+         //      if(mmrBuffer != ::multimedia::result_success)
+         //      {
+         //         mmr = mmrBuffer;
+         //      }
+         //   }
+         //   return mmr;
+         //}
+
+         //::multimedia::e_result sequence::buffer_array::midiOutPrepareHeader(HMIDIOUT hmidiout)
+         //{
+         //   ::multimedia::e_result mmrc = ::multimedia::result_success;
+         //   for(int32_t i = 0; i < this->get_size(); i++)
+         //   {
+         //      mmrc = this->element_at(i).midiOutPrepareHeader(
+         //         hmidiout);
+         //      if(mmrc != ::multimedia::result_success)
+         //      {
+         //         for(; i >= 0; i--)
+         //         {
+         //            this->element_at(i).midiOutUnprepareHeader(hmidiout);
+         //         }
+         //         return mmrc;
+         //      }
+         //   }
+         //   return mmrc;
+         //}
+
+         //void sequence::buffer::SetNextMidiHdr(LPMIDIHDR lpNext)
+         //{
+         //   m_midihdr.lpNext = lpNext;
+         //}
+
+
+         //::multimedia::e_result sequence::buffer::midiStreamOut(HMIDISTRM hmidiout)
+         //{
+         //   ASSERT(hmidiout != NULL);
+         //   return translate_mmr(::midiStreamOut(hmidiout, &m_midihdr, sizeof(m_midihdr)));
+         //}
+
+         //::multimedia::e_result sequence::buffer_array::midiStreamOut(HMIDISTRM hmidiout)
+         //{
+         //   ::multimedia::e_result mmrc = ::multimedia::result_success;
+         //   for(int32_t i = 0; i < this->get_size(); i++)
+         //   {
+         //      mmrc = this->element_at(i).midiStreamOut(
+         //         hmidiout);
+         //      if(mmrc != ::multimedia::result_success)
+         //      {
+         //         //         for(; i >= 0; i--)
+         //         //       {
+         //         //        this->element_at(i).midiOutUnprepareHeader(hmidiout);
+         //         //   }
+         //         return mmrc;
+         //      }
+         //   }
+         //   return mmrc;
+         //}
 
 
 
@@ -2526,18 +2537,49 @@ seq_Preroll_Cleanup:
             return m_uiState;
          }
 
-         ::music::midi::sequence::event * sequence::create_new_event(::music::midi::sequence::e_event eevent, LPMIDIHDR lpmidihdr)
+         //::music::midi::sequence::event * sequence::create_new_event(::music::midi::sequence::e_event eevent)
+         //{
+
+         //   ASSERT(this != NULL);
+
+         //   event * pevent          = new event();
+
+         //   pevent->m_eevent        = eevent;
+         //   pevent->m_psequence     = this;
+         //   //pevent->m_lpmh          = lpmidihdr;
+
+         //   return pevent;
+
+         //}
+
+         void sequence::rt_start()
          {
 
-            ASSERT(this != NULL);
+            int iPortCount = m_io->get_out_port_count();
 
-            event * pevent          = new event();
+            if (iPortCount <= 0)
+            {
 
-            pevent->m_eevent        = eevent;
-            pevent->m_psequence     = this;
-            pevent->m_lpmh          = lpmidihdr;
+               return;
 
-            return pevent;
+            }
+
+            string strPort = m_io->get_out_port_name(0);
+
+            if (strPort.is_empty())
+            {
+
+               return;
+
+            }
+
+            m_io->select_out_port(strPort);
+
+            m_pthreadPlay = new ::music::midi::winrt::thread(get_app());
+
+            m_pthreadPlay->m_pseq = this;
+
+            m_pthreadPlay->begin();
 
          }
 

@@ -23,7 +23,6 @@ namespace music
                ::music::midi::player::player(papp)
             {
 
-               m_psequencethread = dynamic_cast < ::music::midi::sequence_thread * > (__begin_thread < sequence_thread >(papp, ::core::scheduling_priority_normal, 0, CREATE_SUSPENDED));
 
                m_puie               = NULL;
 
@@ -37,15 +36,15 @@ namespace music
             bool player::initialize_instance()
             {
 
-               m_psequencethread->ResumeThread();
+               ///m_psequencethread->ResumeThread();
 
                TRACE("player::initialize_instance %X\n", get_os_int());
                //SetMainWnd(NULL);
                //ASSERT(GetMainWnd() == NULL);
 
-               set_thread_priority(::core::scheduling_priority_normal);
+               set_thread_priority(::multithreading::priority_normal);
 
-               m_evInitialized.SetEvent();
+               //m_evInitialized.SetEvent();
 
                return true;
             }
@@ -68,8 +67,8 @@ namespace music
             void player::install_message_handling(::message::dispatch * pinterface)
             {
                ::music::midi::player::player::install_message_handling(pinterface);
-               IGUI_WIN_MSG_LINK(MM_MOM_DONE, pinterface, this, &player::OnMultimediaMidiOutputMessageDone);
-               IGUI_WIN_MSG_LINK(MM_MOM_POSITIONCB, pinterface, this, &player::OnMultimediaMidiOutputMessagePositionCB);
+               //IGUI_WIN_MSG_LINK(MM_MOM_DONE, pinterface, this, &player::OnMultimediaMidiOutputMessageDone);
+               //IGUI_WIN_MSG_LINK(MM_MOM_POSITIONCB, pinterface, this, &player::OnMultimediaMidiOutputMessagePositionCB);
             }
 
             bool player::Play(imedia_position tkStart, uint32_t dwEllapse)
@@ -319,15 +318,15 @@ namespace music
             //    m_pView = pview;
             //}
 
-            ::music::e_result player::SetInterface(player_interface * pinterface)
-            {
-               m_pinterface = pinterface;
-               get_sequence()->m_pthread   = m_psequencethread;
-               m_psequencethread->m_psequence = &get_sequence();
-               m_psequencethread->m_pplayer = this;
-               PostNotifyEvent(::music::midi::player::notify_event_set_sequence);
-               return success;
-            }
+            //::music::e_result player::SetInterface(player_interface * pinterface)
+            //{
+            //   m_pinterface = pinterface;
+            //   get_sequence()->m_pthread   = m_psequencethread;
+            //   m_psequencethread->m_psequence = &get_sequence();
+            //   m_psequencethread->m_pplayer = this;
+            //   PostNotifyEvent(::music::midi::player::notify_event_set_sequence);
+            //   return success;
+            //}
 
 
             bool player::SetMidiOutDevice(uint32_t uiDevice)
@@ -442,29 +441,29 @@ namespace music
 
                SCAST_PTR(::message::base, pbase, pobj);
 
-               HMIDISTRM hmidistream = (HMIDISTRM) pbase->m_wparam;
+               //HMIDISTRM hmidistream = (HMIDISTRM) pbase->m_wparam;
 
-               LPMIDIHDR lpmidihdr = (LPMIDIHDR) pbase->m_lparam.m_lparam;
+               //LPMIDIHDR lpmidihdr = (LPMIDIHDR) pbase->m_lparam.m_lparam;
 
-               sp(sequence) sequence = get_sequence();
+               //sp(sequence) sequence = get_sequence();
 
-               ASSERT(sequence->m_hstream == hmidistream);
+               //ASSERT(sequence->m_hstream == hmidistream);
 
-               sequence->OnDone(hmidistream, lpmidihdr);
+               //sequence->OnDone(hmidistream, lpmidihdr);
 
             }
 
             void player::OnMultimediaMidiOutputMessagePositionCB(::signal_details * pobj)
             {
                SCAST_PTR(::message::base, pbase, pobj);
-               LPMIDIHDR lpmidihdr = (LPMIDIHDR) pbase->m_wparam;
-               //          get_sequence()->OnPositionCB(lpmidihdr);
+               //LPMIDIHDR lpmidihdr = (LPMIDIHDR) pbase->m_wparam;
+               ////          get_sequence()->OnPositionCB(lpmidihdr);
 
-               sp(sequence) sequence = get_sequence();
+               //sp(sequence) sequence = get_sequence();
 
-               //            ASSERT(sequence->m_hstream == hmidistream);
+               ////            ASSERT(sequence->m_hstream == hmidistream);
 
-               sequence->OnPositionCB(lpmidihdr);
+               //sequence->OnPositionCB(lpmidihdr);
             }
 
 
@@ -490,47 +489,47 @@ namespace music
 
             void player::SendReset()
             {
-               HMIDIOUT hmidiout = NULL;
-               ::multimedia::e_result mmrc;
-               uint32_t uDeviceID = 0;
-               mmrc = translate_mmr(midiOutOpen(&hmidiout, uDeviceID,  0, 0, CALLBACK_NULL));
-               if(mmrc != MMSYSERR_NOERROR)
-                  return;
-               Sleep(284);
-               const uchar gmModeOn[] = {
-                  //        0x00, 0x00, 0x00, 0x00,
-                  //        0x00, 0x00, 0x00, 0x00,
-                  //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
-                  0x00, 0x00, 0x00, 0x00,
-                  0x00, 0x00, 0x00, 0x00,
-                  0x06, 0x00, 0x00, MEVT_LONGMSG,
-                  0xf0, 0x7e, 0x7f, 0x09,
-                  0x01, 0xf7, 0x00, 0x00};
-               //        0x70, 0x01, 0x00, 0x00,
-               //      0x00, 0x00, 0x00, 0x00 };
-               //      0x09, 0x00, 0x00, MEVT_LONGMSG,
-               //      0x43, 0x10, 0x4c,
-               //    0x00, 0x00, 0x7e, 0x00,
-               //  0xf7, 0x00, 0x00, 0x00,};
-               MIDIHDR mh;
-               LPMIDIHDR lpmh = &mh;
-               lpmh->lpData = (char *) gmModeOn;
-               lpmh->dwBufferLength = sizeof(gmModeOn);
-               lpmh->dwBytesRecorded = 0;
-               lpmh->dwFlags = 0;
-               mmrc = translate_mmr(midiOutPrepareHeader( hmidiout, lpmh, sizeof(MIDIHDR)));
-               if(mmrc != MMSYSERR_NOERROR)
-                  goto End;
-               lpmh->dwBytesRecorded = sizeof(gmModeOn);
-               if(mmrc != MMSYSERR_NOERROR)
-                  goto End;
-               mmrc = translate_mmr(midiOutLongMsg( hmidiout, lpmh, sizeof(MIDIHDR)));
-               Sleep(284);
-               mmrc = translate_mmr(midiOutUnprepareHeader( hmidiout, lpmh, sizeof(MIDIHDR)));
-               if(mmrc != MMSYSERR_NOERROR)
-                  goto End;
-End:
-               midiOutClose( hmidiout);
+//               HMIDIOUT hmidiout = NULL;
+//               ::multimedia::e_result mmrc;
+//               uint32_t uDeviceID = 0;
+//               mmrc = translate_mmr(midiOutOpen(&hmidiout, uDeviceID,  0, 0, CALLBACK_NULL));
+//               if(mmrc != MMSYSERR_NOERROR)
+//                  return;
+//               Sleep(284);
+//               const uchar gmModeOn[] = {
+//                  //        0x00, 0x00, 0x00, 0x00,
+//                  //        0x00, 0x00, 0x00, 0x00,
+//                  //        0x1b, 0x8a, 0x06, MEVT_TEMPO,
+//                  0x00, 0x00, 0x00, 0x00,
+//                  0x00, 0x00, 0x00, 0x00,
+//                  0x06, 0x00, 0x00, MEVT_LONGMSG,
+//                  0xf0, 0x7e, 0x7f, 0x09,
+//                  0x01, 0xf7, 0x00, 0x00};
+//               //        0x70, 0x01, 0x00, 0x00,
+//               //      0x00, 0x00, 0x00, 0x00 };
+//               //      0x09, 0x00, 0x00, MEVT_LONGMSG,
+//               //      0x43, 0x10, 0x4c,
+//               //    0x00, 0x00, 0x7e, 0x00,
+//               //  0xf7, 0x00, 0x00, 0x00,};
+//               MIDIHDR mh;
+//               LPMIDIHDR lpmh = &mh;
+//               lpmh->lpData = (char *) gmModeOn;
+//               lpmh->dwBufferLength = sizeof(gmModeOn);
+//               lpmh->dwBytesRecorded = 0;
+//               lpmh->dwFlags = 0;
+//               mmrc = translate_mmr(midiOutPrepareHeader( hmidiout, lpmh, sizeof(MIDIHDR)));
+//               if(mmrc != MMSYSERR_NOERROR)
+//                  goto End;
+//               lpmh->dwBytesRecorded = sizeof(gmModeOn);
+//               if(mmrc != MMSYSERR_NOERROR)
+//                  goto End;
+//               mmrc = translate_mmr(midiOutLongMsg( hmidiout, lpmh, sizeof(MIDIHDR)));
+//               Sleep(284);
+//               mmrc = translate_mmr(midiOutUnprepareHeader( hmidiout, lpmh, sizeof(MIDIHDR)));
+//               if(mmrc != MMSYSERR_NOERROR)
+//                  goto End;
+//End:
+//               midiOutClose( hmidiout);
             }
 
 

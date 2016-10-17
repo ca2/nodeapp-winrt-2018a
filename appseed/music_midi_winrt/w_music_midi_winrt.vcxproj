@@ -30,6 +30,9 @@
     <ProjectReference Include="..\..\..\app-core\appseed\multimedia\w_multimedia.vcxproj">
       <Project>{845177fa-3079-4b23-8f97-4543bb980265}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\app-veriwell\appseed\multimedia\w_veriwell_multimedia.vcxproj">
+      <Project>{ed4fe36a-391f-43f4-bdf6-9528ff0632ee}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\app\appseed\ace\w_ace.vcxproj">
       <Project>{e8826c3e-de08-4292-b797-4802c710e2c3}</Project>
     </ProjectReference>
@@ -55,9 +58,11 @@
     <ClInclude Include="music_midi_winrt.h" />
     <ClInclude Include="music_midi_winrt_factory_exchange.h" />
     <ClInclude Include="music_midi_winrt_file.h" />
+    <ClInclude Include="music_midi_winrt_midi.h" />
     <ClInclude Include="music_midi_winrt_out.h" />
     <ClInclude Include="music_midi_winrt_sequence.h" />
     <ClInclude Include="music_midi_winrt_sequence_thread.h" />
+    <ClInclude Include="music_midi_winrt_thread.h" />
     <ClInclude Include="music_midi_winrt_translation.h" />
     <ClInclude Include="player\music_midi_winrt_player.h" />
   </ItemGroup>
@@ -74,9 +79,11 @@
     <ClCompile Include="music_midi_winrt.cpp" />
     <ClCompile Include="music_midi_winrt_factory_exchange.cpp" />
     <ClCompile Include="music_midi_winrt_file.cpp" />
+    <ClCompile Include="music_midi_winrt_midi.cpp" />
     <ClCompile Include="music_midi_winrt_out.cpp" />
     <ClCompile Include="music_midi_winrt_sequence.cpp" />
     <ClCompile Include="music_midi_winrt_sequence_thread.cpp" />
+    <ClCompile Include="music_midi_winrt_thread.cpp" />
     <ClCompile Include="music_midi_winrt_translation.cpp" />
     <ClCompile Include="player\music_midi_winrt_player.cpp" />
   </ItemGroup>

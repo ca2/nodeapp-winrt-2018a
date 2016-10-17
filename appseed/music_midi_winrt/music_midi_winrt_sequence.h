@@ -20,9 +20,12 @@ namespace music
       {
 
 
+         ref class message_io;
+
          class buffer;
          class sequence;
          class sequence_thread;
+         class thread;
 
 
          class CLASS_DECL_VERIWELL_MULTIMEDIA_MUSIC_MIDI_WINRT midi_callback_data
@@ -69,6 +72,8 @@ namespace music
 
             };
 
+            ::multimedia::e_result SendGMReset();
+
 
             class buffer_array :
                public array < buffer, buffer >
@@ -104,7 +109,9 @@ namespace music
 
             midi_callback_data            m_midicallbackdata;
 
+            message_io ^ m_io;
 
+            thread      *     m_pthreadPlay;
 
 
             sequence(::aura::application * papp);
@@ -123,14 +130,14 @@ namespace music
 
             virtual int32_t GetDefaultCodePage();
 
-            void Prepare(::ikaraoke::data & data);
-            void Prepare(int32_t iTrack, ::ikaraoke::data & data);
-            void Prepare(
-               string2a & str2a,
-               imedia::position_2darray & tka2DTokensTicks,
-               int32_t iMelodyTrack,
-               int2a & ia2TokenLine,
-               ::ikaraoke::data & data);
+            //void Prepare(::ikaraoke::data & data);
+            //void Prepare(int32_t iTrack, ::ikaraoke::data & data);
+            //void Prepare(
+            //   string2a & str2a,
+            //   imedia::position_2darray & tka2DTokensTicks,
+            //   int32_t iMelodyTrack,
+            //   int2a & ia2TokenLine,
+            //   ::ikaraoke::data & data);
 
             imedia_position GetPositionTicks();
             void SetLevelMeter(int32_t iLevel);
@@ -190,6 +197,8 @@ namespace music
 
             ::multimedia::e_result Restart();
 
+            void rt_start();
+
             //::multimedia::e_result Stop(uint32_t dwEllapse);
             ::multimedia::e_result Stop();
 
@@ -225,8 +234,8 @@ namespace music
                return m_pthread;
             }
 
-            using ::music::midi::sequence::create_new_event;
-//            virtual ::music::midi::sequence::event * create_new_event(::music::midi::sequence::e_event eevent, LPMIDIHDR lpmidihdr);
+            //using ::music::midi::sequence::create_new_event;
+            //virtual ::music::midi::sequence::event * create_new_event(::music::midi::sequence::e_event eevent);
 
          };
 

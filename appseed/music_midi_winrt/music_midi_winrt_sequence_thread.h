@@ -43,13 +43,13 @@ namespace music
             void PostTempoChange();
             void SendTempoChange();
 
-            void ExecuteCommand(smart_pointer < ::music::midi::player::command > pcommand);
+            //void ExecuteCommand(smart_pointer < ::music::midi::player::command > pcommand);
             void _ExecuteCommand(smart_pointer < ::music::midi::player::command > pcommand);
 
             virtual bool initialize_instance();
             virtual int32_t exit_instance();
 
-            DECL_GEN_SIGNAL(OnCommand);
+            //DECL_GEN_SIGNAL(OnCommand);
             DECL_GEN_SIGNAL(OnMidiSequenceEvent);
 
          };

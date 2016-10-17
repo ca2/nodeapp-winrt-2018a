@@ -66,7 +66,11 @@ using namespace Windows::Devices::Midi;
           
 #include "music_midi_winrt_sequence_thread.h"
 
+#include "music_midi_winrt_thread.h"
+
 #include "music_midi_winrt_factory_exchange.h"
 
 
+
+#include "music_midi_winrt_midi.h"
 

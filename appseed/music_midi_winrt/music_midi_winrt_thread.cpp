@@ -2,13 +2,17 @@
 
 
 /* Windows sleep in 100ns units */
-BOOLEAN nanosleep(LONGLONG ns) {
-   long value = ns / 1000; /* time in microseconds */
+BOOLEAN nanosleep(LONGLONG ns)
+{
+   manual_reset_event ev(::get_thread_app());
 
-   struct timeval tv;
-   tv.tv_sec = value / 1000000;
-   tv.tv_usec = value % 1000000;
-   select(0, NULL, NULL, NULL, &tv);
+   TimeSpan delay;
+   delay.Duration = MAX((ns / 100), 1) - 1;
+   ThreadPoolTimer ^ PeriodicTimer =
+      ThreadPoolTimer::CreateTimer(ref new TimerElapsedHandler([&](ThreadPoolTimer ^) {ev.SetEvent(); }), delay);
+
+   ev.wait();
+
    return TRUE;
 
 }
@@ -69,23 +73,30 @@ namespace music
             bool bGotEvent = false;
             sequence_thread * pthread = dynamic_cast < sequence_thread * > (m_pseq->m_pthread);
             uint64_t dwStart = ::get_micro() - m_pseq->TicksToMillisecs(m_pseq->m_tkBase) * 1000;
-
+            imedia_position tkLastBend = 0;
             m_tkPosition = 0;
+            uint64_t dwNow;
+            uint64_t dwFile;
 
             int_map < int_map < int > > map;
 
-            while (m_bRun)
+            bool bProcessed;
+
+            bool bEqual = false;
+
+            m_evRun.wait();
+
+            if (!get_run_thread())
             {
 
-               m_evRun.wait();
+               goto end_playback;
 
-               if (!m_bRun)
-               {
+            }
 
-                  break;
 
-               }
 
+            while (get_run_thread())
+            {
 
                if (m_pseq->file()->GetFlags().is_signalized(file::EndOfFile))
                {
@@ -94,39 +105,49 @@ namespace music
 
                }
 
-               uint64_t dwNow = ::get_micro() - dwStart;
-               uint64_t dwFile = m_pseq->TickToMicro(m_tkPosition);
 
-               while (dwNow >= dwFile)
-               {
+               bProcessed = true;
                   
-                  if (!bGotEvent)
+               if (!bGotEvent)
+               {
+
+                  smfrc = m_pseq->file()->WorkGetNextEvent(pevent, tkMax, TRUE);
+
+                  if (::music::success != smfrc)
                   {
 
-                     smfrc = m_pseq->file()->WorkGetNextEvent(pevent, tkMax, TRUE);
-
-                     if (::music::success != smfrc)
-                     {
-
-                        break;
-
-                     }
-
-                     bGotEvent = true;
-
-                  }
-
-                  tkPosition = m_pseq->file()->GetPosition();
-
-                  dwNow = ::get_micro() - dwStart;
-                  dwFile = m_pseq->TickToMicro(tkPosition);
-
-                  if (dwNow < dwFile)
-                  {
-                     
                      break;
 
                   }
+
+                  bGotEvent = true;
+
+               }
+
+               tkPosition = m_pseq->file()->GetPosition();
+
+                  
+
+               dwNow = ::get_micro() - dwStart;
+               dwFile = m_pseq->TickToMicro(tkPosition);
+
+               if (dwNow < dwFile)
+               {
+                     
+                  if (dwFile - dwNow >= 2000)
+                  {
+
+                     Sleep(1);
+
+                  }
+                  else
+                  {
+                     Sleep(0);
+                  }
+
+               }
+               else
+               {
                   if (dwNow - dwFile >= 20 * 1000)
                   {
 
@@ -141,7 +162,7 @@ namespace music
                            }
                         }
                      }
-                        
+
 
                   }
 
@@ -149,10 +170,10 @@ namespace music
 
                   if (pevent->GetType() == ::music::midi::NoteOn)
                   {
-                     
+
                      if (dwNow - dwFile < 20 * 1000)
                      {
-                        
+
                         m_pseq->m_io->note_on(pevent->GetTrack(), pevent->GetNotePitch(), pevent->GetNoteVelocity());
 
                         map[pevent->GetTrack()][pevent->GetNotePitch()] = pevent->GetNoteVelocity();
@@ -179,12 +200,52 @@ namespace music
                      m_pseq->m_io->program_change(pevent->GetTrack(), pevent->GetProgram());
 
                   }
+                  else if (pevent->GetType() == ::music::midi::ControlChange)
+                  {
+
+                     m_pseq->m_io->control_change(pevent->GetTrack(), pevent->GetController(), pevent->GetControllerValue());
+
+                  }
+                  else if (pevent->GetType() == ::music::midi::PitchBend)
+                  {
+
+                     //if (tkLastBend == tkPosition)
+                     //{
+
+                     //   bEqual = true;
+
+                     //}
+                     //else
+                     //{
+                        int iChannel = pevent->GetTrack();
 
 
+                        uint16_t uiBend = pevent->GetPitchBendLevel();
+                        uint16_t uiBend2;
+
+                        BYTE b1 = ((BYTE*)&uiBend)[0];
+                        BYTE b2 = ((BYTE*)&uiBend)[1];
+
+                        ((BYTE*)&uiBend2)[0] = b2;
+                        ((BYTE*)&uiBend2)[1] = b1;
+
+                        TRACE("pitch_bend ch=%02d bend1=%05d bend2=%05d", iChannel, uiBend, uiBend2);
+
+                        tkLastBend = tkPosition;
+
+                        m_pseq->m_io->pitch_bend(iChannel, MIN(16383, uiBend));
+
+
+                     //}
+
+                  }
 
                   bGotEvent = false;
 
                }
+
+               
+
 
                
 
@@ -195,7 +256,6 @@ namespace music
 
                }
 
-               Sleep(1);
 
             }
 

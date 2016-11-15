@@ -45,7 +45,7 @@ namespace music
                bool Play(imedia_position tkStart, uint32_t dwEllapse = 584);
 
                virtual bool initialize_instance();
-               virtual int32_t exit_instance();
+               virtual int32_t exit_thread();
                virtual void pre_translate_message(::signal_details * pobj);
                void OnMmsgDone(::music::midi::sequence *pSeq);
                   void SaveFile(const char * lpszPathName);

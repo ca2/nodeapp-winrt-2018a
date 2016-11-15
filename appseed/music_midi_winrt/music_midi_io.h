@@ -55,6 +55,7 @@ namespace music
             void note_off(int iChannel, unsigned char uchNote, unsigned char uchVelocity);
             void program_change(int iChannel, unsigned char uchProgram);
             void control_change(int iChannel, unsigned char uchController, unsigned char uchValue);
+            void pitch_bend(int iChannel, unsigned short ushBend);
             void send(IMidiMessage ^ message);
 
          private:

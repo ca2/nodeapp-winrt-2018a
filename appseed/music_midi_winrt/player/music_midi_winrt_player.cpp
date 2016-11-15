@@ -47,9 +47,11 @@ namespace music
                //m_evInitialized.SetEvent();
 
                return true;
+
             }
 
-            int32_t player::exit_instance()
+
+            int32_t player::exit_thread()
             {
                // TODO:  perform any per-thread cleanup here
                //   if(!get_sequence()->IsNull())
@@ -61,8 +63,10 @@ namespace music
                //    delete m_pmidicallbackdata;
                ///  m_pmidicallbackdata = NULL;
                //}
-               return thread::exit_instance();
+               return thread::exit_thread();
+
             }
+
 
             void player::install_message_handling(::message::dispatch * pinterface)
             {
@@ -376,14 +380,22 @@ namespace music
 
             void player::PostNotifyEvent(::music::midi::player::e_notify_event eevent)
             {
+               
                if(m_puie != NULL)
                {
-                  ::music::midi::player::notify_event * pdata = new ::music::midi::player::notify_event;
+
+                  sp(::music::midi::player::notify_event) pdata(canew(::music::midi::player::notify_event));
+
                   pdata->m_pplayer = this;
+
                   pdata->m_enotifyevent = eevent;
-                  m_puie->post_message(::music::midi::player::message_notify_event, 0 , (LPARAM) pdata);
+
+                  m_puie->post_object(::music::midi::player::message_notify_event, 0 , pdata);
+
                }
+
             }
+
 
             void player::SendMmsgDone(::music::midi::sequence *pSeq, ::music::midi::LPMIDIDONEDATA lpmdd)
             {
@@ -471,17 +483,20 @@ namespace music
 
             void player::OnNotifyEvent(::signal_details * pobj)
             {
+
                SCAST_PTR(::message::base, pbase, pobj);
-               ::music::midi::player::notify_event * pdata = (::music::midi::player::notify_event *) pbase->m_lparam.m_lparam;
+               
+               sp(::music::midi::player::notify_event) pdata(pbase->m_lparam);
+               
                pdata->m_pplayer = this;
+
                if(m_puie != NULL)
                {
-                  m_puie->post_message(::music::midi::player::message_notify_event, 0 , (LPARAM) pdata);
+
+                  m_puie->post_object(::music::midi::player::message_notify_event, 0 , pdata);
+
                }
-               else
-               {
-                  delete pdata;
-               }
+
             }
 
 

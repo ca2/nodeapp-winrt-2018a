@@ -681,6 +681,15 @@ namespace music
 
          }
          
+         void message_io::pitch_bend(int iChannel, unsigned short ushBend)
+         {
+
+            
+            IMidiMessage ^ message = ref new MidiPitchBendChangeMessage(iChannel, ushBend);
+
+            send(message);
+
+         }
 
 
       } // namespace winrt

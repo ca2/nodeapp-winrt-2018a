@@ -19,7 +19,6 @@ namespace music
             ::music::midi::file::buffer(papp)
          {
 
-
             m_estorage              = ::music::storage_none;
 
             m_tkLength              = 0;
@@ -49,11 +48,11 @@ namespace music
 
             CloseFile();
 
-            if(m_ptracks != NULL)
-            {
-               delete m_ptracks;
-               m_ptracks = NULL;
-            }
+            //if(m_ptracks != NULL)
+            //{
+            //   delete m_ptracks;
+            //   m_ptracks = NULL;
+            //}
 
             if(m_estorage == ::music::storage_attach)
             {

@@ -25,16 +25,24 @@ namespace music
          {
          }
 
-         bool sequence_thread::initialize_instance()
+
+         bool sequence_thread::initialize_thread()
          {
+
             set_thread_priority(::multithreading::priority_highest);
+
             return true;
+
          }
 
-         int32_t sequence_thread::exit_instance()
+
+         int32_t sequence_thread::exit_thread()
          {
-            return thread::exit_instance();
+
+            return thread::exit_thread();
+
          }
+
 
          void sequence_thread::install_message_handling(::message::dispatch * pinterface)
          {
@@ -58,7 +66,7 @@ namespace music
          bool sequence_thread::PostMidiSequenceEvent(::music::midi::sequence * pseq, ::music::midi::sequence::e_event eevent)
          {
 
-            return post_thread_message(::music::midi::sequence::message_event,  (WPARAM) pseq, (LPARAM) pseq->create_new_event(eevent));
+            return post_object(::music::midi::sequence::message_event,  (WPARAM) pseq, pseq->create_new_event(eevent));
 
          }
 
@@ -68,7 +76,7 @@ namespace music
 
             sp(sequence) seq = pseq;
 
-            return post_thread_message(::music::midi::sequence::message_event,  (WPARAM) pseq, (LPARAM) seq->create_new_event(eevent));
+            return post_object(::music::midi::sequence::message_event,  (WPARAM) pseq, seq->create_new_event(eevent));
 
          }
 
@@ -77,7 +85,8 @@ namespace music
 
             SCAST_PTR(::message::base, pbase, pobj);
 
-            ::music::midi::sequence::event * pevent = (::music::midi::sequence::event *) pbase->m_lparam.m_lparam;
+            sp(::music::midi::sequence::event) pevent(pbase->m_lparam);
+
             ::music::midi::winrt::sequence * pseq = dynamic_cast < ::music::midi::winrt::sequence * > (pevent->m_psequence);
 
             pseq->OnEvent(pevent);
@@ -185,20 +194,28 @@ namespace music
 
             }
 
-            delete pevent;
+            //delete pevent;
 
 
          }
 
+         
          void sequence_thread::PostNotifyEvent(::music::midi::player::e_notify_event eevent)
          {
+            
             if(m_pplayer != NULL)
             {
-               ::music::midi::player::notify_event * pdata = new ::music::midi::player::notify_event;
+               
+               sp(::music::midi::player::notify_event) pdata(canew(::music::midi::player::notify_event));
+               
                pdata->m_enotifyevent = eevent;
-               m_pplayer->post_thread_message(::music::midi::player::message_notify_event, 0, (LPARAM) pdata);
+
+               m_pplayer->post_object(::music::midi::player::message_notify_event, 0, pdata);
+
             }
+
          }
+
 
          void sequence_thread::Play(imedia_position tkStart)
          {

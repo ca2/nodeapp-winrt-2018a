@@ -49,8 +49,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_rdpclient", "..\..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_rdpclient", "..\..\..\app-core\appseed\rdpclient\w_winmetro_rdpclient.vcxproj", "{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axisrdpclient", "..\..\..\app\appseed\rdpclient\w_axisrdpclient.vcxproj", "{86FB1DC1-EC84-4F59-8888-DC14CBB85935}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axisfreeimage", "..\..\..\app\appseed\freeimage\w_axisfreeimage.vcxproj", "{8785C06D-F7A7-485A-A258-027761E4A291}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_decode_png", "..\..\..\app\appseed\image_png\w_axis_image_png.vcxproj", "{B4517714-2000-419D-A87F-4338C9DDE3FA}"
@@ -386,18 +384,6 @@ Global
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|Win32.Build.0 = stage|Win32
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.ActiveCfg = stage|x64
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.Build.0 = stage|x64
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|ARM.ActiveCfg = basis|ARM
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|ARM.Build.0 = basis|ARM
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|Win32.ActiveCfg = basis|Win32
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|Win32.Build.0 = basis|Win32
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|x64.ActiveCfg = basis|x64
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.basis|x64.Build.0 = basis|x64
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|ARM.ActiveCfg = stage|ARM
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|ARM.Build.0 = stage|ARM
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|Win32.ActiveCfg = stage|Win32
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|Win32.Build.0 = stage|Win32
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|x64.ActiveCfg = stage|x64
-		{86FB1DC1-EC84-4F59-8888-DC14CBB85935}.stage|x64.Build.0 = stage|x64
 		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|ARM.ActiveCfg = basis|ARM
 		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|ARM.Build.0 = basis|ARM
 		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|Win32.ActiveCfg = basis|Win32

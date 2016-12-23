@@ -67,7 +67,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_veriwell_mplit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "music_midi_winrt", "..\..\appseed\music_midi_winrt\w_music_midi_winrt.vcxproj", "{7D2387EB-A3DE-4EA5-B061-48A856DD7211}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{111220A3-136B-4C2E-8FCF-434A4F46E0B8}"
+	ProjectSection(SolutionItems) = preProject
+		Performance1.psess = Performance1.psess
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		basis|ARM = basis|ARM
 		basis|Win32 = basis|Win32

@@ -26,7 +26,9 @@
 //#define MAX_DWORD_PTR ((dword_ptr)(-1))
 
 
-
+#define BSD_STYLE_SOCKETS
+#define HAVE_OPENSSL
+#define _WINSOCK_DEPRECATED_NO_WARNINGS
 
 
 #pragma once

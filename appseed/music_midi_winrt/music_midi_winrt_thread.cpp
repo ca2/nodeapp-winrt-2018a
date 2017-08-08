@@ -2,20 +2,20 @@
 
 
 /* Windows sleep in 100ns units */
-BOOLEAN nanosleep(LONGLONG ns)
-{
-   manual_reset_event ev(::get_thread_app());
-
-   TimeSpan delay;
-   delay.Duration = MAX((ns / 100), 1) - 1;
-   ThreadPoolTimer ^ PeriodicTimer =
-      ThreadPoolTimer::CreateTimer(ref new TimerElapsedHandler([&](ThreadPoolTimer ^) {ev.SetEvent(); }), delay);
-
-   ev.wait();
-
-   return TRUE;
-
-}
+//BOOLEAN nanosleep(LONGLONG ns)
+//{
+//   manual_reset_event ev(::get_thread_app());
+//
+//   TimeSpan delay;
+//   delay.Duration = MAX((ns / 100), 1) - 1;
+//   ThreadPoolTimer ^ PeriodicTimer =
+//      ThreadPoolTimer::CreateTimer(ref new TimerElapsedHandler([&](ThreadPoolTimer ^) {ev.SetEvent(); }), delay);
+//
+//   ev.wait();
+//
+//   return TRUE;
+//
+//}
 
 uint64_t get_micro()
 {
@@ -98,7 +98,7 @@ namespace music
             while (get_run_thread())
             {
 
-               if (m_pseq->file()->GetFlags().is_signalized(file::EndOfFile))
+               if (m_pseq->file()->m_flags & file::EndOfFile)
                {
                   
                   break;

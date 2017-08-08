@@ -22,7 +22,6 @@ namespace music
 
             m_pthreadPlay = NULL;
 
-            m_io = ref new message_io;
 //            m_hstream = NULL;
 
             //m_buffera.Initialize(16, m_cbPreroll, (uint_ptr) (void *) &m_midicallbackdata);
@@ -219,7 +218,7 @@ Seq_Open_File_Cleanup:
          e_result sequence::OpenFile(const char * lpFileName, int32_t openMode)
          {
 
-            ::file::buffer_sp file;
+            ::file::file_sp file;
 
             try
             {
@@ -284,7 +283,7 @@ Seq_Open_File_Cleanup:
 
          }
 
-         e_result sequence::OpenFile(::file::stream_buffer & ar, int32_t openMode)
+         e_result sequence::OpenFile(::file::file & ar, int32_t openMode)
          {
 
             SMFFILEINFO                sfi;
@@ -477,7 +476,7 @@ Seq_Open_File_Cleanup:
 
             m_flags.unsignalize(FlagEOF);
 
-            file()->GetFlags().unsignalize(file::EndOfFile);
+            file()->m_flags &= ~file::EndOfFile;
 
             //smfrc = file()->WorkSeek(m_tkBase);
 
@@ -538,11 +537,14 @@ Seq_Open_File_Cleanup:
             //   mmrc = translate_mmr(midiStreamRestart(m_hstream));
             //}
             sl.unlock();
+
             if(mmrc == ::multimedia::result_success)
             {
+
                thread()->PostMidiSequenceEvent(this, ::music::midi::sequence::EventMidiPlaybackStart);
 
             }
+
             return mmrc;
          }
 
@@ -1159,7 +1161,7 @@ Seq_Open_File_Cleanup:
          }
 
 
-         e_result sequence::SaveFile(::file::buffer_sp &ar)
+         e_result sequence::SaveFile(::file::file_sp &ar)
          {
 
             return file()->SaveFile(*ar);
@@ -2381,13 +2383,31 @@ Seq_Open_File_Cleanup:
          void sequence::rt_start()
          {
 
-            int iPortCount = m_io->get_out_port_count();
+            m_io = ref new message_io;
 
-            if (iPortCount <= 0)
+            int i = 10;
+
+            while (true)
             {
+               int iPortCount = m_io->get_out_port_count();
 
-               return;
+               if (iPortCount > 0)
+               {
 
+                  Sleep(500);
+
+                  break;
+
+               }
+               Sleep(500);
+               i--;
+
+               if (i < 0)
+               {
+
+                  return;
+
+               }
             }
 
             string strPort = m_io->get_out_port_name(0);

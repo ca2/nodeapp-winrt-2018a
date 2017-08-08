@@ -374,6 +374,7 @@ namespace music
             return _devInfoCollection;
          }
 
+         
          void message_io::MidiDeviceWatcher::UpdatePorts()
          {
 
@@ -388,6 +389,7 @@ namespace music
             }
             else
             {
+
                _devInfoCollection = deviceInfoCollection;
 
                for (index i = 0; i < deviceInfoCollection->Size; i++)
@@ -398,6 +400,7 @@ namespace music
                   m_io->add_out_port(devInfo->Name);
 
                }
+
             }
 
          }

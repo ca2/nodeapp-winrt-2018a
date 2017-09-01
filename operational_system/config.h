@@ -36,6 +36,11 @@ typedef unsigned short unichar;
 //
 //#endif
 
+// This avoids use of crypt for Zip compressing code
+#ifndef NOCRYPT
+#define NOCRYPT
+#endif
+
 
 #ifdef _DEBUG
 #define DEBUG

@@ -86,7 +86,7 @@ namespace music
 
             m_evRun.wait();
 
-            if (!get_run_thread())
+            if (!thread_get_run())
             {
 
                goto end_playback;
@@ -95,7 +95,7 @@ namespace music
 
 
 
-            while (get_run_thread())
+            while (thread_get_run())
             {
 
                if (m_pseq->file()->m_flags & file::EndOfFile)

@@ -36,7 +36,7 @@ namespace music
                virtual ~player();
 
 
-               void install_message_handling(::message::dispatch * pinterface);
+               void install_message_routing(::message::sender * pinterface);
 
 
                void SendMmsgDone(::music::midi::sequence *pSeq, ::music::midi::LPMIDIDONEDATA lpmdd);
@@ -46,7 +46,7 @@ namespace music
 
                virtual bool initialize_instance();
                virtual int32_t exit_thread();
-               virtual void pre_translate_message(::signal_details * pobj);
+               virtual void pre_translate_message(::message::message * pmessage) override;
                void OnMmsgDone(::music::midi::sequence *pSeq);
                   void SaveFile(const char * lpszPathName);
                void SetPosition(double dRate);

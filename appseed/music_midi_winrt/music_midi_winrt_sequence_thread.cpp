@@ -44,11 +44,11 @@ namespace music
          }
 
 
-         void sequence_thread::install_message_handling(::message::dispatch * pinterface)
+         void sequence_thread::install_message_routing(::message::sender * pinterface)
          {
-            ::music::midi::sequence_thread::install_message_handling(pinterface);
+            ::music::midi::sequence_thread::install_message_routing(pinterface);
 //            IGUI_WIN_MSG_LINK(::music::midi::player::message_command, pinterface, this, &sequence_thread::OnCommand);
-            IGUI_WIN_MSG_LINK(::music::midi::sequence::message_event, pinterface, this, &sequence_thread::OnMidiSequenceEvent);
+            IGUI_MSG_LINK(::music::midi::sequence::message_event, pinterface, this, &sequence_thread::OnMidiSequenceEvent);
          }
 
          void sequence_thread::Stop(imedia_time msEllapse)
@@ -80,7 +80,7 @@ namespace music
 
          }
 
-         void sequence_thread::OnMidiSequenceEvent(::signal_details * pobj)
+         void sequence_thread::OnMidiSequenceEvent(::message::message * pobj)
          {
 
             SCAST_PTR(::message::base, pbase, pobj);

@@ -29,8 +29,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gcom", "..\..\..\app-core\a
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_ace", "..\..\..\app\appseed\ace\_w_ace.vcxproj", "{F9116331-25D4-4634-8EEA-078AEDB82161}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_decode_jpeg", "..\..\..\app\appseed\image_jpeg\w_axis_image_jpeg.vcxproj", "{B4517713-2000-419D-A87F-4338C9DDE3FA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_cidadedecuritiba_alphaclock", "..\..\..\app-cidadedecuritiba\appseed\alphaclock\w_alphaclock.vcxproj", "{B95D79F5-DEF9-4250-B4A2-6AE610921998}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_hellomultiverse", "..\..\..\app-core\appseed\hellomultiverse\w_winmetro_hellomultiverse.vcxproj", "{4F5F745E-CCC2-4D90-8923-F5BA47A125C0}"
@@ -49,8 +47,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_rdpclient", "..\..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_rdpclient", "..\..\..\app-core\appseed\rdpclient\w_winmetro_rdpclient.vcxproj", "{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_decode_png", "..\..\..\app\appseed\image_png\w_axis_image_png.vcxproj", "{B4517714-2000-419D-A87F-4338C9DDE3FA}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "multimedia", "..\..\..\app-core\appseed\multimedia\w_multimedia.vcxproj", "{845177FA-3079-4B23-8F97-4543BB980265}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "baseid3lib", "..\..\..\app-core\appseed\id3lib\w_id3lib.vcxproj", "{3C4F405B-2D27-4E0A-B33E-AFEE86DD06D4}"
@@ -68,12 +64,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sphere", "..\..\..\app\appseed\sphere\w_sphere.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA44}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tesseract", "..\..\..\app-core\appseed\tesseract\w_tesseract.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FF159D7D-34CA-4D8A-AD8F-0BEF1A2DC995}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-		Performance2.psess = Performance2.psess
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rdpsnd-client-audio_decode", "..\..\..\app-core\appseed\rdpsnd-client-audio_decode\w_rdpsnd-client-audio_decode.vcxproj", "{2AE90751-997B-44DC-A549-D390B76875B7}"
 EndProject
@@ -333,24 +323,6 @@ Global
 		{F9116331-25D4-4634-8EEA-078AEDB82161}.stage|Win32.Build.0 = stage|Win32
 		{F9116331-25D4-4634-8EEA-078AEDB82161}.stage|x64.ActiveCfg = stage|x64
 		{F9116331-25D4-4634-8EEA-078AEDB82161}.stage|x64.Build.0 = stage|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.ActiveCfg = basis|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.Build.0 = basis|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|Win32.ActiveCfg = basis|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|Win32.Build.0 = basis|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|x64.ActiveCfg = basis|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.basis|x64.Build.0 = basis|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|ARM.ActiveCfg = stage|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|ARM.Build.0 = stage|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|Win32.ActiveCfg = stage|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|Win32.Build.0 = stage|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|x64.ActiveCfg = stage|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.cover|x64.Build.0 = stage|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|ARM.ActiveCfg = stage|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|ARM.Build.0 = stage|ARM
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|Win32.ActiveCfg = stage|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|Win32.Build.0 = stage|Win32
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|x64.ActiveCfg = stage|x64
-		{B4517713-2000-419D-A87F-4338C9DDE3FA}.stage|x64.Build.0 = stage|x64
 		{B95D79F5-DEF9-4250-B4A2-6AE610921998}.basis|ARM.ActiveCfg = basis|ARM
 		{B95D79F5-DEF9-4250-B4A2-6AE610921998}.basis|ARM.Build.0 = basis|ARM
 		{B95D79F5-DEF9-4250-B4A2-6AE610921998}.basis|Win32.ActiveCfg = basis|Win32
@@ -550,24 +522,6 @@ Global
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|Win32.Build.0 = stage|Win32
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.ActiveCfg = stage|x64
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.Build.0 = stage|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.ActiveCfg = basis|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.Build.0 = basis|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|Win32.ActiveCfg = basis|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|Win32.Build.0 = basis|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|x64.ActiveCfg = basis|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|x64.Build.0 = basis|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|ARM.ActiveCfg = stage|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|ARM.Build.0 = stage|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|Win32.ActiveCfg = stage|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|Win32.Build.0 = stage|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|x64.ActiveCfg = stage|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.cover|x64.Build.0 = stage|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|ARM.ActiveCfg = stage|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|ARM.Build.0 = stage|ARM
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|Win32.ActiveCfg = stage|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|Win32.Build.0 = stage|Win32
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|x64.ActiveCfg = stage|x64
-		{B4517714-2000-419D-A87F-4338C9DDE3FA}.stage|x64.Build.0 = stage|x64
 		{845177FA-3079-4B23-8F97-4543BB980265}.basis|ARM.ActiveCfg = basis|ARM
 		{845177FA-3079-4B23-8F97-4543BB980265}.basis|ARM.Build.0 = basis|ARM
 		{845177FA-3079-4B23-8F97-4543BB980265}.basis|Win32.ActiveCfg = basis|Win32

@@ -57,11 +57,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "video_decode_ffmpeg", "..\.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "music_midi_winrt", "..\..\appseed\music_midi_winrt\w_music_midi_winrt.vcxproj", "{7D2387EB-A3DE-4EA5-B061-48A856DD7211}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{111220A3-136B-4C2E-8FCF-434A4F46E0B8}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_veriwell_musical_player_lite", "..\..\..\app-veriwell\appseed\musical_player_lite\w_musical_player_lite.vcxproj", "{D41641B1-CB8E-4F50-9E09-DB6BDD837C82}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_veriwell_musical_player_lite", "..\..\..\app-veriwell\appseed\musical_player_lite\w_winmetro_musical_player_lite.vcxproj", "{9C6FC641-43F3-416A-85F6-7809ABF404D3}"

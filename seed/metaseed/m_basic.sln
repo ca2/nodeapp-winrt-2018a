@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aqua", "..\..\..\app\appseed\aqua\w_aqua.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA86}"
 EndProject
@@ -48,8 +48,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_rdpclient", "..\..\..\app-core\appseed\rdpclient\w_core_rdpclient.vcxproj", "{85497D32-1330-48BE-9E15-8213564B6DC7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_rdpclient", "..\..\..\app-core\appseed\rdpclient\w_winmetro_rdpclient.vcxproj", "{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "axisfreeimage", "..\..\..\app\appseed\freeimage\w_axisfreeimage.vcxproj", "{8785C06D-F7A7-485A-A258-027761E4A291}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "image_decode_png", "..\..\..\app\appseed\image_png\w_axis_image_png.vcxproj", "{B4517714-2000-419D-A87F-4338C9DDE3FA}"
 EndProject
@@ -552,24 +550,6 @@ Global
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|Win32.Build.0 = stage|Win32
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.ActiveCfg = stage|x64
 		{EAEC3220-27D5-4E20-8CC5-B41BFD92A303}.stage|x64.Build.0 = stage|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|ARM.ActiveCfg = basis|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|ARM.Build.0 = basis|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|Win32.ActiveCfg = basis|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|Win32.Build.0 = basis|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|x64.ActiveCfg = basis|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.basis|x64.Build.0 = basis|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|ARM.ActiveCfg = stage|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|ARM.Build.0 = stage|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|Win32.ActiveCfg = stage|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|Win32.Build.0 = stage|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|x64.ActiveCfg = stage|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.cover|x64.Build.0 = stage|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|ARM.ActiveCfg = stage|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|ARM.Build.0 = stage|ARM
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|Win32.ActiveCfg = stage|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|Win32.Build.0 = stage|Win32
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|x64.ActiveCfg = stage|x64
-		{8785C06D-F7A7-485A-A258-027761E4A291}.stage|x64.Build.0 = stage|x64
 		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.ActiveCfg = basis|ARM
 		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|ARM.Build.0 = basis|ARM
 		{B4517714-2000-419D-A87F-4338C9DDE3FA}.basis|Win32.ActiveCfg = basis|Win32

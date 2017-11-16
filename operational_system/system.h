@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifdef __cplusplus
@@ -77,7 +77,7 @@ class metrowin_todo { public: metrowin_todo() {}  ~metrowin_todo() {} };
 #ifdef __cplusplus
 #define __INLINE inline /*__forceinline*/
 #else
-#define __INLINE 
+#define __INLINE
 #endif
 #endif
 
@@ -242,14 +242,14 @@ using namespace Windows::Storage;
 
 namespace dx
 {
-   inline void throw_if_failed(HRESULT hr)
-   {
-      if(FAILED(hr))
-      {
-         // Set a breakpoint on this line to catch DirectX API errors
-         throw Platform::Exception::CreateException(hr);
-      }
-   }
+   //inline void throw_if_failed(HRESULT hr)
+   //{
+   //   if(FAILED(hr))
+   //   {
+   //      // Set a breakpoint on this line to catch DirectX API errors
+   //      throw Platform::Exception::CreateException(hr);
+   //   }
+   //}
 
    struct ByteArray { Platform::Array<byte>^ data; };
 
@@ -606,7 +606,7 @@ __INLINE HWND GetNextWindow(HWND hWnd,UINT nDirection)
 #ifdef ___DEVBUILD
 #define __IMPL_DATA __DATA_EXPORT
 #else
-#define __IMPL_DATA CLASS_DECL_AURA 
+#define __IMPL_DATA CLASS_DECL_AURA
 #endif
 
 

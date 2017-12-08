@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 
 
 /* Windows sleep in 100ns units */
@@ -41,7 +41,7 @@ namespace music
             ::thread(papp),
             m_evRun(papp)
          {
-               
+
             m_pseq = NULL;
 
             m_evRun.SetEvent();
@@ -58,12 +58,11 @@ namespace music
                m_pseq->m_pthreadPlay = NULL;
 
             }
+
          }
 
 
-                  
-
-         int32_t thread::run()
+         void thread::run()
          {
 
             e_result       smfrc;
@@ -100,14 +99,14 @@ namespace music
 
                if (m_pseq->file()->m_flags & file::EndOfFile)
                {
-                  
+
                   break;
 
                }
 
 
                bProcessed = true;
-                  
+
                if (!bGotEvent)
                {
 
@@ -126,14 +125,14 @@ namespace music
 
                tkPosition = m_pseq->file()->GetPosition();
 
-                  
+
 
                dwNow = ::get_micro() - dwStart;
                dwFile = m_pseq->TickToMicro(tkPosition);
 
                if (dwNow < dwFile)
                {
-                     
+
                   if (dwFile - dwNow >= 2000)
                   {
 
@@ -217,23 +216,23 @@ namespace music
                      //}
                      //else
                      //{
-                        int iChannel = pevent->GetTrack();
+                     int iChannel = pevent->GetTrack();
 
 
-                        uint16_t uiBend = pevent->GetPitchBendLevel();
-                        uint16_t uiBend2;
+                     uint16_t uiBend = pevent->GetPitchBendLevel();
+                     uint16_t uiBend2;
 
-                        BYTE b1 = ((BYTE*)&uiBend)[0];
-                        BYTE b2 = ((BYTE*)&uiBend)[1];
+                     BYTE b1 = ((BYTE*)&uiBend)[0];
+                     BYTE b2 = ((BYTE*)&uiBend)[1];
 
-                        ((BYTE*)&uiBend2)[0] = b2;
-                        ((BYTE*)&uiBend2)[1] = b1;
+                     ((BYTE*)&uiBend2)[0] = b2;
+                     ((BYTE*)&uiBend2)[1] = b1;
 
-                        TRACE("pitch_bend ch=%02d bend1=%05d bend2=%05d", iChannel, uiBend, uiBend2);
+                     TRACE("pitch_bend ch=%02d bend1=%05d bend2=%05d", iChannel, uiBend, uiBend2);
 
-                        tkLastBend = tkPosition;
+                     tkLastBend = tkPosition;
 
-                        m_pseq->m_io->pitch_bend(iChannel, MIN(16383, uiBend));
+                     m_pseq->m_io->pitch_bend(iChannel, MIN(16383, uiBend));
 
 
                      //}
@@ -244,10 +243,10 @@ namespace music
 
                }
 
-               
 
 
-               
+
+
 
                if (::music::success != smfrc)
                {
@@ -259,20 +258,18 @@ namespace music
 
             }
 
-         end_playback:
+end_playback:
 
             pthread->PostMidiSequenceEvent(
-               m_pseq,
-               ::music::midi::sequence::EventMidiPlaybackEnd,
-               NULL);
+            m_pseq,
+            ::music::midi::sequence::EventMidiPlaybackEnd,
+            NULL);
             if (m_pseq->m_pthreadPlay == this)
             {
 
                m_pseq->m_pthreadPlay = NULL;
 
             }
-
-            return 0;
 
          }
 

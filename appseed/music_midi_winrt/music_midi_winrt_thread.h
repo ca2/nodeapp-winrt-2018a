@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 
@@ -31,7 +31,8 @@ namespace music
             virtual ~thread();
 
 
-            virtual int32_t run();
+            virtual void run() override;
+
 
          };
 

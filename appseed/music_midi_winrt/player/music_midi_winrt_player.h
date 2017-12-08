@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 
@@ -44,11 +44,14 @@ namespace music
                bool Play(double dRate = 0.0, uint32_t dwEllapse = 584);
                bool Play(imedia_position tkStart, uint32_t dwEllapse = 584);
 
-               virtual bool initialize_instance();
-               virtual int32_t exit_thread();
+
+               virtual bool init_thread() override;
+               virtual void term_thread() override;
+
+
                virtual void pre_translate_message(::message::message * pmessage) override;
                void OnMmsgDone(::music::midi::sequence *pSeq);
-                  void SaveFile(const char * lpszPathName);
+               void SaveFile(const char * lpszPathName);
                void SetPosition(double dRate);
                void Pause();
                void CloseFile();

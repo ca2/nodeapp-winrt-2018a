@@ -350,7 +350,7 @@ namespace music
          //}
 
 
-         void sequence_thread::_ExecuteCommand(smart_pointer < ::music::midi::player::command > spcommand)
+         void sequence_thread::_ExecuteCommand(::music::midi::player::command * spcommand)
          {
             switch(spcommand->GetCommand())
             {

@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 
 
 namespace music
@@ -368,7 +368,7 @@ Seq_Open_File_Cleanup:
          e_result sequence::CloseFile()
          {
 
-            single_lock sl(&m_mutex, true);
+            single_lock sl(m_pmutex, true);
 
             //if (status_no_file == GetState())
             //   return ::multimedia::result_unsupported_function;
@@ -448,7 +448,7 @@ Seq_Open_File_Cleanup:
 
             UNREFERENCED_PARAMETER(pthread);
 
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             int32_t                 i;
             e_result                smfrc;
@@ -465,8 +465,8 @@ Seq_Open_File_Cleanup:
             m_mmrcLastErr = ::multimedia::result_success;
 
             if(GetState() != status_opened &&
-               GetState() != status_pre_rolled &&
-               !IsInSpecialModeV001())
+                  GetState() != status_pre_rolled &&
+                  !IsInSpecialModeV001())
                return ::multimedia::result_unsupported_function;
 
             m_tkBase = lpPreroll->tkBase;
@@ -516,7 +516,7 @@ Seq_Open_File_Cleanup:
          ::multimedia::e_result sequence::Start()
          {
 
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             if (::music::midi::sequence::status_pre_rolled != GetState())
             {
@@ -571,7 +571,7 @@ Seq_Open_File_Cleanup:
          ::multimedia::e_result sequence::Pause()
 
          {
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             //    assert(NULL != pSeq);
 
@@ -615,7 +615,7 @@ Seq_Open_File_Cleanup:
          {
             //    assert(NULL != pSeq);
 
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             if (status_paused != GetState())
                return ::multimedia::result_unsupported_function;
@@ -654,14 +654,14 @@ Seq_Open_File_Cleanup:
          ::multimedia::e_result sequence::Stop()
          {
 
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             if(GetState() == status_stopping)
                return ::multimedia::result_success;
 
             // Automatic success if we're already stopped
             if (GetState() != status_playing
-               && GetState() != status_paused)
+                  && GetState() != status_paused)
             {
                m_flags.unsignalize(::music::midi::sequence::FlagWaiting);
                GetPlayerLink().OnFinishCommand(::music::midi::player::command_stop);
@@ -725,7 +725,7 @@ Seq_Open_File_Cleanup:
          ***************************************************************************/
          ::multimedia::e_result sequence::get_ticks(imedia_position &  pTicks)
          {
-            single_lock sl(&m_mutex);
+            single_lock sl(m_pmutex);
             if(!sl.lock(millis(184)))
                return ::multimedia::result_internal;
 
@@ -818,7 +818,7 @@ Seq_Open_File_Cleanup:
 
          ::multimedia::e_result sequence::get_millis(imedia_time & time)
          {
-            single_lock sl(&m_mutex);
+            single_lock sl(m_pmutex);
             if(!sl.lock(millis(184)))
                return ::multimedia::result_internal;
 
@@ -1139,7 +1139,7 @@ Seq_Open_File_Cleanup:
          bool sequence::IsPlaying()
          {
             return GetState() == status_playing ||
-               GetState() == status_stopping;
+                   GetState() == status_stopping;
          }
 
 
@@ -1342,7 +1342,7 @@ Seq_Open_File_Cleanup:
 
          ::multimedia::e_result sequence::CloseStream()
          {
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
             if(IsPlaying())
             {
                Stop();
@@ -1379,14 +1379,14 @@ Seq_Open_File_Cleanup:
 
             UNREFERENCED_PARAMETER(pevent);
 
-            single_lock sl(&m_mutex, TRUE);
+            single_lock sl(m_pmutex, TRUE);
 
             m_mmrcLastErr = ::multimedia::result_success;
-            
+
             m_flags.unsignalize(FlagWaiting);
 
             m_evMmsgDone.SetEvent();
-            
+
          }
 
          void sequence::OnEvent(::music::midi::sequence::event * pevent)
@@ -1394,113 +1394,113 @@ Seq_Open_File_Cleanup:
             switch(pevent->m_eevent)
             {
             case EventSpecialModeV001End:
-               {
-                  SetSpecialModeV001Flag(false);
-                  OnMidiPlaybackEnd(pevent);
-                  SetState(m_uiPreSpecialModeV001State);
-               }
-               break;
+            {
+               SetSpecialModeV001Flag(false);
+               OnMidiPlaybackEnd(pevent);
+               SetState(m_uiPreSpecialModeV001State);
+            }
+            break;
             case EventStopped:
-               {
-                  OnMidiPlaybackEnd(pevent);
-                  SetState(status_opened);
-               }
-               break;
+            {
+               OnMidiPlaybackEnd(pevent);
+               SetState(status_opened);
+            }
+            break;
             case EventMidiPlaybackEnd:
-               {
-                  OnMidiPlaybackEnd(pevent);
-                  SetState(status_opened);
-               }
-               break;
+            {
+               OnMidiPlaybackEnd(pevent);
+               SetState(status_opened);
+            }
+            break;
             case EventMidiStreamOut:
+            {
+
+
+
+               single_lock sl(m_pmutex, TRUE);
+
+               ::music::midi::winrt::sequence::event * pev = (::music::midi::winrt::sequence::event *) pevent;
+
+               if(m_flags.is_signalized(FlagEOF))
                {
 
-
-
-                  single_lock sl(&m_mutex, TRUE);
-
-                  ::music::midi::winrt::sequence::event * pev = (::music::midi::winrt::sequence::event *) pevent;
-
-                  if(m_flags.is_signalized(FlagEOF))
-                  {
-
-                     return;
-
-                  }
-
-                  //LPMIDIHDR lpmh = pev->m_lpmh;
-
-                  //e_result smfrc;
-
-                  //if(IsInSpecialModeV001())
-                  //{
-                  //   TRACE("::music::midi::sequence::OnEvent EventMidiStreamOut IsInSpecialModeV001");
-                  //}
-                  //else
-                  //{
-                  //   smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
-                  //}
-
-                  //switch(smfrc)
-                  //{
-                  //case ::music::success:
-
-                  //   break;
-
-                  //case SEndOfFile:
-
-                  //   m_flags.signalize(FlagEOF);
-
-                  //   smfrc = ::music::success;
-
-                  //   break;
-
-                  //default:
-
-
-                  //   TRACE( "smfReadEvents returned %lu in callback!", (uint32_t) smfrc);
-
-                  //   SetState(status_stopping);
-
-                  //   break;
-
-                  //}
-
-                  //if(::music::midi::sequence::status_stopping == GetState())
-                  //{
-
-                  //   thread()->PostMidiSequenceEvent(this, EventMidiPlaybackEnd, lpmh);
-
-                  //   return;
-
-                  //}
-
-                  //::multimedia::e_result mmrc;
-
-                  //if(m_hstream != NULL)
-                  //{
-
-                  //   mmrc = translate_mmr(midiStreamOut(m_hstream, lpmh, sizeof(*lpmh)));
-
-                  //   if(mmrc == ::multimedia::result_success)
-                  //   {
-
-                  //      ++m_uBuffersInMMSYSTEM;
-
-                  //   }
-                  //   else
-                  //   {
-
-                  //      TRACE("seqBufferDone(): midiStreamOut() returned %lu!", (uint32_t)mmrc);
-
-                  //      SetState(::music::midi::sequence::status_stopping);
-
-                  //   }
-
-
-                  //}
+                  return;
 
                }
+
+               //LPMIDIHDR lpmh = pev->m_lpmh;
+
+               //e_result smfrc;
+
+               //if(IsInSpecialModeV001())
+               //{
+               //   TRACE("::music::midi::sequence::OnEvent EventMidiStreamOut IsInSpecialModeV001");
+               //}
+               //else
+               //{
+               //   smfrc = file()->WorkStreamRender(lpmh, m_tkEnd, m_cbPrerollNominalMax);
+               //}
+
+               //switch(smfrc)
+               //{
+               //case ::music::success:
+
+               //   break;
+
+               //case SEndOfFile:
+
+               //   m_flags.signalize(FlagEOF);
+
+               //   smfrc = ::music::success;
+
+               //   break;
+
+               //default:
+
+
+               //   TRACE( "smfReadEvents returned %lu in callback!", (uint32_t) smfrc);
+
+               //   SetState(status_stopping);
+
+               //   break;
+
+               //}
+
+               //if(::music::midi::sequence::status_stopping == GetState())
+               //{
+
+               //   thread()->PostMidiSequenceEvent(this, EventMidiPlaybackEnd, lpmh);
+
+               //   return;
+
+               //}
+
+               //::multimedia::e_result mmrc;
+
+               //if(m_hstream != NULL)
+               //{
+
+               //   mmrc = translate_mmr(midiStreamOut(m_hstream, lpmh, sizeof(*lpmh)));
+
+               //   if(mmrc == ::multimedia::result_success)
+               //   {
+
+               //      ++m_uBuffersInMMSYSTEM;
+
+               //   }
+               //   else
+               //   {
+
+               //      TRACE("seqBufferDone(): midiStreamOut() returned %lu!", (uint32_t)mmrc);
+
+               //      SetState(::music::midi::sequence::status_stopping);
+
+               //   }
+
+
+               //}
+
+            }
             default:
                break;
             }
@@ -1508,7 +1508,7 @@ Seq_Open_File_Cleanup:
 
          imedia_position sequence::GetPositionTicks()
          {
-            single_lock sl(&m_mutex);
+            single_lock sl(m_pmutex);
             if(!sl.lock(millis(0)))
                return -1;
             //MMTIME mmt;
@@ -1520,7 +1520,7 @@ Seq_Open_File_Cleanup:
             //   sizeof(mmt)))
             //   return mmt.u.ticks + m_tkPrerollBase;
             //else
-               return -1;
+            return -1;
          }
 
 

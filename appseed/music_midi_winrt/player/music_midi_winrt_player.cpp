@@ -373,7 +373,7 @@ namespace music
                   imedia_position ticks = 0;
                   if(bPlay)
                   {
-                     ticks = get_sequence()->GetPositionTicks();
+                     ticks = get_sequence()->get_position_ticks();
                      get_sequence()->Stop();
                   }
                   if(!get_sequence()->SetTempoShift(iTempoShift))
@@ -449,7 +449,7 @@ namespace music
                if(get_sequence()->IsPlaying())
                {
                   imedia_position tkPosition = 0;
-                  get_sequence()->GetPosition(tkPosition);
+                  get_sequence()->get_position(tkPosition);
                   ::music::midi::sequence::PlayerLink & link = get_sequence()->GetPlayerLink();
                   link.ModifyFlag(
                   ::music::midi::sequence::FlagTempoChange,

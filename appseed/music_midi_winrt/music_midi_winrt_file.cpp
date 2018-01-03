@@ -1,4 +1,4 @@
-#include "framework.h"
+﻿#include "framework.h"
 
 
 namespace music
@@ -30,7 +30,7 @@ namespace music
             m_cbPendingUserEvent    = 0;
             m_hpbPendingUserEvent   = 0;
 
-            m_tempomap.set_size(0, C_TEMPO_MAP_CHK);
+            m_tempoa.set_size(0, C_TEMPO_MAP_CHK);
 
             m_iKeyShift             = 0;
             m_dTempoShift           = 0.0;
@@ -956,7 +956,7 @@ namespace music
 //            else // Meta
 //            {
 //               // se o meta event possuir tkDelta > 0,
-//               // insere o evento no stream para que n�o haja perda de sincronismo
+//               // insere o evento no stream para que não haja perda de sincronismo
 //               if(tkDelta > 0)
 //               {
 //                  InsertPadEvent(tkDelta, lpmh);

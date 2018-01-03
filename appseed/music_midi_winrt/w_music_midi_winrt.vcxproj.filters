@@ -65,16 +65,10 @@
     <ClCompile Include="music_midi_winrt_factory_exchange.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="music_midi_winrt_file.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="music_midi_winrt_out.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="music_midi_winrt_sequence.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="music_midi_winrt_sequence_thread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="music_midi_winrt_translation.cpp">
@@ -87,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="music_midi_winrt_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="music_midi_winrt_sequence_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="music_midi_winrt_file.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

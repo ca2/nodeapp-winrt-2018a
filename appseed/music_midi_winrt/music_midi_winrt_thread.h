@@ -26,6 +26,10 @@ namespace music
 
             imedia_position         m_tkPosition;
 
+            DWORD                   m_dwStart;
+
+            DWORD                   m_dwOffset;
+
 
             thread(::aura::application * papp);
             virtual ~thread();

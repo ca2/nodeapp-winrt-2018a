@@ -725,15 +725,16 @@ Seq_Open_File_Cleanup:
          ***************************************************************************/
          ::multimedia::e_result sequence::get_ticks(imedia_position &  pTicks)
          {
-            single_lock sl(m_pmutex);
-            if(!sl.lock(millis(184)))
-               return ::multimedia::result_internal;
+
+            synch_lock sl(m_pmutex);
 
             try
             {
 
                if (m_pthreadPlay != NULL)
                {
+
+                  pTicks = MillisecsToTicks(get_tick_count() - m_pthreadPlay->m_dwStart + m_pthreadPlay->m_dwOffset);
 
                   pTicks = m_pthreadPlay->m_tkPosition;
 
@@ -745,71 +746,10 @@ Seq_Open_File_Cleanup:
 
             }
 
-            ::multimedia::e_result                mmr;
-            //MMTIME                  mmt;
-
-            //if (::music::midi::sequence::status_playing != GetState() &&
-            //   ::music::midi::sequence::status_paused != GetState() &&
-            //   ::music::midi::sequence::status_pre_rolling != GetState() &&
-            //   ::music::midi::sequence::status_pre_rolled != GetState() &&
-            //   ::music::midi::sequence::status_opened != GetState() &&
-            //   ::music::midi::sequence::status_stopping != GetState())
-            //{
-            //   TRACE( "seqTime(): State wrong! [is %u]", GetState());
-            //   return ::multimedia::result_unsupported_function;
-            //}
-
-            //pTicks = 0;
-            //if (status_opened != GetState())
-            //{
-            //   pTicks = m_tkBase;
-            //   if (status_pre_rolled != GetState())
-            //   {
-            //      mmt.wType = TIME_TICKS;
-            //      //            single_lock slStream(&m_csStream, false);
-            //      //          slStream.lock();
-            //      if(m_hstream == NULL)
-            //      {
-            //         TRACE("m_hmidi == NULL!!!!");
-            //         return ::multimedia::result_not_ready;
-            //      }
-            //      else
-            //      {
-            //         try
-            //         {
-
-            //            mmr = translate_mmr(midiStreamPosition(m_hstream, &mmt, sizeof(mmt)));
-
-            //            if (::multimedia::result_success != mmr)
-            //            {
-
-            //               TRACE( "midiStreamPosition() returned %lu", (uint32_t)mmr);
-
-            //               return ::multimedia::result_not_ready;
-
-            //            }
-
-            //         }
-            //         catch(...)
-            //         {
-
-            //            return ::multimedia::result_not_ready;
-
-            //         }
-
-            //         pTicks += mmt.u.ticks;
-
-            //      }
-
-            //      //        slStream.unlock();
-
-            //   }
-
-            //}
-
             return ::multimedia::result_success;
 
          }
+
 
          void sequence::get_time(imedia_time & time)
          {
@@ -1272,7 +1212,7 @@ Seq_Open_File_Cleanup:
             if(bPlay)
             {
 
-               ticks = GetPositionTicks();
+               ticks = get_position_ticks();
 
                Stop();
 
@@ -1506,21 +1446,19 @@ Seq_Open_File_Cleanup:
             }
          }
 
-         imedia_position sequence::GetPositionTicks()
+
+         imedia_position sequence::get_position_ticks()
          {
-            single_lock sl(m_pmutex);
-            if(!sl.lock(millis(0)))
-               return -1;
-            //MMTIME mmt;
-            //mmt.wType = TIME_TICKS;
-            //if(::multimedia::result_success ==
-            //   midiStreamPosition(
-            //   m_hstream,
-            //   &mmt,
-            //   sizeof(mmt)))
-            //   return mmt.u.ticks + m_tkPrerollBase;
-            //else
-            return -1;
+
+            if (m_pthreadPlay == NULL)
+            {
+
+               return 0;
+
+            }
+
+            return m_pthreadPlay->m_tkPosition;
+
          }
 
 
@@ -2301,7 +2239,7 @@ Seq_Open_File_Cleanup:
             imedia_position ticks = 0;
             if(bPlay)
             {
-               ticks = GetPositionTicks();
+               ticks = get_position_ticks();
                Stop();
             }
             get_file()->MuteAll(bMute, iExcludeTrack);
@@ -2318,7 +2256,7 @@ Seq_Open_File_Cleanup:
             imedia_position ticks = 0;
             if(bPlay)
             {
-               ticks = GetPositionTicks();
+               ticks = get_position_ticks();
                Stop();
             }
             get_file()->MuteTrack(iIndex, bMute);

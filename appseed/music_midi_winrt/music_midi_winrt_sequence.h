@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #define  VERSION_MINOR              0x00
@@ -123,7 +123,7 @@ namespace music
             //   int2a & ia2TokenLine,
             //   ::ikaraoke::data & data);
 
-            imedia_position GetPositionTicks();
+            imedia_position get_position_ticks() override;
             void SetLevelMeter(int32_t iLevel);
             ::multimedia::e_result CloseStream();
             bool SetMidiOutDevice(uint32_t uiDevice);

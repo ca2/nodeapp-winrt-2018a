@@ -124,7 +124,8 @@ namespace music
                }
 
                tkPosition = m_pseq->file()->GetPosition();
-
+               m_dwStart = tkPosition;
+               m_dwOffset = m_pseq->TicksToMillisecs(tkPosition);
 
 
                dwNow = ::get_micro() - dwStart;

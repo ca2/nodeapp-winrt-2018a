@@ -651,6 +651,12 @@ namespace music
          void message_io::note_on(int iChannel, unsigned char uchNote, unsigned char uchVelocity)
          {
 
+            iChannel = clip(0, 15, iChannel);
+
+            uchNote = clip(0, 127, uchNote);
+
+            uchVelocity = clip(0, 127, uchVelocity);
+
             IMidiMessage ^ message = ref new MidiNoteOnMessage(iChannel, uchNote, uchVelocity);
 
             send(message);
@@ -659,6 +665,12 @@ namespace music
 
          void message_io::note_off(int iChannel, unsigned char uchNote, unsigned char uchVelocity)
          {
+
+            iChannel = clip(0, 15, iChannel);
+
+            uchNote = clip(0, 127, uchNote);
+
+            uchVelocity = clip(0, 127, uchVelocity);
 
             IMidiMessage ^ message = ref new MidiNoteOffMessage(iChannel, uchNote, uchVelocity);
 

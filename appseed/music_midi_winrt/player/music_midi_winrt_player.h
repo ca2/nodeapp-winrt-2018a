@@ -39,9 +39,9 @@ namespace music
                void install_message_routing(::message::sender * pinterface);
 
 
-               void SendMmsgDone(::music::midi::sequence *pSeq, ::music::midi::LPMIDIDONEDATA lpmdd);
+               //void SendMmsgDone(::music::midi::sequence *pSeq, ::music::midi::LPMIDIDONEDATA lpmdd);
                void SetCallbackWindow(sp(::user::interaction) puie);
-               bool Play(double dRate = 0.0, uint32_t dwEllapse = 584);
+               bool PlayRate(double dRate = 0.0, uint32_t dwEllapse = 584);
                bool Play(imedia_position tkStart, uint32_t dwEllapse = 584);
 
 

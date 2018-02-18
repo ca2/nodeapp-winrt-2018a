@@ -46,7 +46,7 @@ namespace music
          buffer::~buffer()
          {
 
-            CloseFile();
+            close_file();
 
             //if(m_ptracks != NULL)
             //{

@@ -175,10 +175,13 @@ namespace music
                PostNotifyEvent(::music::midi::player::notify_event_generic_mmsg_done);
             }
             break;
+            
             case ::music::midi::sequence::EventMidiPlaybackStart:
             {
-               pseq->rt_start();
+               pseq->seq_start();
+
                PostNotifyEvent(::music::midi::player::notify_event_playback_start);
+
             }
             break;
             case ::music::midi::sequence::EventMidiStreamOut:
@@ -220,19 +223,26 @@ namespace music
          void sequence_thread::Play(imedia_position tkStart)
          {
             ASSERT(get_sequence() != NULL);
-            ASSERT(get_sequence()->GetState() == ::music::midi::sequence::status_opened);
+            ASSERT(get_sequence()->get_status() == ::music::midi::sequence::status_opened);
 
             PrerollAndWait(tkStart);
+
             get_sequence()->Start();
+
          }
 
-         void sequence_thread::Play(double dRate)
-         {
-            ASSERT(get_sequence() != NULL);
-            ASSERT(get_sequence()->GetState() == ::music::midi::sequence::status_opened);
 
-            PrerollAndWait(dRate);
+         void sequence_thread::PlayRate(double dRate)
+         {
+
+            ASSERT(get_sequence() != NULL);
+
+            ASSERT(get_sequence()->get_status() == ::music::midi::sequence::status_opened);
+
+            PrerollRateAndWait(dRate);
+
             get_sequence()->Start();
+
          }
 
 
@@ -263,24 +273,29 @@ namespace music
          }
 
 
-         void sequence_thread::PrerollAndWait(double dRate)
+         void sequence_thread::PrerollRateAndWait(double dRate)
          {
+
             ::music::midi::PREROLL                 preroll;
 
             ::math::math::MaxClip(&dRate, 1.0);
             ::math::math::MinClip(&dRate,  0.0);
 
             preroll.tkBase = (imedia_position) (int32_t) ((double) get_sequence()->m_tkLength * dRate);
+
             preroll.tkEnd  = get_sequence()->m_tkLength;
 
             get_sequence()->SetMidiOutDevice(m_pplayer->GetMidiOutDevice());
 
             try
             {
+
                get_sequence()->Preroll(this, &preroll, true);
+
             }
             catch (exception * pme)
             {
+
                throw not_implemented(get_app());
                /*string str;
                str.load_string(IDS_PREROLLUSERERROR001);
@@ -321,35 +336,6 @@ namespace music
          }
 
 
-         //void sequence_thread::ExecuteCommand(smart_pointer < ::music::midi::player::command > spcommand)
-         //{
-         //   spcommand->add_ref();
-         //   post_thread_message(
-         //      ::music::midi::player::message_command,
-         //      0,
-         //      (LPARAM) (::music::midi::player::command *) spcommand);
-         //}
-
-
-         //void sequence_thread::OnCommand(::signal_details * pobj)
-         //{
-         //   SCAST_PTR(::message::base, pbase, pobj);
-         //   smart_pointer < ::music::midi::player::command > spcommand;
-         //   spcommand = (::music::midi::player::command *) pbase->m_lparam.m_lparam;
-         //   try
-         //   {
-         //      _ExecuteCommand(spcommand);
-         //   }
-         //   catch(exception * pe)
-         //   {
-         //      pe->Delete();
-         //   }
-         //   catch(...)
-         //   {
-         //   }
-         //}
-
-
          void sequence_thread::_ExecuteCommand(::music::midi::player::command * spcommand)
          {
             switch(spcommand->GetCommand())
@@ -366,7 +352,7 @@ namespace music
                }
                else
                {
-                  Play();
+                  PlayRate();
                }
                spcommand->OnFinish();
             }
@@ -375,9 +361,22 @@ namespace music
             {
                if(get_sequence() != NULL)
                {
-                  get_sequence()->CloseFile();
+                  get_sequence()->close_file();
                }
                spcommand->OnFinish();
+            }
+            break;
+            case ::music::midi::player::command_fade_out_and_stop:
+            {
+               m_eventStop.ResetEvent();
+               ::multimedia::e_result            mmrc;
+               sequence::PlayerLink & link = get_sequence()->GetPlayerLink();
+               link.SetCommand(spcommand);
+               link.ModifyFlag(sequence::FlagFadeOutAndStop, sequence::FlagNull);
+               if (::multimedia::result_success != (mmrc = get_sequence()->FadeOutAndStop()))
+               {
+                  _throw(exception(get_app(), ::music::EMidiPlayerStop, mmrc));
+               }
             }
             break;
             case ::music::midi::player::command_stop:

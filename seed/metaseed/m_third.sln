@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bzip2", "..\..\..\third\appseed\bzip2\w_axisbzip2.vcxproj", "{B5A649E1-D516-4F29-A627-DA6884DD421C}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "..\..\..\third\appseed\jpeg\w_axisjpeg.vcxproj", "{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "..\..\..\third\appseed\png\w_axispng.vcxproj", "{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite", "..\..\..\third\appseed\sqlite\w_aurasqlite.vcxproj", "{B24F72D6-053A-41C5-BE03-3B0BD535F1EB}"
 EndProject
@@ -45,30 +41,6 @@ Global
 		{B5A649E1-D516-4F29-A627-DA6884DD421C}.stage|Win32.Build.0 = stage|Win32
 		{B5A649E1-D516-4F29-A627-DA6884DD421C}.stage|x64.ActiveCfg = stage|x64
 		{B5A649E1-D516-4F29-A627-DA6884DD421C}.stage|x64.Build.0 = stage|x64
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|ARM.ActiveCfg = basis|ARM
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|ARM.Build.0 = basis|ARM
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|Win32.ActiveCfg = basis|Win32
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|Win32.Build.0 = basis|Win32
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|x64.ActiveCfg = basis|x64
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.basis|x64.Build.0 = basis|x64
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|ARM.ActiveCfg = stage|ARM
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|ARM.Build.0 = stage|ARM
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|Win32.ActiveCfg = stage|Win32
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|Win32.Build.0 = stage|Win32
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|x64.ActiveCfg = stage|x64
-		{89889AD7-7BE0-49C3-BEB2-F22AFACBBB99}.stage|x64.Build.0 = stage|x64
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|ARM.ActiveCfg = basis|ARM
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|ARM.Build.0 = basis|ARM
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|Win32.ActiveCfg = basis|Win32
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|Win32.Build.0 = basis|Win32
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|x64.ActiveCfg = basis|x64
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.basis|x64.Build.0 = basis|x64
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|ARM.ActiveCfg = stage|ARM
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|ARM.Build.0 = stage|ARM
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|Win32.ActiveCfg = stage|Win32
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|Win32.Build.0 = stage|Win32
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|x64.ActiveCfg = stage|x64
-		{CFE1D55C-FB80-4DDC-B2F1-90E5B2417E7E}.stage|x64.Build.0 = stage|x64
 		{B24F72D6-053A-41C5-BE03-3B0BD535F1EB}.basis|ARM.ActiveCfg = basis|ARM
 		{B24F72D6-053A-41C5-BE03-3B0BD535F1EB}.basis|ARM.Build.0 = basis|ARM
 		{B24F72D6-053A-41C5-BE03-3B0BD535F1EB}.basis|Win32.ActiveCfg = basis|Win32

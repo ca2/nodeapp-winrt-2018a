@@ -26,9 +26,9 @@ namespace music
 
             imedia_position         m_tkPosition;
 
-            DWORD                   m_dwStart;
+            uint64_t                m_uiStart;
 
-            DWORD                   m_dwOffset;
+            uint64_t                m_uiOffset;
 
 
             thread(::aura::application * papp);

@@ -107,6 +107,16 @@ typedef unsigned short unichar;
 #define static_inline static
 
 
+#ifdef __cplusplus
+
+#define LOG_THIS_TAG (typeid(*this).name())
+#define LOG_MEMBER_PREFIX __FUNCTION__
+
+
+#endif
+
+
+
 
 #define FONT_SANS "Lucida Sans Unicode"
 #define FONT_SERIF "Times New Roman"

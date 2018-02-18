@@ -65,17 +65,48 @@ namespace music
          void thread::run()
          {
 
-            e_result       smfrc;
-            ::music::midi::event *           pevent = NULL;
+            e_result smfrc;
+
+            ::music::midi::event * pevent = NULL;
+
             imedia_position tkMax = ::numeric_info <imedia_position>::get_maximum_value();
+
             imedia_position tkPosition;
+
             bool bGotEvent = false;
+
             sequence_thread * pthread = dynamic_cast < sequence_thread * > (m_pseq->m_pthread);
-            uint64_t dwStart = ::get_micro() - m_pseq->TicksToMillisecs(m_pseq->m_tkBase) * 1000;
+
+            m_uiStart = ::get_micro() - m_pseq->TicksToMillisecs(m_pseq->m_tkBase) * 1000;
+
+            for (int iTrack = 0; iTrack < 16; iTrack++)
+            {
+
+               clip(0, 127, m_pseq->m_iaRefVolume.element_at_grow(iTrack));
+
+               if (m_pseq->m_pfile->m_keyframe.rbControl[iTrack][7] == KF_EMPTY)
+               {
+
+                  m_pseq->m_iaRefVolume[iTrack] = 100;
+
+               }
+               else
+               {
+
+                  m_pseq->m_iaRefVolume[iTrack] = m_pseq->m_pfile->m_keyframe.rbControl[iTrack][7];
+
+               }
+
+
+            }
+
             imedia_position tkLastBend = 0;
+
             m_tkPosition = 0;
-            uint64_t dwNow;
-            uint64_t dwFile;
+
+            uint64_t uiNow;
+
+            uint64_t uiFile;
 
             int_map < int_map < int > > map;
 
@@ -91,13 +122,26 @@ namespace music
                goto end_playback;
 
             }
-
-
+            uint64_t dwLastEffect = 0;
 
             while (thread_get_run())
             {
 
+               if (m_pseq == NULL || m_pseq->file() == NULL)
+               {
+
+                  break;
+
+               }
+
                if (m_pseq->file()->m_flags & file::EndOfFile)
+               {
+
+                  break;
+
+               }
+
+               if (m_pseq->get_status() != sequence::status_playing)
                {
 
                   break;
@@ -124,17 +168,41 @@ namespace music
                }
 
                tkPosition = m_pseq->file()->GetPosition();
-               m_dwStart = tkPosition;
-               m_dwOffset = m_pseq->TicksToMillisecs(tkPosition);
 
+               uiNow = ::get_micro() - m_uiStart;
 
-               dwNow = ::get_micro() - dwStart;
-               dwFile = m_pseq->TickToMicro(tkPosition);
+               double dVolume = 1.0;
 
-               if (dwNow < dwFile)
+               if (uiNow - dwLastEffect > 100 * 1000)
                {
 
-                  if (dwFile - dwNow >= 2000)
+                  dwLastEffect = uiNow;
+
+                  if (m_pseq->m_eeffect == sequence::effect_fade_in || m_pseq->m_eeffect == sequence::effect_fade_out)
+                  {
+
+                     dVolume = m_pseq->get_fade_volume(m_pseq->TicksToMillisecs(tkPosition));
+
+                     for (int iTrack = 0; iTrack < 16; iTrack++)
+                     {
+
+                        clip(0, 127, m_pseq->m_iaRefVolume[iTrack]);
+
+                        byte bVolume = (byte)(m_pseq->m_iaRefVolume[iTrack] * MAX(0.0, MIN(1.0, dVolume)));
+
+                        m_pseq->m_io->control_change(pevent->GetTrack(), 7, bVolume);
+                     }
+
+                  }
+
+               }
+
+               uiFile = m_pseq->TickToMicro(tkPosition);
+
+               if (uiNow < uiFile)
+               {
+
+                  if (uiFile - uiNow >= 2000)
                   {
 
                      Sleep(1);
@@ -148,7 +216,7 @@ namespace music
                }
                else
                {
-                  if (dwNow - dwFile >= 20 * 1000)
+                  if (uiNow - uiFile >= 20 * 1000)
                   {
 
                      for (auto & p1 : map)
@@ -157,12 +225,14 @@ namespace music
                         {
                            if (p2.m_element2 >= 0)
                            {
+
                               m_pseq->m_io->note_off(p1.m_element1, p2.m_element1, p2.m_element2);
+
                               p2.m_element2 = -1;
+
                            }
                         }
                      }
-
 
                   }
 
@@ -171,7 +241,7 @@ namespace music
                   if (pevent->GetType() == ::music::midi::NoteOn)
                   {
 
-                     if (dwNow - dwFile < 20 * 1000)
+                     if (uiNow - uiFile < 20 * 1000)
                      {
 
                         m_pseq->m_io->note_on(pevent->GetTrack(), pevent->GetNotePitch(), pevent->GetNoteVelocity());
@@ -184,7 +254,7 @@ namespace music
                   else if (pevent->GetType() == ::music::midi::NoteOff)
                   {
 
-                     if (dwNow - dwFile < 20 * 1000)
+                     if (uiNow - uiFile < 20 * 1000)
                      {
 
                         m_pseq->m_io->note_off(pevent->GetTrack(), pevent->GetNotePitch(), pevent->GetNoteVelocity());
@@ -203,30 +273,30 @@ namespace music
                   else if (pevent->GetType() == ::music::midi::ControlChange)
                   {
 
+                     if (pevent->GetController() == 7)
+                     {
+
+                        m_pseq->m_iaRefVolume[pevent->GetTrack()] = pevent->GetControllerValue();
+                     }
+
                      m_pseq->m_io->control_change(pevent->GetTrack(), pevent->GetController(), pevent->GetControllerValue());
 
                   }
                   else if (pevent->GetType() == ::music::midi::PitchBend)
                   {
 
-                     //if (tkLastBend == tkPosition)
-                     //{
-
-                     //   bEqual = true;
-
-                     //}
-                     //else
-                     //{
                      int iChannel = pevent->GetTrack();
 
-
                      uint16_t uiBend = pevent->GetPitchBendLevel();
+
                      uint16_t uiBend2;
 
                      BYTE b1 = ((BYTE*)&uiBend)[0];
+
                      BYTE b2 = ((BYTE*)&uiBend)[1];
 
                      ((BYTE*)&uiBend2)[0] = b2;
+
                      ((BYTE*)&uiBend2)[1] = b1;
 
                      TRACE("pitch_bend ch=%02d bend1=%05d bend2=%05d", iChannel, uiBend, uiBend2);
@@ -235,19 +305,11 @@ namespace music
 
                      m_pseq->m_io->pitch_bend(iChannel, MIN(16383, uiBend));
 
-
-                     //}
-
                   }
 
                   bGotEvent = false;
 
                }
-
-
-
-
-
 
                if (::music::success != smfrc)
                {
@@ -256,15 +318,21 @@ namespace music
 
                }
 
-
             }
 
-end_playback:
+         end_playback:
 
-            pthread->PostMidiSequenceEvent(
-            m_pseq,
-            ::music::midi::sequence::EventMidiPlaybackEnd,
-            NULL);
+            for (int i = 0; i < 16; i++)
+            {
+               for (int j = 0; j < 127; j++)
+               {
+                  m_pseq->m_io->note_off(i, j, 0);
+
+               }
+            }
+
+            pthread->PostMidiSequenceEvent(m_pseq, ::music::midi::sequence::EventMidiPlaybackEnd, NULL);
+
             if (m_pseq->m_pthreadPlay == this)
             {
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "aqua", "..\..\..\app\appseed\aqua\w_aqua.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA86}"
 EndProject
@@ -65,7 +65,23 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sphere", "..\..\..\..\eco\a
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tesseract", "..\..\..\..\eco\app-core\appseed\tesseract\w_tesseract.vcxproj", "{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C1F2028E-EB2E-4E57-AE23-AA07449D6EF2}"
+	ProjectSection(SolutionItems) = preProject
+		Performance3.psess = Performance3.psess
+		Performance4.psess = Performance4.psess
+		Performance5.psess = Performance5.psess
+		Performance6.psess = Performance6.psess
+		Performance7.psess = Performance7.psess
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "app_core_auraverse", "..\..\..\app-core\appseed\auraverse\w_auraverse.vcxproj", "{387C88DE-7BF7-4E57-99FB-86C08D857D08}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "winmetro_app_core_auraverse", "..\..\..\app-core\appseed\auraverse\w_winmetro_auraverse.vcxproj", "{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}"
+EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		basis|ARM = basis|ARM
 		basis|Win32 = basis|Win32
@@ -663,12 +679,72 @@ Global
 		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|Win32.Build.0 = stage|Win32
 		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|x64.ActiveCfg = stage|x64
 		{F20DCBAE-5E9B-4A38-A236-B7FBCFE0FA55}.stage|x64.Build.0 = stage|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|ARM.ActiveCfg = basis|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|ARM.Build.0 = basis|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|Win32.ActiveCfg = basis|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|Win32.Build.0 = basis|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|x64.ActiveCfg = basis|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.basis|x64.Build.0 = basis|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|ARM.ActiveCfg = basis|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|ARM.Build.0 = basis|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|Win32.ActiveCfg = stage|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|Win32.Build.0 = stage|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|x64.ActiveCfg = basis|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.cover|x64.Build.0 = basis|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|ARM.ActiveCfg = stage|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|ARM.Build.0 = stage|ARM
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|Win32.ActiveCfg = stage|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|Win32.Build.0 = stage|Win32
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|x64.ActiveCfg = stage|x64
+		{387C88DE-7BF7-4E57-99FB-86C08D857D08}.stage|x64.Build.0 = stage|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|ARM.ActiveCfg = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|ARM.Build.0 = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|ARM.Deploy.0 = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|Win32.ActiveCfg = basis|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|Win32.Build.0 = basis|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|Win32.Deploy.0 = basis|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|x64.ActiveCfg = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|x64.Build.0 = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.basis|x64.Deploy.0 = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|ARM.ActiveCfg = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|ARM.Build.0 = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|ARM.Deploy.0 = basis|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|Win32.ActiveCfg = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|Win32.Build.0 = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|Win32.Deploy.0 = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|x64.ActiveCfg = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|x64.Build.0 = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.cover|x64.Deploy.0 = basis|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|ARM.ActiveCfg = stage|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|ARM.Build.0 = stage|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|ARM.Deploy.0 = stage|ARM
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|Win32.ActiveCfg = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|Win32.Build.0 = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|Win32.Deploy.0 = stage|Win32
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|x64.ActiveCfg = stage|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|x64.Build.0 = stage|x64
+		{5FE5F9C4-0300-453A-9BDE-6AF7FDBF31E8}.stage|x64.Deploy.0 = stage|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {84180736-40D4-4695-B1BF-6FD409E451F5}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true

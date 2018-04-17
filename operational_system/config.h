@@ -126,3 +126,6 @@ typedef unsigned short unichar;
 #define FONT_SANS_FX "Tahoma"
 #define FONT_SERIF_FX "Georgia"
 
+
+
+#define STR_NEWLINE "\r\n"

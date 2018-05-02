@@ -755,15 +755,15 @@ Seq_Open_File_Cleanup:
 
          //void sequence::get_time(imedia_time & time)
          //{
-         //   
+         //
          //   get_millis(time);
 
          //}
 
-         
+
          ::multimedia::e_result sequence::get_millis(imedia_time & time)
          {
-            
+
             synch_lock sl(m_pmutex);
 
             if (m_pthreadPlay == NULL)
@@ -774,7 +774,7 @@ Seq_Open_File_Cleanup:
                return ::multimedia::result_success;
 
             }
-            
+
             time = ::get_micro() - m_pthreadPlay->m_uiStart + m_pthreadPlay->m_uiOffset;
 
             time /= 1000;
@@ -1248,12 +1248,6 @@ Seq_Open_File_Cleanup:
                set_status(m_estatusPreSpecialModeV001);
             }
             break;
-            case EventStopped:
-            {
-               OnMidiPlaybackEnd(pevent);
-               set_status(status_opened);
-            }
-            break;
             case EventMidiPlaybackEnd:
             {
                OnMidiPlaybackEnd(pevent);
@@ -1402,7 +1396,7 @@ Seq_Open_File_Cleanup:
             return imedia_time(TicksToMillisecs((imedia_position) (int_ptr) tk));
          }
 
-         
+
          void sequence::get_position(imedia_position & position)
          {
 

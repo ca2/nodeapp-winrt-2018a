@@ -190,12 +190,15 @@ namespace music
 
                if(get_sequence()->IsPlaying())
                {
+
                   ::music::midi::sequence::PlayerLink & link = get_sequence()->GetPlayerLink();
-                  link.ModifyFlag(
-                  ::music::midi::sequence::FlagSettingPos,
-                  ::music::midi::sequence::FlagNull);
+
+                  link() |= ::music::midi::sequence::FlagSettingPos;
+
                   link.m_tkRestart = RateToTicks(dRate);
+
                   get_sequence()->Stop();
+
                }
 
             }
@@ -444,17 +447,24 @@ namespace music
 
             void player::OnMidiOutDeviceChange()
             {
+
                get_sequence()->SetMidiOutDevice(GetMidiOutDevice());
+
                if(get_sequence()->IsPlaying())
                {
+
                   imedia_position tkPosition = 0;
+
                   get_sequence()->get_position(tkPosition);
+
                   ::music::midi::sequence::PlayerLink & link = get_sequence()->GetPlayerLink();
-                  link.ModifyFlag(
-                  ::music::midi::sequence::FlagTempoChange,
-                  ::music::midi::sequence::FlagNull);
+
+                  link() |= ::music::midi::sequence::FlagTempoChange;
+
                   link.m_tkRestart = tkPosition;
+
                   get_sequence()->Stop();
+
                }
 
             }

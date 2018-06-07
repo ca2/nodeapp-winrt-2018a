@@ -1,0 +1,14 @@
+prefix=/c/winmetro/nodeapp/Win32/stage
+exec_prefix=${prefix}
+libdir=/c/winmetro/nodeapp/Win32/stage/lib
+includedir=/c/winmetro/nodeapp/Win32/stage/include
+
+Name: libavutil
+Description: FFmpeg utility library
+Version: 56.14.100
+Requires: 
+Requires.private: 
+Conflicts:
+Libs: -L${libdir}  -lavutil 
+Libs.private: dxgi.lib d3d11.lib bcrypt.lib
+Cflags: -I${includedir}

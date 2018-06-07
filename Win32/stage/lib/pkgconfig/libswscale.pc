@@ -1,0 +1,14 @@
+prefix=/c/winmetro/nodeapp/Win32/stage
+exec_prefix=${prefix}
+libdir=/c/winmetro/nodeapp/Win32/stage/lib
+includedir=/c/winmetro/nodeapp/Win32/stage/include
+
+Name: libswscale
+Description: FFmpeg image rescaling library
+Version: 5.1.100
+Requires: 
+Requires.private: libavutil >= 56.14.100
+Conflicts:
+Libs: -L${libdir}  -lswscale 
+Libs.private: 
+Cflags: -I${includedir}

@@ -1,0 +1,14 @@
+prefix=/c/winmetro/nodeapp/Win32/stage
+exec_prefix=${prefix}
+libdir=/c/winmetro/nodeapp/Win32/stage/lib
+includedir=/c/winmetro/nodeapp/Win32/stage/include
+
+Name: libswresample
+Description: FFmpeg audio resampling library
+Version: 3.1.100
+Requires: 
+Requires.private: libavutil >= 56.14.100
+Conflicts:
+Libs: -L${libdir}  -lswresample 
+Libs.private: 
+Cflags: -I${includedir}

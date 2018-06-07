@@ -1,0 +1,14 @@
+prefix=/c/winmetro/nodeapp/Win32/basis
+exec_prefix=${prefix}
+libdir=/c/winmetro/nodeapp/Win32/basis/lib
+includedir=/c/winmetro/nodeapp/Win32/basis/include
+
+Name: libavcodec
+Description: FFmpeg codec library
+Version: 58.18.100
+Requires: 
+Requires.private: libswresample >= 3.1.100, libavutil >= 56.14.100
+Conflicts:
+Libs: -L${libdir}  -lavcodec 
+Libs.private: 
+Cflags: -I${includedir}

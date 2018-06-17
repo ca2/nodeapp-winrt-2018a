@@ -250,7 +250,7 @@ namespace music
                //   }
                if(pbase->m_pwnd == NULL)
                {
-                  switch(pbase->m_id.int64())
+                  switch(pbase->m_id.i64())
                   {
                   case WM_USER + 100:
                   {
